@@ -10,7 +10,8 @@ Welcome to hueb's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   database_design/reverse_engineering
+   content/reverse_engineering
+   content/application_design
 
 
 
