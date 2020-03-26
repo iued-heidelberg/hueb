@@ -2,18 +2,18 @@ SET search_path to di_sueb_latein;
 
 
 -- Adds foreign_key constraints for author
-alter table author drop constraint if exists user_fk;
-alter table author
-	add constraint user_fk
-		foreign key (user_id) references "user"
-			on update cascade on delete restrict;
+  alter table author drop constraint if exists user_fk;
+  alter table author
+    add constraint user_fk
+      foreign key (user_id) references "user"
+        on update cascade on delete restrict;
 
 -- Adds foreign_key constraints for author_new
-alter table author_new drop constraint if exists user_fk;
-alter table author_new
-	add constraint user_fk
-		foreign key (user_id) references "user"
-			on update cascade on delete restrict;
+  alter table author_new drop constraint if exists user_fk;
+  alter table author_new
+    add constraint user_fk
+      foreign key (user_id) references "user"
+        on update cascade on delete restrict;
 
 -- Adds foreign_key constraints for country
   -- no foreign_key constraints necessary
@@ -26,7 +26,7 @@ alter table author_new
 
 -- Adds foreign_key constraints for loc_assign
 
--- loc_assign
+-- Adds foreign_key constraints for loc_assign
   -- location_fk
 
     alter table loc_assign drop constraint if exists location_fk;
@@ -134,25 +134,25 @@ alter table author_new
 
   -- translation_new_fk
 
-  alter table loc_assign drop constraint if exists translation_new_fk;
+    alter table loc_assign drop constraint if exists translation_new_fk;
 
-  INSERT INTO translation_new (trans_id, migration_notes, migration_generated)
-    SELECT
-      loc_assign.trans_id,
-      'Angelegt weil loc_assign einen FK auf translation_new hatte aber keine Werte eingetragen waren',
-      true
-    FROM loc_assign
-    WHERE loc_assign.trans_id NOT IN (
-      SELECT translation_new.trans_id
-      FROM translation_new
-    )
-    GROUP BY trans_id;
-  alter table loc_assign
-    add constraint translation_new_fk
-      foreign key (trans_id) references "translation_new"
-        on update cascade on delete restrict;
+    INSERT INTO translation_new (trans_id, migration_notes, migration_generated)
+      SELECT
+        loc_assign.trans_id,
+        'Angelegt weil loc_assign einen FK auf translation_new hatte aber keine Werte eingetragen waren',
+        true
+      FROM loc_assign
+      WHERE loc_assign.trans_id NOT IN (
+        SELECT translation_new.trans_id
+        FROM translation_new
+      )
+      GROUP BY trans_id;
+    alter table loc_assign
+      add constraint translation_new_fk
+        foreign key (trans_id) references "translation_new"
+          on update cascade on delete restrict;
 
--- orig_assign
+-- Adds foreign_key constraints for orig_assign
 
   -- orig_fk
     alter table orig_assign drop constraint if exists orig_fk;
