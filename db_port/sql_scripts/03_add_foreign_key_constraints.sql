@@ -152,3 +152,106 @@ alter table author_new
       foreign key (trans_id) references "translation_new"
         on update cascade on delete restrict;
 
+-- orig_assign
+
+  -- orig_fk
+    alter table orig_assign drop constraint if exists orig_fk;
+
+    INSERT INTO original (orig_id, migration_notes, migration_generated)
+    SELECT
+          orig_assign.orig_id,
+          'Angelegt weil orig_assign einen FK auf original hatte aber keine Werte eingetragen waren',
+          true
+        FROM orig_assign
+        WHERE orig_assign.orig_id NOT IN (
+          SELECT original.orig_id
+          FROM original
+        )
+        GROUP BY orig_id;
+
+    alter table orig_assign
+      add constraint orig_fk
+        foreign key (orig_id) references "original"
+          on update cascade on delete restrict;
+
+  -- orig_new_fk
+    alter table orig_assign drop constraint if exists orig_new_fk;
+
+    alter table orig_assign
+    add constraint orig_new_fk
+      foreign key (orig_id) references "original_new"
+        on update cascade on delete restrict;
+
+  -- trans_fk
+
+    alter table orig_assign drop constraint if exists trans_fk;
+
+    INSERT INTO translation(trans_id, migration_notes, migration_generated)
+    SELECT
+          orig_assign.trans_id,
+          'Angelegt weil orig_assign einen FK auf translation hatte aber keine Werte eingetragen waren',
+          true
+        FROM orig_assign
+        WHERE orig_assign.trans_id NOT IN (
+          SELECT translation.trans_id
+          FROM translation
+        )
+        GROUP BY trans_id;
+
+
+    alter table orig_assign
+      add constraint trans_fk
+        foreign key (trans_id) references "translation"
+          on update cascade on delete restrict;
+
+  -- trans_new_fk
+    alter table orig_assign drop constraint if exists trans_new_fk;
+
+    INSERT INTO translation_new(trans_id, migration_notes, migration_generated)
+    SELECT
+          orig_assign.trans_id,
+          'Angelegt weil orig_assign einen FK auf translation_new hatte aber keine Werte eingetragen waren',
+          true
+        FROM orig_assign
+        WHERE orig_assign.trans_id NOT IN (
+          SELECT translation_new.trans_id
+          FROM translation_new
+        )
+        GROUP BY trans_id;
+
+    alter table orig_assign
+      add constraint trans_new_fk
+        foreign key (trans_id) references "translation_new"
+          on update cascade on delete restrict;
+
+  -- orig_diff_fk
+    alter table orig_assign drop constraint if exists orig_diff_fk;
+
+    alter table orig_assign
+      add constraint orig_diff_fk
+        foreign key (orig_diff_id) references "original"
+          on update cascade on delete restrict;
+
+  -- orig_diff_new_fk
+    alter table orig_assign drop constraint if exists orig_diff_new_fk;
+
+    alter table orig_assign
+    add constraint orig_diff_new_fk
+      foreign key (orig_diff_id) references "original_new"
+        on update cascade on delete restrict;
+
+  -- trans_diff_fk
+    alter table orig_assign drop constraint if exists trans_diff_fk;
+
+    alter table orig_assign
+      add constraint trans_diff_fk
+        foreign key (trans_diff_id) references "translation"
+          on update cascade on delete restrict;
+
+  -- trans_diff_new_fk
+    alter table orig_assign drop constraint if exists trans_diff_new_fk;
+
+    alter table orig_assign
+    add constraint trans_diff_new_fk
+      foreign key (trans_diff_id) references "translation_new"
+        on update cascade on delete restrict;
