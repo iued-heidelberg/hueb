@@ -25,3 +25,10 @@ drop table if exists pseudo;
 -- dropping empty collection table
 drop table if exists collection;
 
+
+-- dropping empty colums from original
+ALTER TABLE original
+DROP COLUMN IF EXISTS manual_keys,
+DROP COLUMN IF EXISTS additional_keys;
+DROP COLUMN IF EXISTS col_id;
+
