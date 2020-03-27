@@ -36,6 +36,44 @@ DROP COLUMN IF EXISTS manual_keys,
 DROP COLUMN IF EXISTS additional_keys,
 DROP COLUMN IF EXISTS col_id;
 
--- renaming columns from original
+-- renaming original columns
 SELECT rename_column_if_exists('original', 'land', 'country_id');
 SELECT rename_column_if_exists('original', 'language', 'language_id');
+SELECT rename_column_if_exists('original', 'auth_id', 'author0_id');
+SELECT rename_column_if_exists('original', 'auth_id1', 'author1_id');
+SELECT rename_column_if_exists('original', 'auth_id2', 'author2_id');
+SELECT rename_column_if_exists('original', 'auth_id3', 'author3_id');
+
+
+-- renaming author columns
+SELECT rename_column_if_exists('author', 'auth_id', 'author_id');
+
+-- renaming author_new columns
+SELECT rename_column_if_exists('author_new', 'auth_id', 'author_id');
+
+-- renaming language columns
+SELECT rename_column_if_exists('language', 'lang_id', 'language_id');
+
+-- cleaning up country table
+--country_fk
+SELECT rename_column_if_exists('country', 'c_id', 'country_id');
+
+ALTER TABLE country
+DROP CONSTRAINT IF EXISTS country_pkey;
+
+ALTER TABLE country
+ADD PRIMARY KEY (country_id);
+
+DROP SEQUENCE IF EXISTS country_country_id_seq CASCADE;
+CREATE SEQUENCE country_country_id_seq;
+ALTER TABLE country ALTER COLUMN country_id SET DEFAULT nextval('country_country_id_seq');
+
+ALTER TABLE country ALTER COLUMN country_id SET NOT NULL;
+ALTER SEQUENCE country_country_id_seq OWNED BY country.country_id;
+
+SELECT setval('country_country_id_seq',
+
+(SELECT MAX(country_id)
+  FROM country)
+
+);
