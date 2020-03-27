@@ -17,16 +17,7 @@ Thoughts after first inspection:
 6. sim_term, test_author, test_book and official_keys aren't used
 
 
-Steps to clean up database:
----------------------------
 
-1. Archive original dump
-2. Move data to postgresql, archive postgresql database
-3. Drop unused relations and rename the rest to signal that they are intended
-   for readonly use, archive script to drop relationspostgresql database
-4. Add foreign-key relationships, archive script to add foreign-key
-   relationships and postgresql database
-5. Create models by using djangos default tools, graph models
 
 
 
