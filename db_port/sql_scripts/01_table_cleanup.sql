@@ -58,6 +58,7 @@ SELECT rename_column_if_exists('language', 'lang_id', 'language_id');
 --country_fk
 SELECT rename_column_if_exists('country', 'c_id', 'country_id');
 
+alter table original drop constraint if exists country_fk;
 ALTER TABLE country
 DROP CONSTRAINT IF EXISTS country_pkey;
 
