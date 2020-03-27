@@ -406,3 +406,158 @@ SET search_path to di_sueb_latein;
           add constraint country_fk
             foreign key (country_id) references "country"
               on update cascade on delete restrict;
+
+-- Adds foreign_key constraints for original_new
+  -- ddc_fk
+    alter table original_new drop constraint if exists ddc_fk;
+
+    alter table original_new
+      add constraint ddc_fk
+        foreign key (ddc_id) references "ddc_german"
+          on update cascade on delete restrict;
+
+  --author0_fk
+    alter table original_new drop constraint if exists author0_fk;
+
+    INSERT INTO author (author_id, migration_notes, migration_generated)
+      SELECT
+        original_new.author0_id,
+        'Angelegt weil original_new einen FK auf author hatte aber keine Werte eingetragen waren',
+        true
+      FROM original_new
+      WHERE original_new.author0_id NOT IN (
+        SELECT author.author_id
+        FROM author
+      )
+      GROUP BY author0_id;
+
+    alter table original_new
+      add constraint author0_fk
+        foreign key (author0_id) references "author"
+          on update cascade on delete restrict;
+
+  --author1_fk
+
+    alter table original_new drop constraint if exists author1_fk;
+
+      INSERT INTO author (author_id, migration_notes, migration_generated)
+      SELECT
+        original_new.author1_id,
+        'Angelegt weil original_new einen FK auf author hatte aber keine Werte eingetragen waren',
+        true
+      FROM original_new
+      WHERE original_new.author1_id NOT IN (
+        SELECT author.author_id
+        FROM author
+      )
+      GROUP BY author1_id;
+
+    alter table original_new
+      add constraint author1_fk
+        foreign key (author1_id) references "author"
+          on update cascade on delete restrict;
+
+  --author2_fk
+
+    alter table original_new drop constraint if exists author2_fk;
+
+      INSERT INTO author (author_id, migration_notes, migration_generated)
+      SELECT
+        original_new.author2_id,
+        'Angelegt weil original_new einen FK auf author hatte aber keine Werte eingetragen waren',
+        true
+      FROM original_new
+      WHERE original_new.author2_id NOT IN (
+        SELECT author.author_id
+        FROM author
+      )
+      GROUP BY author2_id;
+
+    alter table original_new
+      add constraint author2_fk
+        foreign key (author2_id) references "author"
+          on update cascade on delete restrict;
+
+  --author3_fk
+      alter table original_new drop constraint if exists author3_fk;
+
+      INSERT INTO author (author_id, migration_notes, migration_generated)
+      SELECT
+        original_new.author3_id,
+        'Angelegt weil original_new einen FK auf author hatte aber keine Werte eingetragen waren',
+        true
+      FROM original_new
+      WHERE original_new.author3_id NOT IN (
+        SELECT author.author_id
+        FROM author
+      )
+      GROUP BY author3_id;
+
+    alter table original_new
+      add constraint author3_fk
+        foreign key (author3_id) references "author"
+          on update cascade on delete restrict;
+
+  --author0_new_fk
+
+      alter table original_new drop constraint if exists author0_new_fk;
+
+      alter table original_new
+        add constraint author0_new_fk
+          foreign key (author0_id) references "author_new"
+            on update cascade on delete restrict;
+
+  --author1_new_fk
+
+      alter table original_new drop constraint if exists author1_new_fk;
+
+      alter table original_new
+        add constraint author1_new_fk
+          foreign key (author1_id) references "author_new"
+            on update cascade on delete restrict;
+
+
+  --author2_new_fk
+
+      alter table original_new drop constraint if exists author2_new_fk;
+
+      alter table original_new
+        add constraint author2_new_fk
+          foreign key (author2_id) references "author_new"
+            on update cascade on delete restrict;
+
+
+  --author3_new_fk
+
+      alter table original_new drop constraint if exists author3_new_fk;
+
+      alter table original_new
+        add constraint author3_new_fk
+          foreign key (author3_id) references "author_new"
+            on update cascade on delete restrict;
+
+  --language_fk
+
+    alter table original_new drop constraint if exists language_fk;
+
+    alter table original_new
+      add constraint language_fk
+        foreign key (language_id) references "language"
+          on update cascade on delete restrict;
+
+  --user_fk
+    alter table original_new drop constraint if exists user_fk;
+
+    alter table original_new
+          add constraint user_fk
+            foreign key (user_id) references "user"
+              on update cascade on delete restrict;
+
+  --country_fk
+
+    alter table original_new drop constraint if exists country_fk;
+
+    alter table original_new
+          add constraint country_fk
+            foreign key (country_id) references "country"
+              on update cascade on delete restrict;
