@@ -18,15 +18,11 @@ SET search_path to di_sueb_latein;
 
 -- Adds foreign_key constraints for country
   -- no foreign_key constraints necessary
-
 -- Adds foreign_key constraints for ddc_deutsch
   -- no foreign_key constraints necessary
-
 -- Adds foreign_key constraints for language
   -- no foreign_key constraints necessary
-
 -- Adds foreign_key constraints for loc_assign
-
 -- Adds foreign_key constraints for loc_assign
   -- location_fk
 
@@ -154,7 +150,6 @@ SET search_path to di_sueb_latein;
           on update cascade on delete restrict;
 
 -- Adds foreign_key constraints for orig_assign
-
   -- orig_fk
     alter table orig_assign drop constraint if exists orig_fk;
 
@@ -256,3 +251,13 @@ SET search_path to di_sueb_latein;
     add constraint trans_diff_new_fk
       foreign key (trans_diff_id) references "translation_new"
         on update cascade on delete restrict;
+
+-- Adds foreign_key constraints for original
+  -- ddc_fk
+    alter table original drop constraint if exists ddc_fk;
+
+    alter table original
+      add constraint ddc_fk
+        foreign key (ddc_id) references "ddc_german"
+          on update cascade on delete restrict;
+
