@@ -26,6 +26,10 @@ drop table if exists pseudo;
 -- dropping empty collection table
 drop table if exists collection;
 
+-- renaming ddc_deutsch to ddc_german
+ALTER TABLE IF EXISTS ddc_deutsch
+RENAME TO ddc_german;
+
 -- dropping empty columns from original
 ALTER TABLE original
 DROP COLUMN IF EXISTS manual_keys,
