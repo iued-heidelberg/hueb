@@ -890,3 +890,13 @@ SET search_path to di_sueb_latein;
       add constraint country_fk
         foreign key (country_id) references "country"
           on update cascade on delete restrict;
+
+-- Adds foreign_key constraints for translator
+  -- user_id
+    alter table translator drop constraint if exists user_fk;
+
+    alter table translator
+      add constraint user_fk
+        foreign key (user_id) references "user"
+          on update cascade on delete restrict;
+
