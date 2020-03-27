@@ -555,9 +555,156 @@ SET search_path to di_sueb_latein;
 
   --country_fk
 
+
     alter table original_new drop constraint if exists country_fk;
 
     alter table original_new
           add constraint country_fk
             foreign key (country_id) references "country"
               on update cascade on delete restrict;
+
+-- Adds foreign_key constraints for translation
+  -- ddc_fk
+    alter table translation drop constraint if exists ddc_fk;
+
+    alter table translation
+      add constraint ddc_fk
+        foreign key (ddc_id) references "ddc_german"
+          on update cascade on delete restrict;
+
+  --translator0_fk
+    alter table translation drop constraint if exists translator0_fk;
+
+    INSERT INTO translator (translator_id, migration_notes, migration_generated)
+      SELECT
+        translation.translator0_id,
+        'Angelegt weil translation einen FK auf translator hatte aber keine Werte eingetragen waren',
+        true
+      FROM translation
+      WHERE translation.translator0_id NOT IN (
+        SELECT translator.translator_id
+        FROM translator
+      )
+      GROUP BY translator0_id;
+
+    alter table translation
+      add constraint translator0_fk
+        foreign key (translator0_id) references "translator"
+          on update cascade on delete restrict;
+
+  --translator1_fk
+    alter table translation drop constraint if exists translator1_fk;
+
+    alter table translation
+      add constraint translator1_fk
+        foreign key (translator1_id) references "translator"
+          on update cascade on delete restrict;
+
+  --translator2_fk
+    alter table translation drop constraint if exists translator2_fk;
+
+    alter table translation
+      add constraint translator2_fk
+        foreign key (translator2_id) references "translator"
+          on update cascade on delete restrict;
+
+  --translator3_fk
+    alter table translation drop constraint if exists translator3_fk;
+
+    alter table translation
+      add constraint translator3_fk
+        foreign key (translator3_id) references "translator"
+          on update cascade on delete restrict;
+
+  --translator0_new_fk
+    alter table translation drop constraint if exists translator0_new_fk;
+
+    INSERT INTO translator_new (translator_id, migration_notes, migration_generated)
+      SELECT
+        translation.translator0_id,
+        'Angelegt weil translation einen FK auf translation_new hatte aber keine Werte eingetragen waren',
+        true
+      FROM translation
+      WHERE translation.translator0_id NOT IN (
+        SELECT translator_new.translator_id
+        FROM translator_new
+      )
+      GROUP BY translator0_id;
+
+    alter table translation
+      add constraint translator0_new_fk
+        foreign key (translator0_id) references "translator_new"
+          on update cascade on delete restrict;
+
+  --translator1_new_fk
+    alter table translation drop constraint if exists translator1_new_fk;
+
+    alter table translation
+      add constraint translator1_new_fk
+        foreign key (translator1_id) references "translator_new"
+          on update cascade on delete restrict;
+
+  --translator2_new_fk
+    alter table translation drop constraint if exists translator2_new_fk;
+
+    alter table translation
+      add constraint translator2_new_fk
+        foreign key (translator2_id) references "translator_new"
+          on update cascade on delete restrict;
+
+  --translator3_new_fk
+      alter table translation drop constraint if exists translator3_new_fk;
+
+      alter table translation
+        add constraint translator3_new_fk
+          foreign key (translator3_id) references "translator_new"
+            on update cascade on delete restrict;
+
+  --author_fk
+    alter table translation drop constraint if exists author_fk;
+
+    alter table translation
+      add constraint author_fk
+        foreign key (author_id) references "author"
+          on update cascade on delete restrict;
+
+  --author_new_fk
+    alter table translation drop constraint if exists author_new_fk;
+
+    alter table translation
+      add constraint author_new_fk
+        foreign key (author_id) references "author_new"
+          on update cascade on delete restrict;
+
+  --language_fk
+    alter table translation drop constraint if exists language_fk;
+
+    alter table translation
+      add constraint language_fk
+        foreign key (language_id) references "language"
+          on update cascade on delete restrict;
+
+  --via_language_fk
+    alter table translation drop constraint if exists via_language_fk;
+
+    alter table translation
+      add constraint via_language_fk
+        foreign key (language_id) references "language"
+          on update cascade on delete restrict;
+
+   --user_fk
+    alter table translation drop constraint if exists user_fk;
+
+    alter table translation
+      add constraint user_fk
+        foreign key (user_id) references "user"
+          on update cascade on delete restrict;
+
+  --country_fk
+
+    alter table translation drop constraint if exists country_fk;
+
+    alter table translation
+      add constraint country_fk
+        foreign key (country_id) references "country"
+          on update cascade on delete restrict;
