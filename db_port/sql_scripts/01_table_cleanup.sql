@@ -127,3 +127,10 @@ SELECT rename_column_if_exists('translation_new', 'translator_id',  'translator0
 SELECT rename_column_if_exists('translation_new', 'translator_id2', 'translator2_id');
 SELECT rename_column_if_exists('translation_new', 'translator_id3', 'translator3_id');
 SELECT rename_column_if_exists('translation_new', 'auth_id', 'author_id');
+
+-- changing user_id type of translator
+alter table translator
+alter column user_id drop default;
+
+alter table translator
+alter column user_id type bigint using user_id::bigint;
