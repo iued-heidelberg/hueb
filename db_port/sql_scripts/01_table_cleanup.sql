@@ -26,10 +26,12 @@ drop table if exists pseudo;
 -- dropping empty collection table
 drop table if exists collection;
 
-
--- dropping empty colums from original
+-- dropping empty columns from original
 ALTER TABLE original
 DROP COLUMN IF EXISTS manual_keys,
 DROP COLUMN IF EXISTS additional_keys,
 DROP COLUMN IF EXISTS col_id;
 
+-- renaming columns from original
+SELECT rename_column_if_exists('original', 'land', 'country_id');
+SELECT rename_column_if_exists('original', 'language', 'language_id');
