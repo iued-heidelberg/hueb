@@ -59,6 +59,9 @@ SELECT rename_column_if_exists('country', 'c_id', 'country_id');
 
 alter table original drop constraint if exists country_fk;
 alter table original_new drop constraint if exists country_fk;
+alter table translation drop constraint if exists country_fk;
+alter table translation_new drop constraint if exists country_fk;
+
 
 ALTER TABLE country
 DROP CONSTRAINT IF EXISTS country_pkey;
@@ -108,3 +111,19 @@ SELECT rename_column_if_exists('translation', 'translator_id',  'translator0_id'
 SELECT rename_column_if_exists('translation', 'translator_id2', 'translator2_id');
 SELECT rename_column_if_exists('translation', 'translator_id3', 'translator3_id');
 SELECT rename_column_if_exists('translation', 'auth_id', 'author_id');
+
+-- dropping empty columns from translation
+ALTER TABLE translation_new
+DROP COLUMN IF EXISTS manual_keys,
+DROP COLUMN IF EXISTS additional_keys,
+DROP COLUMN IF EXISTS col_id;
+
+-- renaming translation columns
+SELECT rename_column_if_exists('translation_new', 'land', 'country_id');
+SELECT rename_column_if_exists('translation_new', 'via_language', 'via_language_id');
+SELECT rename_column_if_exists('translation_new', 'language', 'language_id');
+SELECT rename_column_if_exists('translation_new', 'translator_id1', 'translator1_id');
+SELECT rename_column_if_exists('translation_new', 'translator_id',  'translator0_id');
+SELECT rename_column_if_exists('translation_new', 'translator_id2', 'translator2_id');
+SELECT rename_column_if_exists('translation_new', 'translator_id3', 'translator3_id');
+SELECT rename_column_if_exists('translation_new', 'auth_id', 'author_id');
