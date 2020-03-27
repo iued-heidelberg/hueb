@@ -134,3 +134,10 @@ alter column user_id drop default;
 
 alter table translator
 alter column user_id type bigint using user_id::bigint;
+
+-- changing user_id type of translator_new
+alter table translator_new
+alter column user_id drop default;
+
+alter table translator_new
+alter column user_id type bigint using user_id::bigint;
