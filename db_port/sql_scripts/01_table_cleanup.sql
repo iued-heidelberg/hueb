@@ -44,7 +44,6 @@ SELECT rename_column_if_exists('original', 'auth_id1', 'author1_id');
 SELECT rename_column_if_exists('original', 'auth_id2', 'author2_id');
 SELECT rename_column_if_exists('original', 'auth_id3', 'author3_id');
 
-
 -- renaming author columns
 SELECT rename_column_if_exists('author', 'auth_id', 'author_id');
 
@@ -59,6 +58,7 @@ SELECT rename_column_if_exists('language', 'lang_id', 'language_id');
 SELECT rename_column_if_exists('country', 'c_id', 'country_id');
 
 alter table original drop constraint if exists country_fk;
+
 ALTER TABLE country
 DROP CONSTRAINT IF EXISTS country_pkey;
 
@@ -76,5 +76,18 @@ SELECT setval('country_country_id_seq',
 
 (SELECT MAX(country_id)
   FROM country)
-
 );
+
+-- dropping empty columns from original
+ALTER TABLE original_new
+DROP COLUMN IF EXISTS manual_keys,
+DROP COLUMN IF EXISTS additional_keys,
+DROP COLUMN IF EXISTS col_id;
+
+-- renaming original columns
+SELECT rename_column_if_exists('original_new', 'land', 'country_id');
+SELECT rename_column_if_exists('original_new', 'language', 'language_id');
+SELECT rename_column_if_exists('original_new', 'auth_id', 'author0_id');
+SELECT rename_column_if_exists('original_new', 'auth_id1', 'author1_id');
+SELECT rename_column_if_exists('original_new', 'auth_id2', 'author2_id');
+SELECT rename_column_if_exists('original_new', 'auth_id3', 'author3_id');
