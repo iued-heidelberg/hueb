@@ -1,3 +1,6 @@
+\set ON_ERROR_STOP true
+SET search_path to di_sueb_latein;
+
 CREATE OR REPLACE FUNCTION column_exists(ptable TEXT, pcolumn TEXT)
   RETURNS BOOLEAN AS $BODY$
 DECLARE result bool;
@@ -22,3 +25,4 @@ BEGIN
     END IF;
 END$BODY$
   LANGUAGE plpgsql VOLATILE;
+

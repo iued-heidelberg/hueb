@@ -1,3 +1,5 @@
+#!/bin/bash
+set -e
 
 psql -d hueb_db -a -f sql_scripts/00_setup_postgres.sql
 psql -d hueb_db -a -f sql_scripts/01_table_cleanup.sql

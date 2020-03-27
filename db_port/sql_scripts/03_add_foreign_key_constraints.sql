@@ -1,3 +1,4 @@
+\set ON_ERROR_STOP true
 SET search_path to di_sueb_latein;
 
 

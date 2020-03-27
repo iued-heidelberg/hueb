@@ -1,3 +1,4 @@
+\set ON_ERROR_STOP true
 SET search_path to di_sueb_latein;
 
 -- dropping keyword-tables because they are empty
@@ -29,6 +30,6 @@ drop table if exists collection;
 -- dropping empty colums from original
 ALTER TABLE original
 DROP COLUMN IF EXISTS manual_keys,
-DROP COLUMN IF EXISTS additional_keys;
+DROP COLUMN IF EXISTS additional_keys,
 DROP COLUMN IF EXISTS col_id;
 
