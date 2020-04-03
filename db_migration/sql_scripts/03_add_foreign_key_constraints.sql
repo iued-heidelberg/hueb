@@ -22,8 +22,22 @@ SET search_path to di_sueb_latein;
   -- no foreign_key constraints necessary
 -- Adds foreign_key constraints for language
   -- no foreign_key constraints necessary
+
 -- Adds foreign_key constraints for loc_assign
--- Adds foreign_key constraints for loc_assign
+  -- add new columns
+    alter table loc_assign drop column if exists loc_new_id;
+    alter table loc_assign drop column if exists orig_new_id;
+    alter table loc_assign drop column if EXISTS trans_new_id;
+
+    alter table loc_assign add column loc_new_id bigint;
+    alter table loc_assign add column orig_new_id bigint;
+    alter table loc_assign add column trans_new_id bigint;
+
+    update loc_assign
+    set orig_new_id = orig_id,
+        loc_new_id = loc_id,
+        trans_new_id = trans_id;
+
   -- location_fk
 
     alter table loc_assign drop constraint if exists location_fk;
@@ -46,24 +60,23 @@ SET search_path to di_sueb_latein;
         on update cascade on delete restrict;
 
   -- location_new_fk
-
     alter table loc_assign drop constraint if exists location_new_fk;
 
     INSERT INTO location_new (loc_id, migration_notes, migration_generated)
-      SELECT
-        loc_assign.loc_id,
-        'Angelegt weil loc_assign einen FK auf location_new hatte aber keine Werte eingetragen waren',
-        true
-      FROM loc_assign
-      WHERE loc_assign.loc_id NOT IN (
-        SELECT location_new.loc_id
-        FROM location_new
-      )
-      GROUP BY loc_id;
+    SELECT
+      loc_assign.loc_id,
+      'Angelegt weil loc_assign einen FK auf location_new hatte aber keine Werte eingetragen waren',
+      true
+    FROM loc_assign
+    WHERE loc_assign.loc_id NOT IN (
+      SELECT location_new.loc_id
+      FROM location_new
+    )
+    GROUP BY loc_id;
 
     alter table loc_assign
     add constraint location_new_fk
-      foreign key (loc_id) references "location_new"
+      foreign key (loc_new_id) references "location_new"
         on update cascade on delete restrict;
 
   -- original_fk
@@ -88,7 +101,6 @@ SET search_path to di_sueb_latein;
         on update cascade on delete restrict;
 
   -- original_new_fk
-
     alter table loc_assign drop constraint if exists original_new_fk;
 
     INSERT INTO original_new (orig_id, migration_notes, migration_generated)
@@ -105,11 +117,10 @@ SET search_path to di_sueb_latein;
 
     alter table loc_assign
     add constraint original_new_fk
-      foreign key (orig_id) references "original_new"
+      foreign key (orig_new_id) references "original_new"
         on update cascade on delete restrict;
 
   -- translation_fk
-
     alter table loc_assign drop constraint if exists translation_fk;
 
     INSERT INTO translation (trans_id, migration_notes, migration_generated)
@@ -130,7 +141,6 @@ SET search_path to di_sueb_latein;
         on update cascade on delete restrict;
 
   -- translation_new_fk
-
     alter table loc_assign drop constraint if exists translation_new_fk;
 
     INSERT INTO translation_new (trans_id, migration_notes, migration_generated)
@@ -144,12 +154,31 @@ SET search_path to di_sueb_latein;
         FROM translation_new
       )
       GROUP BY trans_id;
+
     alter table loc_assign
       add constraint translation_new_fk
-        foreign key (trans_id) references "translation_new"
+        foreign key (trans_new_id) references "translation_new"
           on update cascade on delete restrict;
 
+
 -- Adds foreign_key constraints for orig_assign
+  -- add new columns
+    alter table orig_assign drop column if exists orig_new_id;
+    alter table orig_assign drop column if EXISTS trans_new_id;
+    alter table orig_assign drop column if exists orig_diff_new_id;
+    alter table orig_assign drop column if EXISTS trans_diff_new_id;
+
+    alter table orig_assign add column orig_new_id bigint;
+    alter table orig_assign add column trans_new_id bigint;
+    alter table orig_assign add column orig_diff_new_id bigint;
+    alter table orig_assign add column trans_diff_new_id bigint;
+
+    update orig_assign
+    set orig_new_id = orig_id,
+        trans_new_id = trans_id,
+        orig_diff_new_id = orig_diff_id,
+        trans_diff_new_id = trans_diff_id;
+
   -- orig_fk
     alter table orig_assign drop constraint if exists orig_fk;
 
@@ -175,7 +204,7 @@ SET search_path to di_sueb_latein;
 
     alter table orig_assign
     add constraint orig_new_fk
-      foreign key (orig_id) references "original_new"
+      foreign key (orig_new_id) references "original_new"
         on update cascade on delete restrict;
 
   -- trans_fk
@@ -217,7 +246,7 @@ SET search_path to di_sueb_latein;
 
     alter table orig_assign
       add constraint trans_new_fk
-        foreign key (trans_id) references "translation_new"
+        foreign key (trans_new_id) references "translation_new"
           on update cascade on delete restrict;
 
   -- orig_diff_fk
@@ -233,7 +262,7 @@ SET search_path to di_sueb_latein;
 
     alter table orig_assign
     add constraint orig_diff_new_fk
-      foreign key (orig_diff_id) references "original_new"
+      foreign key (orig_diff_new_id) references "original_new"
         on update cascade on delete restrict;
 
   -- trans_diff_fk
@@ -249,10 +278,30 @@ SET search_path to di_sueb_latein;
 
     alter table orig_assign
     add constraint trans_diff_new_fk
-      foreign key (trans_diff_id) references "translation_new"
+      foreign key (trans_diff_new_id) references "translation_new"
         on update cascade on delete restrict;
 
 -- Adds foreign_key constraints for original
+  -- add new columns
+
+    alter table original drop column if exists author0_new_id;
+    alter table original drop column if exists author1_new_id;
+    alter table original drop column if exists author2_new_id;
+    alter table original drop column if exists author3_new_id;
+
+    alter table original add column author0_new_id bigint;
+    alter table original add column author1_new_id bigint;
+    alter table original add column author2_new_id bigint;
+    alter table original add column author3_new_id bigint;
+
+
+    update original
+    set author0_new_id = author0_id,
+        author1_new_id = author1_id,
+        author2_new_id = author2_id,
+        author3_new_id = author3_id;
+
+
   -- ddc_fk
     alter table original drop constraint if exists ddc_fk;
 
@@ -314,20 +363,20 @@ SET search_path to di_sueb_latein;
     alter table original drop constraint if exists author0_new_fk;
 
     INSERT INTO author_new (author_id, migration_notes, migration_generated)
-      SELECT
-        original.author0_id,
-        'Angelegt weil original einen FK auf author_new hatte aber keine Werte eingetragen waren',
-        true
-      FROM original
-      WHERE original.author0_id NOT IN (
-        SELECT author_new.author_id
-        FROM author_new
-      )
-      GROUP BY author0_id;
+    SELECT
+      original.author0_id,
+      'Angelegt weil original einen FK auf author_new hatte aber keine Werte eingetragen waren',
+      true
+    FROM original
+    WHERE original.author0_id NOT IN (
+      SELECT author_new.author_id
+      FROM author_new
+    )
+    GROUP BY author0_id;
 
     alter table original
       add constraint author0_new_fk
-        foreign key (author0_id) references "author_new"
+        foreign key (author0_new_id) references "author_new"
           on update cascade on delete restrict;
 
   --author1_new_fk
@@ -336,7 +385,7 @@ SET search_path to di_sueb_latein;
 
     alter table original
       add constraint author1_new_fk
-        foreign key (author1_id) references "author_new"
+        foreign key (author1_new_id) references "author_new"
           on update cascade on delete restrict;
 
   --author2_new_fk
@@ -345,7 +394,7 @@ SET search_path to di_sueb_latein;
 
     alter table original
       add constraint author2_new_fk
-        foreign key (author2_id) references "author_new"
+        foreign key (author2_new_id) references "author_new"
           on update cascade on delete restrict;
 
   --author3_new_fk
@@ -354,7 +403,7 @@ SET search_path to di_sueb_latein;
 
     alter table original
       add constraint author3_new_fk
-        foreign key (author3_id) references "author_new"
+        foreign key (author3_new_id) references "author_new"
           on update cascade on delete restrict;
 
   --language_fk
@@ -408,6 +457,24 @@ SET search_path to di_sueb_latein;
               on update cascade on delete restrict;
 
 -- Adds foreign_key constraints for original_new
+  -- add new columns
+    alter table original_new drop column if exists author0_new_id;
+    alter table original_new drop column if exists author1_new_id;
+    alter table original_new drop column if exists author2_new_id;
+    alter table original_new drop column if exists author3_new_id;
+
+    alter table original_new add column author0_new_id bigint;
+    alter table original_new add column author1_new_id bigint;
+    alter table original_new add column author2_new_id bigint;
+    alter table original_new add column author3_new_id bigint;
+
+
+    update original_new
+    set author0_new_id = author0_id,
+        author1_new_id = author1_id,
+        author2_new_id = author2_id,
+        author3_new_id = author3_id;
+
   -- ddc_fk
     alter table original_new drop constraint if exists ddc_fk;
 
@@ -504,7 +571,7 @@ SET search_path to di_sueb_latein;
 
       alter table original_new
         add constraint author0_new_fk
-          foreign key (author0_id) references "author_new"
+          foreign key (author0_new_id) references "author_new"
             on update cascade on delete restrict;
 
   --author1_new_fk
@@ -513,7 +580,7 @@ SET search_path to di_sueb_latein;
 
       alter table original_new
         add constraint author1_new_fk
-          foreign key (author1_id) references "author_new"
+          foreign key (author1_new_id) references "author_new"
             on update cascade on delete restrict;
 
 
@@ -523,7 +590,7 @@ SET search_path to di_sueb_latein;
 
       alter table original_new
         add constraint author2_new_fk
-          foreign key (author2_id) references "author_new"
+          foreign key (author2_new_id) references "author_new"
             on update cascade on delete restrict;
 
 
@@ -533,7 +600,7 @@ SET search_path to di_sueb_latein;
 
       alter table original_new
         add constraint author3_new_fk
-          foreign key (author3_id) references "author_new"
+          foreign key (author3_new_id) references "author_new"
             on update cascade on delete restrict;
 
   --language_fk
@@ -564,6 +631,26 @@ SET search_path to di_sueb_latein;
               on update cascade on delete restrict;
 
 -- Adds foreign_key constraints for translation
+  -- add new columns
+    alter table translation drop column if exists translator0_new_id;
+    alter table translation drop column if exists translator1_new_id;
+    alter table translation drop column if exists translator2_new_id;
+    alter table translation drop column if exists translator3_new_id;
+    alter table translation drop column if exists author_new_id;
+
+    alter table translation add column translator0_new_id bigint;
+    alter table translation add column translator1_new_id bigint;
+    alter table translation add column translator2_new_id bigint;
+    alter table translation add column translator3_new_id bigint;
+    alter table translation add column author_new_id bigint;
+
+
+    update translation
+    set translator0_new_id = translator0_id,
+        translator1_new_id = translator1_id,
+        translator2_new_id = translator2_id,
+        translator3_new_id = translator3_id,
+        author_new_id = author_id;
   -- ddc_fk
     alter table translation drop constraint if exists ddc_fk;
 
@@ -620,20 +707,21 @@ SET search_path to di_sueb_latein;
     alter table translation drop constraint if exists translator0_new_fk;
 
     INSERT INTO translator_new (translator_id, migration_notes, migration_generated)
-      SELECT
-        translation.translator0_id,
-        'Angelegt weil translation einen FK auf translation_new hatte aber keine Werte eingetragen waren',
-        true
-      FROM translation
-      WHERE translation.translator0_id NOT IN (
-        SELECT translator_new.translator_id
-        FROM translator_new
-      )
-      GROUP BY translator0_id;
+    SELECT
+      translation.translator0_id,
+      'Angelegt weil translation einen FK auf translation_new hatte aber keine Werte eingetragen waren',
+      true
+    FROM translation
+    WHERE translation.translator0_id NOT IN (
+      SELECT translator_new.translator_id
+      FROM translator_new
+    )
+    GROUP BY translator0_id;
+
 
     alter table translation
       add constraint translator0_new_fk
-        foreign key (translator0_id) references "translator_new"
+        foreign key (translator0_new_id) references "translator_new"
           on update cascade on delete restrict;
 
   --translator1_new_fk
@@ -641,7 +729,7 @@ SET search_path to di_sueb_latein;
 
     alter table translation
       add constraint translator1_new_fk
-        foreign key (translator1_id) references "translator_new"
+        foreign key (translator1_new_id) references "translator_new"
           on update cascade on delete restrict;
 
   --translator2_new_fk
@@ -649,7 +737,7 @@ SET search_path to di_sueb_latein;
 
     alter table translation
       add constraint translator2_new_fk
-        foreign key (translator2_id) references "translator_new"
+        foreign key (translator2_new_id) references "translator_new"
           on update cascade on delete restrict;
 
   --translator3_new_fk
@@ -657,7 +745,7 @@ SET search_path to di_sueb_latein;
 
       alter table translation
         add constraint translator3_new_fk
-          foreign key (translator3_id) references "translator_new"
+          foreign key (translator3_new_id) references "translator_new"
             on update cascade on delete restrict;
 
   --author_fk
@@ -673,7 +761,7 @@ SET search_path to di_sueb_latein;
 
     alter table translation
       add constraint author_new_fk
-        foreign key (author_id) references "author_new"
+        foreign key (author_new_id) references "author_new"
           on update cascade on delete restrict;
 
   --language_fk
@@ -710,6 +798,27 @@ SET search_path to di_sueb_latein;
           on update cascade on delete restrict;
 
 -- Adds foreign_key constraints for translation_new
+  -- add new columns
+    alter table translation_new drop column if exists translator0_new_id;
+    alter table translation_new drop column if exists translator1_new_id;
+    alter table translation_new drop column if exists translator2_new_id;
+    alter table translation_new drop column if exists translator3_new_id;
+    alter table translation_new drop column if exists author_new_id;
+
+    alter table translation_new add column translator0_new_id bigint;
+    alter table translation_new add column translator1_new_id bigint;
+    alter table translation_new add column translator2_new_id bigint;
+    alter table translation_new add column translator3_new_id bigint;
+    alter table translation_new add column author_new_id bigint;
+
+
+    update translation_new
+    set translator0_new_id = translator0_id,
+        translator1_new_id = translator1_id,
+        translator2_new_id = translator2_id,
+        translator3_new_id = translator3_id,
+        author_new_id = author_id;
+
   -- ddc_fk
     alter table translation_new drop constraint if exists ddc_fk;
 
@@ -803,7 +912,7 @@ SET search_path to di_sueb_latein;
 
     alter table translation_new
       add constraint translator0_new_fk
-        foreign key (translator0_id) references "translator_new"
+        foreign key (translator0_new_id) references "translator_new"
           on update cascade on delete restrict;
 
   --translator1_new_fk
@@ -811,7 +920,7 @@ SET search_path to di_sueb_latein;
 
     alter table translation_new
       add constraint translator1_new_fk
-        foreign key (translator1_id) references "translator_new"
+        foreign key (translator1_new_id) references "translator_new"
           on update cascade on delete restrict;
 
   --translator2_new_fk
@@ -819,7 +928,7 @@ SET search_path to di_sueb_latein;
 
     alter table translation_new
       add constraint translator2_new_fk
-        foreign key (translator2_id) references "translator_new"
+        foreign key (translator2_new_id) references "translator_new"
           on update cascade on delete restrict;
 
   --translator3_new_fk
@@ -827,7 +936,7 @@ SET search_path to di_sueb_latein;
 
     alter table translation_new
       add constraint translator3_new_fk
-        foreign key (translator3_id) references "translator_new"
+        foreign key (translator3_new_id) references "translator_new"
           on update cascade on delete restrict;
 
   --author_fk
@@ -855,7 +964,7 @@ SET search_path to di_sueb_latein;
 
     alter table translation_new
       add constraint author_new_fk
-        foreign key (author_id) references "author_new"
+        foreign key (author_new_id) references "author_new"
           on update cascade on delete restrict;
 
   --language_fk
