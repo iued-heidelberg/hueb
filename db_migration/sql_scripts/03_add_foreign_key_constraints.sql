@@ -22,7 +22,7 @@ SET search_path to di_sueb_latein;
   -- no foreign_key constraints necessary
 -- Adds foreign_key constraints for language
   -- no foreign_key constraints necessary
--- Adds foreign_key constraints for loc_assign
+
 -- Adds foreign_key constraints for loc_assign
   -- add new columns
     alter table loc_assign drop column if exists loc_new_id;
@@ -62,6 +62,18 @@ SET search_path to di_sueb_latein;
   -- location_new_fk
     alter table loc_assign drop constraint if exists location_new_fk;
 
+    INSERT INTO location_new (loc_id, migration_notes, migration_generated)
+    SELECT
+      loc_assign.loc_id,
+      'Angelegt weil loc_assign einen FK auf location_new hatte aber keine Werte eingetragen waren',
+      true
+    FROM loc_assign
+    WHERE loc_assign.loc_id NOT IN (
+      SELECT location_new.loc_id
+      FROM location_new
+    )
+    GROUP BY loc_id;
+
     alter table loc_assign
     add constraint location_new_fk
       foreign key (loc_new_id) references "location_new"
@@ -91,6 +103,18 @@ SET search_path to di_sueb_latein;
   -- original_new_fk
     alter table loc_assign drop constraint if exists original_new_fk;
 
+    INSERT INTO original_new (orig_id, migration_notes, migration_generated)
+      SELECT
+        loc_assign.orig_id,
+        'Angelegt weil loc_assign einen FK auf origninal_new hatte aber keine Werte eingetragen waren',
+        true
+      FROM loc_assign
+      WHERE loc_assign.orig_id NOT IN (
+        SELECT original_new.orig_id
+        FROM original_new
+      )
+      GROUP BY orig_id;
+
     alter table loc_assign
     add constraint original_new_fk
       foreign key (orig_new_id) references "original_new"
@@ -118,6 +142,18 @@ SET search_path to di_sueb_latein;
 
   -- translation_new_fk
     alter table loc_assign drop constraint if exists translation_new_fk;
+
+    INSERT INTO translation_new (trans_id, migration_notes, migration_generated)
+      SELECT
+        loc_assign.trans_id,
+        'Angelegt weil loc_assign einen FK auf translation_new hatte aber keine Werte eingetragen waren',
+        true
+      FROM loc_assign
+      WHERE loc_assign.trans_id NOT IN (
+        SELECT translation_new.trans_id
+        FROM translation_new
+      )
+      GROUP BY trans_id;
 
     alter table loc_assign
       add constraint translation_new_fk
@@ -195,6 +231,18 @@ SET search_path to di_sueb_latein;
 
   -- trans_new_fk
     alter table orig_assign drop constraint if exists trans_new_fk;
+
+    INSERT INTO translation_new(trans_id, migration_notes, migration_generated)
+    SELECT
+          orig_assign.trans_id,
+          'Angelegt weil orig_assign einen FK auf translation_new hatte aber keine Werte eingetragen waren',
+          true
+        FROM orig_assign
+        WHERE orig_assign.trans_id NOT IN (
+          SELECT translation_new.trans_id
+          FROM translation_new
+        )
+        GROUP BY trans_id;
 
     alter table orig_assign
       add constraint trans_new_fk
@@ -313,6 +361,18 @@ SET search_path to di_sueb_latein;
   --author0_new_fk
 
     alter table original drop constraint if exists author0_new_fk;
+
+    INSERT INTO author_new (author_id, migration_notes, migration_generated)
+    SELECT
+      original.author0_id,
+      'Angelegt weil original einen FK auf author_new hatte aber keine Werte eingetragen waren',
+      true
+    FROM original
+    WHERE original.author0_id NOT IN (
+      SELECT author_new.author_id
+      FROM author_new
+    )
+    GROUP BY author0_id;
 
     alter table original
       add constraint author0_new_fk
@@ -645,6 +705,19 @@ SET search_path to di_sueb_latein;
 
   --translator0_new_fk
     alter table translation drop constraint if exists translator0_new_fk;
+
+    INSERT INTO translator_new (translator_id, migration_notes, migration_generated)
+    SELECT
+      translation.translator0_id,
+      'Angelegt weil translation einen FK auf translation_new hatte aber keine Werte eingetragen waren',
+      true
+    FROM translation
+    WHERE translation.translator0_id NOT IN (
+      SELECT translator_new.translator_id
+      FROM translator_new
+    )
+    GROUP BY translator0_id;
+
 
     alter table translation
       add constraint translator0_new_fk
