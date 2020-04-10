@@ -48,6 +48,25 @@ SELECT rename_column_if_exists('translator', 'translator_id', 'id');
 SELECT rename_column_if_exists('translator_new', 'translator_id', 'id');
 SELECT rename_column_if_exists('user', 'user_id', 'id');
 
+-- adding sequences
+SELECT(add_sequence('author'));
+SELECT(add_sequence('author_new'));
+SELECT(add_sequence('country'));
+SELECT(add_sequence('ddc_german'));
+SELECT(add_sequence('language'));
+SELECT(add_sequence('loc_assign'));
+SELECT(add_sequence('location'));
+SELECT(add_sequence('location_new'));
+SELECT(add_sequence('orig_assign'));
+SELECT(add_sequence('original'));
+SELECT(add_sequence('original_new'));
+SELECT(add_sequence('translation'));
+SELECT(add_sequence('translation_new'));
+SELECT(add_sequence('translator'));
+SELECT(add_sequence('translator_new'));
+  -- user has a sequence already
+
+
 
 -- dropping empty columns from original
 ALTER TABLE original
@@ -87,18 +106,6 @@ DROP CONSTRAINT IF EXISTS country_pkey;
 ALTER TABLE country
 ADD PRIMARY KEY (id);
 
-DROP SEQUENCE IF EXISTS country_country_id_seq CASCADE;
-CREATE SEQUENCE country_country_id_seq;
-ALTER TABLE country ALTER COLUMN id SET DEFAULT nextval('country_country_id_seq');
-
-ALTER TABLE country ALTER COLUMN id SET NOT NULL;
-ALTER SEQUENCE country_country_id_seq OWNED BY country.id;
-
-SELECT setval('country_country_id_seq',
-
-(SELECT MAX(id)
-  FROM country)
-);
 
 -- dropping empty columns from original_new
 ALTER TABLE original_new
