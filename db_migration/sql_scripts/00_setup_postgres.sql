@@ -104,3 +104,23 @@ BEGIN
     RETURN;
   END$BODY$
   LANGUAGE plpgsql VOLATILE;
+
+  CREATE OR REPLACE FUNCTION add_sequence(ptable TEXT)
+  RETURNS VOID AS $BODY$
+BEGIN
+
+  EXECUTE FORMAT('
+    DROP SEQUENCE IF EXISTS %I_id_seq CASCADE;
+    CREATE SEQUENCE %I_id_seq;
+    ALTER TABLE %s ALTER COLUMN id SET DEFAULT nextval($$%I_id_seq$$);
+
+    ALTER TABLE %s ALTER COLUMN id SET NOT NULL;
+
+
+    SELECT setval($$%I_id_seq$$,
+      (SELECT MAX(id)
+        FROM %I)
+    );', ptable, ptable, ptable, ptable, ptable, ptable, ptable, ptable, ptable);
+
+END$BODY$
+  LANGUAGE plpgsql VOLATILE;
