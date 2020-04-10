@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'hueb_legacy_latein.apps.HuebLegacyLateinConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -75,8 +76,17 @@ WSGI_APPLICATION = 'hueb.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'USER': 'bockstaller',
+        'NAME': 'hueb',
+    },
+    'legacy_latein': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'OPTIONS': {
+            'options': '-c search_path=di_sueb_latein'
+        },
+        'USER': 'bockstaller',
+        'NAME': 'hueb_db',
     }
 }
 
