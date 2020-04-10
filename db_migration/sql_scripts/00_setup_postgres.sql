@@ -52,8 +52,7 @@ BEGIN
   LANGUAGE plpgsql VOLATILE;
 
 CREATE OR REPLACE FUNCTION clean_up_relation(primary_table TEXT, primary_column TEXT, secondary_table TEXT)
-  RETURNS BOOLEAN AS $BODY$
-DECLARE result bool;
+  RETURNS void AS $BODY$
 DECLARE placeholder BIGINT;
 BEGIN
 
@@ -102,6 +101,6 @@ BEGIN
             primary_table, secondary_table||'_fk', primary_column, secondary_table);
 
 
-    RETURN placeholder;
+    RETURN;
   END$BODY$
   LANGUAGE plpgsql VOLATILE;
