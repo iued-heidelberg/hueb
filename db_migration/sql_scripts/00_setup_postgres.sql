@@ -105,8 +105,8 @@ BEGIN
   END$BODY$
   LANGUAGE plpgsql VOLATILE;
 
-  CREATE OR REPLACE FUNCTION add_sequence(ptable TEXT)
-  RETURNS VOID AS $BODY$
+CREATE OR REPLACE FUNCTION add_sequence(ptable TEXT)
+RETURNS VOID AS $BODY$
 BEGIN
 
   EXECUTE FORMAT('
@@ -121,6 +121,88 @@ BEGIN
       (SELECT MAX(id)
         FROM %I)
     );', ptable, ptable, ptable, ptable, ptable, ptable, ptable, ptable, ptable);
+
+END$BODY$
+  LANGUAGE plpgsql VOLATILE;
+
+CREATE OR REPLACE FUNCTION split_new_into_separate(ptable TEXT, scolumn TEXT)
+   RETURNS VOID AS $BODY$
+DECLARE
+   counter INTEGER := 0 ;
+BEGIN
+   LOOP
+ 	EXECUTE FORMAT('
+		ALTER TABLE %s DROP COLUMN IF EXISTS %I%s_new_id;
+	   	ALTER TABLE %s ADD COLUMN %I%s_new_id bigint;
+
+	   UPDATE %s
+		SET %I%s_new_id = %I%s_id;
+	', ptable, scolumn, counter, ptable, scolumn, counter, ptable, scolumn, counter, scolumn, counter);
+
+	counter := counter + 1 ;
+	EXIT WHEN counter > 3 ;
+
+   END LOOP ;
+
+   RETURN;
+END ;
+$BODY$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION add_m_n_relation(first_table TEXT, second_table Text, suffix TEXT)
+RETURNS VOID AS $BODY$
+DECLARE
+ counter INTEGER := 0 ;
+BEGIN
+
+  EXECUTE FORMAT('
+	DROP TABLE IF EXISTS %I_%I%s;
+
+    CREATE TABLE %I_%I%s(
+	  id    SERIAL PRIMARY KEY,
+	  %I_id BIGINT NOT NULL,
+	  %I_id BIGINT NOT NULL,
+	  FOREIGN KEY (%I_id) REFERENCES %s (id),
+	  FOREIGN KEY (%I_id) REFERENCES %s%s (id)
+    );', first_table, second_table, suffix ,first_table, second_table, suffix, first_table, second_table, first_table, first_table, second_table, second_table, suffix);
+
+ 	LOOP
+		EXECUTE FORMAT('
+		INSERT INTO %I_%I%s (%I_id, %I_id)
+		SELECT
+		  id,
+		  %I%s%s_id
+		FROM
+		  %s
+		WHERE
+		  %I%s%s_id != 0;
+		', first_table, second_table, suffix, first_table, second_table, second_table, counter ,suffix, first_table, second_table, counter,suffix);
+
+		counter := counter + 1 ;
+		EXIT WHEN counter > 3 ;
+
+   END LOOP ;
+
+END$BODY$
+  LANGUAGE plpgsql VOLATILE;
+
+
+CREATE OR REPLACE FUNCTION delete_superfluos_columns(first_table TEXT, second_table Text, suffix TEXT)
+RETURNS VOID AS $BODY$
+DECLARE
+ counter INTEGER := 0 ;
+BEGIN
+
+ 	LOOP
+		EXECUTE FORMAT('
+		ALTER TABLE %I
+		DROP COLUMN IF EXISTS %I%s%s_id;
+		', first_table, second_table, counter, suffix);
+
+		counter := counter + 1 ;
+		EXIT WHEN counter > 3 ;
+
+   END LOOP ;
 
 END$BODY$
   LANGUAGE plpgsql VOLATILE;
