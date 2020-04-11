@@ -30,6 +30,44 @@ drop table if exists collection;
 ALTER TABLE IF EXISTS ddc_deutsch
 RENAME TO ddc_german;
 
+-- renaming primary_keys
+SELECT rename_column_if_exists('author', 'auth_id', 'id');
+SELECT rename_column_if_exists('author_new', 'auth_id', 'id');
+SELECT rename_column_if_exists('country', 'c_id', 'id');
+SELECT rename_column_if_exists('ddc_german', 'ddc_id', 'id');
+SELECT rename_column_if_exists('language', 'lang_id', 'id');
+SELECT rename_column_if_exists('loc_assign', 'loc_assign_id', 'id');
+SELECT rename_column_if_exists('location', 'loc_id', 'id');
+SELECT rename_column_if_exists('location_new', 'loc_id', 'id');
+SELECT rename_column_if_exists('orig_assign', 'orig_assign_id', 'id');
+SELECT rename_column_if_exists('original', 'orig_id', 'id');
+SELECT rename_column_if_exists('original_new', 'orig_id', 'id');
+SELECT rename_column_if_exists('translation', 'trans_id', 'id');
+SELECT rename_column_if_exists('translation_new', 'trans_id', 'id');
+SELECT rename_column_if_exists('translator', 'translator_id', 'id');
+SELECT rename_column_if_exists('translator_new', 'translator_id', 'id');
+SELECT rename_column_if_exists('user', 'user_id', 'id');
+
+-- adding sequences
+SELECT(add_sequence('author'));
+SELECT(add_sequence('author_new'));
+SELECT(add_sequence('country'));
+SELECT(add_sequence('ddc_german'));
+SELECT(add_sequence('language'));
+SELECT(add_sequence('loc_assign'));
+SELECT(add_sequence('location'));
+SELECT(add_sequence('location_new'));
+SELECT(add_sequence('orig_assign'));
+SELECT(add_sequence('original'));
+SELECT(add_sequence('original_new'));
+SELECT(add_sequence('translation'));
+SELECT(add_sequence('translation_new'));
+SELECT(add_sequence('translator'));
+SELECT(add_sequence('translator_new'));
+  -- user has a sequence already
+
+
+
 -- dropping empty columns from original
 ALTER TABLE original
 DROP COLUMN IF EXISTS manual_keys,
@@ -55,7 +93,6 @@ SELECT rename_column_if_exists('language', 'lang_id', 'language_id');
 
 -- cleaning up country table
 --country_fk
-SELECT rename_column_if_exists('country', 'c_id', 'country_id');
 
 alter table original drop constraint if exists country_fk;
 alter table original_new drop constraint if exists country_fk;
@@ -67,20 +104,8 @@ ALTER TABLE country
 DROP CONSTRAINT IF EXISTS country_pkey;
 
 ALTER TABLE country
-ADD PRIMARY KEY (country_id);
+ADD PRIMARY KEY (id);
 
-DROP SEQUENCE IF EXISTS country_country_id_seq CASCADE;
-CREATE SEQUENCE country_country_id_seq;
-ALTER TABLE country ALTER COLUMN country_id SET DEFAULT nextval('country_country_id_seq');
-
-ALTER TABLE country ALTER COLUMN country_id SET NOT NULL;
-ALTER SEQUENCE country_country_id_seq OWNED BY country.country_id;
-
-SELECT setval('country_country_id_seq',
-
-(SELECT MAX(country_id)
-  FROM country)
-);
 
 -- dropping empty columns from original_new
 ALTER TABLE original_new
