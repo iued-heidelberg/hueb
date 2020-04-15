@@ -8,6 +8,43 @@
 from django.db import models
 
 
+class User(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    name = models.CharField(max_length=255)
+    loginname = models.CharField(max_length=255)
+    passwort = models.CharField(max_length=12)
+    anmerkungen = models.TextField()
+
+
+    class Meta:
+        db_table = 'user'
+
+class Translator(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    comment = models.TextField(blank=True, null=True)
+    name = models.CharField(max_length=255)
+    user = models.ForeignKey('User', models.DO_NOTHING, blank=True, null=True)
+    datum = models.DateField(blank=True, null=True)
+    migration_notes = models.CharField(max_length=1023, blank=True, null=True)
+    migration_generated = models.BooleanField()
+
+    class Meta:
+        db_table = 'translator'
+
+
+class TranslatorNew(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    comment = models.TextField(blank=True, null=True)
+    name = models.CharField(max_length=255)
+    user = models.ForeignKey('User', models.DO_NOTHING, blank=True, null=True)
+    datum = models.DateField(blank=True, null=True)
+    migration_notes = models.CharField(max_length=1023, blank=True, null=True)
+    migration_generated = models.BooleanField()
+
+    class Meta:
+        db_table = 'translator_new'
+
+
 class Author(models.Model):
     id = models.BigAutoField(primary_key=True)
     comment = models.TextField(blank=True, null=True)
@@ -18,7 +55,6 @@ class Author(models.Model):
     migration_generated = models.BooleanField()
 
     class Meta:
-        managed = False
         db_table = 'author'
 
 
@@ -32,17 +68,16 @@ class AuthorNew(models.Model):
     migration_generated = models.BooleanField()
 
     class Meta:
-        managed = False
         db_table = 'author_new'
 
 
 class Country(models.Model):
+    id = models.BigAutoField(primary_key=True)
     country = models.CharField(max_length=255)
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
     migration_generated = models.BooleanField()
 
     class Meta:
-        managed = False
         db_table = 'country'
 
 
@@ -54,17 +89,16 @@ class DdcGerman(models.Model):
     migration_generated = models.BooleanField()
 
     class Meta:
-        managed = False
         db_table = 'ddc_german'
 
 
 class Language(models.Model):
+    id = models.BigAutoField(primary_key=True)
     language = models.CharField(max_length=255)
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
     migration_generated = models.BooleanField()
 
     class Meta:
-        managed = False
         db_table = 'language'
 
 
@@ -81,7 +115,6 @@ class LocAssign(models.Model):
     trans_new = models.ForeignKey('TranslationNew', models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'loc_assign'
 
 
@@ -97,7 +130,6 @@ class Location(models.Model):
     migration_generated = models.BooleanField()
 
     class Meta:
-        managed = False
         db_table = 'location'
 
 
@@ -113,7 +145,6 @@ class LocationNew(models.Model):
     migration_generated = models.BooleanField()
 
     class Meta:
-        managed = False
         db_table = 'location_new'
 
 
@@ -131,8 +162,9 @@ class OrigAssign(models.Model):
     trans_diff_new = models.ForeignKey('TranslationNew', models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'orig_assign'
+
+
 
 
 class Original(models.Model):
@@ -156,27 +188,7 @@ class Original(models.Model):
     migration_generated = models.BooleanField()
 
     class Meta:
-        managed = False
         db_table = 'original'
-
-
-class OriginalAuthor(models.Model):
-    original = models.ForeignKey(Original, models.DO_NOTHING)
-    author = models.ForeignKey(Author, models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'original_author'
-
-
-class OriginalAuthorNew(models.Model):
-    original = models.ForeignKey(Original, models.DO_NOTHING)
-    author = models.ForeignKey(AuthorNew, models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'original_author_new'
-
 
 class OriginalNew(models.Model):
     id = models.BigAutoField(primary_key=True)
@@ -199,26 +211,7 @@ class OriginalNew(models.Model):
     migration_generated = models.BooleanField()
 
     class Meta:
-        managed = False
         db_table = 'original_new'
-
-
-class OriginalNewAuthor(models.Model):
-    original = models.ForeignKey(OriginalNew, models.DO_NOTHING)
-    author = models.ForeignKey(Author, models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'original_new_author'
-
-
-class OriginalNewAuthorNew(models.Model):
-    original_new = models.ForeignKey(OriginalNew, models.DO_NOTHING)
-    author = models.ForeignKey(AuthorNew, models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'original_new_author_new'
 
 
 class Translation(models.Model):
@@ -245,7 +238,6 @@ class Translation(models.Model):
     author_new = models.ForeignKey(Author, models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'translation'
 
 
@@ -273,81 +265,76 @@ class TranslationNew(models.Model):
     author_new = models.ForeignKey(Author, models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'translation_new'
 
 
+class OriginalAuthor(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    original = models.ForeignKey(Original, models.DO_NOTHING)
+    author = models.ForeignKey(Author, models.DO_NOTHING)
+
+    class Meta:
+        db_table = 'original_author'
+
+
+class OriginalAuthorNew(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    original = models.ForeignKey(Original, models.DO_NOTHING)
+    author = models.ForeignKey(AuthorNew, models.DO_NOTHING)
+
+    class Meta:
+        db_table = 'original_author_new'
+
+
+class OriginalNewAuthor(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    original = models.ForeignKey(OriginalNew, models.DO_NOTHING)
+    author = models.ForeignKey(Author, models.DO_NOTHING)
+
+    class Meta:
+        db_table = 'original_new_author'
+
+
+class OriginalNewAuthorNew(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    original_new = models.ForeignKey(OriginalNew, models.DO_NOTHING)
+    author = models.ForeignKey(AuthorNew, models.DO_NOTHING)
+
+    class Meta:
+        db_table = 'original_new_author_new'
+
+
 class TranslationNewTranslator(models.Model):
+    id = models.BigAutoField(primary_key=True)
     translation = models.ForeignKey(TranslationNew, models.DO_NOTHING)
     translator = models.ForeignKey('Translator', models.DO_NOTHING)
 
     class Meta:
-        managed = False
         db_table = 'translation_new_translator'
 
 
 class TranslationNewTranslatorNew(models.Model):
+    id = models.BigAutoField(primary_key=True)
     translation_new = models.ForeignKey(TranslationNew, models.DO_NOTHING)
     translator = models.ForeignKey('TranslatorNew', models.DO_NOTHING)
 
     class Meta:
-        managed = False
         db_table = 'translation_new_translator_new'
 
 
 class TranslationTranslator(models.Model):
+    id = models.BigAutoField(primary_key=True)
     translation = models.ForeignKey(Translation, models.DO_NOTHING)
     translator = models.ForeignKey('Translator', models.DO_NOTHING)
 
     class Meta:
-        managed = False
         db_table = 'translation_translator'
 
 
 class TranslationTranslatorNew(models.Model):
+    id = models.BigAutoField(primary_key=True)
     translation = models.ForeignKey(Translation, models.DO_NOTHING)
     translator = models.ForeignKey('TranslatorNew', models.DO_NOTHING)
 
     class Meta:
-        managed = False
         db_table = 'translation_translator_new'
-
-
-class Translator(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    comment = models.TextField(blank=True, null=True)
-    name = models.CharField(max_length=255)
-    user = models.ForeignKey('User', models.DO_NOTHING, blank=True, null=True)
-    datum = models.DateField(blank=True, null=True)
-    migration_notes = models.CharField(max_length=1023, blank=True, null=True)
-    migration_generated = models.BooleanField()
-
-    class Meta:
-        managed = False
-        db_table = 'translator'
-
-
-class TranslatorNew(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    comment = models.TextField(blank=True, null=True)
-    name = models.CharField(max_length=255)
-    user = models.ForeignKey('User', models.DO_NOTHING, blank=True, null=True)
-    datum = models.DateField(blank=True, null=True)
-    migration_notes = models.CharField(max_length=1023, blank=True, null=True)
-    migration_generated = models.BooleanField()
-
-    class Meta:
-        managed = False
-        db_table = 'translator_new'
-
-
-class User(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    name = models.CharField(max_length=255)
-    loginname = models.CharField(max_length=255)
-    passwort = models.CharField(max_length=12)
-    anmerkungen = models.TextField()
-
-    class Meta:
-        managed = False
-        db_table = 'user'
