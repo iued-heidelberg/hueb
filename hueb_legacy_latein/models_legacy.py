@@ -186,6 +186,8 @@ class Original(models.Model):
     country = models.ForeignKey(Country, models.DO_NOTHING, blank=True, null=True)
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
     migration_generated = models.BooleanField()
+    author = models.ManyToManyField(Author, through='OriginalAuthor')
+    author_new = models.ManyToManyField(AuthorNew, through='OriginalAuthorNew')
 
     class Meta:
         db_table = 'original'
@@ -209,6 +211,8 @@ class OriginalNew(models.Model):
     country_id = models.IntegerField(blank=True, null=True)
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
     migration_generated = models.BooleanField()
+    author = models.ManyToManyField(Author, through='OriginalNewAuthor')
+    author_new = models.ManyToManyField(AuthorNew, through='OriginalNewAuthorNew')
 
     class Meta:
         db_table = 'original_new'
@@ -236,6 +240,8 @@ class Translation(models.Model):
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
     migration_generated = models.BooleanField()
     author_new = models.ForeignKey(Author, models.DO_NOTHING, blank=True, null=True)
+    translator = models.ManyToManyField(Translator, through='TranslationTranslator')
+    translator_new = models.ManyToManyField(TranslatorNew, through='TranslationTranslatorNew')
 
     class Meta:
         db_table = 'translation'
@@ -263,6 +269,8 @@ class TranslationNew(models.Model):
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
     migration_generated = models.BooleanField()
     author_new = models.ForeignKey(Author, models.DO_NOTHING, blank=True, null=True)
+    translator = models.ManyToManyField(Translator, through='TranslationNewTranslator')
+    translator_new = models.ManyToManyField(TranslatorNew, through='TranslationNewTranslatorNew')
 
     class Meta:
         db_table = 'translation_new'
