@@ -62,24 +62,52 @@ class TransNewAssignInline(admin.TabularInline):
 class OrigAssignAdmin(admin.ModelAdmin):
     list_display = (
         'id',
-        'orig_id',
-        'trans_id',
-        'orig_diff',
-        'trans_diff',
+        'orig',
+        'trans',
+        'orig_new',
+        'trans_new',
         'migration_notes',
         'migration_generated',
-        'orig_new_id',
-        'trans_new_id',
-        'orig_diff_new',
-        'trans_diff_new',
-    )
-    list_filter = ('migration_generated',)
-    raw_id_fields = (
         'orig_diff',
         'trans_diff',
         'orig_diff_new',
         'trans_diff_new',
+
     )
+    list_filter = ('migration_generated',)
+    autocomplete_fields = ('orig',
+        'trans',
+        'orig_new',
+        'trans_new',
+        'orig_diff',
+        'trans_diff',
+        'orig_diff_new',
+        'trans_diff_new',)
+
+    fieldsets = (
+        ('Old relationships', {
+            'description': (' '),
+            'fields': ('orig', 'trans')
+        }),
+        ('New relationships', {
+            'description': (' '),
+            'fields': ('orig_new', 'trans_new')
+        }),
+        ('Old diff relationships', {
+            'description': (' '),
+            'fields': ('orig_diff', 'trans_diff')
+        }),
+        ('New diff relationships', {
+            'description': (' '),
+            'fields': ('orig_diff_new', 'trans_diff_new')
+        }),
+        ('Migration', {
+            'description': ('Migration metadata'),
+            'classes': ('collapse',),
+            'fields': ('migration_notes', 'migration_generated'),
+        }),
+    )
+
 
 @admin.register(LocAssign)
 class LocAssignAdmin(admin.ModelAdmin):
@@ -96,13 +124,29 @@ class LocAssignAdmin(admin.ModelAdmin):
         'migration_generated',
     )
     list_filter = ('migration_generated',)
-    raw_id_fields = (
+    autocomplete_fields = (
         'loc',
         'orig',
         'trans',
         'loc_new',
         'orig_new',
         'trans_new',
+    )
+
+    fieldsets = (
+        ('Old relationships', {
+            'description': (' '),
+            'fields': ('loc', 'orig', 'trans')
+        }),
+        ('New relationships', {
+            'description': (' '),
+            'fields': ('loc_new', 'orig_new', 'trans_new')
+        }),
+        ('Migration', {
+            'description': ('Migration metadata'),
+            'classes': ('collapse',),
+            'fields': ('migration_notes', 'migration_generated'),
+        }),
     )
 
 @admin.register(User)
