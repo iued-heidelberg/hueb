@@ -256,7 +256,7 @@ class Original(models.Model):
     def __str__(self):
         if self.title is None:
             return " "
-        return self.title
+        return (self.title[:75] + '[...]') if len(self.title) > 75 else self.title
 
     class Meta:
         db_table = 'original'
@@ -288,7 +288,7 @@ class OriginalNew(models.Model):
     def __str__(self):
         if self.title is None:
             return " "
-        return self.title
+        return (self.title[:75] + '[...]') if len(self.title) > 75 else self.title
 
     class Meta:
         db_table = 'original_new'
@@ -323,7 +323,7 @@ class Translation(models.Model):
     def __str__(self):
         if self.title is None:
             return " "
-        return self.title
+        return (self.title[:75] + '[...]') if len(self.title) > 75 else self.title
 
     class Meta:
         db_table = 'translation'
@@ -358,7 +358,7 @@ class TranslationNew(models.Model):
     def __str__(self):
         if self.title is None:
             return " "
-        return self.title
+        return (self.title[:75] + '[...]') if len(self.title) > 75 else self.title
 
     class Meta:
         db_table = 'translation_new'
