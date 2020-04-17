@@ -7,13 +7,6 @@ class OriginalAuthorInline(admin.TabularInline):
     model = OriginalAuthor
     extra = 0
 
-class OriginalAuthorNewInline(admin.TabularInline):
-    model = OriginalAuthorNew
-    extra = 0
-
-class OriginalNewAuthorInline(admin.TabularInline):
-    model = OriginalNewAuthor
-    extra = 0
 
 class OriginalNewAuthorNewInline(admin.TabularInline):
     model = OriginalNewAuthorNew
@@ -21,14 +14,6 @@ class OriginalNewAuthorNewInline(admin.TabularInline):
 
 class TranslationTranslatorInline(admin.TabularInline):
     model = TranslationTranslator
-    extra = 0
-
-class TranslationTranslatorNewInline(admin.TabularInline):
-    model = TranslationTranslatorNew
-    extra = 0
-
-class TranslationNewTranslatorInline(admin.TabularInline):
-    model = TranslationNewTranslator
     extra = 0
 
 class TranslationNewTranslatorNewInline(admin.TabularInline):
