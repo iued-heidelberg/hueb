@@ -85,14 +85,14 @@ SET search_path to di_sueb_latein;
     SELECT(clean_up_relation('orig_assign', 'trans_new_id', 'translation_new'));
 
   -- orig_diff_fk
-    SELECT(clean_up_relation('orig_assign', 'orig_diff_id', 'original'));
+    SELECT(clean_up_relation('orig_assign', 'orig_diff_id', 'original', '', '_diff'));
   -- orig_diff_new_fk
-    SELECT(clean_up_relation('orig_assign', 'orig_diff_new_id', 'original_new'));
+    SELECT(clean_up_relation('orig_assign', 'orig_diff_new_id', 'original_new', '', '_diff'));
 
   -- trans_diff_fk
-    SELECT(clean_up_relation('orig_assign', 'trans_diff_id', 'translation'));
+    SELECT(clean_up_relation('orig_assign', 'trans_diff_id', 'translation', '', '_diff'));
   -- trans_diff_new_fk
-    SELECT(clean_up_relation('orig_assign', 'trans_diff_new_id', 'translation_new'));
+    SELECT(clean_up_relation('orig_assign', 'trans_diff_new_id', 'translation_new', '', '_diff'));
 
 
 -- Adds foreign_key constraints for original

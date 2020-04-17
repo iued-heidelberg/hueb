@@ -60,7 +60,7 @@ BEGIN
     EXECUTE FORMAT('
       ALTER TABLE %s
       DROP CONSTRAINT IF EXISTS %I;',
-      primary_table, secondary_table||'_fk');
+      primary_table, prefix || secondary_table|| suffix ||'_fk');
 
 
   -- check if a placeholder is necessary

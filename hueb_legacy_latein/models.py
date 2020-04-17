@@ -209,16 +209,16 @@ class LocationNew(models.Model):
 
 class OrigAssign(models.Model):
     id = models.BigAutoField(primary_key=True)
-    orig_id = models.BigIntegerField(blank=True, null=True)
-    trans_id = models.BigIntegerField(blank=True, null=True)
-    orig_diff = models.ForeignKey('Original', models.DO_NOTHING, blank=True, null=True)
-    trans_diff = models.ForeignKey('Translation', models.DO_NOTHING, blank=True, null=True)
+    orig = models.ForeignKey('Original', models.DO_NOTHING, blank=True, null=True)
+    trans = models.ForeignKey('Translation', models.DO_NOTHING, blank=True, null=True)
+    orig_diff = models.ForeignKey('Original', models.DO_NOTHING, blank=True, null=True, related_name='orig_diff')
+    trans_diff = models.ForeignKey('Translation', models.DO_NOTHING, blank=True, null=True, related_name='trans_diff')
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
     migration_generated = models.BooleanField()
-    orig_new_id = models.BigIntegerField(blank=True, null=True)
-    trans_new_id = models.BigIntegerField(blank=True, null=True)
-    orig_diff_new = models.ForeignKey('OriginalNew', models.DO_NOTHING, blank=True, null=True)
-    trans_diff_new = models.ForeignKey('TranslationNew', models.DO_NOTHING, blank=True, null=True)
+    orig_new = models.ForeignKey('OriginalNew', models.DO_NOTHING, blank=True, null=True)
+    trans_new = models.ForeignKey('TranslationNew', models.DO_NOTHING, blank=True, null=True)
+    orig_diff_new = models.ForeignKey('OriginalNew', models.DO_NOTHING, blank=True, null=True, related_name='orig_diff_new')
+    trans_diff_new = models.ForeignKey('TranslationNew', models.DO_NOTHING, blank=True, null=True, related_name='trans_diff_new')
 
     def __str__(self):
         if self.id is None:
