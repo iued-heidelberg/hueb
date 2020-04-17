@@ -15,6 +15,8 @@ class User(models.Model):
     passwort = models.CharField(max_length=12)
     anmerkungen = models.TextField()
 
+    def __str__(self):
+        return self.name
 
     class Meta:
         db_table = 'user'
@@ -27,6 +29,12 @@ class Translator(models.Model):
     datum = models.DateField(blank=True, null=True)
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
     migration_generated = models.BooleanField()
+
+
+    def __str__(self):
+        if self.name is None:
+            return "empty name"
+        return self.name
 
     class Meta:
         db_table = 'translator'
@@ -41,6 +49,8 @@ class TranslatorNew(models.Model):
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
     migration_generated = models.BooleanField()
 
+    def __str__(self):
+        return self.name
     class Meta:
         db_table = 'translator_new'
 
@@ -53,6 +63,10 @@ class Author(models.Model):
     datum = models.DateField(blank=True, null=True)
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
     migration_generated = models.BooleanField()
+
+    def __str__(self):
+        return self.name
+
 
     class Meta:
         db_table = 'author'
@@ -67,6 +81,9 @@ class AuthorNew(models.Model):
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
     migration_generated = models.BooleanField()
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         db_table = 'author_new'
 
@@ -76,6 +93,9 @@ class Country(models.Model):
     country = models.CharField(max_length=255)
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
     migration_generated = models.BooleanField()
+
+    def __str__(self):
+        return self.country
 
     class Meta:
         db_table = 'country'
@@ -88,6 +108,9 @@ class DdcGerman(models.Model):
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
     migration_generated = models.BooleanField()
 
+    def __str__(self):
+        return self.ddc_number + ' ' +self.ddc_name
+
     class Meta:
         db_table = 'ddc_german'
 
@@ -97,6 +120,9 @@ class Language(models.Model):
     language = models.CharField(max_length=255)
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
     migration_generated = models.BooleanField()
+
+    def __str__(self):
+        return self.language
 
     class Meta:
         db_table = 'language'
@@ -129,6 +155,9 @@ class Location(models.Model):
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
     migration_generated = models.BooleanField()
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         db_table = 'location'
 
@@ -144,6 +173,8 @@ class LocationNew(models.Model):
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
     migration_generated = models.BooleanField()
 
+    def __str__(self):
+        return self.name
     class Meta:
         db_table = 'location_new'
 
@@ -189,6 +220,9 @@ class Original(models.Model):
     author = models.ManyToManyField(Author, through='OriginalAuthor')
     author_new = models.ManyToManyField(AuthorNew, through='OriginalAuthorNew')
 
+    def __str__(self):
+        return self.title
+
     class Meta:
         db_table = 'original'
 
@@ -213,6 +247,9 @@ class OriginalNew(models.Model):
     migration_generated = models.BooleanField()
     author = models.ManyToManyField(Author, through='OriginalNewAuthor')
     author_new = models.ManyToManyField(AuthorNew, through='OriginalNewAuthorNew')
+
+    def __str__(self):
+        return self.title
 
     class Meta:
         db_table = 'original_new'
@@ -242,6 +279,8 @@ class Translation(models.Model):
     author_new = models.ForeignKey(Author, models.DO_NOTHING, blank=True, null=True)
     translator = models.ManyToManyField(Translator, through='TranslationTranslator')
     translator_new = models.ManyToManyField(TranslatorNew, through='TranslationTranslatorNew')
+    def __str__(self):
+        return self.title
 
     class Meta:
         db_table = 'translation'
@@ -271,6 +310,8 @@ class TranslationNew(models.Model):
     author_new = models.ForeignKey(Author, models.DO_NOTHING, blank=True, null=True)
     translator = models.ManyToManyField(Translator, through='TranslationNewTranslator')
     translator_new = models.ManyToManyField(TranslatorNew, through='TranslationNewTranslatorNew')
+    def __str__(self):
+        return self.title
 
     class Meta:
         db_table = 'translation_new'
