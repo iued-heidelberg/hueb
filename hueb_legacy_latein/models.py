@@ -30,10 +30,9 @@ class Translator(models.Model):
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
     migration_generated = models.BooleanField()
 
-
     def __str__(self):
         if self.name is None:
-            return "empty name"
+            return " "
         return self.name
 
     class Meta:
@@ -51,6 +50,8 @@ class TranslatorNew(models.Model):
     migration_generated = models.BooleanField()
 
     def __str__(self):
+        if self.name is None:
+            return " "
         return self.name
     class Meta:
         db_table = 'translator_new'
@@ -67,6 +68,8 @@ class Author(models.Model):
     migration_generated = models.BooleanField()
 
     def __str__(self):
+        if self.name is None:
+            return " "
         return self.name
 
     class Meta:
@@ -84,6 +87,8 @@ class AuthorNew(models.Model):
     migration_generated = models.BooleanField()
 
     def __str__(self):
+        if self.name is None:
+            return " "
         return self.name
 
     class Meta:
@@ -98,6 +103,8 @@ class Country(models.Model):
     migration_generated = models.BooleanField()
 
     def __str__(self):
+        if self.country is None:
+            return " "
         return self.country
 
     class Meta:
@@ -127,6 +134,8 @@ class Language(models.Model):
     migration_generated = models.BooleanField()
 
     def __str__(self):
+        if self.language is None:
+            return " "
         return self.language
 
     class Meta:
@@ -146,6 +155,11 @@ class LocAssign(models.Model):
     orig_new = models.ForeignKey('OriginalNew', models.DO_NOTHING, blank=True, null=True)
     trans_new = models.ForeignKey('TranslationNew', models.DO_NOTHING, blank=True, null=True)
 
+    def __str__(self):
+        if self.signatur is None:
+            return " "
+        return self.signatur
+
     class Meta:
         db_table = 'loc_assign'
         verbose_name_plural = 'LocAssign'
@@ -164,6 +178,8 @@ class Location(models.Model):
     migration_generated = models.BooleanField()
 
     def __str__(self):
+        if self.name is None:
+            return " "
         return self.name
 
     class Meta:
@@ -183,6 +199,8 @@ class LocationNew(models.Model):
     migration_generated = models.BooleanField()
 
     def __str__(self):
+        if self.name is None:
+            return " "
         return self.name
     class Meta:
         db_table = 'location_new'
@@ -201,6 +219,11 @@ class OrigAssign(models.Model):
     trans_new_id = models.BigIntegerField(blank=True, null=True)
     orig_diff_new = models.ForeignKey('OriginalNew', models.DO_NOTHING, blank=True, null=True)
     trans_diff_new = models.ForeignKey('TranslationNew', models.DO_NOTHING, blank=True, null=True)
+
+    def __str__(self):
+        if self.id is None:
+            return " "
+        return self.id
 
     class Meta:
         db_table = 'orig_assign'
@@ -231,6 +254,8 @@ class Original(models.Model):
     author_new = models.ManyToManyField(AuthorNew, through='OriginalAuthorNew')
 
     def __str__(self):
+        if self.title is None:
+            return " "
         return self.title
 
     class Meta:
@@ -261,6 +286,8 @@ class OriginalNew(models.Model):
 
 
     def __str__(self):
+        if self.title is None:
+            return " "
         return self.title
 
     class Meta:
@@ -292,7 +319,10 @@ class Translation(models.Model):
     author_new = models.ForeignKey(AuthorNew, models.DO_NOTHING, blank=True, null=True)
     translator = models.ManyToManyField(Translator, through='TranslationTranslator')
     translator_new = models.ManyToManyField(TranslatorNew, through='TranslationTranslatorNew')
+
     def __str__(self):
+        if self.title is None:
+            return " "
         return self.title
 
     class Meta:
@@ -324,7 +354,10 @@ class TranslationNew(models.Model):
     author_new = models.ForeignKey(AuthorNew, models.DO_NOTHING, blank=True, null=True)
     translator = models.ManyToManyField(Translator, through='TranslationNewTranslator')
     translator_new = models.ManyToManyField(TranslatorNew, through='TranslationNewTranslatorNew')
+
     def __str__(self):
+        if self.title is None:
+            return " "
         return self.title
 
     class Meta:
