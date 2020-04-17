@@ -450,12 +450,12 @@ class TranslationAdmin(admin.ModelAdmin):
         'title',
         'subtitle',
         'subtitle1',
-        'author_id',
+        'author',
         'year',
         'publisher',
         'published_location',
         'edition',
-        'language_id',
+        'language',
         'via_language',
         'ddc',
         'comment',
@@ -474,7 +474,7 @@ class TranslationAdmin(admin.ModelAdmin):
     fieldsets = (
         ('Original Information', {
             'description': (' '),
-            'fields': ('title','subtitle', 'subtitle1', 'author_id', 'year', 'publisher', 'published_location', 'edition', 'language_id', 'via_language', 'real_year', 'country')
+            'fields': ('title','subtitle', 'subtitle1', 'author', 'year', 'publisher', 'published_location', 'edition', 'language', 'via_language', 'real_year', 'country')
         }),
          ('Original Metadata', {
             'description': (' '),
@@ -496,12 +496,12 @@ class TranslationNewAdmin(admin.ModelAdmin):
         'title',
         'subtitle',
         'subtitle1',
-        'author_id',
+        'author',
         'year',
         'publisher',
         'published_location',
         'edition',
-        'language_id',
+        'language',
         'via_language',
         'ddc',
         'comment',
@@ -520,7 +520,7 @@ class TranslationNewAdmin(admin.ModelAdmin):
     fieldsets = (
         ('Original Information', {
             'description': (' '),
-            'fields': ('title','subtitle', 'subtitle1', 'author_id', 'year', 'publisher', 'published_location', 'edition', 'language_id', 'via_language', 'real_year', 'country')
+            'fields': ('title','subtitle', 'subtitle1', 'author', 'year', 'publisher', 'published_location', 'edition', 'language', 'via_language', 'real_year', 'country')
         }),
          ('Original Metadata', {
             'description': (' '),
