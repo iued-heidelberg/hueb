@@ -40,6 +40,31 @@ class LocAssignInline(admin.TabularInline):
     fields =('loc', 'signatur' )
     extra = 0
 
+class OrigAssignInline(admin.TabularInline):
+    model = OrigAssign
+    fk_name="trans"
+    fields=('id', 'orig')
+    extra=0
+
+class TransAssignInline(admin.TabularInline):
+    model = OrigAssign
+    fk_name="orig"
+    fields=('id', 'trans')
+    extra = 0
+
+class OrigNewAssignInline(admin.TabularInline):
+    model = OrigAssign
+    fk_name="trans_new"
+    fields=('id', 'orig_new')
+    extra=0
+
+class TransNewAssignInline(admin.TabularInline):
+    model = OrigAssign
+    fk_name="orig_new"
+    fields=('id', 'trans_new')
+    extra = 0
+
+
 @admin.register(OrigAssign)
 class OrigAssignAdmin(admin.ModelAdmin):
     list_display = (
@@ -390,7 +415,7 @@ class OriginalAdmin(admin.ModelAdmin):
         }),
     )
 
-    inlines = [OriginalAuthorInline, LocAssignInline, ]
+    inlines = [OriginalAuthorInline, LocAssignInline, TransAssignInline]
 
 @admin.register(OriginalNew)
 class OriginalNewAdmin(admin.ModelAdmin):
@@ -433,7 +458,7 @@ class OriginalNewAdmin(admin.ModelAdmin):
         }),
     )
 
-    inlines = [OriginalNewAuthorNewInline, LocAssignInline, ]
+    inlines = [OriginalNewAuthorNewInline, LocAssignInline, TransNewAssignInline]
 
 @admin.register(Translation)
 class TranslationAdmin(admin.ModelAdmin):
@@ -479,7 +504,7 @@ class TranslationAdmin(admin.ModelAdmin):
         }),
     )
 
-    inlines = [TranslationTranslatorInline,  LocAssignInline, ]
+    inlines = [TranslationTranslatorInline,  LocAssignInline, OrigAssignInline ]
 
 @admin.register(TranslationNew)
 class TranslationNewAdmin(admin.ModelAdmin):
@@ -525,4 +550,4 @@ class TranslationNewAdmin(admin.ModelAdmin):
         }),
     )
 
-    inlines = [TranslationNewTranslatorNewInline,  LocAssignInline, ]
+    inlines = [TranslationNewTranslatorNewInline,  LocAssignInline, OrigNewAssignInline]

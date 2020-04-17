@@ -223,7 +223,7 @@ class OrigAssign(models.Model):
     def __str__(self):
         if self.id is None:
             return " "
-        return self.id
+        return str(self.id)
 
     class Meta:
         db_table = 'orig_assign'
