@@ -1,112 +1,62 @@
-# -*- coding: utf-8 -*-
 from django.contrib import admin
 
 from .models import User, Translator, TranslatorNew, Author, AuthorNew, Country, DdcGerman, Language, LocAssign, Location, LocationNew, OrigAssign, Original, OriginalNew, Translation, TranslationNew, OriginalAuthor, OriginalAuthorNew, OriginalNewAuthor, OriginalNewAuthorNew, TranslationNewTranslator, TranslationNewTranslatorNew, TranslationTranslator, TranslationTranslatorNew
 
 
-@admin.register(User)
-class UserAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'loginname', 'passwort', 'anmerkungen')
-    search_fields = ('name',)
+class OriginalAuthorInline(admin.TabularInline):
+    model = OriginalAuthor
+    extra = 0
 
+class OriginalAuthorNewInline(admin.TabularInline):
+    model = OriginalAuthorNew
+    extra = 0
 
-@admin.register(Translator)
-class TranslatorAdmin(admin.ModelAdmin):
+class OriginalNewAuthorInline(admin.TabularInline):
+    model = OriginalNewAuthor
+    extra = 0
+
+class OriginalNewAuthorNewInline(admin.TabularInline):
+    model = OriginalNewAuthorNew
+    extra = 0
+
+class TranslationTranslatorInline(admin.TabularInline):
+    model = TranslationTranslator
+    extra = 0
+
+class TranslationTranslatorNewInline(admin.TabularInline):
+    model = TranslationTranslatorNew
+    extra = 0
+
+class TranslationNewTranslatorInline(admin.TabularInline):
+    model = TranslationNewTranslator
+    extra = 0
+
+class TranslationNewTranslatorNewInline(admin.TabularInline):
+    model = TranslationNewTranslatorNew
+    extra = 0
+
+@admin.register(OrigAssign)
+class OrigAssignAdmin(admin.ModelAdmin):
     list_display = (
         'id',
-        'comment',
-        'name',
-        'user',
-        'datum',
+        'orig_id',
+        'trans_id',
+        'orig_diff',
+        'trans_diff',
         'migration_notes',
         'migration_generated',
-    )
-    list_filter = ('datum', 'migration_generated')
-    raw_id_fields = ('user',)
-    search_fields = ('name',)
-
-
-@admin.register(TranslatorNew)
-class TranslatorNewAdmin(admin.ModelAdmin):
-    list_display = (
-        'id',
-        'comment',
-        'name',
-        'user',
-        'datum',
-        'migration_notes',
-        'migration_generated',
-    )
-    list_filter = ('datum', 'migration_generated')
-    raw_id_fields = ('user',)
-    search_fields = ('name',)
-
-
-@admin.register(Author)
-class AuthorAdmin(admin.ModelAdmin):
-    list_display = (
-        'id',
-        'comment',
-        'name',
-        'user',
-        'datum',
-        'migration_notes',
-        'migration_generated',
-    )
-    list_filter = ('datum', 'migration_generated')
-    raw_id_fields = ('user',)
-    search_fields = ('name',)
-
-
-@admin.register(AuthorNew)
-class AuthorNewAdmin(admin.ModelAdmin):
-    list_display = (
-        'id',
-        'comment',
-        'name',
-        'user',
-        'datum',
-        'migration_notes',
-        'migration_generated',
-    )
-    list_filter = ('datum', 'migration_generated')
-    raw_id_fields = ('user',)
-    search_fields = ('name',)
-
-
-@admin.register(Country)
-class CountryAdmin(admin.ModelAdmin):
-    list_display = (
-        'id',
-        'country',
-        'migration_notes',
-        'migration_generated',
+        'orig_new_id',
+        'trans_new_id',
+        'orig_diff_new',
+        'trans_diff_new',
     )
     list_filter = ('migration_generated',)
-
-
-@admin.register(DdcGerman)
-class DdcGermanAdmin(admin.ModelAdmin):
-    list_display = (
-        'id',
-        'ddc_number',
-        'ddc_name',
-        'migration_notes',
-        'migration_generated',
+    raw_id_fields = (
+        'orig_diff',
+        'trans_diff',
+        'orig_diff_new',
+        'trans_diff_new',
     )
-    list_filter = ('migration_generated',)
-
-
-@admin.register(Language)
-class LanguageAdmin(admin.ModelAdmin):
-    list_display = (
-        'id',
-        'language',
-        'migration_notes',
-        'migration_generated',
-    )
-    list_filter = ('migration_generated',)
-
 
 @admin.register(LocAssign)
 class LocAssignAdmin(admin.ModelAdmin):
@@ -132,6 +82,217 @@ class LocAssignAdmin(admin.ModelAdmin):
         'trans_new',
     )
 
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'loginname', 'anmerkungen')
+    search_fields = ('name', 'id')
+
+    fieldsets = (
+        ('User Information', {
+            'description': ('Information stored about the user'),
+            'fields': ('name', 'loginname', 'passwort', 'anmerkungen')
+        })),
+
+@admin.register(Translator)
+class TranslatorAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'name',
+        'comment',
+        'user',
+        'datum',
+        'migration_notes',
+        'migration_generated',
+
+    )
+    search_fields = ('name', 'id')
+    list_filter = ('datum', 'migration_generated')
+
+    fieldsets = (
+        ('Translator Information', {
+            'description': ('Information stored about the translator'),
+            'fields': ('name', 'comment')
+        }),
+        ('Metadata', {
+            'description': ('Information about the original creator of this entry'),
+            'fields': ('user', 'datum'),
+        }),
+        ('Migration', {
+            'description': ('Migration metadata'),
+            'classes': ('collapse',),
+            'fields': ('migration_notes', 'migration_generated'),
+        }),
+    )
+
+@admin.register(TranslatorNew)
+class TranslatorNewAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'name',
+        'comment',
+        'user',
+        'datum',
+        'migration_notes',
+        'migration_generated',
+
+    )
+    search_fields = ('name', 'id')
+    list_filter = ('datum', 'migration_generated')
+
+    fieldsets = (
+        ('Translator Information', {
+            'description': ('Information stored about the translator'),
+            'fields': ('name', 'comment')
+        }),
+        ('Metadata', {
+            'description': ('Information about the original creator of this entry'),
+            'fields': ('user', 'datum'),
+        }),
+        ('Migration', {
+            'description': ('Migration metadata'),
+            'classes': ('collapse',),
+            'fields': ('migration_notes', 'migration_generated'),
+        }),
+    )
+
+
+@admin.register(Author)
+class AuthorAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'name',
+        'comment',
+        'user',
+        'datum',
+        'migration_notes',
+        'migration_generated',
+
+    )
+    search_fields = ('name', 'id')
+    list_filter = ('datum', 'migration_generated')
+
+    fieldsets = (
+        ('Author Information', {
+            'description': ('Information stored about the author'),
+            'fields': ('name', 'comment')
+        }),
+        ('Metadata', {
+            'description': ('Information about the original creator of this entry'),
+            'fields': ('user', 'datum'),
+        }),
+        ('Migration', {
+            'description': ('Migration metadata'),
+            'classes': ('collapse',),
+            'fields': ('migration_notes', 'migration_generated'),
+        }),
+    )
+
+
+@admin.register(AuthorNew)
+class AuthorNewAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'name',
+        'comment',
+        'user',
+        'datum',
+        'migration_notes',
+        'migration_generated',
+
+    )
+    search_fields = ('name', 'id')
+    list_filter = ('datum', 'migration_generated')
+
+    fieldsets = (
+        ('Author Information', {
+            'description': ('Information stored about the author'),
+            'fields': ('name', 'comment')
+        }),
+        ('Metadata', {
+            'description': ('Information about the original creator of this entry'),
+            'fields': ('user', 'datum'),
+        }),
+        ('Migration', {
+            'description': ('Migration metadata'),
+            'classes': ('collapse',),
+            'fields': ('migration_notes', 'migration_generated'),
+        }),
+    )
+
+
+@admin.register(Country)
+class CountryAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'country',
+        'migration_notes',
+        'migration_generated',
+    )
+    search_fields = ('country', 'id')
+    fieldsets = (
+        ('Country Information', {
+            'description': ('Information stored about the country'),
+            'fields': ('country',)
+        }),
+        ('Migration', {
+            'description': ('Migration metadata'),
+            'classes': ('collapse',),
+            'fields': ('migration_notes', 'migration_generated'),
+        }),
+    )
+
+
+
+@admin.register(DdcGerman)
+class DdcGermanAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'ddc_number',
+        'ddc_name',
+        'migration_notes',
+        'migration_generated',
+    )
+    search_fields = ('ddc_number', 'ddc_name')
+
+    fieldsets = (
+        ('DDC Information', {
+            'description': (' '),
+            'fields': ('ddc_number', 'ddc_name')
+        }),
+        ('Migration', {
+            'description': ('Migration metadata'),
+            'classes': ('collapse',),
+            'fields': ('migration_notes', 'migration_generated'),
+        }),
+    )
+
+
+
+@admin.register(Language)
+class LanguageAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'language',
+        'migration_notes',
+        'migration_generated',
+    )
+    search_fields = ('language', 'id')
+
+    fieldsets = (
+        ('Language Information', {
+            'description': (' '),
+            'fields': ('language',)
+        }),
+        ('Migration', {
+            'description': ('Migration metadata'),
+            'classes': ('collapse',),
+            'fields': ('migration_notes', 'migration_generated'),
+        }),
+    )
+
+
+
+
 
 @admin.register(Location)
 class LocationAdmin(admin.ModelAdmin):
@@ -147,7 +308,19 @@ class LocationAdmin(admin.ModelAdmin):
         'migration_generated',
     )
     list_filter = ('migration_generated',)
-    search_fields = ('name',)
+    search_fields = ('name','address', 'country')
+
+    fieldsets = (
+        ('Location Information', {
+            'description': (' '),
+            'fields': ('name','adress', 'country', 'hostname', 'ip', 'z3950_gateway')
+        }),
+        ('Migration', {
+            'description': ('Migration metadata'),
+            'classes': ('collapse',),
+            'fields': ('migration_notes', 'migration_generated'),
+        }),
+    )
 
 
 @admin.register(LocationNew)
@@ -164,38 +337,28 @@ class LocationNewAdmin(admin.ModelAdmin):
         'migration_generated',
     )
     list_filter = ('migration_generated',)
-    search_fields = ('name',)
+    search_fields = ('name','address', 'country')
+
+    fieldsets = (
+        ('Location Information', {
+            'description': (' '),
+            'fields': ('name','adress', 'country', 'hostname', 'ip', 'z3950_gateway')
+        }),
+        ('Migration', {
+            'description': ('Migration metadata'),
+            'classes': ('collapse',),
+            'fields': ('migration_notes', 'migration_generated'),
+        }),
+    )
 
 
-@admin.register(OrigAssign)
-class OrigAssignAdmin(admin.ModelAdmin):
-    list_display = (
-        'id',
-        'orig_id',
-        'trans_id',
-        'orig_diff',
-        'trans_diff',
-        'migration_notes',
-        'migration_generated',
-        'orig_new_id',
-        'trans_new_id',
-        'orig_diff_new',
-        'trans_diff_new',
-    )
-    list_filter = ('migration_generated',)
-    raw_id_fields = (
-        'orig_diff',
-        'trans_diff',
-        'orig_diff_new',
-        'trans_diff_new',
-    )
+
 
 
 @admin.register(Original)
 class OriginalAdmin(admin.ModelAdmin):
     list_display = (
         'id',
-        'ddc',
         'title',
         'subtitle',
         'subtitle1',
@@ -205,6 +368,7 @@ class OriginalAdmin(admin.ModelAdmin):
         'edition',
         'language',
         'comment',
+        'ddc',
         'real_year',
         'link',
         'user',
@@ -213,16 +377,32 @@ class OriginalAdmin(admin.ModelAdmin):
         'migration_notes',
         'migration_generated',
     )
-    list_filter = ('datum', 'migration_generated')
-    raw_id_fields = ('ddc', 'language', 'user', 'country', 'author',
-        'author_new')
+    list_filter = ('migration_generated',)
+    search_fields = ('title','subtitle', 'subtitle1', 'year', 'publisher', 'published_location')
+
+    fieldsets = (
+        ('Original Information', {
+            'description': (' '),
+            'fields': ('title','subtitle', 'subtitle1', 'year', 'publisher', 'published_location', 'edition', 'language', 'real_year', 'country')
+        }),
+         ('Original Metadata', {
+            'description': (' '),
+            'fields': ('ddc', 'comment', 'link', 'user', 'datum')
+        }),
+        ('Migration', {
+            'description': ('Migration metadata'),
+            'classes': ('collapse',),
+            'fields': ('migration_notes', 'migration_generated'),
+        }),
+    )
+
+    inlines = [OriginalAuthorInline, ]
 
 
 @admin.register(OriginalNew)
 class OriginalNewAdmin(admin.ModelAdmin):
     list_display = (
         'id',
-        'ddc',
         'title',
         'subtitle',
         'subtitle1',
@@ -232,6 +412,7 @@ class OriginalNewAdmin(admin.ModelAdmin):
         'edition',
         'language',
         'comment',
+        'ddc',
         'real_year',
         'link',
         'user',
@@ -240,25 +421,43 @@ class OriginalNewAdmin(admin.ModelAdmin):
         'migration_notes',
         'migration_generated',
     )
-    list_filter = ('datum', 'migration_generated')
-    raw_id_fields = ('ddc', 'language', 'user')
+    list_filter = ('migration_generated',)
+    search_fields = ('title','subtitle', 'subtitle1', 'year', 'publisher', 'published_location')
+
+    fieldsets = (
+        ('Original Information', {
+            'description': (' '),
+            'fields': ('title','subtitle', 'subtitle1', 'year', 'publisher', 'published_location', 'edition', 'language', 'real_year', 'country_id')
+        }),
+         ('Original Metadata', {
+            'description': (' '),
+            'fields': ('ddc', 'comment', 'link', 'user', 'datum')
+        }),
+        ('Migration', {
+            'description': ('Migration metadata'),
+            'classes': ('collapse',),
+            'fields': ('migration_notes', 'migration_generated'),
+        }),
+    )
+
+    inlines = [OriginalNewAuthorNewInline, ]
 
 
 @admin.register(Translation)
 class TranslationAdmin(admin.ModelAdmin):
     list_display = (
         'id',
-        'ddc',
-        'author_id',
         'title',
         'subtitle',
         'subtitle1',
+        'author_id',
         'year',
         'publisher',
         'published_location',
         'edition',
         'language_id',
         'via_language',
+        'ddc',
         'comment',
         'real_year',
         'link',
@@ -269,25 +468,42 @@ class TranslationAdmin(admin.ModelAdmin):
         'migration_generated',
         'author_new',
     )
-    list_filter = ('datum', 'migration_generated')
-    raw_id_fields = ('ddc', 'via_language', 'user', 'country', 'author_new')
+    list_filter = ('migration_generated',)
+    search_fields = ('title','subtitle', 'subtitle1', 'year', 'publisher', 'published_location')
 
+    fieldsets = (
+        ('Original Information', {
+            'description': (' '),
+            'fields': ('title','subtitle', 'subtitle1', 'author_id', 'year', 'publisher', 'published_location', 'edition', 'language_id', 'via_language', 'real_year', 'country')
+        }),
+         ('Original Metadata', {
+            'description': (' '),
+            'fields': ('ddc', 'comment', 'link', 'user', 'datum')
+        }),
+        ('Migration', {
+            'description': ('Migration metadata'),
+            'classes': ('collapse',),
+            'fields': ('migration_notes', 'migration_generated'),
+        }),
+    )
+
+    inlines = [TranslationTranslatorInline, ]
 
 @admin.register(TranslationNew)
 class TranslationNewAdmin(admin.ModelAdmin):
     list_display = (
         'id',
-        'ddc',
-        'author_id',
         'title',
         'subtitle',
         'subtitle1',
+        'author_id',
         'year',
         'publisher',
         'published_location',
         'edition',
         'language_id',
         'via_language',
+        'ddc',
         'comment',
         'real_year',
         'link',
@@ -298,53 +514,23 @@ class TranslationNewAdmin(admin.ModelAdmin):
         'migration_generated',
         'author_new',
     )
-    list_filter = ('datum', 'migration_generated')
-    raw_id_fields = ('ddc', 'via_language', 'user', 'country', 'author_new')
+    list_filter = ('migration_generated',)
+    search_fields = ('title','subtitle', 'subtitle1', 'year', 'publisher', 'published_location')
 
+    fieldsets = (
+        ('Original Information', {
+            'description': (' '),
+            'fields': ('title','subtitle', 'subtitle1', 'author_id', 'year', 'publisher', 'published_location', 'edition', 'language_id', 'via_language', 'real_year', 'country')
+        }),
+         ('Original Metadata', {
+            'description': (' '),
+            'fields': ('ddc', 'comment', 'link', 'user', 'datum')
+        }),
+        ('Migration', {
+            'description': ('Migration metadata'),
+            'classes': ('collapse',),
+            'fields': ('migration_notes', 'migration_generated'),
+        }),
+    )
 
-@admin.register(OriginalAuthor)
-class OriginalAuthorAdmin(admin.ModelAdmin):
-    list_display = ('id', 'original', 'author')
-    raw_id_fields = ('original', 'author')
-
-
-@admin.register(OriginalAuthorNew)
-class OriginalAuthorNewAdmin(admin.ModelAdmin):
-    list_display = ('id', 'original', 'author')
-    raw_id_fields = ('original', 'author')
-
-
-@admin.register(OriginalNewAuthor)
-class OriginalNewAuthorAdmin(admin.ModelAdmin):
-    list_display = ('id', 'original', 'author')
-    raw_id_fields = ('original', 'author')
-
-
-@admin.register(OriginalNewAuthorNew)
-class OriginalNewAuthorNewAdmin(admin.ModelAdmin):
-    list_display = ('id', 'original_new', 'author')
-    raw_id_fields = ('original_new', 'author')
-
-
-@admin.register(TranslationNewTranslator)
-class TranslationNewTranslatorAdmin(admin.ModelAdmin):
-    list_display = ('id', 'translation', 'translator')
-    raw_id_fields = ('translation', 'translator')
-
-
-@admin.register(TranslationNewTranslatorNew)
-class TranslationNewTranslatorNewAdmin(admin.ModelAdmin):
-    list_display = ('id', 'translation_new', 'translator')
-    raw_id_fields = ('translation_new', 'translator')
-
-
-@admin.register(TranslationTranslator)
-class TranslationTranslatorAdmin(admin.ModelAdmin):
-    list_display = ('id', 'translation', 'translator')
-    raw_id_fields = ('translation', 'translator')
-
-
-@admin.register(TranslationTranslatorNew)
-class TranslationTranslatorNewAdmin(admin.ModelAdmin):
-    list_display = ('id', 'translation', 'translator')
-    raw_id_fields = ('translation', 'translator')
+    inlines = [TranslationNewTranslatorNewInline, ]
