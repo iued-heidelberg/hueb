@@ -122,7 +122,7 @@ SET search_path to di_sueb_latein;
     SELECT(clean_up_relation('original_new', 'user_id', 'user'));
 
   --country_fk
-    SELECT(clean_up_relation('original', 'country_id', 'country'));
+    SELECT(clean_up_relation('original_new', 'country_id', 'country'));
 
 -- Adds foreign_key constraints for translation
   -- ddc_fk

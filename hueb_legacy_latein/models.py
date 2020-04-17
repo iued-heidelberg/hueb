@@ -242,7 +242,7 @@ class OriginalNew(models.Model):
     link = models.CharField(max_length=255, blank=True, null=True)
     user = models.ForeignKey('User', models.DO_NOTHING, blank=True, null=True)
     datum = models.DateField(blank=True, null=True)
-    country_id = models.IntegerField(blank=True, null=True)
+    country = models.ForeignKey(Country, models.DO_NOTHING, blank=True, null=True)
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
     migration_generated = models.BooleanField()
     author = models.ManyToManyField(Author, through='OriginalNewAuthor')

@@ -151,7 +151,7 @@ class Migration(migrations.Migration):
                 ('real_year', models.IntegerField(blank=True, null=True)),
                 ('link', models.CharField(blank=True, max_length=255, null=True)),
                 ('datum', models.DateField(blank=True, null=True)),
-                ('country_id', models.IntegerField(blank=True, null=True)),
+                ('country', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.DO_NOTHING, to='hueb_legacy_latein.Country')),
                 ('migration_notes', models.CharField(blank=True, max_length=1023, null=True)),
                 ('migration_generated', models.BooleanField()),
                 ('ddc', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.DO_NOTHING, to='hueb_legacy_latein.DdcGerman')),
