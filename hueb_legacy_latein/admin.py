@@ -128,6 +128,7 @@ class TranslatorAdmin(admin.ModelAdmin):
             'fields': ('migration_notes', 'migration_generated'),
         }),
     )
+    inlines = [TranslationTranslatorInline, ]
 
 @admin.register(TranslatorNew)
 class TranslatorNewAdmin(admin.ModelAdmin):
@@ -159,6 +160,7 @@ class TranslatorNewAdmin(admin.ModelAdmin):
             'fields': ('migration_notes', 'migration_generated'),
         }),
     )
+    inlines = [TranslationNewTranslatorNewInline, ]
 
 @admin.register(Author)
 class AuthorAdmin(admin.ModelAdmin):
@@ -190,6 +192,7 @@ class AuthorAdmin(admin.ModelAdmin):
             'fields': ('migration_notes', 'migration_generated'),
         }),
     )
+    inlines = [OriginalAuthorInline,]
 
 @admin.register(AuthorNew)
 class AuthorNewAdmin(admin.ModelAdmin):
@@ -221,6 +224,8 @@ class AuthorNewAdmin(admin.ModelAdmin):
             'fields': ('migration_notes', 'migration_generated'),
         }),
     )
+
+    inlines = [OriginalNewAuthorNewInline,]
 
 @admin.register(Country)
 class CountryAdmin(admin.ModelAdmin):
