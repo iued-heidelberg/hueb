@@ -6,47 +6,55 @@ from .models import User, Translator, TranslatorNew, Author, AuthorNew, Country,
 class OriginalAuthorInline(admin.TabularInline):
     model = OriginalAuthor
     extra = 0
-
+    autocomplete_fields =('author','original')
 
 class OriginalNewAuthorNewInline(admin.TabularInline):
     model = OriginalNewAuthorNew
     extra = 0
+    autocomplete_fields =('author', 'original_new')
 
 class TranslationTranslatorInline(admin.TabularInline):
     model = TranslationTranslator
     extra = 0
+    autocomplete_fields =('translator','translation')
 
 class TranslationNewTranslatorNewInline(admin.TabularInline):
     model = TranslationNewTranslatorNew
     extra = 0
+    autocomplete_fields =('translation_new', 'translator')
 
 class LocAssignInline(admin.TabularInline):
     model = LocAssign
     fields =('loc', 'signatur' )
+    autocomplete_fields =('loc',)
     extra = 0
 
 class OrigAssignInline(admin.TabularInline):
     model = OrigAssign
     fk_name="trans"
     fields=('id', 'orig')
+    autocomplete_fields =('orig',)
     extra=0
 
 class TransAssignInline(admin.TabularInline):
     model = OrigAssign
     fk_name="orig"
     fields=('id', 'trans')
+    autocomplete_fields =('trans',)
     extra = 0
 
 class OrigNewAssignInline(admin.TabularInline):
     model = OrigAssign
     fk_name="trans_new"
     fields=('id', 'orig_new')
+    autocomplete_fields =('orig_new',)
     extra=0
 
 class TransNewAssignInline(admin.TabularInline):
     model = OrigAssign
     fk_name="orig_new"
     fields=('id', 'trans_new')
+    autocomplete_fields =('trans_new',)
     extra = 0
 
 
@@ -383,6 +391,7 @@ class OriginalAdmin(admin.ModelAdmin):
     )
     list_filter = ('migration_generated',)
     search_fields = ('title','subtitle', 'subtitle1', 'year', 'publisher', 'published_location')
+    autocomplete_fields =('ddc',)
 
     fieldsets = (
         ('Original Information', {
@@ -426,6 +435,7 @@ class OriginalNewAdmin(admin.ModelAdmin):
     )
     list_filter = ('migration_generated',)
     search_fields = ('title','subtitle', 'subtitle1', 'year', 'publisher', 'published_location')
+    autocomplete_fields =('ddc',)
 
     fieldsets = (
         ('Original Information', {
@@ -472,6 +482,7 @@ class TranslationAdmin(admin.ModelAdmin):
     )
     list_filter = ('migration_generated',)
     search_fields = ('title','subtitle', 'subtitle1', 'year', 'publisher', 'published_location')
+    autocomplete_fields =('author','ddc')
 
     fieldsets = (
         ('Original Information', {
@@ -518,6 +529,7 @@ class TranslationNewAdmin(admin.ModelAdmin):
     )
     list_filter = ('migration_generated',)
     search_fields = ('title','subtitle', 'subtitle1', 'year', 'publisher', 'published_location')
+    autocomplete_fields =('author','ddc')
 
     fieldsets = (
         ('Original Information', {
