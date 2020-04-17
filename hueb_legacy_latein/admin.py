@@ -35,6 +35,11 @@ class TranslationNewTranslatorNewInline(admin.TabularInline):
     model = TranslationNewTranslatorNew
     extra = 0
 
+class LocAssignInline(admin.TabularInline):
+    model = LocAssign
+    fields =('loc', 'signatur' )
+    extra = 0
+
 @admin.register(OrigAssign)
 class OrigAssignAdmin(admin.ModelAdmin):
     list_display = (
@@ -66,11 +71,11 @@ class LocAssignAdmin(admin.ModelAdmin):
         'orig',
         'trans',
         'signatur',
-        'migration_notes',
-        'migration_generated',
         'loc_new',
         'orig_new',
         'trans_new',
+        'migration_notes',
+        'migration_generated',
     )
     list_filter = ('migration_generated',)
     raw_id_fields = (
@@ -339,7 +344,6 @@ class LocationNewAdmin(admin.ModelAdmin):
         }),
     )
 
-
 @admin.register(Original)
 class OriginalAdmin(admin.ModelAdmin):
     list_display = (
@@ -381,8 +385,7 @@ class OriginalAdmin(admin.ModelAdmin):
         }),
     )
 
-    inlines = [OriginalAuthorInline, ]
-
+    inlines = [OriginalAuthorInline, LocAssignInline, ]
 
 @admin.register(OriginalNew)
 class OriginalNewAdmin(admin.ModelAdmin):
@@ -425,8 +428,7 @@ class OriginalNewAdmin(admin.ModelAdmin):
         }),
     )
 
-    inlines = [OriginalNewAuthorNewInline, ]
-
+    inlines = [OriginalNewAuthorNewInline, LocAssignInline, ]
 
 @admin.register(Translation)
 class TranslationAdmin(admin.ModelAdmin):
@@ -472,7 +474,7 @@ class TranslationAdmin(admin.ModelAdmin):
         }),
     )
 
-    inlines = [TranslationTranslatorInline, ]
+    inlines = [TranslationTranslatorInline,  LocAssignInline, ]
 
 @admin.register(TranslationNew)
 class TranslationNewAdmin(admin.ModelAdmin):
@@ -518,4 +520,4 @@ class TranslationNewAdmin(admin.ModelAdmin):
         }),
     )
 
-    inlines = [TranslationNewTranslatorNewInline, ]
+    inlines = [TranslationNewTranslatorNewInline,  LocAssignInline, ]
