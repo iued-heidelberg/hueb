@@ -136,7 +136,7 @@ SET search_path to di_sueb_latein;
     alter table translation add column author_new_id bigint;
     update translation
     set author_new_id = author_id;
-    SELECT(clean_up_relation('translation', 'author_new_id', 'author'));
+    SELECT(clean_up_relation('translation', 'author_new_id', 'author_new'));
 
   --language_fk
     SELECT(clean_up_relation('translation', 'language_id', 'language'));
@@ -162,7 +162,7 @@ SET search_path to di_sueb_latein;
     alter table translation_new add column author_new_id bigint;
     update translation_new
     set author_new_id = author_id;
-    SELECT(clean_up_relation('translation_new', 'author_new_id', 'author'));
+    SELECT(clean_up_relation('translation_new', 'author_new_id', 'author_new'));
 
   --language_fk
     SELECT(clean_up_relation('translation_new', 'language_id', 'language'));
