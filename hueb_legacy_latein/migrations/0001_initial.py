@@ -173,7 +173,6 @@ class Migration(migrations.Migration):
                 ('publisher', models.CharField(blank=True, max_length=255, null=True)),
                 ('published_location', models.CharField(blank=True, max_length=255, null=True)),
                 ('edition', models.TextField(blank=True, null=True)),
-                ('language_id', models.BigIntegerField(blank=True, null=True)),
                 ('comment', models.TextField(blank=True, null=True)),
                 ('real_year', models.IntegerField(blank=True, null=True)),
                 ('link', models.CharField(blank=True, max_length=255, null=True)),
@@ -200,7 +199,6 @@ class Migration(migrations.Migration):
                 ('publisher', models.CharField(blank=True, max_length=255, null=True)),
                 ('published_location', models.CharField(blank=True, max_length=255, null=True)),
                 ('edition', models.TextField(blank=True, null=True)),
-                ('language_id', models.BigIntegerField(blank=True, null=True)),
                 ('comment', models.TextField(blank=True, null=True)),
                 ('real_year', models.IntegerField(blank=True, null=True)),
                 ('link', models.CharField(blank=True, max_length=255, null=True)),
@@ -313,6 +311,11 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.DO_NOTHING, to='hueb_legacy_latein.Language'),
         ),
         migrations.AddField(
+            model_name='translationnew',
+            name='language',
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.DO_NOTHING, to='hueb_legacy_latein.Language'),
+        ),
+        migrations.AddField(
             model_name='translation',
             name='user',
             field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.DO_NOTHING, to='hueb_legacy_latein.User'),
@@ -320,6 +323,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='translation',
             name='via_language',
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.DO_NOTHING, to='hueb_legacy_latein.Language'),
+        ),
+        migrations.AddField(
+            model_name='translation',
+            name='language',
             field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.DO_NOTHING, to='hueb_legacy_latein.Language'),
         ),
         migrations.CreateModel(

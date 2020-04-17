@@ -142,7 +142,7 @@ SET search_path to di_sueb_latein;
     SELECT(clean_up_relation('translation', 'language_id', 'language'));
 
   --via_language_fk
-    SELECT(clean_up_relation('translation', 'via_language_id', 'language'));
+    SELECT(clean_up_relation('translation', 'via_language_id', 'language', 'via_'));
 
    --user_fk
     SELECT(clean_up_relation('translation', 'user_id', 'user'));
@@ -168,7 +168,7 @@ SET search_path to di_sueb_latein;
     SELECT(clean_up_relation('translation_new', 'language_id', 'language'));
 
   --via_language_fk
-    SELECT(clean_up_relation('translation_new', 'via_language_id', 'language'));
+    SELECT(clean_up_relation('translation_new', 'via_language_id', 'language', 'via_'));
 
    --user_fk
     SELECT(clean_up_relation('translation_new', 'user_id', 'user'));
