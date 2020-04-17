@@ -38,6 +38,7 @@ class Translator(models.Model):
 
     class Meta:
         db_table = 'translator'
+        verbose_name_plural = 'Translator'
 
 
 class TranslatorNew(models.Model):
@@ -53,6 +54,7 @@ class TranslatorNew(models.Model):
         return self.name
     class Meta:
         db_table = 'translator_new'
+        verbose_name_plural = 'NEW Translator'
 
 
 class Author(models.Model):
@@ -67,9 +69,9 @@ class Author(models.Model):
     def __str__(self):
         return self.name
 
-
     class Meta:
         db_table = 'author'
+        verbose_name_plural = 'Author'
 
 
 class AuthorNew(models.Model):
@@ -86,6 +88,7 @@ class AuthorNew(models.Model):
 
     class Meta:
         db_table = 'author_new'
+        verbose_name_plural = 'NEW Author'
 
 
 class Country(models.Model):
@@ -99,6 +102,7 @@ class Country(models.Model):
 
     class Meta:
         db_table = 'country'
+        verbose_name_plural = 'Country'
 
 
 class DdcGerman(models.Model):
@@ -113,6 +117,7 @@ class DdcGerman(models.Model):
 
     class Meta:
         db_table = 'ddc_german'
+        verbose_name_plural = 'DDC'
 
 
 class Language(models.Model):
@@ -126,6 +131,7 @@ class Language(models.Model):
 
     class Meta:
         db_table = 'language'
+        verbose_name_plural = 'Language'
 
 
 class LocAssign(models.Model):
@@ -142,6 +148,8 @@ class LocAssign(models.Model):
 
     class Meta:
         db_table = 'loc_assign'
+        verbose_name_plural = 'LocAssign'
+
 
 
 class Location(models.Model):
@@ -160,6 +168,7 @@ class Location(models.Model):
 
     class Meta:
         db_table = 'location'
+        verbose_name_plural = 'Location'
 
 
 class LocationNew(models.Model):
@@ -177,6 +186,7 @@ class LocationNew(models.Model):
         return self.name
     class Meta:
         db_table = 'location_new'
+        verbose_name_plural = 'NEW Location'
 
 
 class OrigAssign(models.Model):
@@ -225,6 +235,7 @@ class Original(models.Model):
 
     class Meta:
         db_table = 'original'
+        verbose_name_plural = 'Original'
 
 class OriginalNew(models.Model):
     id = models.BigAutoField(primary_key=True)
@@ -248,11 +259,13 @@ class OriginalNew(models.Model):
     author = models.ManyToManyField(Author, through='OriginalNewAuthor')
     author_new = models.ManyToManyField(AuthorNew, through='OriginalNewAuthorNew')
 
+
     def __str__(self):
         return self.title
 
     class Meta:
         db_table = 'original_new'
+        verbose_name_plural = 'NEW Original'
 
 
 class Translation(models.Model):
@@ -284,6 +297,7 @@ class Translation(models.Model):
 
     class Meta:
         db_table = 'translation'
+        verbose_name_plural = 'Translation'
 
 
 class TranslationNew(models.Model):
@@ -315,6 +329,7 @@ class TranslationNew(models.Model):
 
     class Meta:
         db_table = 'translation_new'
+        verbose_name_plural = 'NEW Translation'
 
 
 class OriginalAuthor(models.Model):
