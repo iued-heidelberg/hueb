@@ -51,7 +51,7 @@ BEGIN
   END$BODY$
   LANGUAGE plpgsql VOLATILE;
 
-CREATE OR REPLACE FUNCTION clean_up_relation(primary_table TEXT, primary_column TEXT, secondary_table TEXT)
+CREATE OR REPLACE FUNCTION clean_up_relation(primary_table TEXT, primary_column TEXT, secondary_table TEXT, prefix TEXT default '', suffix TEXT default '')
   RETURNS void AS $BODY$
 DECLARE placeholder BIGINT;
 BEGIN
@@ -98,7 +98,7 @@ BEGIN
         add constraint %I
           foreign key (%s) references "%s"
             on update cascade on delete restrict;',
-            primary_table, secondary_table||'_fk', primary_column, secondary_table);
+            primary_table, prefix || secondary_table|| suffix ||'_fk', primary_column, secondary_table);
 
 
     RETURN;
