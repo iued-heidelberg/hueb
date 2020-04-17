@@ -20,6 +20,7 @@ class User(models.Model):
 
     class Meta:
         db_table = 'user'
+        verbose_name_plural = 'COMMON User'
 
 class Translator(models.Model):
     id = models.BigAutoField(primary_key=True)
@@ -37,7 +38,7 @@ class Translator(models.Model):
 
     class Meta:
         db_table = 'translator'
-        verbose_name_plural = 'Translator'
+        verbose_name_plural = 'OLD Translator'
 
 
 class TranslatorNew(models.Model):
@@ -74,7 +75,7 @@ class Author(models.Model):
 
     class Meta:
         db_table = 'author'
-        verbose_name_plural = 'Author'
+        verbose_name_plural = 'OLD Author'
 
 
 class AuthorNew(models.Model):
@@ -109,7 +110,7 @@ class Country(models.Model):
 
     class Meta:
         db_table = 'country'
-        verbose_name_plural = 'Country'
+        verbose_name_plural = 'COMMON Country'
 
 
 class DdcGerman(models.Model):
@@ -124,7 +125,7 @@ class DdcGerman(models.Model):
 
     class Meta:
         db_table = 'ddc_german'
-        verbose_name_plural = 'DDC'
+        verbose_name_plural = 'COMMON DDC'
 
 
 class Language(models.Model):
@@ -140,7 +141,7 @@ class Language(models.Model):
 
     class Meta:
         db_table = 'language'
-        verbose_name_plural = 'Language'
+        verbose_name_plural = 'COMMON Language'
 
 
 class LocAssign(models.Model):
@@ -162,7 +163,7 @@ class LocAssign(models.Model):
 
     class Meta:
         db_table = 'loc_assign'
-        verbose_name_plural = 'LocAssign'
+        verbose_name_plural = 'COMMON LocAssign'
 
 
 
@@ -184,7 +185,7 @@ class Location(models.Model):
 
     class Meta:
         db_table = 'location'
-        verbose_name_plural = 'Location'
+        verbose_name_plural = 'OLD Location'
 
 
 class LocationNew(models.Model):
@@ -227,6 +228,7 @@ class OrigAssign(models.Model):
 
     class Meta:
         db_table = 'orig_assign'
+        verbose_name_plural = 'COMMON OrigAssign'
 
 
 
@@ -260,7 +262,7 @@ class Original(models.Model):
 
     class Meta:
         db_table = 'original'
-        verbose_name_plural = 'Original'
+        verbose_name_plural = 'OLD Original'
 
 class OriginalNew(models.Model):
     id = models.BigAutoField(primary_key=True)
@@ -327,7 +329,7 @@ class Translation(models.Model):
 
     class Meta:
         db_table = 'translation'
-        verbose_name_plural = 'Translation'
+        verbose_name_plural = 'OLD Translation'
 
 
 class TranslationNew(models.Model):
