@@ -155,7 +155,6 @@ class TranslatorNewAdmin(admin.ModelAdmin):
         }),
     )
 
-
 @admin.register(Author)
 class AuthorAdmin(admin.ModelAdmin):
     list_display = (
@@ -186,7 +185,6 @@ class AuthorAdmin(admin.ModelAdmin):
             'fields': ('migration_notes', 'migration_generated'),
         }),
     )
-
 
 @admin.register(AuthorNew)
 class AuthorNewAdmin(admin.ModelAdmin):
@@ -219,7 +217,6 @@ class AuthorNewAdmin(admin.ModelAdmin):
         }),
     )
 
-
 @admin.register(Country)
 class CountryAdmin(admin.ModelAdmin):
     list_display = (
@@ -240,8 +237,6 @@ class CountryAdmin(admin.ModelAdmin):
             'fields': ('migration_notes', 'migration_generated'),
         }),
     )
-
-
 
 @admin.register(DdcGerman)
 class DdcGermanAdmin(admin.ModelAdmin):
@@ -266,8 +261,6 @@ class DdcGermanAdmin(admin.ModelAdmin):
         }),
     )
 
-
-
 @admin.register(Language)
 class LanguageAdmin(admin.ModelAdmin):
     list_display = (
@@ -289,10 +282,6 @@ class LanguageAdmin(admin.ModelAdmin):
             'fields': ('migration_notes', 'migration_generated'),
         }),
     )
-
-
-
-
 
 @admin.register(Location)
 class LocationAdmin(admin.ModelAdmin):
@@ -322,7 +311,6 @@ class LocationAdmin(admin.ModelAdmin):
         }),
     )
 
-
 @admin.register(LocationNew)
 class LocationNewAdmin(admin.ModelAdmin):
     list_display = (
@@ -350,9 +338,6 @@ class LocationNewAdmin(admin.ModelAdmin):
             'fields': ('migration_notes', 'migration_generated'),
         }),
     )
-
-
-
 
 
 @admin.register(Original)
@@ -417,7 +402,7 @@ class OriginalNewAdmin(admin.ModelAdmin):
         'link',
         'user',
         'datum',
-        'country_id',
+        'country',
         'migration_notes',
         'migration_generated',
     )
@@ -427,7 +412,7 @@ class OriginalNewAdmin(admin.ModelAdmin):
     fieldsets = (
         ('Original Information', {
             'description': (' '),
-            'fields': ('title','subtitle', 'subtitle1', 'year', 'publisher', 'published_location', 'edition', 'language', 'real_year', 'country_id')
+            'fields': ('title','subtitle', 'subtitle1', 'year', 'publisher', 'published_location', 'edition', 'language', 'real_year', 'country')
         }),
          ('Original Metadata', {
             'description': (' '),

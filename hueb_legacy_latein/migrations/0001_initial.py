@@ -308,7 +308,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='translationnew',
             name='via_language',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.DO_NOTHING, to='hueb_legacy_latein.Language'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='new_via_language', to='hueb_legacy_latein.Language'),
         ),
         migrations.AddField(
             model_name='translationnew',
@@ -323,7 +323,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='translation',
             name='via_language',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.DO_NOTHING, to='hueb_legacy_latein.Language'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='via_language', to='hueb_legacy_latein.Language'),
         ),
         migrations.AddField(
             model_name='translation',
