@@ -6,13 +6,16 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('hueb_legacy_latein', '0001_initial'),
+        ("hueb_legacy_latein", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='original',
-            name='author',
-            field=models.ManyToManyField(through='hueb_legacy_latein.OriginalAuthor', to='hueb_legacy_latein.Author'),
+            model_name="original",
+            name="author",
+            field=models.ManyToManyField(
+                through="hueb_legacy_latein.OriginalAuthor",
+                to="hueb_legacy_latein.Author",
+            ),
         ),
     ]
