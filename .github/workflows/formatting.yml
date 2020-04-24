@@ -1,0 +1,33 @@
+name: Checking the formatting
+
+on:
+  push:
+    branches:
+      - '*'
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [ 3.7, ]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Black Check
+      uses: jpetrucciani/black-check@19.10b0
+      with:
+        # File or directory to run black on
+        path: # optional, default is .
+    - name: Flake8 Annotator
+      uses: rbialon/flake8-annotations@v1
+    - name: Sort your Python imports with isort
+      uses: olance/isort-action@v1.1.0
+      with:
+        # Arguments provided to isort
+        args: # optional, default is --recursive .
