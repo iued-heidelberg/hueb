@@ -85,14 +85,14 @@ SET search_path to di_sueb_latein;
     SELECT(clean_up_relation('orig_assign', 'trans_new_id', 'translation_new'));
 
   -- orig_diff_fk
-    SELECT(clean_up_relation('orig_assign', 'orig_diff_id', 'original'));
+    SELECT(clean_up_relation('orig_assign', 'orig_diff_id', 'original', '', '_diff'));
   -- orig_diff_new_fk
-    SELECT(clean_up_relation('orig_assign', 'orig_diff_new_id', 'original_new'));
+    SELECT(clean_up_relation('orig_assign', 'orig_diff_new_id', 'original_new', '', '_diff'));
 
   -- trans_diff_fk
-    SELECT(clean_up_relation('orig_assign', 'trans_diff_id', 'translation'));
+    SELECT(clean_up_relation('orig_assign', 'trans_diff_id', 'translation', '', '_diff'));
   -- trans_diff_new_fk
-    SELECT(clean_up_relation('orig_assign', 'trans_diff_new_id', 'translation_new'));
+    SELECT(clean_up_relation('orig_assign', 'trans_diff_new_id', 'translation_new', '', '_diff'));
 
 
 -- Adds foreign_key constraints for original
@@ -122,7 +122,7 @@ SET search_path to di_sueb_latein;
     SELECT(clean_up_relation('original_new', 'user_id', 'user'));
 
   --country_fk
-    SELECT(clean_up_relation('original', 'country_id', 'country'));
+    SELECT(clean_up_relation('original_new', 'country_id', 'country'));
 
 -- Adds foreign_key constraints for translation
   -- ddc_fk
@@ -136,13 +136,13 @@ SET search_path to di_sueb_latein;
     alter table translation add column author_new_id bigint;
     update translation
     set author_new_id = author_id;
-    SELECT(clean_up_relation('translation', 'author_new_id', 'author'));
+    SELECT(clean_up_relation('translation', 'author_new_id', 'author_new'));
 
   --language_fk
     SELECT(clean_up_relation('translation', 'language_id', 'language'));
 
   --via_language_fk
-    SELECT(clean_up_relation('translation', 'via_language_id', 'language'));
+    SELECT(clean_up_relation('translation', 'via_language_id', 'language', 'via_'));
 
    --user_fk
     SELECT(clean_up_relation('translation', 'user_id', 'user'));
@@ -162,13 +162,13 @@ SET search_path to di_sueb_latein;
     alter table translation_new add column author_new_id bigint;
     update translation_new
     set author_new_id = author_id;
-    SELECT(clean_up_relation('translation_new', 'author_new_id', 'author'));
+    SELECT(clean_up_relation('translation_new', 'author_new_id', 'author_new'));
 
   --language_fk
     SELECT(clean_up_relation('translation_new', 'language_id', 'language'));
 
   --via_language_fk
-    SELECT(clean_up_relation('translation_new', 'via_language_id', 'language'));
+    SELECT(clean_up_relation('translation_new', 'via_language_id', 'language', 'via_'));
 
    --user_fk
     SELECT(clean_up_relation('translation_new', 'user_id', 'user'));
