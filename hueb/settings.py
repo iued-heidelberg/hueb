@@ -20,10 +20,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "_juvq%@9kg3+$$i#houhfkgj!)+pm&#@k+63djrj#+mw&^+8@3"
+SECRET_KEY = os.getenv("HUEB_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("HUEB_DEBUG")
 
 ALLOWED_HOSTS = []
 
@@ -78,14 +78,20 @@ WSGI_APPLICATION = "hueb.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "USER": "bockstaller",
-        "NAME": "hueb",
+        "NAME": os.getenv("HUEB_DATABASE_NAME"),
+        "USER": os.getenv("HUEB_DATABASE_USER"),
+        "PASSWORD": os.getenv("HUEB_DATABASE_PASSWORD"),
+        "HOST": os.getenv("HUEB_DATABASE_HOST"),
+        "PORT": os.getenv("HUEB_DATABASE_PORT"),
     },
     "legacy_latein": {
         "ENGINE": "django.db.backends.postgresql",
         "OPTIONS": {"options": "-c search_path=di_sueb_latein"},
-        "USER": "bockstaller",
-        "NAME": "hueb_db",
+        "NAME": os.getenv("HUEB_LEGACY_DATABASE_NAME"),
+        "USER": os.getenv("HUEB_LEGACY_DATABASE_USER"),
+        "PASSWORD": os.getenv("HUEB_LEGACY_DATABASE_PASSWORD"),
+        "HOST": os.getenv("HUEB_LEGACY_DATABASE_HOST"),
+        "PORT": os.getenv("HUEB_LEGACY_DATABASE_PORT"),
     },
 }
 
