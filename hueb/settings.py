@@ -25,7 +25,7 @@ SECRET_KEY = os.getenv("HUEB_SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("HUEB_DEBUG")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [os.getenv("HUEB_ALLOWED_HOSTS")]
 
 
 # Application definition
