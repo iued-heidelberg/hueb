@@ -121,6 +121,9 @@ ENV/
 env.bak/
 venv.bak/
 
+deployment/group_vars/all
+
+
 # Spyder project settings
 .spyderproject
 .spyproject
