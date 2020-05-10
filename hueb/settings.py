@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -74,26 +75,34 @@ WSGI_APPLICATION = "hueb.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
+if sys.argv[1] == "test":
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+        }
+    }
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.getenv("HUEB_DATABASE_NAME"),
+            "USER": os.getenv("HUEB_DATABASE_USER"),
+            "PASSWORD": os.getenv("HUEB_DATABASE_PASSWORD"),
+            "HOST": os.getenv("HUEB_DATABASE_HOST"),
+            "PORT": os.getenv("HUEB_DATABASE_PORT"),
+        },
+        "legacy_latein": {
+            "ENGINE": "django.db.backends.postgresql",
+            "OPTIONS": {"options": "-c search_path=di_sueb_latein"},
+            "NAME": os.getenv("HUEB_LEGACY_DATABASE_NAME"),
+            "USER": os.getenv("HUEB_LEGACY_DATABASE_USER"),
+            "PASSWORD": os.getenv("HUEB_LEGACY_DATABASE_PASSWORD"),
+            "HOST": os.getenv("HUEB_LEGACY_DATABASE_HOST"),
+            "PORT": os.getenv("HUEB_LEGACY_DATABASE_PORT"),
+        },
+    }
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("HUEB_DATABASE_NAME"),
-        "USER": os.getenv("HUEB_DATABASE_USER"),
-        "PASSWORD": os.getenv("HUEB_DATABASE_PASSWORD"),
-        "HOST": os.getenv("HUEB_DATABASE_HOST"),
-        "PORT": os.getenv("HUEB_DATABASE_PORT"),
-    },
-    "legacy_latein": {
-        "ENGINE": "django.db.backends.postgresql",
-        "OPTIONS": {"options": "-c search_path=di_sueb_latein"},
-        "NAME": os.getenv("HUEB_LEGACY_DATABASE_NAME"),
-        "USER": os.getenv("HUEB_LEGACY_DATABASE_USER"),
-        "PASSWORD": os.getenv("HUEB_LEGACY_DATABASE_PASSWORD"),
-        "HOST": os.getenv("HUEB_LEGACY_DATABASE_HOST"),
-        "PORT": os.getenv("HUEB_LEGACY_DATABASE_PORT"),
-    },
-}
 
 DATABASE_ROUTERS = ["hueb.routers.LegacyRouter"]
 
