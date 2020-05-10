@@ -29,5 +29,7 @@ jobs:
     - name: Run Tests
       run: |
         python manage.py test
+      env: # Or as an environment variable
+        HUEB_SECRET_KEY: ${{ secrets.HUEB_SECRET_KEY }}
 
 
