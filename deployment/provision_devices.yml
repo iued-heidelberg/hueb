@@ -1,0 +1,32 @@
+##
+# Configures two persitent devices
+# It is a seperate script because of this bug https://github.com/ansible/ansible/issues/22996
+##
+- name: apply common configuration to server
+  hosts: webserver
+  become: true
+  tasks:
+
+  - name: Create a new partition for the database
+    become: yes
+    parted:
+      device: /dev/sdc
+      number: 1
+      state: present
+
+  - name: Create a new partition for db_dumps
+    become: yes
+    parted:
+      device: /dev/sdb
+      number: 1
+      state: present
+
+  - name: Create a ext3 filesystem on /dev/sdb
+    filesystem:
+      fstype: ext3
+      dev: /dev/sdb
+
+  - name: Create a ext3 filesystem on /dev/sdc
+    filesystem:
+      fstype: ext3
+      dev: /dev/sdc

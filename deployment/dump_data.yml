@@ -1,0 +1,8 @@
+##
+# Configure the server for the Django app
+##
+- name: apply common configuration to server
+  hosts: webserver
+  become: true
+  roles:
+    - dump_data

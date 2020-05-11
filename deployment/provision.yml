@@ -1,0 +1,11 @@
+##
+# Configure the server for the Django app
+##
+- name: apply common configuration to server
+  hosts: webserver
+  become: true
+  gather_facts: True
+  roles:
+    - provision
+    - deploy
+    - service_setup

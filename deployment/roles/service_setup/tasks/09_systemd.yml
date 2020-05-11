@@ -1,0 +1,7 @@
+- name: write a systemd service file
+  template: src=../templates/hueb.service
+                    dest=/etc/systemd/system
+  become: yes
+  notify:
+    - restart app
+    - restart nginx

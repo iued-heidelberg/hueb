@@ -1,0 +1,66 @@
+- name: create django group
+  group:
+    name: "{{user_group}}"
+    state: present
+
+- name: create {{ user_name }} user
+  user:
+    name: "{{ user_name }}"
+    comment: "{{ user_name }} user"
+    password: "{{ password }}"
+    groups: "{{ user_group }}"
+    append: yes
+    shell: /bin/bash
+
+- name: Mount up db device
+  mount:
+    path: /db
+    src: /dev/sdc
+    fstype: ext3
+    state: mounted
+
+- name: Mount up db_dumps device
+  mount:
+    path: /db_dumps
+    src: /dev/sdb
+    fstype: ext3
+    state: mounted
+
+- name: Set db-folder permissions
+  file:
+    path: "/db"
+    recurse: yes
+    state: "directory"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+
+- name: Set db_dumps-folder permissions
+  file:
+    path: "/db_dumps"
+    recurse: yes
+    state: "directory"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+
+- name: Add an Apt signing key, uses whichever key is at the URL
+  apt_key:
+    url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+    state: present
+
+- apt_repository:
+    repo: deb http://apt.postgresql.org/pub/repos/apt focal-pgdg main
+    state: present
+
+- name: Update apt-get repo and cache
+  apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
+
+- name: Upgrade all apt packages
+  apt: upgrade=dist force_apt_get=yes
+
+- name: Add mosh
+  apt:
+    name: mosh
+    state: latest
+
+
+

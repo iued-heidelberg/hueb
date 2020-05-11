@@ -1,0 +1,27 @@
+- name: install correct python version
+  apt:
+    name:
+      - gcc
+      - python3.8
+      - python3.8-dev
+    state: latest
+
+- name: Create a virtualenv directory
+  file:
+    path: "{{ venv_directory }}"
+    state: "directory"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+
+- name: Install dependencies
+  become: true
+  become_user: "{{ user_name }}"
+  pip:
+    requirements: "{{ app_directory }}/requirements.txt"
+    virtualenv: "{{ venv_directory }}"
+    virtualenv_python: python3.8
+  notify:
+    - restart app
+    - restart nginx
+
+

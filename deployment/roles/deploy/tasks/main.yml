@@ -1,0 +1,9 @@
+##
+# Configure the server for the Django app
+##
+
+- include: 02_get_sourcecode.yml
+- include: 04_dependency_installation.yml
+- include: 05_configuration.yml
+- include: 06_migrations.yml
+

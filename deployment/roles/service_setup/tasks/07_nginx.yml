@@ -1,0 +1,10 @@
+- name: Set up nginx config
+  apt:
+    name: nginx
+    state: latest
+
+- name: Write nginx conf file
+  template: src=../templates/hueb.conf dest=/etc/nginx/conf.d/{{ app_name }}.conf
+  become: yes
+  notify:
+    - restart nginx

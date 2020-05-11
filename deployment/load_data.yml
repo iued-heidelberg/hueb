@@ -1,0 +1,24 @@
+##
+# Run db migrations and get all static files
+##
+---
+  - name: Set env-file
+    hosts: webserver
+    become: true
+
+    tasks:
+      - name: Load database default
+        django_manage:
+          app_path: "{{ app_directory }}"
+          command: loaddata
+          database: default
+          virtualenv: "{{ venv_directory }}"
+          fixtures: "{{ app_directory }}/db_migration/archive/imported_dumps/legacy_latein.json"
+
+      - name: Load data legacy_latein
+        django_manage:
+          app_path: "{{ app_directory }}"
+          command: loaddata
+          database: legacy_latein
+          virtualenv: "{{ venv_directory }}"
+          fixtures: "{{ app_directory }}/db_migration/archive/imported_dumps/legacy_latein.json"
