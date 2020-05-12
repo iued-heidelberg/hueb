@@ -1,0 +1,75 @@
+
+- name: Create django database
+  become_user: postgres
+  become: yes
+  postgresql_db:
+    name: "{{ django_db }}"
+
+- name: Create legacy database
+  become_user: postgres
+  become: yes
+  postgresql_db:
+    name: "{{ legacy_db }}"
+
+- name: Create legacy database
+  become_user: postgres
+  become: yes
+  postgresql_db:
+    name: "{{ user_name }}"
+
+- name: Create a new schema for legacy_latein in database
+  become_user: postgres
+  become: yes
+  postgresql_schema:
+    db: "{{ legacy_db }}"
+    name: di_sueb_latein
+
+- name: "Configure a new user for the django db: {{ django_db_user }}"
+  become: yes
+  become_user: postgres
+  no_log: yes
+  postgresql_user:
+    db: "{{ django_db }}"
+    name: "{{ django_db_user }}"
+    password: "{{ django_db_password }}"
+    priv: ALL
+    role_attr_flags: NOSUPERUSER
+  notify:
+  - restart postgres
+
+- name: "Configure a new user for the django db: {{ legacy_db_user }}"
+  become: yes
+  become_user: postgres
+  no_log: yes
+  postgresql_user:
+    db: "{{ legacy_db }}"
+    name: "{{ legacy_db_user }}"
+    password: "{{ legacy_db_password }}"
+    priv: ALL
+    role_attr_flags: NOSUPERUSER
+  notify:
+  - restart postgres
+
+- name: Set permissions for latein schema
+  become: yes
+  become_user: postgres
+  postgresql_privs:
+    db: "{{ legacy_db }}"
+    privs: ALL
+    type: schema
+    objs: di_sueb_latein
+    role: "{{ legacy_db_user }}"
+  notify:
+  - restart postgres
+
+- name: Configure a new postgresql management user
+  become: yes
+  become_user: postgres
+  no_log: yes
+  postgresql_user:
+    name: "{{ user_name }}"
+    password: "{{ user_password }}"
+    role_attr_flags: SUPERUSER
+  notify:
+  - restart postgres
+

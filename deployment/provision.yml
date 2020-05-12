@@ -6,6 +6,7 @@
   become: true
   gather_facts: True
   roles:
+    - database
     - provision
     - deploy
     - service_setup
