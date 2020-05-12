@@ -1,0 +1,20 @@
+- name: Update apt-get-cache if it is stale
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Upgrade all packages to the latest version
+  apt:
+    name: "*"
+    state: latest
+
+- name: Add mosh
+  apt:
+    name: mosh
+    state: latest
+
+- name: enable SSH forwarding for sudo
+  lineinfile:
+    dest: /etc/sudoers
+    insertafter: '^#?\s*Defaults\s+env_keep\b'
+    line: 'Defaults    env_keep += "SSH_AUTH_SOCK"'

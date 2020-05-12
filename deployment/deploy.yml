@@ -1,0 +1,13 @@
+##
+# Installs a new version of the
+##
+- name: update application
+  hosts: webserver
+  become: true
+  gather_facts: True
+  roles:
+    - dump_database
+    - base
+    - database
+    - application
+    - services

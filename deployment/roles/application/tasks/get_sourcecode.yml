@@ -1,0 +1,26 @@
+- name: Update apt-get-cache if it is stale
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: install the latest version of git
+  apt:
+    name: git, git-lfs
+    state: latest
+
+- name: clone a private repository
+  git:
+    repo: git@github.com:bockstaller/hueb.git
+    dest: "{{ app_directory }}"
+    accept_hostkey: yes
+    force: yes
+    update: yes
+
+- name: Recursively change ownership of a directory
+  file:
+    path: "{{ app_directory }}"
+    state: directory
+    recurse: yes
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+

@@ -1,0 +1,12 @@
+
+- name: Create ext4 filesystem on /dev/sdb
+  filesystem:
+    fstype: ext4
+    dev: /dev/sdb
+
+- name: Mount db device
+  mount:
+    path: /db
+    src: /dev/sdc
+    fstype: ext4
+    state: mounted
