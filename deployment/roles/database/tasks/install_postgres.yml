@@ -36,7 +36,7 @@
     path: "{{ db_directory }}"
     owner: "postgres"
     state: directory
-    mode: 0700
+    mode: 0744
 
 - name: Checks if PostgreSQL is initialized
   stat:
