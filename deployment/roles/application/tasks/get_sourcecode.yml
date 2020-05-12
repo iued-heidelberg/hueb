@@ -1,14 +1,12 @@
+- name: Update apt-get-cache if it is stale
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
 - name: install the latest version of git
   apt:
     name: git, git-lfs
     state: latest
-
-- name: Create a virtualenv directory
-  file:
-    path: "{{ app_directory }}"
-    state: "directory"
-    owner: "{{ user_name }}"
-    group: "{{ user_group }}"
 
 - name: clone a private repository
   git:
@@ -16,6 +14,7 @@
     dest: "{{ app_directory }}"
     accept_hostkey: yes
     force: yes
+    update: yes
 
 - name: Recursively change ownership of a directory
   file:

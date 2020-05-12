@@ -6,6 +6,11 @@
       - python3.8-dev
     state: latest
 
+- name: Upgrade all packages to the latest version
+  apt:
+    name: "*"
+    state: latest
+
 - name: Create a virtualenv directory
   file:
     path: "{{ venv_directory }}"
