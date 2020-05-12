@@ -1,5 +1,7 @@
 - name: Create a deploy directory
-  file: path={{ deploy_directory }} state=directory
+  file:
+    path: "{{ deploy_directory }}"
+    state: directory
   become: yes
 
 - name: Create the gunicorn_start script for running our app from systemd service
@@ -7,6 +9,15 @@
     src: ../templates/gunicorn_start
     dest: "{{ deploy_directory }}/gunicorn_start"
     mode: u+rwx
+  become: yes
+  notify:
+    - restart app
+    - restart nginx
+
+- name: Write a systemd service file
+  template:
+    src: ../templates/hueb.service
+    dest: /etc/systemd/system
   become: yes
   notify:
     - restart app

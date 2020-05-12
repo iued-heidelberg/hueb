@@ -1,8 +1,0 @@
-##
-# Configure the server for the Django app
-##
-
-- include: 07_nginx.yml
-- include: 08_gunicorn.yml
-- include: 09_systemd.yml
-#- include: tasks/10_fix-502.yml

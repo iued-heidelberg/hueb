@@ -1,4 +1,0 @@
-
-- name: Fix nginx 502 error
-  raw: cd ~; cat /var/log/audit/audit.log | grep nginx | grep denied | audit2allow -M mynginx; semodule -i mynginx.pp
-  become: yes

@@ -9,4 +9,4 @@
     - base
     - database
     - application
-    - service_setup
+    - services
