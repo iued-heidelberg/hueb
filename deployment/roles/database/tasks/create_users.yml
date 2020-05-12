@@ -2,12 +2,12 @@
 # Creates users for the database installation
 ###
 
-- name: "create usergroup: {{user_group}}"
+- name: "Create usergroup: {{user_group}}"
   group:
     name: "{{user_group}}"
     state: present
 
-- name: "create user: {{ user_name }}"
+- name: "Create user: {{ user_name }}"
   user:
     name: "{{ user_name }}"
     password: "{{ password }}"

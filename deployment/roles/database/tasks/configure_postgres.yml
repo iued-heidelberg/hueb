@@ -50,6 +50,17 @@
   notify:
   - restart postgres
 
+- name: Configure a new postgresql management user
+  become: yes
+  become_user: postgres
+  no_log: yes
+  postgresql_user:
+    name: "{{ user_name }}"
+    password: "{{ user_password }}"
+    role_attr_flags: SUPERUSER
+  notify:
+  - restart postgres
+
 - name: Set permissions for latein schema
   become: yes
   become_user: postgres
@@ -62,14 +73,5 @@
   notify:
   - restart postgres
 
-- name: Configure a new postgresql management user
-  become: yes
-  become_user: postgres
-  no_log: yes
-  postgresql_user:
-    name: "{{ user_name }}"
-    password: "{{ user_password }}"
-    role_attr_flags: SUPERUSER
-  notify:
-  - restart postgres
+
 
