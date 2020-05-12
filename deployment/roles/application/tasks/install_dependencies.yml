@@ -1,14 +1,19 @@
+- name: Update apt-get-cache if it is stale
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Upgrade all packages to the latest version
+  apt:
+    name: "*"
+    state: latest
+
 - name: install correct python version
   apt:
     name:
       - gcc
       - python3.8
       - python3.8-dev
-    state: latest
-
-- name: Upgrade all packages to the latest version
-  apt:
-    name: "*"
     state: latest
 
 - name: Create a virtualenv directory
