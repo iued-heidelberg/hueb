@@ -1,4 +1,25 @@
 
+
+- name: Create a ext4 filesystem on /dev/sdc
+  filesystem:
+    fstype: ext4
+    dev: /dev/sdc
+
+- name: Mount up db_dumps device
+  mount:
+    path: /db_dumps
+    src: /dev/sdb
+    fstype: ext4
+    state: mounted
+
+- name: Set db_dumps-folder permissions
+  file:
+    path: "/db_dumps"
+    recurse: yes
+    state: "directory"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+
 - name: Ansible fact - ansible_date_time
   debug:
     var: ansible_date_time

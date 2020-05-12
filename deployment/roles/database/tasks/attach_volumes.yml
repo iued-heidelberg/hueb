@@ -1,32 +1,12 @@
 
-- name: Create a ext4 filesystem on /dev/sdb
+- name: Create ext4 filesystem on /dev/sdb
   filesystem:
     fstype: ext4
     dev: /dev/sdb
 
-- name: Create a ext4 filesystem on /dev/sdc
-  filesystem:
-    fstype: ext4
-    dev: /dev/sdc
-
-- name: Mount up db device
+- name: Mount db device
   mount:
     path: /db
     src: /dev/sdc
     fstype: ext4
     state: mounted
-
-- name: Mount up db_dumps device
-  mount:
-    path: /db_dumps
-    src: /dev/sdb
-    fstype: ext4
-    state: mounted
-
-- name: Set db_dumps-folder permissions
-  file:
-    path: "/db_dumps"
-    recurse: yes
-    state: "directory"
-    owner: "{{ user_name }}"
-    group: "{{ user_group }}"
