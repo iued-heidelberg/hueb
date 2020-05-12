@@ -1,11 +1,12 @@
 ##
-# Configure the server for the Django app
+# Installs a new version of the
 ##
-- name: apply common configuration to a server initially
+- name: update application
   hosts: webserver
   become: true
   gather_facts: True
   roles:
+    - dump_database
     - base
     - database
     - application
