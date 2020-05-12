@@ -1,5 +1,3 @@
-
-
 - name: Create a ext4 filesystem on /dev/sdc
   filesystem:
     fstype: ext4
@@ -24,36 +22,41 @@
   debug:
     var: ansible_date_time
 
-- name: stop app
-  service: name={{app_name}} state=stopped enabled=yes
+- name: Stopp application
+  service:
+    name: "{{app_name}}"
+    state: stopped
+    enabled: yes
   become: yes
 
-
-- name: Dump default database
+- name: Dump default-database
   become: yes
   become_user: "{{ user_name }}"
   command: "{{venv_directory}}/bin/python3 {{app_directory}}/manage.py dumpdata --database default --output {{dump_directory}}/{{ ansible_date_time.iso8601 }}_default_dump.json"
 
-- name: Dump legacy database
-  become: yes
-  become_user: "{{ user_name }}"
-  command: "{{venv_directory}}/bin/python3 {{app_directory}}/manage.py dumpdata --database legacy_latein --output {{dump_directory}}/{{ ansible_date_time.iso8601 }}_legacy_latein_dump.json"
-
-- name: start app
-  service: name={{app_name}} state=started enabled=yes
-  become: yes
-
-- name: Compress regular file /path/to/foo into /path/to/foo.gz and remove it
+- name: Compress default-database dump
   become: yes
   become_user: "{{ user_name }}"
   archive:
     path: "{{dump_directory}}/{{ ansible_date_time.iso8601 }}_default_dump.json"
     remove: yes
 
+- name: Dump legacy-database
+  become: yes
+  become_user: "{{ user_name }}"
+  command: "{{venv_directory}}/bin/python3 {{app_directory}}/manage.py dumpdata --database legacy_latein --output {{dump_directory}}/{{ ansible_date_time.iso8601 }}_legacy_latein_dump.json"
 
-- name: Compress regular file /path/to/foo into /path/to/foo.gz and remove it
+- name: Compress legacy-database dump
   become: yes
   become_user: "{{ user_name }}"
   archive:
     path: "{{dump_directory}}/{{ ansible_date_time.iso8601 }}_legacy_latein_dump.json"
     remove: yes
+
+- name: Start application
+  service:
+    name: "{{app_name}}"
+    state: started
+    enabled: yes
+  become: yes
+
