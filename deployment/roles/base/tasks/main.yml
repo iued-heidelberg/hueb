@@ -1,4 +1,4 @@
 ##
 # Configure the server for the Django app
 ##
-- include: machine_setup.yml
+- include: setup_machine.yml
