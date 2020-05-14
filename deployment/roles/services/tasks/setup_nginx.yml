@@ -28,7 +28,6 @@
     mode: 0744
 
 
-
 - name: Write honeytail conf file
   template:
     src: ../templates/honeytail.j2
