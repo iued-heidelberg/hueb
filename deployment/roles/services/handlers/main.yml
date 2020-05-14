@@ -1,16 +1,16 @@
 - name: restart postgres
-  service: name=postgresql state=restarted
+  service: name=postgresql state=restarted daemon_reload=yes
   become: yes
 
 - name: restart nginx
-  service: name=nginx state=restarted enabled=yes
+  service: name=nginx state=restarted enabled=yes daemon_reload=yes
   become: yes
 
 - name: restart app
-  service: name=hueb state=restarted enabled=yes
+  service: name=hueb state=restarted enabled=yes daemon_reload=yes
   become: yes
 
 
 - name: restart honeytail
-  service: name=honeytail state=restarted enabled=yes
+  service: name=honeytail state=restarted enabled=yes daemon_reload=yes
   become: yes
