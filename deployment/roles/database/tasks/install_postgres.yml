@@ -36,21 +36,31 @@
     path: "{{ db_directory }}"
     owner: "postgres"
     state: directory
-    mode: 0744
+    mode: 0700
+
+- name: Move DB directory
+  become: yes
+  become_user: postgres
+  lineinfile:
+    path: /etc/postgresql/12/main/postgresql.conf
+    regexp: '^data_directory = '
+    line: data_directory = '{{ db_directory }}'
+  notify:
+    - restart postgres
 
 - name: Checks if PostgreSQL is initialized
+  become: yes
+  become_user: postgres
   stat:
     path: "{{ db_directory }}/PG_VERSION"
   register: pgdata_dir_version
 
-- name: Initializes PostgreSQL
+- name: Initializes PostgreSQL database
   command: "/usr/lib/postgresql/12/bin/initdb -D {{ db_directory }}"
   when: not pgdata_dir_version.stat.exists
   become: true
   become_user: "postgres"
 
-- name: Starts and enables PostgreSQL
-  service:
-    name: postgresql
-    enabled: yes
-    state: started
+- name: Force all notified handlers to run at this point, not waiting for normal sync points
+  meta: flush_handlers
+
