@@ -38,4 +38,5 @@ exec gunicorn ${DJANGO_WSGI_MODULE}:application \
         --workers $NUM_WORKERS \
         --user=$USER --group=$GROUP \
         --log-level=debug \
-        --bind=127.0.0.1:8000
+        --bind=127.0.0.1:8000 \
+        -c {{app_directory}}/gunicorn.conf.py
