@@ -1,11 +1,11 @@
 - name: create the .env file
   template:
     src: ../templates/env.j2
-    dest: "{{ app_directory }}/.env"
+    dest: "{{ src_directory }}/.env"
 
 - name: Change permissions for .env file
   file:
-    path: "{{ app_directory }}/.env"
+    path: "{{ src_directory }}/.env"
     owner: "{{ user_name }}"
     state: file
     mode: 0700

@@ -7,7 +7,7 @@ NAME='{{ app_name }}'
 # Path to virtualenv
 VIRTUALENV={{ venv_directory }}
 # Django Project Directory
-DJANGODIR={{ app_directory }}
+DJANGODIR={{ src_directory }}
 # The user to run as
 USER={{ user_name }}
 # The group to run as
@@ -28,7 +28,7 @@ cd $VIRTUALENV
 source bin/activate
 cd $DJANGODIR
 # Defining the Environment Variables
-source {{ app_directory }}/.env
+source {{ src_directory }}/.env
 
 echo $DEBUG
 ### Start Gunicorn
@@ -39,4 +39,4 @@ exec gunicorn ${DJANGO_WSGI_MODULE}:application \
         --user=$USER --group=$GROUP \
         --log-level=debug \
         --bind=127.0.0.1:8000 \
-        -c {{app_directory}}/gunicorn.conf.py
+        -c {{src_directory}}/gunicorn.conf.py

@@ -3,7 +3,6 @@ import logging
 import os
 
 from dotenv import load_dotenv
-
 from hueb_legacy_latein.apps import honeycomb_config
 
 

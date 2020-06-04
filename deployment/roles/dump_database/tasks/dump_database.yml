@@ -32,7 +32,7 @@
 - name: Dump default-database
   become: yes
   become_user: "{{ user_name }}"
-  command: "{{venv_directory}}/bin/python3 {{app_directory}}/manage.py dumpdata --database default --output {{dump_directory}}/{{ ansible_date_time.iso8601 }}_default_dump.json"
+  command: "{{venv_directory}}/bin/python3 {{src_directory}}/manage.py dumpdata --database default --output {{dump_directory}}/{{ ansible_date_time.iso8601 }}_default_dump.json"
 
 - name: Compress default-database dump
   become: yes
@@ -44,7 +44,7 @@
 - name: Dump legacy-database
   become: yes
   become_user: "{{ user_name }}"
-  command: "{{venv_directory}}/bin/python3 {{app_directory}}/manage.py dumpdata --database legacy_latein --output {{dump_directory}}/{{ ansible_date_time.iso8601 }}_legacy_latein_dump.json"
+  command: "{{venv_directory}}/bin/python3 {{src_directory}}/manage.py dumpdata --database legacy_latein --output {{dump_directory}}/{{ ansible_date_time.iso8601 }}_legacy_latein_dump.json"
 
 - name: Compress legacy-database dump
   become: yes
