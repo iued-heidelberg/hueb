@@ -13,7 +13,7 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: [ 3.7, ]
+        python-version: [ 3.8, ]
 
     steps:
     - uses: actions/checkout@v2
@@ -25,10 +25,10 @@ jobs:
       run: |
         python -V
         python -m pip install --upgrade pip
-        python -m pip install -r requirements.txt
+        python -m pip install -r src/requirements.txt
     - name: Run Tests
       run: |
-        python manage.py test
+        python src/manage.py test
       env: # Or as an environment variable
         HUEB_SECRET_KEY: ${{ secrets.HUEB_SECRET_KEY }}
 

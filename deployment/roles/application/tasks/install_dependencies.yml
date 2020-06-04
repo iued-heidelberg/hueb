@@ -27,7 +27,7 @@
   become: true
   become_user: "{{ user_name }}"
   pip:
-    requirements: "{{ app_directory }}/requirements.txt"
+    requirements: "{{ src_directory }}/requirements.txt"
     virtualenv: "{{ venv_directory }}"
     virtualenv_python: python3.8
   notify:

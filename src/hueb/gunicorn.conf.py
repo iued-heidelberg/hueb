@@ -3,8 +3,7 @@ import logging
 import os
 
 from dotenv import load_dotenv
-
-from hueb_legacy_latein.apps import honeycomb_config
+from hueb.honeycomb import honeycomb_config
 
 
 def post_worker_init(worker):

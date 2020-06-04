@@ -24,7 +24,11 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "hueb.settings")
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-STATIC_ROOT = os.path.join(PROJECT_ROOT, "static")
+
+if os.getenv("HUEB_STATIC_DIR") is not None:
+    STATIC_ROOT = os.getenv("HUEB_STATIC_DIR")
+else:
+    STATIC_ROOT = os.path.join(PROJECT_ROOT, "static")
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("HUEB_SECRET_KEY")
