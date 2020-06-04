@@ -22,11 +22,9 @@ load_dotenv()
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "hueb.settings")
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+STATIC_ROOT = os.path.join(PROJECT_ROOT, "static")
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("HUEB_SECRET_KEY")
@@ -37,10 +35,8 @@ DEBUG = os.getenv("HUEB_DEBUG") == "True"
 ALLOWED_HOSTS = [os.getenv("HUEB_ALLOWED_HOSTS")]
 
 
-# Application definition
-
 INSTALLED_APPS = [
-    "hueb_legacy_latein.apps.HuebLegacyLateinConfig",
+    "hueb.apps.hueb_legacy_latein",
     "django_extensions",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -147,15 +143,13 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-STATIC_ROOT = os.path.join(PROJECT_ROOT, "static")
 
-
-sentry_sdk.init(
-    dsn=os.getenv("HUEB_SENTRY_API_KEY"),
-    integrations=[DjangoIntegration()],
-    # If you wish to associate users to errors (assuming you are using
-    # django.contrib.auth) you may enable sending PII data.
-    send_default_pii=True,
-    environment=os.getenv("HUEB_ENV"),
-)
+if os.getenv("HUEB_SENTRY_INACTIVE") is not None:
+    sentry_sdk.init(
+        dsn=os.getenv("HUEB_SENTRY_API_KEY"),
+        integrations=[DjangoIntegration()],
+        # If you wish to associate users to errors (assuming you are using
+        # django.contrib.auth) you may enable sending PII data.
+        send_default_pii=True,
+        environment=os.getenv("HUEB_ENV"),
+    )
