@@ -19,6 +19,7 @@
   become: yes
   notify:
     - restart nginx
+    - restart app
 
 - name: Change permissions for config
   file:
