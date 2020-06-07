@@ -40,6 +40,7 @@ ALLOWED_HOSTS = [os.getenv("HUEB_ALLOWED_HOSTS")]
 
 
 INSTALLED_APPS = [
+    "hueb.apps.hueb20",
     "hueb.apps.hueb_legacy_latein",
     "django_extensions",
     "django.contrib.admin",
