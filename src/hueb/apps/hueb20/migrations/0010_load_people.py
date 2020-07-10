@@ -16,8 +16,7 @@ def load_authorNew(apps, schema_editor):
     for legacy_author in Author_legacy.objects.all():
         source = Source()
         source.app = "hueb_legacy_latein"
-        source.model = "AuthorNew"
-        source.reference_id = legacy_author.id
+        source.author_ref = legacy_author
         source.save()
 
         new_person = Person()
@@ -58,7 +57,9 @@ def parse_years(YearRange, parse_string):
 
 def unload_authorNew(apps, schema_editor):
     Source = apps.get_model("hueb20", "SourceReference")
-    Source.objects.filter(app="hueb_legacy_latein").filter(model="AuthorNew").delete()
+    Source.objects.filter(app="hueb_legacy_latein").filter(
+        author_ref__isnull=False
+    ).delete()
 
 
 class Migration(migrations.Migration):
