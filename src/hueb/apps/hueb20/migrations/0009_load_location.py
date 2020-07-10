@@ -5,15 +5,14 @@ from django.db import migrations
 
 def load_location(apps, schema_editor):
     Location_legacy = apps.get_model("hueb_legacy_latein", "LocationNew")
-
+    Country = apps.get_model("hueb20", "Country")
     Location = apps.get_model("hueb20", "Location")
     Source = apps.get_model("hueb20", "SourceReference")
 
     for legacy_location in Location_legacy.objects.all():
         source = Source()
         source.app = "hueb_legacy_latein"
-        source.model = "LocationNew"
-        source.reference_id = legacy_location.id
+        source.location_ref = legacy_location
         source.save()
 
         new_location = Location()
@@ -26,12 +25,14 @@ def load_location(apps, schema_editor):
         new_location.z3950_gateway = legacy_location.z3950_gateway
 
         if legacy_location.country is not None:
-            new_location.country = (
+            new_country_source_id = (
                 Source.objects.filter(app="hueb_legacy_latein")
-                .filter(model="Country")
-                .get(reference_id=legacy_location.country)
-                .country
+                .get(country_ref=legacy_location.country)
+                .id
             )
+
+            new_location.country = Country.objects.get(source=new_country_source_id)
+
         else:
             new_location.country = None
 
@@ -40,7 +41,9 @@ def load_location(apps, schema_editor):
 
 def unload_location(apps, schema_editor):
     Source = apps.get_model("hueb20", "SourceReference")
-    Source.objects.filter(app="hueb_legacy_latein").filter(model="LocationNew").delete()
+    Source.objects.filter(app="hueb_legacy_latein").filter(
+        location_ref__isnull=False
+    ).delete()
 
 
 class Migration(migrations.Migration):
