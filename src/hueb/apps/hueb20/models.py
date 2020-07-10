@@ -3,13 +3,62 @@
 
 from django.contrib.postgres.fields import IntegerRangeField
 from django.db import models
+from hueb.apps.hueb_legacy_latein.models import (
+    AuthorNew,
+    Country,
+    DdcGerman,
+    Language,
+    LocAssign,
+    LocationNew,
+    OrigAssign,
+    OriginalNew,
+    OriginalNewAuthorNew,
+    TranslationNew,
+    TranslationNewTranslatorNew,
+    TranslatorNew,
+)
 
 
 class SourceReference(models.Model):
     id = models.BigAutoField(primary_key=True)
+
     app = models.CharField(max_length=255)
-    model = models.CharField(max_length=255)
-    reference_id = models.BigIntegerField()
+    author_ref = models.OneToOneField(
+        AuthorNew, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
+    translator_ref = models.OneToOneField(
+        TranslatorNew, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
+    country_ref = models.OneToOneField(
+        Country, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
+    language_ref = models.OneToOneField(
+        Language, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
+    ddc_ref = models.OneToOneField(
+        DdcGerman, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
+    locAssign_ref = models.OneToOneField(
+        LocAssign, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
+    location_ref = models.OneToOneField(
+        LocationNew, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
+    origAssign_ref = models.OneToOneField(
+        OrigAssign, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
+    original_ref = models.OneToOneField(
+        OriginalNew, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
+    translation_ref = models.OneToOneField(
+        TranslationNew, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
+    originalAuthor_ref = models.OneToOneField(
+        OriginalNewAuthorNew, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
+    translationTranslator_ref = models.OneToOneField(
+        TranslationNewTranslatorNew, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
 
 
 class YearRange(models.Model):

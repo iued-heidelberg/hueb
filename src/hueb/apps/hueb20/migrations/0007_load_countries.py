@@ -12,8 +12,7 @@ def load_countries(apps, schema_editor):
     for legacy_country in Country_legacy.objects.all():
         source = Source()
         source.app = "hueb_legacy_latein"
-        source.model = "Country"
-        source.reference_id = legacy_country.id
+        source.country_ref = legacy_country
         source.save()
 
         new_country = Country()
@@ -25,7 +24,9 @@ def load_countries(apps, schema_editor):
 
 def unload_countries(apps, schema_editor):
     Source = apps.get_model("hueb20", "SourceReference")
-    Source.objects.filter(app="hueb_legacy_latein").filter(model="Country").delete()
+    Source.objects.filter(app="hueb_legacy_latein").filter(
+        country_ref__isnull=False
+    ).delete()
 
 
 class Migration(migrations.Migration):
