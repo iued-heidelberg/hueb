@@ -101,20 +101,8 @@ else:
             "PASSWORD": os.getenv("HUEB_DATABASE_PASSWORD"),
             "HOST": os.getenv("HUEB_DATABASE_HOST"),
             "PORT": os.getenv("HUEB_DATABASE_PORT"),
-        },
-        "legacy_latein": {
-            "ENGINE": "django.db.backends.postgresql",
-            "OPTIONS": {"options": "-c search_path=di_sueb_latein"},
-            "NAME": os.getenv("HUEB_LEGACY_DATABASE_NAME"),
-            "USER": os.getenv("HUEB_LEGACY_DATABASE_USER"),
-            "PASSWORD": os.getenv("HUEB_LEGACY_DATABASE_PASSWORD"),
-            "HOST": os.getenv("HUEB_LEGACY_DATABASE_HOST"),
-            "PORT": os.getenv("HUEB_LEGACY_DATABASE_PORT"),
-        },
+        }
     }
-
-
-DATABASE_ROUTERS = ["hueb.routers.LegacyRouter"]
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
