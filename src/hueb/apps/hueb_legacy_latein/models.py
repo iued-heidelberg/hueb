@@ -19,7 +19,7 @@ class User(models.Model):
         return self.name
 
     class Meta:
-        db_table = "user"
+        db_table = "sueb_latein_user"
         verbose_name_plural = "COMMON User"
 
 
@@ -38,7 +38,7 @@ class Translator(models.Model):
         return self.name
 
     class Meta:
-        db_table = "translator"
+        db_table = "sueb_latein_translator"
         verbose_name_plural = "OLD Translator"
 
 
@@ -57,7 +57,7 @@ class TranslatorNew(models.Model):
         return self.name
 
     class Meta:
-        db_table = "translator_new"
+        db_table = "sueb_latein_translator_new"
         verbose_name_plural = "NEW Translator"
 
 
@@ -76,7 +76,7 @@ class Author(models.Model):
         return self.name
 
     class Meta:
-        db_table = "author"
+        db_table = "sueb_latein_author"
         verbose_name_plural = "OLD Author"
 
 
@@ -95,7 +95,7 @@ class AuthorNew(models.Model):
         return self.name
 
     class Meta:
-        db_table = "author_new"
+        db_table = "sueb_latein_author_new"
         verbose_name_plural = "NEW Author"
 
 
@@ -111,7 +111,7 @@ class Country(models.Model):
         return self.country
 
     class Meta:
-        db_table = "country"
+        db_table = "sueb_latein_country"
         verbose_name_plural = "COMMON Country"
 
 
@@ -126,7 +126,7 @@ class DdcGerman(models.Model):
         return self.ddc_number + " " + self.ddc_name
 
     class Meta:
-        db_table = "ddc_german"
+        db_table = "sueb_latein_ddc_german"
         verbose_name_plural = "COMMON DDC"
 
 
@@ -142,7 +142,7 @@ class Language(models.Model):
         return self.language
 
     class Meta:
-        db_table = "language"
+        db_table = "sueb_latein_language"
         verbose_name_plural = "COMMON Language"
 
 
@@ -168,7 +168,7 @@ class LocAssign(models.Model):
         return self.signatur
 
     class Meta:
-        db_table = "loc_assign"
+        db_table = "sueb_latein_loc_assign"
         verbose_name_plural = "COMMON LocAssign"
 
 
@@ -189,7 +189,7 @@ class Location(models.Model):
         return self.name
 
     class Meta:
-        db_table = "location"
+        db_table = "sueb_latein_location"
         verbose_name_plural = "OLD Location"
 
 
@@ -210,7 +210,7 @@ class LocationNew(models.Model):
         return self.name
 
     class Meta:
-        db_table = "location_new"
+        db_table = "sueb_latein_location_new"
         verbose_name_plural = "NEW Location"
 
 
@@ -257,7 +257,7 @@ class OrigAssign(models.Model):
         return str(self.id)
 
     class Meta:
-        db_table = "orig_assign"
+        db_table = "sueb_latein_orig_assign"
         verbose_name_plural = "COMMON OrigAssign"
 
 
@@ -289,7 +289,7 @@ class Original(models.Model):
         return (self.title[:75] + "[...]") if len(self.title) > 75 else self.title
 
     class Meta:
-        db_table = "original"
+        db_table = "sueb_latein_original"
         verbose_name_plural = "OLD Original"
 
 
@@ -321,7 +321,7 @@ class OriginalNew(models.Model):
         return (self.title[:75] + "[...]") if len(self.title) > 75 else self.title
 
     class Meta:
-        db_table = "original_new"
+        db_table = "sueb_latein_original_new"
         verbose_name_plural = "NEW Original"
 
 
@@ -360,7 +360,7 @@ class Translation(models.Model):
         return (self.title[:75] + "[...]") if len(self.title) > 75 else self.title
 
     class Meta:
-        db_table = "translation"
+        db_table = "sueb_latein_translation"
         verbose_name_plural = "OLD Translation"
 
 
@@ -403,7 +403,7 @@ class TranslationNew(models.Model):
         return (self.title[:75] + "[...]") if len(self.title) > 75 else self.title
 
     class Meta:
-        db_table = "translation_new"
+        db_table = "sueb_latein_translation_new"
         verbose_name_plural = "NEW Translation"
 
 
@@ -413,7 +413,7 @@ class OriginalAuthor(models.Model):
     author = models.ForeignKey(Author, models.DO_NOTHING)
 
     class Meta:
-        db_table = "original_author"
+        db_table = "sueb_latein_original_author"
 
 
 class OriginalAuthorNew(models.Model):
@@ -422,7 +422,7 @@ class OriginalAuthorNew(models.Model):
     author = models.ForeignKey(AuthorNew, models.DO_NOTHING)
 
     class Meta:
-        db_table = "original_author_new"
+        db_table = "sueb_latein_original_author_new"
 
 
 class OriginalNewAuthor(models.Model):
@@ -431,7 +431,7 @@ class OriginalNewAuthor(models.Model):
     author = models.ForeignKey(Author, models.DO_NOTHING)
 
     class Meta:
-        db_table = "original_new_author"
+        db_table = "sueb_latein_original_new_author"
 
 
 class OriginalNewAuthorNew(models.Model):
@@ -440,7 +440,7 @@ class OriginalNewAuthorNew(models.Model):
     author = models.ForeignKey(AuthorNew, models.DO_NOTHING)
 
     class Meta:
-        db_table = "original_new_author_new"
+        db_table = "sueb_latein_original_new_author_new"
 
 
 class TranslationNewTranslator(models.Model):
@@ -449,7 +449,7 @@ class TranslationNewTranslator(models.Model):
     translator = models.ForeignKey("Translator", models.DO_NOTHING)
 
     class Meta:
-        db_table = "translation_new_translator"
+        db_table = "sueb_latein_translation_new_translator"
 
 
 class TranslationNewTranslatorNew(models.Model):
@@ -458,7 +458,7 @@ class TranslationNewTranslatorNew(models.Model):
     translator = models.ForeignKey("TranslatorNew", models.DO_NOTHING)
 
     class Meta:
-        db_table = "translation_new_translator_new"
+        db_table = "sueb_latein_translation_new_translator_new"
 
 
 class TranslationTranslator(models.Model):
@@ -467,7 +467,7 @@ class TranslationTranslator(models.Model):
     translator = models.ForeignKey("Translator", models.DO_NOTHING)
 
     class Meta:
-        db_table = "translation_translator"
+        db_table = "sueb_latein_translation_translator"
 
 
 class TranslationTranslatorNew(models.Model):
@@ -476,4 +476,4 @@ class TranslationTranslatorNew(models.Model):
     translator = models.ForeignKey("TranslatorNew", models.DO_NOTHING)
 
     class Meta:
-        db_table = "translation_translator_new"
+        db_table = "sueb_latein_translation_translator_new"
