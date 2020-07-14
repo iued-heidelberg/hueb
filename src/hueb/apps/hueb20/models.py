@@ -1,64 +1,10 @@
 # Create your models here.
 
 
+import hueb.apps.hueb_legacy_latein.models as Legacy
 from django.contrib.postgres.fields import IntegerRangeField
 from django.db import models
-from hueb.apps.hueb_legacy_latein.models import (
-    AuthorNew,
-    Country,
-    DdcGerman,
-    Language,
-    LocAssign,
-    LocationNew,
-    OrigAssign,
-    OriginalNew,
-    OriginalNewAuthorNew,
-    TranslationNew,
-    TranslationNewTranslatorNew,
-    TranslatorNew,
-)
-
-
-class SourceReference(models.Model):
-    id = models.BigAutoField(primary_key=True)
-
-    app = models.CharField(max_length=255)
-    author_ref = models.OneToOneField(
-        AuthorNew, on_delete=models.DO_NOTHING, null=True, blank=True
-    )
-    translator_ref = models.OneToOneField(
-        TranslatorNew, on_delete=models.DO_NOTHING, null=True, blank=True
-    )
-    country_ref = models.OneToOneField(
-        Country, on_delete=models.DO_NOTHING, null=True, blank=True
-    )
-    language_ref = models.OneToOneField(
-        Language, on_delete=models.DO_NOTHING, null=True, blank=True
-    )
-    ddc_ref = models.OneToOneField(
-        DdcGerman, on_delete=models.DO_NOTHING, null=True, blank=True
-    )
-    locAssign_ref = models.OneToOneField(
-        LocAssign, on_delete=models.DO_NOTHING, null=True, blank=True
-    )
-    location_ref = models.OneToOneField(
-        LocationNew, on_delete=models.DO_NOTHING, null=True, blank=True
-    )
-    origAssign_ref = models.OneToOneField(
-        OrigAssign, on_delete=models.DO_NOTHING, null=True, blank=True
-    )
-    original_ref = models.OneToOneField(
-        OriginalNew, on_delete=models.DO_NOTHING, null=True, blank=True
-    )
-    translation_ref = models.OneToOneField(
-        TranslationNew, on_delete=models.DO_NOTHING, null=True, blank=True
-    )
-    originalAuthor_ref = models.OneToOneField(
-        OriginalNewAuthorNew, on_delete=models.DO_NOTHING, null=True, blank=True
-    )
-    translationTranslator_ref = models.OneToOneField(
-        TranslationNewTranslatorNew, on_delete=models.DO_NOTHING, null=True, blank=True
-    )
+from django.template.defaultfilters import escape
 
 
 class YearRange(models.Model):
@@ -67,8 +13,12 @@ class YearRange(models.Model):
     start_uncertainty = models.IntegerField(null=True, blank=True)
     end_uncertainty = models.IntegerField(null=True, blank=True)
     parsed_string = models.TextField(blank=True, null=True)
-    source = models.OneToOneField(
-        SourceReference, on_delete=models.CASCADE, null=True, blank=True
+    app = models.CharField(max_length=255)
+    author_ref = models.OneToOneField(
+        Legacy.AuthorNew, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
+    translator_ref = models.OneToOneField(
+        Legacy.TranslatorNew, on_delete=models.DO_NOTHING, null=True, blank=True
     )
 
     def __str__(self):
@@ -88,21 +38,34 @@ class Person(models.Model):
     alias = models.ForeignKey("self", on_delete=models.CASCADE, null=True, blank=True)
     comment = models.TextField(blank=True, null=True)
     is_alias = models.BooleanField(null=True, blank=True)
-    source = models.OneToOneField(
-        SourceReference, on_delete=models.CASCADE, null=True, blank=True
+    app = models.CharField(max_length=255)
+    author_ref = models.OneToOneField(
+        Legacy.AuthorNew, on_delete=models.DO_NOTHING, null=True, blank=True
     )
+    translator_ref = models.OneToOneField(
+        Legacy.TranslatorNew, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
+
+    def delete(self, *args, **kwargs):
+        self.lifetime.delete()
+        return super(self.__class__, self).delete(*args, **kwargs)
 
     def __str__(self):
         if self.name is None:
             return " "
-        return self.name
+        return escape(self.name)
 
 
 class Country(models.Model):
     id = models.BigAutoField(primary_key=True)
     country = models.CharField(max_length=255)
-    source = models.OneToOneField(
-        SourceReference, on_delete=models.CASCADE, null=True, blank=True
+    app = models.CharField(max_length=255)
+    country_ref = models.OneToOneField(
+        Legacy.Country,
+        on_delete=models.DO_NOTHING,
+        null=True,
+        blank=True,
+        related_name="country_ref",
     )
 
     def __str__(self):
@@ -115,8 +78,9 @@ class DdcGerman(models.Model):
     id = models.BigAutoField(primary_key=True)
     ddc_number = models.CharField(max_length=3)
     ddc_name = models.CharField(max_length=255)
-    source = models.OneToOneField(
-        SourceReference, on_delete=models.CASCADE, null=True, blank=True
+    app = models.CharField(max_length=255)
+    ddc_ref = models.OneToOneField(
+        Legacy.DdcGerman, on_delete=models.DO_NOTHING, null=True, blank=True
     )
 
     def __str__(self):
@@ -126,8 +90,13 @@ class DdcGerman(models.Model):
 class Language(models.Model):
     id = models.BigAutoField(primary_key=True)
     language = models.CharField(max_length=255)
-    source = models.OneToOneField(
-        SourceReference, on_delete=models.CASCADE, null=True, blank=True
+    app = models.CharField(max_length=255)
+    language_ref = models.OneToOneField(
+        Legacy.Language,
+        on_delete=models.DO_NOTHING,
+        null=True,
+        blank=True,
+        related_name="language_ref",
     )
 
     def __str__(self):
@@ -144,8 +113,9 @@ class Location(models.Model):
     hostname = models.CharField(max_length=255, blank=True, null=True)
     ip = models.CharField(max_length=255, blank=True, null=True)
     z3950_gateway = models.CharField(max_length=255, blank=True, null=True)
-    source = models.OneToOneField(
-        SourceReference, on_delete=models.CASCADE, null=True, blank=True
+    app = models.CharField(max_length=255)
+    location_ref = models.OneToOneField(
+        Legacy.LocationNew, on_delete=models.DO_NOTHING, null=True, blank=True
     )
 
     def __str__(self):
@@ -158,8 +128,9 @@ class Archive(models.Model):
     id = models.BigAutoField(primary_key=True)
     signatur = models.CharField(max_length=255)
     link = models.CharField(max_length=255, blank=True, null=True)
-    source = models.OneToOneField(
-        SourceReference, on_delete=models.CASCADE, null=True, blank=True
+    app = models.CharField(max_length=255)
+    locAssign_ref = models.OneToOneField(
+        Legacy.LocAssign, on_delete=models.DO_NOTHING, null=True, blank=True
     )
 
 
@@ -182,8 +153,24 @@ class Document(models.Model):
     ddc = models.ForeignKey("DdcGerman", on_delete=models.DO_NOTHING)
     archive = models.ManyToManyField(Archive)
 
-    source = models.OneToOneField(
-        SourceReference, on_delete=models.CASCADE, null=True, blank=True
+    app = models.CharField(max_length=255)
+    origAssign_ref = models.OneToOneField(
+        Legacy.OrigAssign, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
+    original_ref = models.OneToOneField(
+        Legacy.OriginalNew, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
+    translation_ref = models.OneToOneField(
+        Legacy.TranslationNew, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
+    originalAuthor_ref = models.OneToOneField(
+        Legacy.OriginalNewAuthorNew, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
+    translationTranslator_ref = models.OneToOneField(
+        Legacy.TranslationNewTranslatorNew,
+        on_delete=models.DO_NOTHING,
+        null=True,
+        blank=True,
     )
 
     def __str__(self):
