@@ -137,7 +137,7 @@ USE_TZ = True
 STATIC_URL = "/static/"
 
 
-if os.getenv("HUEB_SENTRY_INACTIVE") is not None:
+if os.getenv("HUEB_SENTRY_INACTIVE") is None:
     sentry_sdk.init(
         dsn=os.getenv("HUEB_SENTRY_API_KEY"),
         integrations=[DjangoIntegration()],
