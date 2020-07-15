@@ -4,6 +4,8 @@
 import hueb.apps.hueb_legacy_latein.models as Legacy
 from django.contrib.postgres.fields import IntegerRangeField
 from django.db import models
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 from django.template.defaultfilters import escape
 
 
@@ -45,15 +47,20 @@ class Person(models.Model):
     translator_ref = models.OneToOneField(
         Legacy.TranslatorNew, on_delete=models.DO_NOTHING, null=True, blank=True
     )
-
-    def delete(self, *args, **kwargs):
-        self.lifetime.delete()
-        return super(self.__class__, self).delete(*args, **kwargs)
+    publisher_ref = models.OneToOneField(
+        Legacy.OriginalNew, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
 
     def __str__(self):
         if self.name is None:
             return " "
         return escape(self.name)
+
+
+@receiver(post_delete, sender=Person)
+def post_delete_lifetime(sender, instance, *args, **kwargs):
+    if instance.lifetime:  # just in case user is not specified
+        instance.lifetime.delete()
 
 
 class Country(models.Model):
