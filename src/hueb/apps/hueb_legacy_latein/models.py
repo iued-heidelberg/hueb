@@ -163,9 +163,7 @@ class LocAssign(models.Model):
     )
 
     def __str__(self):
-        if self.signatur is None:
-            return " "
-        return self.signatur
+        return str(self.id)
 
     class Meta:
         db_table = "sueb_latein_loc_assign"
