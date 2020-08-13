@@ -4,9 +4,33 @@
 import hueb.apps.hueb_legacy_latein.models as Legacy
 from django.contrib.postgres.fields import IntegerRangeField
 from django.db import models
-from django.db.models.signals import post_delete
-from django.dispatch import receiver
 from django.template.defaultfilters import escape
+
+
+class Person(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    name = models.CharField(max_length=255, null=True, blank=True)
+    alias = models.ForeignKey("self", on_delete=models.CASCADE, null=True, blank=True)
+    comment = models.TextField(blank=True, null=True)
+    is_alias = models.BooleanField(null=True, blank=True)
+    app = models.CharField(max_length=255)
+    author_ref = models.OneToOneField(
+        Legacy.AuthorNew, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
+    translator_ref = models.OneToOneField(
+        Legacy.TranslatorNew, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
+    publisherOriginal_ref = models.OneToOneField(
+        Legacy.OriginalNew, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
+    publisherTranslation_ref = models.OneToOneField(
+        Legacy.TranslationNew, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
+
+    def __str__(self):
+        if self.name is None:
+            return " "
+        return escape(self.name)
 
 
 class YearRange(models.Model):
@@ -16,6 +40,14 @@ class YearRange(models.Model):
     end_uncertainty = models.IntegerField(null=True, blank=True)
     parsed_string = models.TextField(blank=True, null=True)
     app = models.CharField(max_length=255)
+    person_lifetime = models.OneToOneField(
+        Person,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="lifetime",
+    )
+
     author_ref = models.OneToOneField(
         Legacy.AuthorNew, on_delete=models.DO_NOTHING, null=True, blank=True
     )
@@ -29,38 +61,6 @@ class YearRange(models.Model):
         except Exception:
 
             return "none"
-
-
-class Person(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    name = models.CharField(max_length=255, null=True, blank=True)
-    lifetime = models.OneToOneField(
-        YearRange, on_delete=models.CASCADE, null=True, blank=True
-    )
-    alias = models.ForeignKey("self", on_delete=models.CASCADE, null=True, blank=True)
-    comment = models.TextField(blank=True, null=True)
-    is_alias = models.BooleanField(null=True, blank=True)
-    app = models.CharField(max_length=255)
-    author_ref = models.OneToOneField(
-        Legacy.AuthorNew, on_delete=models.DO_NOTHING, null=True, blank=True
-    )
-    translator_ref = models.OneToOneField(
-        Legacy.TranslatorNew, on_delete=models.DO_NOTHING, null=True, blank=True
-    )
-    publisher_ref = models.OneToOneField(
-        Legacy.OriginalNew, on_delete=models.DO_NOTHING, null=True, blank=True
-    )
-
-    def __str__(self):
-        if self.name is None:
-            return " "
-        return escape(self.name)
-
-
-@receiver(post_delete, sender=Person)
-def post_delete_lifetime(sender, instance, *args, **kwargs):
-    if instance.lifetime:  # just in case user is not specified
-        instance.lifetime.delete()
 
 
 class Country(models.Model):
@@ -131,39 +131,33 @@ class Location(models.Model):
         return self.name
 
 
-class Archive(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    signatur = models.CharField(max_length=255)
-    link = models.CharField(max_length=255, blank=True, null=True)
-    app = models.CharField(max_length=255)
-    locAssign_ref = models.OneToOneField(
-        Legacy.LocAssign, on_delete=models.DO_NOTHING, null=True, blank=True
-    )
-
-
 class Document(models.Model):
     id = models.BigAutoField(primary_key=True)
-    title = models.TextField()
+    title = models.TextField(blank=True, null=True)
     subtitle = models.TextField(blank=True, null=True)
-    published = models.OneToOneField(YearRange, null=False, on_delete=models.CASCADE)
-    publisher = models.ManyToManyField(Person, related_name="DocumentPublisher")
-    author = models.ManyToManyField(Person, related_name="DocumentAuthor")
+    year = models.CharField(max_length=100, blank=True, null=True)
+    publishers = models.ManyToManyField(Person, related_name="DocumentPublishers")
+    written_by = models.ManyToManyField(Person, related_name="DocumentAuthor")
     translated_from = models.ManyToManyField("self")
     translated_to = models.ManyToManyField("self")
 
     published_location = models.CharField(max_length=255, blank=True, null=True)
     edition = models.TextField(blank=True, null=True)
-    language = models.ForeignKey("Language", on_delete=models.DO_NOTHING)
-    year_published = models.DateTimeField(blank=True, null=True)
-    country = models.ManyToManyField(Country)
-
-    ddc = models.ForeignKey("DdcGerman", on_delete=models.DO_NOTHING)
-    archive = models.ManyToManyField(Archive)
-
-    app = models.CharField(max_length=255)
-    origAssign_ref = models.OneToOneField(
-        Legacy.OrigAssign, on_delete=models.DO_NOTHING, null=True, blank=True
+    language = models.ForeignKey(
+        "Language", on_delete=models.DO_NOTHING, blank=True, null=True
     )
+    real_year = models.IntegerField(blank=True, null=True)
+    country = models.ForeignKey(
+        "Country", blank=True, null=True, on_delete=models.DO_NOTHING
+    )
+
+    ddc = models.ForeignKey(
+        "DdcGerman", on_delete=models.DO_NOTHING, blank=True, null=True
+    )
+    located_in = models.ManyToManyField(
+        Location, through="Archive", through_fields=("document", "location"),
+    )
+    app = models.CharField(max_length=255, blank=True, null=True)
     original_ref = models.OneToOneField(
         Legacy.OriginalNew, on_delete=models.DO_NOTHING, null=True, blank=True
     )
@@ -184,3 +178,19 @@ class Document(models.Model):
         if self.title is None:
             return " "
         return (self.title[:75] + "[...]") if len(self.title) > 75 else self.title
+
+
+class Archive(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    location = models.ForeignKey(
+        Location, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
+    document = models.ForeignKey(
+        Document, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
+    signatur = models.CharField(max_length=255)
+    link = models.CharField(max_length=255, blank=True, null=True)
+    app = models.CharField(max_length=255)
+    locAssign_ref = models.ForeignKey(
+        Legacy.LocAssign, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
