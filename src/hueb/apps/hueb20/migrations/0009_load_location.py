@@ -7,16 +7,11 @@ def load_location(apps, schema_editor):
     Location_legacy = apps.get_model("hueb_legacy_latein", "LocationNew")
     Country = apps.get_model("hueb20", "Country")
     Location = apps.get_model("hueb20", "Location")
-    Source = apps.get_model("hueb20", "SourceReference")
 
     for legacy_location in Location_legacy.objects.all():
-        source = Source()
-        source.app = "hueb_legacy_latein"
-        source.location_ref = legacy_location
-        source.save()
-
         new_location = Location()
-        new_location.source = source
+        new_location.app = "hueb_legacy_latein"
+        new_location.location_ref = legacy_location
 
         new_location.name = legacy_location.name
         new_location.adress = legacy_location.adress
@@ -25,14 +20,9 @@ def load_location(apps, schema_editor):
         new_location.z3950_gateway = legacy_location.z3950_gateway
 
         if legacy_location.country is not None:
-            new_country_source_id = (
-                Source.objects.filter(app="hueb_legacy_latein")
-                .get(country_ref=legacy_location.country)
-                .id
+            new_location.country = Country.objects.filter(app="hueb_legacy_latein").get(
+                country_ref=legacy_location.country
             )
-
-            new_location.country = Country.objects.get(source=new_country_source_id)
-
         else:
             new_location.country = None
 
@@ -40,10 +30,8 @@ def load_location(apps, schema_editor):
 
 
 def unload_location(apps, schema_editor):
-    Source = apps.get_model("hueb20", "SourceReference")
-    Source.objects.filter(app="hueb_legacy_latein").filter(
-        location_ref__isnull=False
-    ).delete()
+    Location = apps.get_model("hueb20", "Location")
+    Location.objects.filter(app="hueb_legacy_latein").delete()
 
 
 class Migration(migrations.Migration):

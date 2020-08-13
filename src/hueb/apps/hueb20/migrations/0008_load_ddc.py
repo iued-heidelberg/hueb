@@ -7,26 +7,21 @@ def load_DdcGerman(apps, schema_editor):
     Ddc_legacy = apps.get_model("hueb_legacy_latein", "DdcGerman")
 
     Ddc = apps.get_model("hueb20", "DdcGerman")
-    Source = apps.get_model("hueb20", "SourceReference")
 
     for legacy_ddc in Ddc_legacy.objects.all():
-        source = Source()
-        source.app = "hueb_legacy_latein"
-        source.ddc_ref = legacy_ddc
-        source.save()
-
         new_ddc = Ddc()
-        new_ddc.source = source
+
+        new_ddc.ddc_ref = legacy_ddc
+        new_ddc.app = "hueb_legacy_latein"
+
         new_ddc.ddc_number = legacy_ddc.ddc_number
         new_ddc.ddc_name = legacy_ddc.ddc_name
         new_ddc.save()
 
 
 def unload_DdcGerman(apps, schema_editor):
-    Source = apps.get_model("hueb20", "SourceReference")
-    Source.objects.filter(app="hueb_legacy_latein").filter(
-        ddc_ref__isnull=False
-    ).delete()
+    Ddc = apps.get_model("hueb20", "DdcGerman")
+    Ddc.objects.filter(app="hueb_legacy_latein").delete()
 
 
 class Migration(migrations.Migration):

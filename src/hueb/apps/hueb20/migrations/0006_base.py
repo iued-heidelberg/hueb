@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("hueb20", "0001_initial"),
+        ("hueb20", "0006_auto_20200812_1137"),
     ]
 
     operations = []

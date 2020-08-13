@@ -5,33 +5,6 @@ import re
 from django.db import migrations
 from psycopg2.extras import NumericRange
 
-
-def load_authorNew(apps, schema_editor):
-    Author_legacy = apps.get_model("hueb_legacy_latein", "AuthorNew")
-
-    Person = apps.get_model("hueb20", "Person")
-    YearRange = apps.get_model("hueb20", "YearRange")
-    Source = apps.get_model("hueb20", "SourceReference")
-
-    for legacy_author in Author_legacy.objects.all():
-        source = Source()
-        source.app = "hueb_legacy_latein"
-        source.author_ref = legacy_author
-        source.save()
-
-        new_person = Person()
-        new_person.source = source
-
-        lifetime = parse_years(YearRange, legacy_author.name)
-        lifetime.source = source
-        lifetime.save()
-
-        new_person.name = legacy_author.name
-        new_person.comment = legacy_author.comment
-        new_person.lifetime = lifetime
-        new_person.save()
-
-
 # matches everything between brackets
 brackets = re.compile(r"\([\s\S]*\)")
 # matches (1794-1849)
@@ -55,10 +28,62 @@ def parse_years(YearRange, parse_string):
     return lifetime
 
 
+def load_authorNew(apps, schema_editor):
+    Author_legacy = apps.get_model("hueb_legacy_latein", "AuthorNew")
+
+    Person = apps.get_model("hueb20", "Person")
+    YearRange = apps.get_model("hueb20", "YearRange")
+
+    for legacy_author in Author_legacy.objects.all():
+        new_person = Person()
+        new_person.app = "hueb_legacy_latein"
+        new_person.author_ref = legacy_author
+        new_person.name = legacy_author.name
+        new_person.comment = legacy_author.comment
+        new_person.save()
+
+        lifetime = parse_years(YearRange, legacy_author.name)
+        lifetime.app = "hueb_legacy_latein"
+        lifetime.author_ref = legacy_author
+        lifetime.person_lifetime = new_person
+        lifetime.save()
+
+
 def unload_authorNew(apps, schema_editor):
-    Source = apps.get_model("hueb20", "SourceReference")
-    Source.objects.filter(app="hueb_legacy_latein").filter(
+    Person = apps.get_model("hueb20", "Person")
+    # related lifetime objects are deleted by the models delete()-function
+    Person.objects.filter(app="hueb_legacy_latein").filter(
         author_ref__isnull=False
+    ).delete()
+
+
+def load_translatorNew(apps, schema_editor):
+    Translator_legacy = apps.get_model("hueb_legacy_latein", "TranslatorNew")
+
+    Person = apps.get_model("hueb20", "Person")
+    YearRange = apps.get_model("hueb20", "YearRange")
+
+    for legacy_translator in Translator_legacy.objects.all():
+        new_person = Person()
+        new_person.app = "hueb_legacy_latein"
+        new_person.translator_ref = legacy_translator
+
+        new_person.name = legacy_translator.name
+        new_person.comment = legacy_translator.comment
+        new_person.save()
+
+        lifetime = parse_years(YearRange, legacy_translator.name)
+        lifetime.app = "hueb_legacy_latein"
+        lifetime.translator_ref = legacy_translator
+        lifetime.person_lifetime = new_person
+        lifetime.save()
+
+
+def unload_translatorNew(apps, schema_editor):
+    Person = apps.get_model("hueb20", "Person")
+
+    Person.objects.filter(app="hueb_legacy_latein").filter(
+        translator_ref__isnull=False
     ).delete()
 
 
@@ -69,4 +94,7 @@ class Migration(migrations.Migration):
         ("hueb_legacy_latein", "0005_auto_20200709_2025"),
     ]
 
-    operations = [migrations.RunPython(load_authorNew, unload_authorNew)]
+    operations = [
+        migrations.RunPython(load_authorNew, unload_authorNew),
+        migrations.RunPython(load_translatorNew, unload_translatorNew),
+    ]
