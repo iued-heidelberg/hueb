@@ -1,3 +1,4 @@
+set -e
 psql -c "DROP DATABASE IF EXISTS hueb;"
 psql -c "CREATE DATABASE hueb with TEMPLATE hueb_db;"
 
