@@ -17,16 +17,6 @@
     - restart app
     - restart nginx
 
-- name: Migrate legacy database
-  django_manage:
-    app_path: "{{ src_directory }}"
-    command: migrate
-    database: legacy_latein
-    virtualenv: "{{ venv_directory }}"
-  notify:
-    - restart app
-    - restart nginx
-
 - name: Create superuser
   django_manage:
     command: shell -c "from django.contrib.auth import get_user_model; MyUser = get_user_model(); MyUser.objects.filter( username__exact = '{{ django_superuser_username }}' ).count() == 0 or exit(); new_super_user = MyUser( username = '{{ django_superuser_username }}', email='{{ django_superuser_email }}', is_superuser = True, is_staff = True ); new_super_user.password = '{{ django_superuser_password }}'; new_super_user.save();"
