@@ -28,13 +28,13 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 if os.getenv("HUEB_STATIC_DIR") is not None:
     STATIC_ROOT = os.getenv("HUEB_STATIC_DIR")
 else:
-    STATIC_ROOT = os.path.join(PROJECT_ROOT, "static")
+    STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("HUEB_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("HUEB_DEBUG") == "True"
+DEBUG = os.getenv("HUEB_DEBUG") == "TRUE"
 
 ALLOWED_HOSTS = [os.getenv("HUEB_ALLOWED_HOSTS")]
 
@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "debug_toolbar",
 ]
 
 MIDDLEWARE = [
@@ -60,6 +61,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = "hueb.urls"
@@ -131,6 +133,7 @@ USE_L10N = True
 USE_TZ = True
 
 
+INTERNAL_IPS = ["127.0.0.1"]
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
