@@ -41,18 +41,6 @@
     path: "{{dump_directory}}/{{ ansible_date_time.iso8601 }}_default_dump.json"
     remove: yes
 
-- name: Dump legacy-database
-  become: yes
-  become_user: "{{ user_name }}"
-  command: "{{venv_directory}}/bin/python3 {{src_directory}}/manage.py dumpdata --database legacy_latein --output {{dump_directory}}/{{ ansible_date_time.iso8601 }}_legacy_latein_dump.json"
-
-- name: Compress legacy-database dump
-  become: yes
-  become_user: "{{ user_name }}"
-  archive:
-    path: "{{dump_directory}}/{{ ansible_date_time.iso8601 }}_legacy_latein_dump.json"
-    remove: yes
-
 - name: Start application
   service:
     name: "{{app_name}}"
