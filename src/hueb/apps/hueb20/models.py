@@ -7,6 +7,29 @@ from django.db import models
 from django.template.defaultfilters import escape
 
 
+class YearRange(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    timerange = IntegerRangeField(null=True, blank=True)
+    start_uncertainty = models.IntegerField(null=True, blank=True)
+    end_uncertainty = models.IntegerField(null=True, blank=True)
+    parsed_string = models.TextField(blank=True, null=True)
+    app = models.CharField(max_length=255)
+
+    author_ref = models.OneToOneField(
+        Legacy.AuthorNew, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
+    translator_ref = models.OneToOneField(
+        Legacy.TranslatorNew, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
+
+    def __str__(self):
+        try:
+            return str(self.timerange.lower) + " - " + str(self.timerange.upper)
+        except Exception:
+
+            return "none"
+
+
 class Person(models.Model):
     id = models.BigAutoField(primary_key=True)
     name = models.CharField(max_length=255, null=True, blank=True)
@@ -14,6 +37,13 @@ class Person(models.Model):
     comment = models.TextField(blank=True, null=True)
     is_alias = models.BooleanField(null=True, blank=True)
     app = models.CharField(max_length=255)
+    lifetime = models.OneToOneField(
+        YearRange,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="lifetime",
+    )
     author_ref = models.OneToOneField(
         Legacy.AuthorNew, on_delete=models.DO_NOTHING, null=True, blank=True
     )
@@ -31,36 +61,6 @@ class Person(models.Model):
         if self.name is None:
             return " "
         return escape(self.name)
-
-
-class YearRange(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    timerange = IntegerRangeField(null=True, blank=True)
-    start_uncertainty = models.IntegerField(null=True, blank=True)
-    end_uncertainty = models.IntegerField(null=True, blank=True)
-    parsed_string = models.TextField(blank=True, null=True)
-    app = models.CharField(max_length=255)
-    person_lifetime = models.OneToOneField(
-        Person,
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-        related_name="lifetime",
-    )
-
-    author_ref = models.OneToOneField(
-        Legacy.AuthorNew, on_delete=models.DO_NOTHING, null=True, blank=True
-    )
-    translator_ref = models.OneToOneField(
-        Legacy.TranslatorNew, on_delete=models.DO_NOTHING, null=True, blank=True
-    )
-
-    def __str__(self):
-        try:
-            return str(self.timerange.lower) + " - " + str(self.timerange.upper)
-        except Exception:
-
-            return "none"
 
 
 class Country(models.Model):
