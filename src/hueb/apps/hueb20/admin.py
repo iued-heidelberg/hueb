@@ -21,6 +21,10 @@ class LegacyAuthorNew(admin.TabularInline):
     extra = 0
 
 
+class YearRangeInline(admin.StackedInline):
+    model = YearRange
+
+
 @admin.register(YearRange)
 class YearRangeAdmin(admin.ModelAdmin):
     readonly_fields = ("app", "author_link", "translator_link")
@@ -73,14 +77,15 @@ class YearRangeAdmin(admin.ModelAdmin):
 @admin.register(Person)
 class PersonAdmin(admin.ModelAdmin):
     readonly_fields = ("app", "author_link", "translator_link")
-    list_display = ("id", "name", "lifetime", "alias", "is_alias")
+    list_display = ("id", "name", "alias", "is_alias")
     search_fields = ("name", "id")
+    autocomplete_fields = ("alias",)
     fieldsets = (
         (
             "Person Information",
             {
                 "description": ("All known data about a person"),
-                "fields": ("name", "lifetime", "alias", "is_alias"),
+                "fields": ("name", "alias"),
             },
         ),
         (
@@ -93,6 +98,7 @@ class PersonAdmin(admin.ModelAdmin):
             },
         ),
     )
+    inlines = [YearRangeInline]
 
     def author_link(self, obj):
         url = reverse(
@@ -309,7 +315,7 @@ class ArchiveInline(admin.TabularInline):
     # def get_queryset(self, request):
     #    qs = super(ArchiveInline, self).get_queryset(request)
     #    return qs.select_related("location")
-    readonly_fields = ("app",)
+    readonly_fields = ("app", "locAssign_ref")
     model = Document.located_in.through
     extra = 0
     verbose_name = "Archive Location"
@@ -355,7 +361,7 @@ class OriginalRelationshipInline(admin.TabularInline):
 
 @admin.register(Document)
 class DocumentAdmin(admin.ModelAdmin):
-
+    autocomplete_fields = ("ddc", "country", "language")
     readonly_fields = (
         "app",
         "origAssign_link",
@@ -391,13 +397,13 @@ class DocumentAdmin(admin.ModelAdmin):
                 "fields": (
                     "title",
                     "subtitle",
-                    "year",
-                    "published_location",
                     "edition",
                     "language",
-                    "real_year",
-                    "country",
                     "ddc",
+                    "year",
+                    "real_year",
+                    "published_location",
+                    "country",
                 ),
             },
         ),
