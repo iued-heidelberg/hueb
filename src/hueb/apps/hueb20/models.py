@@ -150,8 +150,11 @@ class Document(models.Model):
     year = models.CharField(max_length=100, blank=True, null=True)
     publishers = models.ManyToManyField(Person, related_name="DocumentPublishers")
     written_by = models.ManyToManyField(Person, related_name="DocumentAuthor")
-    translated_from = models.ManyToManyField("self")
-    translated_to = models.ManyToManyField("self")
+    document_relationships = models.ManyToManyField(
+        "self",
+        through="DocumentRelationship",
+        through_fields=("document_from", "document_to"),
+    )
 
     published_location = models.CharField(max_length=255, blank=True, null=True)
     edition = models.TextField(blank=True, null=True)
@@ -190,6 +193,19 @@ class Document(models.Model):
         if self.title is None:
             return " "
         return (self.title[:75] + "[...]") if len(self.title) > 75 else self.title
+
+
+class DocumentRelationship(models.Model):
+    id = models.BigAutoField(primary_key=True)
+
+    document_from = models.ForeignKey(
+        Document, on_delete=models.DO_NOTHING, related_name="source"
+    )
+    document_to = models.ForeignKey(
+        Document, on_delete=models.DO_NOTHING, related_name="target"
+    )
+
+    app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
 
 
 class Archive(models.Model):
