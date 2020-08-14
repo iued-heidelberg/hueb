@@ -23,6 +23,12 @@ class LegacyAuthorNew(admin.TabularInline):
 
 class YearRangeInline(admin.StackedInline):
     model = YearRange
+    readonly_fields = (
+        "app",
+        "author_ref",
+        "translator_ref",
+    )
+    extra = 0
 
 
 @admin.register(YearRange)
