@@ -50,6 +50,7 @@ class YearRangeAdmin(admin.ModelAdmin):
                     "The information for this entry were derived from this old database entry."
                 ),
                 "fields": ("app", "author_link", "translator_link"),
+                "classes": ("collapse",),
             },
         ),
     )
@@ -95,6 +96,7 @@ class PersonAdmin(admin.ModelAdmin):
                     "The information for this entry were derived from this old database entry."
                 ),
                 "fields": ("app", "translator_link", "author_link"),
+                "classes": ("collapse",),
             },
         ),
     )
@@ -143,6 +145,7 @@ class CountryAdmin(admin.ModelAdmin):
                     "The information for this entry were derived from this old database entry."
                 ),
                 "fields": ("app", "country_link"),
+                "classes": ("collapse",),
             },
         ),
     )
@@ -179,6 +182,7 @@ class DdcGermanAdmin(admin.ModelAdmin):
                     "The information for this entry were derived from this old database entry."
                 ),
                 "fields": ("app", "ddc_link"),
+                "classes": ("collapse",),
             },
         ),
     )
@@ -211,6 +215,7 @@ class LanguageAdmin(admin.ModelAdmin):
                     "The information for this entry were derived from this old database entry."
                 ),
                 "fields": ("app", "language_link"),
+                "classes": ("collapse",),
             },
         ),
     )
@@ -262,6 +267,7 @@ class LocationAdmin(admin.ModelAdmin):
                     "The information for this entry were derived from this old database entry."
                 ),
                 "fields": ("app", "location_link"),
+                "classes": ("collapse",),
             },
         ),
     )
@@ -296,7 +302,7 @@ class ArchiveAdmin(admin.ModelAdmin):
                     "The information for this entry were derived from this old database entry."
                 ),
                 "fields": ("app", "locAssign_link"),
-                # "readonly_fields": ("app", "link"),
+                "classes": ("collapse",),
             },
         ),
     )
