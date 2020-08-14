@@ -309,7 +309,7 @@ class ArchiveInline(admin.TabularInline):
     # def get_queryset(self, request):
     #    qs = super(ArchiveInline, self).get_queryset(request)
     #    return qs.select_related("location")
-
+    readonly_fields = ("app",)
     model = Document.located_in.through
     extra = 0
     verbose_name = "Archive Location"
@@ -317,49 +317,40 @@ class ArchiveInline(admin.TabularInline):
 
 
 class DocumentAuthorInline(admin.TabularInline):
-    def get_queryset(self, request):
-        qs = super(DocumentAuthorInline, self).get_queryset(request)
-        return qs.select_related("person")
-
     model = Document.written_by.through
     extra = 0
-    verbose_name = "Document-Author Relationship"
+    verbose_name = "Author"
     verbose_name_plural = verbose_name + "s"
+    autocomplete_fields = ("person",)
 
 
 class DocumentPublisherInline(admin.TabularInline):
-    def get_queryset(self, request):
-        qs = super(DocumentPublisherInline, self).get_queryset(request)
-        return qs.select_related("person")
-
     model = Document.publishers.through
     extra = 0
-    verbose_name = "Document-Publisher Relationship"
+    verbose_name = "Publisher"
     verbose_name_plural = verbose_name + "s"
+    autocomplete_fields = ("person",)
 
 
-class DocumentTranslatedFromInline(admin.TabularInline):
-    def get_queryset(self, request):
-        qs = super(DocumentTranslatedFromInline, self).get_queryset(request)
-        return qs.select_related("from_document")
-
-    model = Document.translated_from.through
-    fk_name = "from_document"
+class TranslationRelationshipInline(admin.TabularInline):
+    readonly_fields = ("app",)
+    model = Document.document_relationships.through
+    fk_name = "document_from"
     extra = 0
-    verbose_name = "Orginal Document"
+    verbose_name = "Translation"
     verbose_name_plural = verbose_name + "s"
+    autocomplete_fields = ("document_to",)
 
 
-class DocumentTranslatedToInline(admin.TabularInline):
-    def get_queryset(self, request):
-        qs = super(DocumentTranslatedToInline, self).get_queryset(request)
-        return qs.select_related("from_document")
+class OriginalRelationshipInline(admin.TabularInline):
 
-    model = Document.translated_to.through
-    fk_name = "from_document"
+    readonly_fields = ("app",)
+    model = Document.document_relationships.through
+    fk_name = "document_to"
     extra = 0
-    verbose_name = "Translated Document"
+    verbose_name = "Original"
     verbose_name_plural = verbose_name + "s"
+    autocomplete_fields = ("document_from",)
 
 
 @admin.register(Document)
@@ -387,8 +378,8 @@ class DocumentAdmin(admin.ModelAdmin):
     inlines = [
         DocumentAuthorInline,
         DocumentPublisherInline,
-        DocumentTranslatedFromInline,
-        DocumentTranslatedToInline,
+        TranslationRelationshipInline,
+        OriginalRelationshipInline,
         ArchiveInline,
     ]
     search_fields = ("id", "title", "author")
@@ -424,6 +415,7 @@ class DocumentAdmin(admin.ModelAdmin):
                     "translationTranslator_link",
                     "translation_link",
                 ),
+                "classes": ("collapse",),
             },
         ),
     )
