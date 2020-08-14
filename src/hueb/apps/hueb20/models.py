@@ -94,6 +94,7 @@ class Country(models.Model):
 
 
 class DdcGerman(models.Model):
+
     id = models.BigAutoField(primary_key=True)
     ddc_number = models.CharField(max_length=3)
     ddc_name = models.CharField(max_length=255)
@@ -101,6 +102,10 @@ class DdcGerman(models.Model):
     ddc_ref = models.OneToOneField(
         Legacy.DdcGerman, on_delete=models.DO_NOTHING, null=True, blank=True
     )
+
+    class Meta:
+        verbose_name = "DDC"
+        verbose_name_plural = verbose_name + "s"
 
     def __str__(self):
         return self.ddc_number + " " + self.ddc_name
