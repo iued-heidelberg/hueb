@@ -28,7 +28,8 @@ jobs:
         python -m pip install -r src/requirements.txt
     - name: Run Tests
       run: |
-        python src/manage.py test
+        cd src
+        python manage.py test
       env: # Or as an environment variable
         HUEB_SECRET_KEY: ${{ secrets.HUEB_SECRET_KEY }}
 
