@@ -24,6 +24,11 @@ from .models import (  # OriginalAuthorNew,; OriginalNewAuthor,; TranslationNewT
 )
 
 
+class ReadonlyAdmin(admin.ModelAdmin):
+    def has_change_permission(self, request, obj=None):
+        return False
+
+
 class OriginalAuthorInline(admin.TabularInline):
     model = OriginalAuthor
     extra = 0
@@ -88,7 +93,7 @@ class TransNewAssignInline(admin.TabularInline):
 
 
 @admin.register(OrigAssign)
-class OrigAssignAdmin(admin.ModelAdmin):
+class OrigAssignAdmin(ReadonlyAdmin):
     list_display = (
         "id",
         "orig",
@@ -140,7 +145,7 @@ class OrigAssignAdmin(admin.ModelAdmin):
 
 
 @admin.register(LocAssign)
-class LocAssignAdmin(admin.ModelAdmin):
+class LocAssignAdmin(ReadonlyAdmin):
     list_display = (
         "id",
         "loc",
@@ -184,7 +189,7 @@ class LocAssignAdmin(admin.ModelAdmin):
 
 
 @admin.register(User)
-class UserAdmin(admin.ModelAdmin):
+class UserAdmin(ReadonlyAdmin):
     list_display = ("id", "name", "loginname", "anmerkungen")
     search_fields = ("name", "id")
 
@@ -202,7 +207,7 @@ class UserAdmin(admin.ModelAdmin):
 
 
 @admin.register(Translator)
-class TranslatorAdmin(admin.ModelAdmin):
+class TranslatorAdmin(ReadonlyAdmin):
     list_display = (
         "id",
         "name",
@@ -245,7 +250,7 @@ class TranslatorAdmin(admin.ModelAdmin):
 
 
 @admin.register(TranslatorNew)
-class TranslatorNewAdmin(admin.ModelAdmin):
+class TranslatorNewAdmin(ReadonlyAdmin):
     list_display = (
         "id",
         "name",
@@ -288,7 +293,7 @@ class TranslatorNewAdmin(admin.ModelAdmin):
 
 
 @admin.register(Author)
-class AuthorAdmin(admin.ModelAdmin):
+class AuthorAdmin(ReadonlyAdmin):
     list_display = (
         "id",
         "name",
@@ -331,7 +336,7 @@ class AuthorAdmin(admin.ModelAdmin):
 
 
 @admin.register(AuthorNew)
-class AuthorNewAdmin(admin.ModelAdmin):
+class AuthorNewAdmin(ReadonlyAdmin):
     list_display = (
         "id",
         "name",
@@ -375,7 +380,7 @@ class AuthorNewAdmin(admin.ModelAdmin):
 
 
 @admin.register(Country)
-class CountryAdmin(admin.ModelAdmin):
+class CountryAdmin(ReadonlyAdmin):
     list_display = (
         "id",
         "country",
@@ -403,7 +408,7 @@ class CountryAdmin(admin.ModelAdmin):
 
 
 @admin.register(DdcGerman)
-class DdcGermanAdmin(admin.ModelAdmin):
+class DdcGermanAdmin(ReadonlyAdmin):
     list_display = (
         "id",
         "ddc_number",
@@ -430,7 +435,7 @@ class DdcGermanAdmin(admin.ModelAdmin):
 
 
 @admin.register(Language)
-class LanguageAdmin(admin.ModelAdmin):
+class LanguageAdmin(ReadonlyAdmin):
     list_display = (
         "id",
         "language",
@@ -453,7 +458,7 @@ class LanguageAdmin(admin.ModelAdmin):
 
 
 @admin.register(Location)
-class LocationAdmin(admin.ModelAdmin):
+class LocationAdmin(ReadonlyAdmin):
     list_display = (
         "id",
         "name",
@@ -495,7 +500,7 @@ class LocationAdmin(admin.ModelAdmin):
 
 
 @admin.register(LocationNew)
-class LocationNewAdmin(admin.ModelAdmin):
+class LocationNewAdmin(ReadonlyAdmin):
     list_display = (
         "id",
         "name",
@@ -537,7 +542,7 @@ class LocationNewAdmin(admin.ModelAdmin):
 
 
 @admin.register(Original)
-class OriginalAdmin(admin.ModelAdmin):
+class OriginalAdmin(ReadonlyAdmin):
     list_display = (
         "id",
         "title",
@@ -609,7 +614,7 @@ class OriginalAdmin(admin.ModelAdmin):
 
 
 @admin.register(OriginalNew)
-class OriginalNewAdmin(admin.ModelAdmin):
+class OriginalNewAdmin(ReadonlyAdmin):
     list_display = (
         "id",
         "title",
@@ -681,7 +686,7 @@ class OriginalNewAdmin(admin.ModelAdmin):
 
 
 @admin.register(Translation)
-class TranslationAdmin(admin.ModelAdmin):
+class TranslationAdmin(ReadonlyAdmin):
     list_display = (
         "id",
         "title",
@@ -758,7 +763,7 @@ class TranslationAdmin(admin.ModelAdmin):
 
 
 @admin.register(TranslationNew)
-class TranslationNewAdmin(admin.ModelAdmin):
+class TranslationNewAdmin(ReadonlyAdmin):
     list_display = (
         "id",
         "title",
