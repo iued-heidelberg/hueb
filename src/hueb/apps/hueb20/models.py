@@ -6,6 +6,18 @@ from django.contrib.postgres.fields import IntegerRangeField
 from django.db import models
 from django.template.defaultfilters import escape
 
+LATEIN = "LATEIN"
+LIDOS = "LIDOS "
+LEGACY = "LEGACY"
+HUEB20 = "HUEB20"
+
+HUEB_APPLICATIONS = [
+    (LATEIN, "HÜB Latein Datensatz"),
+    (LIDOS, "HÜB Lidos Datensatz"),
+    (LEGACY, "HÜB Basis Datensatz"),
+    (HUEB20, "HÜB 2020 Datensatz"),
+]
+
 
 class YearRange(models.Model):
     id = models.BigAutoField(primary_key=True)
@@ -13,7 +25,7 @@ class YearRange(models.Model):
     start_uncertainty = models.IntegerField(null=True, blank=True)
     end_uncertainty = models.IntegerField(null=True, blank=True)
     parsed_string = models.TextField(blank=True, null=True)
-    app = models.CharField(max_length=255)
+    app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
 
     author_ref = models.OneToOneField(
         Legacy.AuthorNew, on_delete=models.DO_NOTHING, null=True, blank=True
@@ -36,7 +48,7 @@ class Person(models.Model):
     alias = models.ForeignKey("self", on_delete=models.CASCADE, null=True, blank=True)
     comment = models.TextField(blank=True, null=True)
     is_alias = models.BooleanField(null=True, blank=True)
-    app = models.CharField(max_length=255)
+    app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
     lifetime = models.OneToOneField(
         YearRange,
         on_delete=models.CASCADE,
@@ -65,8 +77,8 @@ class Person(models.Model):
 
 class Country(models.Model):
     id = models.BigAutoField(primary_key=True)
-    country = models.CharField(max_length=255)
-    app = models.CharField(max_length=255)
+    country = models.CharField(max_length=255, help_text="Name of the country")
+    app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
     country_ref = models.OneToOneField(
         Legacy.Country,
         on_delete=models.DO_NOTHING,
@@ -85,7 +97,7 @@ class DdcGerman(models.Model):
     id = models.BigAutoField(primary_key=True)
     ddc_number = models.CharField(max_length=3)
     ddc_name = models.CharField(max_length=255)
-    app = models.CharField(max_length=255)
+    app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
     ddc_ref = models.OneToOneField(
         Legacy.DdcGerman, on_delete=models.DO_NOTHING, null=True, blank=True
     )
@@ -97,7 +109,7 @@ class DdcGerman(models.Model):
 class Language(models.Model):
     id = models.BigAutoField(primary_key=True)
     language = models.CharField(max_length=255)
-    app = models.CharField(max_length=255)
+    app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
     language_ref = models.OneToOneField(
         Legacy.Language,
         on_delete=models.DO_NOTHING,
@@ -120,7 +132,7 @@ class Location(models.Model):
     hostname = models.CharField(max_length=255, blank=True, null=True)
     ip = models.CharField(max_length=255, blank=True, null=True)
     z3950_gateway = models.CharField(max_length=255, blank=True, null=True)
-    app = models.CharField(max_length=255)
+    app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
     location_ref = models.OneToOneField(
         Legacy.LocationNew, on_delete=models.DO_NOTHING, null=True, blank=True
     )
@@ -157,7 +169,7 @@ class Document(models.Model):
     located_in = models.ManyToManyField(
         Location, through="Archive", through_fields=("document", "location"),
     )
-    app = models.CharField(max_length=255, blank=True, null=True)
+    app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
     original_ref = models.OneToOneField(
         Legacy.OriginalNew, on_delete=models.DO_NOTHING, null=True, blank=True
     )
@@ -190,7 +202,7 @@ class Archive(models.Model):
     )
     signatur = models.CharField(max_length=255)
     link = models.CharField(max_length=255, blank=True, null=True)
-    app = models.CharField(max_length=255)
+    app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
     locAssign_ref = models.ForeignKey(
         Legacy.LocAssign, on_delete=models.DO_NOTHING, null=True, blank=True
     )
