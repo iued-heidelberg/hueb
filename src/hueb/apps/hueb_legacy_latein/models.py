@@ -18,14 +18,6 @@ class User(models.Model):
     def __str__(self):
         return self.name
 
-    def save(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
-
-    def delete(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
-
     class Meta:
         db_table = "sueb_latein_user"
         verbose_name_plural = "COMMON User"
@@ -44,14 +36,6 @@ class Translator(models.Model):
         if self.name is None:
             return " "
         return self.name
-
-    def save(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
-
-    def delete(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
 
     class Meta:
         db_table = "sueb_latein_translator"
@@ -72,14 +56,6 @@ class TranslatorNew(models.Model):
             return " "
         return self.name
 
-    def save(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
-
-    def delete(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
-
     class Meta:
         db_table = "sueb_latein_translator_new"
         verbose_name_plural = "NEW Translator"
@@ -99,14 +75,6 @@ class Author(models.Model):
             return " "
         return self.name
 
-    def save(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
-
-    def delete(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
-
     class Meta:
         db_table = "sueb_latein_author"
         verbose_name_plural = "OLD Author"
@@ -120,14 +88,6 @@ class AuthorNew(models.Model):
     datum = models.DateField(blank=True, null=True)
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
     migration_generated = models.BooleanField()
-
-    def save(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
-
-    def delete(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
 
     def __str__(self):
         if self.name is None:
@@ -144,14 +104,6 @@ class Country(models.Model):
     country = models.CharField(max_length=255)
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
     migration_generated = models.BooleanField()
-
-    def save(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
-
-    def delete(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
 
     def __str__(self):
         if self.country is None:
@@ -173,14 +125,6 @@ class DdcGerman(models.Model):
     def __str__(self):
         return self.ddc_number + " " + self.ddc_name
 
-    def save(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
-
-    def delete(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
-
     class Meta:
         db_table = "sueb_latein_ddc_german"
         verbose_name_plural = "COMMON DDC"
@@ -191,14 +135,6 @@ class Language(models.Model):
     language = models.CharField(max_length=255)
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
     migration_generated = models.BooleanField()
-
-    def save(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
-
-    def delete(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
 
     def __str__(self):
         if self.language is None:
@@ -226,14 +162,6 @@ class LocAssign(models.Model):
         "TranslationNew", models.DO_NOTHING, blank=True, null=True
     )
 
-    def save(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
-
-    def delete(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
-
     def __str__(self):
         return str(self.id)
 
@@ -252,14 +180,6 @@ class Location(models.Model):
     z3950_gateway = models.CharField(max_length=255, blank=True, null=True)
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
     migration_generated = models.BooleanField()
-
-    def save(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
-
-    def delete(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
 
     def __str__(self):
         if self.name is None:
@@ -281,14 +201,6 @@ class LocationNew(models.Model):
     z3950_gateway = models.CharField(max_length=255, blank=True, null=True)
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
     migration_generated = models.BooleanField()
-
-    def save(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
-
-    def delete(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
 
     def __str__(self):
         if self.name is None:
@@ -337,14 +249,6 @@ class OrigAssign(models.Model):
         related_name="trans_diff_new",
     )
 
-    def save(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
-
-    def delete(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
-
     def __str__(self):
         if self.id is None:
             return " "
@@ -377,14 +281,6 @@ class Original(models.Model):
     author = models.ManyToManyField(Author, through="OriginalAuthor")
     author_new = models.ManyToManyField(AuthorNew, through="OriginalAuthorNew")
 
-    def save(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
-
-    def delete(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
-
     def __str__(self):
         if self.title is None:
             return " "
@@ -416,14 +312,6 @@ class OriginalNew(models.Model):
     migration_generated = models.BooleanField()
     author = models.ManyToManyField(Author, through="OriginalNewAuthor")
     author_new = models.ManyToManyField(AuthorNew, through="OriginalNewAuthorNew")
-
-    def save(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
-
-    def delete(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
 
     def __str__(self):
         if self.title is None:
@@ -463,14 +351,6 @@ class Translation(models.Model):
     translator_new = models.ManyToManyField(
         TranslatorNew, through="TranslationTranslatorNew"
     )
-
-    def save(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
-
-    def delete(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
 
     def __str__(self):
         if self.title is None:
@@ -515,14 +395,6 @@ class TranslationNew(models.Model):
         TranslatorNew, through="TranslationNewTranslatorNew"
     )
 
-    def save(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
-
-    def delete(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
-
     def __str__(self):
         if self.title is None:
             return " "
@@ -547,14 +419,6 @@ class OriginalAuthorNew(models.Model):
     original = models.ForeignKey(Original, models.DO_NOTHING)
     author = models.ForeignKey(AuthorNew, models.DO_NOTHING)
 
-    def save(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
-
-    def delete(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
-
     class Meta:
         db_table = "sueb_latein_original_author_new"
 
@@ -563,14 +427,6 @@ class OriginalNewAuthor(models.Model):
     id = models.BigAutoField(primary_key=True)
     original = models.ForeignKey(OriginalNew, models.DO_NOTHING)
     author = models.ForeignKey(Author, models.DO_NOTHING)
-
-    def save(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
-
-    def delete(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
 
     class Meta:
         db_table = "sueb_latein_original_new_author"
@@ -581,14 +437,6 @@ class OriginalNewAuthorNew(models.Model):
     original_new = models.ForeignKey(OriginalNew, models.DO_NOTHING)
     author = models.ForeignKey(AuthorNew, models.DO_NOTHING)
 
-    def save(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
-
-    def delete(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
-
     class Meta:
         db_table = "sueb_latein_original_new_author_new"
 
@@ -597,14 +445,6 @@ class TranslationNewTranslator(models.Model):
     id = models.BigAutoField(primary_key=True)
     translation = models.ForeignKey(TranslationNew, models.DO_NOTHING)
     translator = models.ForeignKey("Translator", models.DO_NOTHING)
-
-    def save(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
-
-    def delete(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
 
     class Meta:
         db_table = "sueb_latein_translation_new_translator"
@@ -615,14 +455,6 @@ class TranslationNewTranslatorNew(models.Model):
     translation_new = models.ForeignKey(TranslationNew, models.DO_NOTHING)
     translator = models.ForeignKey("TranslatorNew", models.DO_NOTHING)
 
-    def save(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
-
-    def delete(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
-
     class Meta:
         db_table = "sueb_latein_translation_new_translator_new"
 
@@ -632,14 +464,6 @@ class TranslationTranslator(models.Model):
     translation = models.ForeignKey(Translation, models.DO_NOTHING)
     translator = models.ForeignKey("Translator", models.DO_NOTHING)
 
-    def save(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
-
-    def delete(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
-
     class Meta:
         db_table = "sueb_latein_translation_translator"
 
@@ -648,14 +472,6 @@ class TranslationTranslatorNew(models.Model):
     id = models.BigAutoField(primary_key=True)
     translation = models.ForeignKey(Translation, models.DO_NOTHING)
     translator = models.ForeignKey("TranslatorNew", models.DO_NOTHING)
-
-    def save(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
-
-    def delete(self, *args, **kwargs):
-        raise Exception("Legacy data is read only. Shame!")
-        return
 
     class Meta:
         db_table = "sueb_latein_translation_translator_new"
