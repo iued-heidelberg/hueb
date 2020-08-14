@@ -127,7 +127,7 @@ class CountryAdmin(admin.ModelAdmin):
             "Country Information",
             {
                 "description": ("Information stored about the country"),
-                "fields": ("country", "source"),
+                "fields": ("country",),
             },
         ),
         (
@@ -197,10 +197,7 @@ class LanguageAdmin(admin.ModelAdmin):
     search_fields = ("language", "id")
 
     fieldsets = (
-        (
-            "Language Information",
-            {"description": (" "), "fields": ("language", "language_ref")},
-        ),
+        ("Language Information", {"description": (" "), "fields": ("language",)},),
         (
             "Datasource for reference",
             {
@@ -292,8 +289,8 @@ class ArchiveAdmin(admin.ModelAdmin):
                 "description": (
                     "The information for this entry were derived from this old database entry."
                 ),
-                "fields": (),
-                "readonly_fields": ("app", "locAssign_link"),
+                "fields": ("app", "locAssign_link"),
+                # "readonly_fields": ("app", "link"),
             },
         ),
     )
