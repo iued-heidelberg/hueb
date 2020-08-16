@@ -257,7 +257,7 @@ class LocationAdmin(admin.ModelAdmin):
         "ip",
         "z3950_gateway",
     )
-
+    autocomplete_fields = ("country",)
     search_fields = ("name", "address", "country")
 
     fieldsets = (
