@@ -81,13 +81,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Run playbook
-      uses: dawidd6/action-ansible-playbook@v2
+    - uses: saubermacherag/ansible-playbook-docker-action@v1.3
       with:
-        playbook: deploy.yml
-        directory: ./deployment
-        key: ${{secrets.HUEB_STAGING_DEPLOYMENT_SSH_PRIVATE_KEY}}
-        inventory-file: staging
-        options: |
-          --verbose
+        playbookName: './deployment/deploy.yml'
+        inventoryFile: './deployment/staging'
+        keyFile: "./deployment/staging-key"
+        keyFileVaultPass: ${{ secrets.STAGING_KEYFILE_VAULT_PASS }}
+        verbosity: "vv"
+
 
