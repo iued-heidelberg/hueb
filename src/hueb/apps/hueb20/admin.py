@@ -23,30 +23,39 @@ class LegacyAuthorNew(admin.TabularInline):
 
 class YearRangeInline(admin.StackedInline):
     model = YearRange
+    fieldsets = (
+        (
+            "Year Range",
+            {
+                "description": (
+                    "Please enter all known digits of the year range for example 19. Jhd -> 19 or 1922 -> 1922."
+                ),
+                "fields": ("timerange",),
+            },
+        ),
+    )
     readonly_fields = (
         "app",
         "author_ref",
         "translator_ref",
     )
     extra = 0
+    verbose_name = "Lifetime"
+    verbose_name_plural = verbose_name
 
 
-@admin.register(YearRange)
 class YearRangeAdmin(admin.ModelAdmin):
-    readonly_fields = ("app", "author_link", "translator_link")
-    list_display = ("id", "timerange", "start_uncertainty", "end_uncertainty")
+    readonly_fields = ("app", "author_link", "translator_link", "parsed_string")
+    list_display = ("id", "timerange")
     search_fields = ("timerange", "id")
     fieldsets = (
         (
             "Timerange Information",
             {
-                "description": ("Daterange information"),
-                "fields": (
-                    "timerange",
-                    "start_uncertainty",
-                    "end_uncertainty",
-                    "parsed_string",
+                "description": (
+                    "Please enter all known digits of the year range for example 19. Jhd -> 19 or 1922 -> 1922."
                 ),
+                "fields": ("timerange",),
             },
         ),
         (
@@ -55,7 +64,7 @@ class YearRangeAdmin(admin.ModelAdmin):
                 "description": (
                     "The information for this entry were derived from this old database entry."
                 ),
-                "fields": ("app", "author_link", "translator_link"),
+                "fields": ("app", "author_link", "translator_link", "parsed_string",),
                 "classes": ("collapse",),
             },
         ),
@@ -92,7 +101,7 @@ class PersonAdmin(admin.ModelAdmin):
             "Person Information",
             {
                 "description": ("All known data about a person"),
-                "fields": ("name", "alias"),
+                "fields": ("name", "alias",),
             },
         ),
         (

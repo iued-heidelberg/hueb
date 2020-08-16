@@ -53,13 +53,8 @@ class YearRange(models.Model):
     parsed_string = models.TextField(blank=True, null=True)
     app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
     lifetime = models.OneToOneField(
-        Person,
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-        related_name="lifetime",
+        Person, on_delete=models.CASCADE, related_name="lifetime",
     )
-
     author_ref = models.OneToOneField(
         Legacy.AuthorNew, on_delete=models.DO_NOTHING, null=True, blank=True
     )
