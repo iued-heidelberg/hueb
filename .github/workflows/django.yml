@@ -1,4 +1,4 @@
-name: Django CI
+name: Tests
 
 on:
   push:
@@ -7,8 +7,7 @@ on:
   pull_request:
 
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
@@ -33,4 +32,17 @@ jobs:
       env: # Or as an environment variable
         HUEB_SECRET_KEY: ${{ secrets.HUEB_SECRET_KEY }}
 
+  deploy:
+    needs: test
+
+    steps:
+    - name: Run playbook
+      uses: dawidd6/action-ansible-playbook@v2
+      with:
+        playbook: deploy.yml
+        directory: ./deployment/
+        key: ${{secrets.HUEB_STAGING_DEPLOYMENT_SSH_PRIVATE_KEY}}
+        inventory: staging
+        options: |
+          --verbose
 
