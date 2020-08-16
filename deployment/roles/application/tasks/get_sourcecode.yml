@@ -5,7 +5,12 @@
 
 - name: install the latest version of git
   apt:
-    name: git, git-lfs
+    name: git
+    state: latest
+
+- name: install the latest version of git
+  apt:
+    name: git-lfs
     state: latest
 
 - name: clone a private repository
