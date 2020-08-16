@@ -6,6 +6,7 @@ from hueb.apps.hueb_legacy_latein import models as Legacy
 # Register your models here.
 from .models import (
     Archive,
+    Comment,
     Country,
     DdcGerman,
     Document,
@@ -42,6 +43,34 @@ class YearRangeInline(admin.StackedInline):
     extra = 0
     verbose_name = "Lifetime"
     verbose_name_plural = verbose_name
+
+
+class CommentInline(admin.StackedInline):
+    model = Comment
+    fields = ("text",)
+    readonly_fields = ("app",)
+    extra = 0
+    verbose_name = "Comment"
+    verbose_name_plural = verbose_name + "s"
+
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    model = Comment
+    fields = (
+        "text",
+        "person",
+        "document",
+    )
+    readonly_fields = (
+        "app",
+        "text",
+        "person",
+        "document",
+    )
+    extra = 0
+    verbose_name = "Comment"
+    verbose_name_plural = verbose_name + "s"
 
 
 class YearRangeAdmin(admin.ModelAdmin):
@@ -115,7 +144,7 @@ class PersonAdmin(admin.ModelAdmin):
             },
         ),
     )
-    inlines = [YearRangeInline]
+    inlines = [YearRangeInline, CommentInline]
 
     def author_link(self, obj):
         url = reverse(
@@ -408,6 +437,7 @@ class DocumentAdmin(admin.ModelAdmin):
         TranslationRelationshipInline,
         OriginalRelationshipInline,
         ArchiveInline,
+        CommentInline,
     ]
     search_fields = ("id", "title", "author")
     fieldsets = (

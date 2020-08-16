@@ -10,6 +10,7 @@ from hueb.apps.hueb20.models import (  # OriginalAuthorNew,; OriginalNewAuthor,;
     Language,
     Location,
     Person,
+    Comment,
 )
 
 
@@ -22,6 +23,7 @@ class AdminSmokeTestCase(TestCase):
         Language,
         Location,
         Person,
+        Comment,
     ]
 
     def setUp(self):

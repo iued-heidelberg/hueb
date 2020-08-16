@@ -19,11 +19,27 @@ HUEB_APPLICATIONS = [
 ]
 
 
+class Comment(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    text = models.TextField(blank=True, null=True)
+    person = models.ForeignKey(
+        "Person", on_delete=models.CASCADE, null=True, blank=True
+    )
+    document = models.ForeignKey(
+        "Document", on_delete=models.CASCADE, null=True, blank=True
+    )
+    app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
+
+    def __str__(self):
+        if self.text is None:
+            return " "
+        return escape(self.text)
+
+
 class Person(models.Model):
     id = models.BigAutoField(primary_key=True)
     name = models.CharField(max_length=255, null=True, blank=True)
     alias = models.ForeignKey("self", on_delete=models.CASCADE, null=True, blank=True)
-    comment = models.TextField(blank=True, null=True)
     app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
     author_ref = models.OneToOneField(
         Legacy.AuthorNew, on_delete=models.DO_NOTHING, null=True, blank=True
