@@ -3,6 +3,7 @@
 
 import hueb.apps.hueb_legacy_latein.models as Legacy
 from django.contrib.postgres.fields import IntegerRangeField
+from django.core import validators
 from django.db import models
 from django.template.defaultfilters import escape
 
@@ -70,8 +71,22 @@ class Person(models.Model):
 class YearRange(models.Model):
     id = models.BigAutoField(primary_key=True)
     timerange = IntegerRangeField(null=True, blank=True)
-    start_uncertainty = models.IntegerField(null=True, blank=True)
-    end_uncertainty = models.IntegerField(null=True, blank=True)
+    start = models.CharField(
+        max_length=4,
+        validators=[
+            validators.RegexValidator(
+                r"^[0-9]*$", "Only 0-9 are allowed.", "Invalid Number"
+            ),
+        ],
+    )
+    end = models.CharField(
+        max_length=4,
+        validators=[
+            validators.RegexValidator(
+                r"^[0-9]*$", "Only 0-9 are allowed.", "Invalid Number"
+            ),
+        ],
+    )
     parsed_string = models.TextField(blank=True, null=True)
     app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
     lifetime = models.OneToOneField(

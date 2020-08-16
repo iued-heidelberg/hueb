@@ -31,7 +31,7 @@ class YearRangeInline(admin.StackedInline):
                 "description": (
                     "Please enter all known digits of the year range for example 19. Jhd -> 19 or 1922 -> 1922."
                 ),
-                "fields": ("timerange",),
+                "fields": ("start", "end",),
             },
         ),
     )
@@ -75,8 +75,12 @@ class CommentAdmin(admin.ModelAdmin):
 
 class YearRangeAdmin(admin.ModelAdmin):
     readonly_fields = ("app", "author_link", "translator_link", "parsed_string")
-    list_display = ("id", "timerange")
-    search_fields = ("timerange", "id")
+    list_display = (
+        "id",
+        "start",
+        "end",
+    )
+    search_fields = ("start", "end", "id")
     fieldsets = (
         (
             "Timerange Information",
@@ -84,7 +88,7 @@ class YearRangeAdmin(admin.ModelAdmin):
                 "description": (
                     "Please enter all known digits of the year range for example 19. Jhd -> 19 or 1922 -> 1922."
                 ),
-                "fields": ("timerange",),
+                "fields": ("start", "end",),
             },
         ),
         (
