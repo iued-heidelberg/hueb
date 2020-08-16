@@ -87,6 +87,8 @@ jobs:
         inventoryFile: './deployment/staging.ini'
         keyFile: "./deployment/staging-key"
         keyFileVaultPass: ${{ secrets.STAGING_KEYFILE_VAULT_PASS }}
+        extraFile: "./deployment/groupvars/webserver"
+        extraVars: "-e django_secret_key=${{ secrets.STAGING_DJANGO_SECRET_KEY }} -e user_name=${{ secrets.STAGING_USER_NAME }} -e user_password=${{ secrets.STAGING_USER_PASSWORD }} -e password=${{ secrets.STAGING_PASSWORD }} -e django_db_user=${{ secrets.STAGING_DJANGO_DB_USER }} django_db_password=${{ secrets.STAGING_DJANGO_DB_PASSWORD }} honeycomb_api=${{ secrets.HONEYCOMB_API }}, sentry_api=${{ secrets.SENTRY_API }}"
         verbosity: "vv"
 
 
