@@ -1,0 +1,93 @@
+name: Tests & Staging Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  black:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [ 3.8, ]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Black Check
+        uses: jpetrucciani/black-check@19.10b0
+        with:
+          # File or directory to run black on
+          path: .
+
+  flake8:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [ 3.8, ]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r src/requirements.txt
+      - name: Setup flake8 annotations
+        uses: rbialon/flake8-annotations@v1
+      - name: Lint with flake8
+        run: |
+          pip install flake8
+          # stop the build if there are Python syntax errors or undefined names
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+  Tests:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [ 3.8, ]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install Dependencies
+      run: |
+        python -V
+        python -m pip install --upgrade pip
+        python -m pip install -r src/requirements.txt
+    - name: Run Tests
+      run: |
+        cd src
+        python manage.py test
+      env: # Or as an environment variable
+        HUEB_SECRET_KEY: ${{ secrets.HUEB_SECRET_KEY }}
+
+  StagingDeployment:
+    needs: [Tests, flake8, black]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: saubermacherag/ansible-playbook-docker-action@v1.3
+      with:
+        playbookName: './deployment/deploy.yml'
+        inventoryFile: './deployment/production.ini'
+        keyFile: "./deployment/staging-key"
+        keyFileVaultPass: ${{ secrets.PRODUCTION_KEYFILE_VAULT_PASS }}
+        extraFile: "./deployment/group_vars/webserver"
+        extraVars: "-e django_secret_key=${{ secrets.PRODUCTION_DJANGO_SECRET_KEY }} -e user_name=${{ secrets.PRODUCTION_USER_NAME }} -e user_password=${{ secrets.PRODUCTION_USER_PASSWORD }} -e password=${{ secrets.PRODUCTION_PASSWORD }} -e django_db_user=${{ secrets.PRODUCTION_DB_USER }} -e django_db_password=${{ secrets.PRODUCTION_DB_PASSWORD }} -e honeycomb_api=${{ secrets.HONEYCOMB_API }} -e sentry_api=${{ secrets.SENTRY_API }}"
+        verbosity: "vv"
+
+
