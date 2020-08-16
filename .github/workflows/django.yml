@@ -7,7 +7,7 @@ on:
   pull_request:
 
 jobs:
-  formatting with black:
+  black:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
@@ -25,7 +25,7 @@ jobs:
           # File or directory to run black on
           path: .
 
-  formatting with flake8:
+  flake8:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
@@ -51,7 +51,7 @@ jobs:
           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
-  tests:
+  Tests:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
@@ -76,7 +76,7 @@ jobs:
       env: # Or as an environment variable
         HUEB_SECRET_KEY: ${{ secrets.HUEB_SECRET_KEY }}
 
-  deployment to staging:
+  StagingDeployment:
     needs: test
     runs-on: ubuntu-latest
     steps:
