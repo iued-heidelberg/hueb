@@ -84,7 +84,7 @@ jobs:
     - uses: saubermacherag/ansible-playbook-docker-action@v1.3
       with:
         playbookName: './deployment/deploy.yml'
-        inventoryFile: './deployment/staging'
+        inventoryFile: './deployment/staging.ini'
         keyFile: "./deployment/staging-key"
         keyFileVaultPass: ${{ secrets.STAGING_KEYFILE_VAULT_PASS }}
         verbosity: "vv"
