@@ -1,0 +1,45 @@
+# App name
+app_name: hueb
+django_secret_key:
+django_debug: False
+
+# user name
+user_name:
+user_group: django
+user_password:
+
+# Password
+#python3 -c "from passlib.hash import sha512_crypt; import getpass; print(sha512_crypt.encrypt(getpass.getpass()))"
+password:
+
+# directory
+home_directory: /home/{{ user_name }}
+venv_directory: "{{ home_directory }}/venv"
+ssh_directory: "{{ home_directory }}/.ssh"
+git_directory: "{{ home_directory }}/hueb"
+src_directory: "{{ git_directory }}/src"
+hueb_directory: "{{src_directory}}/hueb"
+deploy_directory: "{{ git_directory }}/deploy"
+static_directory: "{{ home_directory }}/static"
+db_directory : /db/database
+dump_directory : /db_dumps
+
+# database
+django_db: hueb
+django_db_user:
+django_db_password:
+django_db_host: localhost
+django_db_port: 5432
+
+# Deployer User and Groups
+wsgi_server_port: 8000
+server_ip: "{{ inventory_hostname }}"
+django_wsgi_module: hueb.wsgi
+django_settings_module: hueb.settings
+
+#[py3-hosts:vars]
+ansible_python_interpreter: /usr/bin/python3
+
+
+honeycomb_api:
+sentry_api:
