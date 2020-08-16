@@ -24,7 +24,6 @@ class Person(models.Model):
     name = models.CharField(max_length=255, null=True, blank=True)
     alias = models.ForeignKey("self", on_delete=models.CASCADE, null=True, blank=True)
     comment = models.TextField(blank=True, null=True)
-    is_alias = models.BooleanField(null=True, blank=True)
     app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
     author_ref = models.OneToOneField(
         Legacy.AuthorNew, on_delete=models.DO_NOTHING, null=True, blank=True
@@ -43,6 +42,13 @@ class Person(models.Model):
         if self.name is None:
             return " "
         return escape(self.name)
+
+    @property
+    def is_alias(self):
+        if self.alias is not None:
+            return True
+        else:
+            return False
 
 
 class YearRange(models.Model):
