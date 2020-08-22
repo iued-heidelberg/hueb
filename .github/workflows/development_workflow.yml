@@ -77,6 +77,7 @@ jobs:
         HUEB_SECRET_KEY: ${{ secrets.HUEB_SECRET_KEY }}
 
   StagingDeployment:
+    if: ${{ github.event_name == 'push' }}
     needs: [Tests, flake8, black]
     runs-on: ubuntu-latest
     steps:
