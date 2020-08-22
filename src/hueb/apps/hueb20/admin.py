@@ -5,11 +5,11 @@ from hueb.apps.hueb_legacy_latein import models as Legacy
 
 # Register your models here.
 from .models import (
-    Archive,
     Comment,
     Country,
     DdcGerman,
     Document,
+    Filing,
     Language,
     Location,
     Person,
@@ -330,16 +330,16 @@ class LocationAdmin(admin.ModelAdmin):
     location_link.short_description = "Location"
 
 
-@admin.register(Archive)
-class ArchiveAdmin(admin.ModelAdmin):
+@admin.register(Filing)
+class FilingAdmin(admin.ModelAdmin):
     readonly_fields = ("app", "locAssign_link")
     list_display = ("id", "signatur", "link")
     search_fields = ("signatur", "id")
     fieldsets = (
         (
-            "Archive Information",
+            "Filing Information",
             {
-                "description": ("Stores the archive locations of documents"),
+                "description": ("Stores the filing locations of documents"),
                 "fields": ("signatur", "link"),
             },
         ),
@@ -362,17 +362,14 @@ class ArchiveAdmin(admin.ModelAdmin):
         link = '<a href="%s">%s</a>' % (url, obj.locAssign_ref)
         return mark_safe(link)
 
-    locAssign_link.short_description = "Archive Location"
+    locAssign_link.short_description = "Filing Location"
 
 
-class ArchiveInline(admin.TabularInline):
-    # def get_queryset(self, request):
-    #    qs = super(ArchiveInline, self).get_queryset(request)
-    #    return qs.select_related("location")
+class FilingInline(admin.TabularInline):
     readonly_fields = ("app", "locAssign_ref")
     model = Document.located_in.through
     extra = 0
-    verbose_name = "Archive Location"
+    verbose_name = "Filing Location"
     verbose_name_plural = verbose_name + "s"
 
 
@@ -440,7 +437,7 @@ class DocumentAdmin(admin.ModelAdmin):
         DocumentPublisherInline,
         TranslationRelationshipInline,
         OriginalRelationshipInline,
-        ArchiveInline,
+        FilingInline,
         CommentInline,
     ]
     search_fields = ("id", "title", "author")

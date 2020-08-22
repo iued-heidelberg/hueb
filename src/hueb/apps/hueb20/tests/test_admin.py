@@ -3,7 +3,7 @@ from django.test import Client, TestCase
 from django.urls import reverse
 
 from hueb.apps.hueb20.models import (  # OriginalAuthorNew,; OriginalNewAuthor,; TranslationNewTranslator,; TranslationTranslatorNew,
-    Archive,
+    Filing,
     Country,
     DdcGerman,
     Document,
@@ -16,7 +16,7 @@ from hueb.apps.hueb20.models import (  # OriginalAuthorNew,; OriginalNewAuthor,;
 
 class AdminSmokeTestCase(TestCase):
     admin_sites = [
-        Archive,
+        Filing,
         Country,
         DdcGerman,
         Document,
