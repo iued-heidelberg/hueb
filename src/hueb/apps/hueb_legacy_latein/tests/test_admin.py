@@ -3,20 +3,15 @@ from django.test import Client, TestCase
 from django.urls import reverse
 
 from hueb.apps.hueb_legacy_latein.models import (  # OriginalAuthorNew,; OriginalNewAuthor,; TranslationNewTranslator,; TranslationTranslatorNew,
-    Author,
     AuthorNew,
     Country,
     DdcGerman,
     Language,
     LocAssign,
-    Location,
     LocationNew,
     OrigAssign,
-    Original,
     OriginalNew,
-    Translation,
     TranslationNew,
-    Translator,
     TranslatorNew,
     User,
 )
@@ -24,20 +19,15 @@ from hueb.apps.hueb_legacy_latein.models import (  # OriginalAuthorNew,; Origina
 
 class AdminSmokeTestCase(TestCase):
     admin_sites = [
-        Author,
         AuthorNew,
         Country,
         DdcGerman,
         Language,
         LocAssign,
-        Location,
         LocationNew,
         OrigAssign,
-        Original,
         OriginalNew,
-        Translation,
         TranslationNew,
-        Translator,
         TranslatorNew,
         User,
     ]

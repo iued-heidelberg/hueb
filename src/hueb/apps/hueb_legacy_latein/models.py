@@ -20,7 +20,7 @@ class User(models.Model):
 
     class Meta:
         db_table = "sueb_latein_user"
-        verbose_name_plural = "COMMON User"
+        verbose_name_plural = "Latein User"
 
 
 class Translator(models.Model):
@@ -58,7 +58,7 @@ class TranslatorNew(models.Model):
 
     class Meta:
         db_table = "sueb_latein_translator_new"
-        verbose_name_plural = "NEW Translator"
+        verbose_name_plural = "Latein Translator"
 
 
 class Author(models.Model):
@@ -96,7 +96,7 @@ class AuthorNew(models.Model):
 
     class Meta:
         db_table = "sueb_latein_author_new"
-        verbose_name_plural = "NEW Author"
+        verbose_name_plural = "Latein Author"
 
 
 class Country(models.Model):
@@ -112,7 +112,7 @@ class Country(models.Model):
 
     class Meta:
         db_table = "sueb_latein_country"
-        verbose_name_plural = "COMMON Country"
+        verbose_name_plural = "Latein Country"
 
 
 class DdcGerman(models.Model):
@@ -127,7 +127,7 @@ class DdcGerman(models.Model):
 
     class Meta:
         db_table = "sueb_latein_ddc_german"
-        verbose_name_plural = "COMMON DDC"
+        verbose_name_plural = "Latein DDC"
 
 
 class Language(models.Model):
@@ -143,7 +143,7 @@ class Language(models.Model):
 
     class Meta:
         db_table = "sueb_latein_language"
-        verbose_name_plural = "COMMON Language"
+        verbose_name_plural = "Latein Language"
 
 
 class LocAssign(models.Model):
@@ -167,7 +167,7 @@ class LocAssign(models.Model):
 
     class Meta:
         db_table = "sueb_latein_loc_assign"
-        verbose_name_plural = "COMMON LocAssign"
+        verbose_name_plural = "Latein LocAssign"
 
 
 class Location(models.Model):
@@ -209,7 +209,7 @@ class LocationNew(models.Model):
 
     class Meta:
         db_table = "sueb_latein_location_new"
-        verbose_name_plural = "NEW Location"
+        verbose_name_plural = "Latein Location"
 
 
 class OrigAssign(models.Model):
@@ -256,7 +256,7 @@ class OrigAssign(models.Model):
 
     class Meta:
         db_table = "sueb_latein_orig_assign"
-        verbose_name_plural = "COMMON OrigAssign"
+        verbose_name_plural = "Latein OrigAssign"
 
 
 class Original(models.Model):
@@ -320,7 +320,7 @@ class OriginalNew(models.Model):
 
     class Meta:
         db_table = "sueb_latein_original_new"
-        verbose_name_plural = "NEW Original"
+        verbose_name_plural = "Latein Original"
 
 
 class Translation(models.Model):
@@ -402,7 +402,7 @@ class TranslationNew(models.Model):
 
     class Meta:
         db_table = "sueb_latein_translation_new"
-        verbose_name_plural = "NEW Translation"
+        verbose_name_plural = "Latein Translation"
 
 
 class OriginalAuthor(models.Model):
