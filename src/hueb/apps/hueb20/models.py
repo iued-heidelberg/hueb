@@ -68,6 +68,18 @@ class Person(models.Model):
             return False
 
 
+class CulturalCircle(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    name = models.CharField(max_length=255, help_text="Name of the cultural circle")
+    description = models.TextField(null=True, blank=True)
+    app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
+
+    def __str__(self):
+        if self.name is None:
+            return " "
+        return self.name
+
+
 class YearRange(models.Model):
     id = models.BigAutoField(primary_key=True)
     timerange = IntegerRangeField(null=True, blank=True)
@@ -92,6 +104,13 @@ class YearRange(models.Model):
     lifetime = models.OneToOneField(
         Person, on_delete=models.CASCADE, related_name="lifetime",
     )
+    culturalCircleTimeRange = models.ForeignKey(
+        CulturalCircle,
+        on_delete=models.CASCADE,
+        related_name="culturalCircleTimeRange",
+        blank=True,
+        null=True,
+    )
     author_ref = models.OneToOneField(
         Legacy.AuthorNew, on_delete=models.DO_NOTHING, null=True, blank=True
     )
@@ -105,18 +124,6 @@ class YearRange(models.Model):
         except Exception:
 
             return "none"
-
-
-class CulturalCircle(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    name = models.CharField(max_length=255, help_text="Name of the cultural circle")
-    description = models.TextField(null=True, blank=True)
-    app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
-
-    def __str__(self):
-        if self.name is None:
-            return " "
-        return self.name
 
 
 class Country(models.Model):

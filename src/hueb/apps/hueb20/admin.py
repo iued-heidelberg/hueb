@@ -42,6 +42,12 @@ class YearRangeInline(admin.StackedInline):
         "translator_ref",
     )
     extra = 0
+    verbose_name = "Year range"
+    verbose_name_plural = verbose_name
+
+
+#
+class LifetimeInline(YearRangeInline):
     verbose_name = "Lifetime"
     verbose_name_plural = verbose_name
 
@@ -149,7 +155,7 @@ class PersonAdmin(admin.ModelAdmin):
             },
         ),
     )
-    inlines = [YearRangeInline, CommentInline]
+    inlines = [LifetimeInline, CommentInline]
 
     def author_link(self, obj):
         url = reverse(
@@ -176,12 +182,13 @@ class CulturalCircleAdmin(admin.ModelAdmin):
     readonly_fields = ("app", "cultural_circle_link")
     list_display = ("id", "name", "description")
     search_fields = ("name", "id")
+    inlines = [YearRangeInline]
     fieldsets = (
         (
             "Country Information",
             {
                 "description": ("Information stored about the cultural circle"),
-                "fields": ("name", "description"),
+                "fields": ("name", "description",),
             },
         ),
         (
