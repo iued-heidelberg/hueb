@@ -248,10 +248,10 @@ class DocumentRelationship(models.Model):
 class Archive(models.Model):
     id = models.BigAutoField(primary_key=True)
     location = models.ForeignKey(
-        Location, on_delete=models.DO_NOTHING, null=True, blank=True
+        Location, on_delete=models.CASCADE, null=True, blank=True
     )
     document = models.ForeignKey(
-        Document, on_delete=models.DO_NOTHING, null=True, blank=True
+        Document, on_delete=models.CASCADE, null=True, blank=True
     )
     signatur = models.CharField(max_length=255)
     link = models.CharField(max_length=255, blank=True, null=True)
