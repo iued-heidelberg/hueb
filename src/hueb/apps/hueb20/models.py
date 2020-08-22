@@ -41,6 +41,13 @@ class Comment(models.Model):
         blank=True,
         related_name="document_comment",
     )
+    cultural_circle = models.ForeignKey(
+        "CulturalCircle",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="cultural_circle_comment",
+    )
     app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
 
     def __str__(self):

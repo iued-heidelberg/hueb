@@ -181,7 +181,7 @@ class CulturalCircleAdmin(admin.ModelAdmin):
     readonly_fields = ("app", "cultural_circle_link")
     list_display = ("id", "name", "description")
     search_fields = ("name", "id")
-    inlines = [YearRangeInline]
+    inlines = [YearRangeInline, CommentInline]
     fieldsets = (
         (
             "Country Information",
