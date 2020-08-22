@@ -207,7 +207,7 @@ class Document(models.Model):
         "DdcGerman", on_delete=models.DO_NOTHING, blank=True, null=True
     )
     located_in = models.ManyToManyField(
-        Location, through="Archive", through_fields=("document", "location"),
+        Location, through="Filing", through_fields=("document", "location"),
     )
     app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
     original_ref = models.OneToOneField(
@@ -245,13 +245,13 @@ class DocumentRelationship(models.Model):
     app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
 
 
-class Archive(models.Model):
+class Filing(models.Model):
     id = models.BigAutoField(primary_key=True)
     location = models.ForeignKey(
-        Location, on_delete=models.DO_NOTHING, null=True, blank=True
+        Location, on_delete=models.CASCADE, null=True, blank=True
     )
     document = models.ForeignKey(
-        Document, on_delete=models.DO_NOTHING, null=True, blank=True
+        Document, on_delete=models.CASCADE, null=True, blank=True
     )
     signatur = models.CharField(max_length=255)
     link = models.CharField(max_length=255, blank=True, null=True)
