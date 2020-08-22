@@ -52,9 +52,12 @@ class LifetimeInline(YearRangeInline):
     verbose_name_plural = verbose_name
 
 
-class CommentInline(admin.StackedInline):
+class CommentInline(admin.TabularInline):
     model = Comment
-    fields = ("text",)
+    fields = (
+        "external",
+        "text",
+    )
     readonly_fields = ("app",)
     extra = 0
     verbose_name = "Comment"
@@ -64,11 +67,7 @@ class CommentInline(admin.StackedInline):
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
     model = Comment
-    fields = (
-        "text",
-        "person",
-        "document",
-    )
+    fields = ("text", "person", "document", "external")
     readonly_fields = (
         "app",
         "text",
@@ -182,7 +181,7 @@ class CulturalCircleAdmin(admin.ModelAdmin):
     readonly_fields = ("app", "cultural_circle_link")
     list_display = ("id", "name", "description")
     search_fields = ("name", "id")
-    inlines = [YearRangeInline]
+    inlines = [YearRangeInline, CommentInline]
     fieldsets = (
         (
             "Country Information",
