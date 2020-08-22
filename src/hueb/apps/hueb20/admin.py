@@ -5,10 +5,11 @@ from hueb.apps.hueb_legacy_latein import models as Legacy
 
 # Register your models here.
 from .models import (
-    Archive,
+    Comment,
     Country,
     DdcGerman,
     Document,
+    Filing,
     Language,
     Location,
     Person,
@@ -21,22 +22,73 @@ class LegacyAuthorNew(admin.TabularInline):
     extra = 0
 
 
-@admin.register(YearRange)
+class YearRangeInline(admin.StackedInline):
+    model = YearRange
+    fieldsets = (
+        (
+            "Year Range",
+            {
+                "description": (
+                    "Please enter all known digits of the year range for example 19. Jhd -> 19 or 1922 -> 1922."
+                ),
+                "fields": ("start", "end",),
+            },
+        ),
+    )
+    readonly_fields = (
+        "app",
+        "author_ref",
+        "translator_ref",
+    )
+    extra = 0
+    verbose_name = "Lifetime"
+    verbose_name_plural = verbose_name
+
+
+class CommentInline(admin.StackedInline):
+    model = Comment
+    fields = ("text",)
+    readonly_fields = ("app",)
+    extra = 0
+    verbose_name = "Comment"
+    verbose_name_plural = verbose_name + "s"
+
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    model = Comment
+    fields = (
+        "text",
+        "person",
+        "document",
+    )
+    readonly_fields = (
+        "app",
+        "text",
+        "person",
+        "document",
+    )
+    extra = 0
+    verbose_name = "Comment"
+    verbose_name_plural = verbose_name + "s"
+
+
 class YearRangeAdmin(admin.ModelAdmin):
-    readonly_fields = ("app", "author_link", "translator_link")
-    list_display = ("id", "timerange", "start_uncertainty", "end_uncertainty")
-    search_fields = ("timerange", "id")
+    readonly_fields = ("app", "author_link", "translator_link", "parsed_string")
+    list_display = (
+        "id",
+        "start",
+        "end",
+    )
+    search_fields = ("start", "end", "id")
     fieldsets = (
         (
             "Timerange Information",
             {
-                "description": ("Daterange information"),
-                "fields": (
-                    "timerange",
-                    "start_uncertainty",
-                    "end_uncertainty",
-                    "parsed_string",
+                "description": (
+                    "Please enter all known digits of the year range for example 19. Jhd -> 19 or 1922 -> 1922."
                 ),
+                "fields": ("start", "end",),
             },
         ),
         (
@@ -45,7 +97,8 @@ class YearRangeAdmin(admin.ModelAdmin):
                 "description": (
                     "The information for this entry were derived from this old database entry."
                 ),
-                "fields": ("app", "author_link", "translator_link"),
+                "fields": ("app", "author_link", "translator_link", "parsed_string",),
+                "classes": ("collapse",),
             },
         ),
     )
@@ -73,14 +126,15 @@ class YearRangeAdmin(admin.ModelAdmin):
 @admin.register(Person)
 class PersonAdmin(admin.ModelAdmin):
     readonly_fields = ("app", "author_link", "translator_link")
-    list_display = ("id", "name", "lifetime", "alias", "is_alias")
+    list_display = ("id", "name", "alias", "is_alias")
     search_fields = ("name", "id")
+    autocomplete_fields = ("alias",)
     fieldsets = (
         (
             "Person Information",
             {
                 "description": ("All known data about a person"),
-                "fields": ("name", "lifetime", "alias", "is_alias"),
+                "fields": ("name", "alias",),
             },
         ),
         (
@@ -90,9 +144,11 @@ class PersonAdmin(admin.ModelAdmin):
                     "The information for this entry were derived from this old database entry."
                 ),
                 "fields": ("app", "translator_link", "author_link"),
+                "classes": ("collapse",),
             },
         ),
     )
+    inlines = [YearRangeInline, CommentInline]
 
     def author_link(self, obj):
         url = reverse(
@@ -127,7 +183,7 @@ class CountryAdmin(admin.ModelAdmin):
             "Country Information",
             {
                 "description": ("Information stored about the country"),
-                "fields": ("country", "source"),
+                "fields": ("country",),
             },
         ),
         (
@@ -137,6 +193,7 @@ class CountryAdmin(admin.ModelAdmin):
                     "The information for this entry were derived from this old database entry."
                 ),
                 "fields": ("app", "country_link"),
+                "classes": ("collapse",),
             },
         ),
     )
@@ -173,6 +230,7 @@ class DdcGermanAdmin(admin.ModelAdmin):
                     "The information for this entry were derived from this old database entry."
                 ),
                 "fields": ("app", "ddc_link"),
+                "classes": ("collapse",),
             },
         ),
     )
@@ -197,10 +255,7 @@ class LanguageAdmin(admin.ModelAdmin):
     search_fields = ("language", "id")
 
     fieldsets = (
-        (
-            "Language Information",
-            {"description": (" "), "fields": ("language", "language_ref")},
-        ),
+        ("Language Information", {"description": (" "), "fields": ("language",)},),
         (
             "Datasource for reference",
             {
@@ -208,6 +263,7 @@ class LanguageAdmin(admin.ModelAdmin):
                     "The information for this entry were derived from this old database entry."
                 ),
                 "fields": ("app", "language_link"),
+                "classes": ("collapse",),
             },
         ),
     )
@@ -234,7 +290,7 @@ class LocationAdmin(admin.ModelAdmin):
         "ip",
         "z3950_gateway",
     )
-
+    autocomplete_fields = ("country",)
     search_fields = ("name", "address", "country")
 
     fieldsets = (
@@ -259,6 +315,7 @@ class LocationAdmin(admin.ModelAdmin):
                     "The information for this entry were derived from this old database entry."
                 ),
                 "fields": ("app", "location_link"),
+                "classes": ("collapse",),
             },
         ),
     )
@@ -273,16 +330,16 @@ class LocationAdmin(admin.ModelAdmin):
     location_link.short_description = "Location"
 
 
-@admin.register(Archive)
-class ArchiveAdmin(admin.ModelAdmin):
+@admin.register(Filing)
+class FilingAdmin(admin.ModelAdmin):
     readonly_fields = ("app", "locAssign_link")
     list_display = ("id", "signatur", "link")
     search_fields = ("signatur", "id")
     fieldsets = (
         (
-            "Archive Information",
+            "Filing Information",
             {
-                "description": ("Stores the archive locations of documents"),
+                "description": ("Stores the filing locations of documents"),
                 "fields": ("signatur", "link"),
             },
         ),
@@ -292,8 +349,8 @@ class ArchiveAdmin(admin.ModelAdmin):
                 "description": (
                     "The information for this entry were derived from this old database entry."
                 ),
-                "fields": (),
-                "readonly_fields": ("app", "locAssign_link"),
+                "fields": ("app", "locAssign_link"),
+                "classes": ("collapse",),
             },
         ),
     )
@@ -305,69 +362,57 @@ class ArchiveAdmin(admin.ModelAdmin):
         link = '<a href="%s">%s</a>' % (url, obj.locAssign_ref)
         return mark_safe(link)
 
-    locAssign_link.short_description = "Archive Location"
+    locAssign_link.short_description = "Filing Location"
 
 
-class ArchiveInline(admin.TabularInline):
-    # def get_queryset(self, request):
-    #    qs = super(ArchiveInline, self).get_queryset(request)
-    #    return qs.select_related("location")
-
+class FilingInline(admin.TabularInline):
+    readonly_fields = ("app", "locAssign_ref")
     model = Document.located_in.through
     extra = 0
-    verbose_name = "Archive Location"
+    verbose_name = "Filing Location"
     verbose_name_plural = verbose_name + "s"
 
 
 class DocumentAuthorInline(admin.TabularInline):
-    def get_queryset(self, request):
-        qs = super(DocumentAuthorInline, self).get_queryset(request)
-        return qs.select_related("person")
-
     model = Document.written_by.through
     extra = 0
-    verbose_name = "Document-Author Relationship"
+    verbose_name = "Author"
     verbose_name_plural = verbose_name + "s"
+    autocomplete_fields = ("person",)
 
 
 class DocumentPublisherInline(admin.TabularInline):
-    def get_queryset(self, request):
-        qs = super(DocumentPublisherInline, self).get_queryset(request)
-        return qs.select_related("person")
-
     model = Document.publishers.through
     extra = 0
-    verbose_name = "Document-Publisher Relationship"
+    verbose_name = "Publisher"
     verbose_name_plural = verbose_name + "s"
+    autocomplete_fields = ("person",)
 
 
-class DocumentTranslatedFromInline(admin.TabularInline):
-    def get_queryset(self, request):
-        qs = super(DocumentTranslatedFromInline, self).get_queryset(request)
-        return qs.select_related("from_document")
-
-    model = Document.translated_from.through
-    fk_name = "from_document"
+class TranslationRelationshipInline(admin.TabularInline):
+    readonly_fields = ("app",)
+    model = Document.document_relationships.through
+    fk_name = "document_from"
     extra = 0
-    verbose_name = "Orginal Document"
+    verbose_name = "Translation"
     verbose_name_plural = verbose_name + "s"
+    autocomplete_fields = ("document_to",)
 
 
-class DocumentTranslatedToInline(admin.TabularInline):
-    def get_queryset(self, request):
-        qs = super(DocumentTranslatedToInline, self).get_queryset(request)
-        return qs.select_related("from_document")
+class OriginalRelationshipInline(admin.TabularInline):
 
-    model = Document.translated_to.through
-    fk_name = "from_document"
+    readonly_fields = ("app",)
+    model = Document.document_relationships.through
+    fk_name = "document_to"
     extra = 0
-    verbose_name = "Translated Document"
+    verbose_name = "Original"
     verbose_name_plural = verbose_name + "s"
+    autocomplete_fields = ("document_from",)
 
 
 @admin.register(Document)
 class DocumentAdmin(admin.ModelAdmin):
-
+    autocomplete_fields = ("ddc", "country", "language")
     readonly_fields = (
         "app",
         "origAssign_link",
@@ -390,9 +435,10 @@ class DocumentAdmin(admin.ModelAdmin):
     inlines = [
         DocumentAuthorInline,
         DocumentPublisherInline,
-        DocumentTranslatedFromInline,
-        DocumentTranslatedToInline,
-        ArchiveInline,
+        TranslationRelationshipInline,
+        OriginalRelationshipInline,
+        FilingInline,
+        CommentInline,
     ]
     search_fields = ("id", "title", "author")
     fieldsets = (
@@ -403,13 +449,13 @@ class DocumentAdmin(admin.ModelAdmin):
                 "fields": (
                     "title",
                     "subtitle",
-                    "year",
-                    "published_location",
                     "edition",
                     "language",
-                    "real_year",
-                    "country",
                     "ddc",
+                    "year",
+                    "real_year",
+                    "published_location",
+                    "country",
                 ),
             },
         ),
@@ -427,6 +473,7 @@ class DocumentAdmin(admin.ModelAdmin):
                     "translationTranslator_link",
                     "translation_link",
                 ),
+                "classes": ("collapse",),
             },
         ),
     )

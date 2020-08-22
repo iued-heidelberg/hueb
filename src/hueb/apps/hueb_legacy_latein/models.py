@@ -30,7 +30,7 @@ class Translator(models.Model):
     user = models.ForeignKey("User", models.DO_NOTHING, blank=True, null=True)
     datum = models.DateField(blank=True, null=True)
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
-    migration_generated = models.BooleanField()
+    migration_generated = models.BooleanField(default=False)
 
     def __str__(self):
         if self.name is None:
@@ -49,7 +49,7 @@ class TranslatorNew(models.Model):
     user = models.ForeignKey("User", models.DO_NOTHING, blank=True, null=True)
     datum = models.DateField(blank=True, null=True)
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
-    migration_generated = models.BooleanField()
+    migration_generated = models.BooleanField(default=False)
 
     def __str__(self):
         if self.name is None:
@@ -68,7 +68,7 @@ class Author(models.Model):
     user = models.ForeignKey("User", models.DO_NOTHING, blank=True, null=True)
     datum = models.DateField(blank=True, null=True)
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
-    migration_generated = models.BooleanField()
+    migration_generated = models.BooleanField(default=False)
 
     def __str__(self):
         if self.name is None:
@@ -87,7 +87,7 @@ class AuthorNew(models.Model):
     user = models.ForeignKey("User", models.DO_NOTHING, blank=True, null=True)
     datum = models.DateField(blank=True, null=True)
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
-    migration_generated = models.BooleanField()
+    migration_generated = models.BooleanField(default=False)
 
     def __str__(self):
         if self.name is None:
@@ -103,7 +103,7 @@ class Country(models.Model):
     id = models.BigAutoField(primary_key=True)
     country = models.CharField(max_length=255)
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
-    migration_generated = models.BooleanField()
+    migration_generated = models.BooleanField(default=False)
 
     def __str__(self):
         if self.country is None:
@@ -120,7 +120,7 @@ class DdcGerman(models.Model):
     ddc_number = models.CharField(max_length=3)
     ddc_name = models.CharField(max_length=255)
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
-    migration_generated = models.BooleanField()
+    migration_generated = models.BooleanField(default=False)
 
     def __str__(self):
         return self.ddc_number + " " + self.ddc_name
@@ -134,7 +134,7 @@ class Language(models.Model):
     id = models.BigAutoField(primary_key=True)
     language = models.CharField(max_length=255)
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
-    migration_generated = models.BooleanField()
+    migration_generated = models.BooleanField(default=False)
 
     def __str__(self):
         if self.language is None:
@@ -153,7 +153,7 @@ class LocAssign(models.Model):
     trans = models.ForeignKey("Translation", models.DO_NOTHING, blank=True, null=True)
     signatur = models.CharField(max_length=255)
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
-    migration_generated = models.BooleanField()
+    migration_generated = models.BooleanField(default=False)
     loc_new = models.ForeignKey("LocationNew", models.DO_NOTHING, blank=True, null=True)
     orig_new = models.ForeignKey(
         "OriginalNew", models.DO_NOTHING, blank=True, null=True
@@ -179,7 +179,7 @@ class Location(models.Model):
     ip = models.CharField(max_length=255, blank=True, null=True)
     z3950_gateway = models.CharField(max_length=255, blank=True, null=True)
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
-    migration_generated = models.BooleanField()
+    migration_generated = models.BooleanField(default=False)
 
     def __str__(self):
         if self.name is None:
@@ -200,7 +200,7 @@ class LocationNew(models.Model):
     ip = models.CharField(max_length=255, blank=True, null=True)
     z3950_gateway = models.CharField(max_length=255, blank=True, null=True)
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
-    migration_generated = models.BooleanField()
+    migration_generated = models.BooleanField(default=False)
 
     def __str__(self):
         if self.name is None:
@@ -227,7 +227,7 @@ class OrigAssign(models.Model):
         related_name="trans_diff",
     )
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
-    migration_generated = models.BooleanField()
+    migration_generated = models.BooleanField(default=False)
     orig_new = models.ForeignKey(
         "OriginalNew", models.DO_NOTHING, blank=True, null=True
     )
@@ -277,7 +277,7 @@ class Original(models.Model):
     datum = models.DateField(blank=True, null=True)
     country = models.ForeignKey(Country, models.DO_NOTHING, blank=True, null=True)
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
-    migration_generated = models.BooleanField()
+    migration_generated = models.BooleanField(default=False)
     author = models.ManyToManyField(Author, through="OriginalAuthor")
     author_new = models.ManyToManyField(AuthorNew, through="OriginalAuthorNew")
 
@@ -309,7 +309,7 @@ class OriginalNew(models.Model):
     datum = models.DateField(blank=True, null=True)
     country = models.ForeignKey(Country, models.DO_NOTHING, blank=True, null=True)
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
-    migration_generated = models.BooleanField()
+    migration_generated = models.BooleanField(default=False)
     author = models.ManyToManyField(Author, through="OriginalNewAuthor")
     author_new = models.ManyToManyField(AuthorNew, through="OriginalNewAuthorNew")
 
@@ -345,7 +345,7 @@ class Translation(models.Model):
     datum = models.DateField(blank=True, null=True)
     country = models.ForeignKey(Country, models.DO_NOTHING, blank=True, null=True)
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
-    migration_generated = models.BooleanField()
+    migration_generated = models.BooleanField(default=False)
     author_new = models.ForeignKey(AuthorNew, models.DO_NOTHING, blank=True, null=True)
     translator = models.ManyToManyField(Translator, through="TranslationTranslator")
     translator_new = models.ManyToManyField(
@@ -388,7 +388,7 @@ class TranslationNew(models.Model):
     datum = models.DateField(blank=True, null=True)
     country = models.ForeignKey(Country, models.DO_NOTHING, blank=True, null=True)
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
-    migration_generated = models.BooleanField()
+    migration_generated = models.BooleanField(default=False)
     author_new = models.ForeignKey(AuthorNew, models.DO_NOTHING, blank=True, null=True)
     translator = models.ManyToManyField(Translator, through="TranslationNewTranslator")
     translator_new = models.ManyToManyField(
@@ -407,8 +407,8 @@ class TranslationNew(models.Model):
 
 class OriginalAuthor(models.Model):
     id = models.BigAutoField(primary_key=True)
-    original = models.ForeignKey(Original, models.DO_NOTHING)
-    author = models.ForeignKey(Author, models.DO_NOTHING)
+    original = models.ForeignKey(Original, models.DO_NOTHING, blank=True, null=True)
+    author = models.ForeignKey(Author, models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
         db_table = "sueb_latein_original_author"
@@ -416,8 +416,8 @@ class OriginalAuthor(models.Model):
 
 class OriginalAuthorNew(models.Model):
     id = models.BigAutoField(primary_key=True)
-    original = models.ForeignKey(Original, models.DO_NOTHING)
-    author = models.ForeignKey(AuthorNew, models.DO_NOTHING)
+    original = models.ForeignKey(Original, models.DO_NOTHING, blank=True, null=True)
+    author = models.ForeignKey(AuthorNew, models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
         db_table = "sueb_latein_original_author_new"
@@ -425,8 +425,8 @@ class OriginalAuthorNew(models.Model):
 
 class OriginalNewAuthor(models.Model):
     id = models.BigAutoField(primary_key=True)
-    original = models.ForeignKey(OriginalNew, models.DO_NOTHING)
-    author = models.ForeignKey(Author, models.DO_NOTHING)
+    original = models.ForeignKey(OriginalNew, models.DO_NOTHING, blank=True, null=True)
+    author = models.ForeignKey(Author, models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
         db_table = "sueb_latein_original_new_author"
@@ -434,8 +434,10 @@ class OriginalNewAuthor(models.Model):
 
 class OriginalNewAuthorNew(models.Model):
     id = models.BigAutoField(primary_key=True)
-    original_new = models.ForeignKey(OriginalNew, models.DO_NOTHING)
-    author = models.ForeignKey(AuthorNew, models.DO_NOTHING)
+    original_new = models.ForeignKey(
+        OriginalNew, models.DO_NOTHING, blank=True, null=True
+    )
+    author = models.ForeignKey(AuthorNew, models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
         db_table = "sueb_latein_original_new_author_new"
@@ -443,8 +445,12 @@ class OriginalNewAuthorNew(models.Model):
 
 class TranslationNewTranslator(models.Model):
     id = models.BigAutoField(primary_key=True)
-    translation = models.ForeignKey(TranslationNew, models.DO_NOTHING)
-    translator = models.ForeignKey("Translator", models.DO_NOTHING)
+    translation = models.ForeignKey(
+        TranslationNew, models.DO_NOTHING, blank=True, null=True
+    )
+    translator = models.ForeignKey(
+        "Translator", models.DO_NOTHING, blank=True, null=True
+    )
 
     class Meta:
         db_table = "sueb_latein_translation_new_translator"
@@ -452,8 +458,12 @@ class TranslationNewTranslator(models.Model):
 
 class TranslationNewTranslatorNew(models.Model):
     id = models.BigAutoField(primary_key=True)
-    translation_new = models.ForeignKey(TranslationNew, models.DO_NOTHING)
-    translator = models.ForeignKey("TranslatorNew", models.DO_NOTHING)
+    translation_new = models.ForeignKey(
+        TranslationNew, models.DO_NOTHING, blank=True, null=True
+    )
+    translator = models.ForeignKey(
+        "TranslatorNew", models.DO_NOTHING, blank=True, null=True
+    )
 
     class Meta:
         db_table = "sueb_latein_translation_new_translator_new"
@@ -461,8 +471,12 @@ class TranslationNewTranslatorNew(models.Model):
 
 class TranslationTranslator(models.Model):
     id = models.BigAutoField(primary_key=True)
-    translation = models.ForeignKey(Translation, models.DO_NOTHING)
-    translator = models.ForeignKey("Translator", models.DO_NOTHING)
+    translation = models.ForeignKey(
+        Translation, models.DO_NOTHING, blank=True, null=True
+    )
+    translator = models.ForeignKey(
+        "Translator", models.DO_NOTHING, blank=True, null=True
+    )
 
     class Meta:
         db_table = "sueb_latein_translation_translator"
@@ -470,8 +484,12 @@ class TranslationTranslator(models.Model):
 
 class TranslationTranslatorNew(models.Model):
     id = models.BigAutoField(primary_key=True)
-    translation = models.ForeignKey(Translation, models.DO_NOTHING)
-    translator = models.ForeignKey("TranslatorNew", models.DO_NOTHING)
+    translation = models.ForeignKey(
+        Translation, models.DO_NOTHING, blank=True, null=True
+    )
+    translator = models.ForeignKey(
+        "TranslatorNew", models.DO_NOTHING, blank=True, null=True
+    )
 
     class Meta:
         db_table = "sueb_latein_translation_translator_new"

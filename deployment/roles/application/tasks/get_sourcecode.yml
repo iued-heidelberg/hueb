@@ -5,12 +5,17 @@
 
 - name: install the latest version of git
   apt:
-    name: git, git-lfs
+    name: git
+    state: latest
+
+- name: install the latest version of git
+  apt:
+    name: git-lfs
     state: latest
 
 - name: clone a private repository
   git:
-    repo: git@github.com:bockstaller/hueb.git
+    repo: https://github.com/bockstaller/hueb.git
     dest: "{{ git_directory }}"
     accept_hostkey: yes
     force: yes

@@ -122,10 +122,9 @@ env.bak/
 venv.bak/
 
 #Ansible
-deployment/group_vars/all
-deployment/group_vars/webserver
 deployment/production
 deployment/staging
+deployment/secrets*
 
 # Spyder project settings
 .spyderproject
