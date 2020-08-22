@@ -23,11 +23,23 @@ HUEB_APPLICATIONS = [
 class Comment(models.Model):
     id = models.BigAutoField(primary_key=True)
     text = models.TextField(blank=True, null=True)
+    external = models.BooleanField(
+        default=False,
+        help_text="External comments will be displayed on the public website.",
+    )
     person = models.ForeignKey(
-        "Person", on_delete=models.CASCADE, null=True, blank=True
+        "Person",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="person_comment",
     )
     document = models.ForeignKey(
-        "Document", on_delete=models.CASCADE, null=True, blank=True
+        "Document",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="document_comment",
     )
     app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
 
