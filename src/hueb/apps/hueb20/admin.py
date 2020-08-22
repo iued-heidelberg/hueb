@@ -8,6 +8,7 @@ from .models import (
     Archive,
     Comment,
     Country,
+    CulturalCircle,
     DdcGerman,
     Document,
     Filing,
@@ -168,6 +169,41 @@ class PersonAdmin(admin.ModelAdmin):
         return mark_safe(link)
 
     translator_link.short_description = "Translator"
+
+
+@admin.register(CulturalCircle)
+class CulturalCircleAdmin(admin.ModelAdmin):
+    readonly_fields = ("app", "cultural_circle_link")
+    list_display = ("id", "name", "description")
+    search_fields = ("name", "id")
+    fieldsets = (
+        (
+            "Country Information",
+            {
+                "description": ("Information stored about the cultural circle"),
+                "fields": ("name", "description"),
+            },
+        ),
+        (
+            "Datasource for reference",
+            {
+                "description": (
+                    "The information for this entry were derived from this old database entry."
+                ),
+                "fields": ("app", "cultural_circle_link"),
+                "classes": ("collapse",),
+            },
+        ),
+    )
+
+    def cultural_circle_link(self, obj):
+        url = reverse(
+            "admin:hueb_legacy_latein_country_change", args=[obj.country_ref.id],
+        )
+        link = '<a href="%s">%s</a>' % (url, obj.country_ref)
+        return mark_safe(link)
+
+    cultural_circle_link.short_description = "Country"
 
 
 @admin.register(Country)
@@ -412,7 +448,7 @@ class OriginalRelationshipInline(admin.TabularInline):
 
 @admin.register(Document)
 class DocumentAdmin(admin.ModelAdmin):
-    autocomplete_fields = ("ddc", "country", "language")
+    autocomplete_fields = ("ddc", "cultural_circle", "language")
     readonly_fields = (
         "app",
         "origAssign_link",
@@ -455,7 +491,7 @@ class DocumentAdmin(admin.ModelAdmin):
                     "year",
                     "real_year",
                     "published_location",
-                    "country",
+                    "cultural_circle",
                 ),
             },
         ),

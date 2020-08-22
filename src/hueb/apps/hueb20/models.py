@@ -107,6 +107,18 @@ class YearRange(models.Model):
             return "none"
 
 
+class CulturalCircle(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    name = models.CharField(max_length=255, help_text="Name of the cultural circle")
+    description = models.TextField(null=True, blank=True)
+    app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
+
+    def __str__(self):
+        if self.name is None:
+            return " "
+        return self.name
+
+
 class Country(models.Model):
     id = models.BigAutoField(primary_key=True)
     country = models.CharField(max_length=255, help_text="Name of the country")
@@ -199,8 +211,8 @@ class Document(models.Model):
         "Language", on_delete=models.DO_NOTHING, blank=True, null=True
     )
     real_year = models.IntegerField(blank=True, null=True)
-    country = models.ForeignKey(
-        "Country", blank=True, null=True, on_delete=models.DO_NOTHING
+    cultural_circle = models.ForeignKey(
+        "CulturalCircle", blank=True, null=True, on_delete=models.DO_NOTHING
     )
 
     ddc = models.ForeignKey(
