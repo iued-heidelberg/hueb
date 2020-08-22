@@ -5,13 +5,13 @@ from hueb.apps.hueb_legacy_latein import models as Legacy
 
 # Register your models here.
 from .models import (
+    Archive,
     Comment,
     Country,
     DdcGerman,
     Document,
     Filing,
     Language,
-    Location,
     Person,
     YearRange,
 )
@@ -278,9 +278,9 @@ class LanguageAdmin(admin.ModelAdmin):
     language_link.short_description = "Language"
 
 
-@admin.register(Location)
-class LocationAdmin(admin.ModelAdmin):
-    readonly_fields = ("app", "location_link")
+@admin.register(Archive)
+class ArchiveAdmin(admin.ModelAdmin):
+    readonly_fields = ("app", "archive_link")
     list_display = (
         "id",
         "name",
@@ -295,7 +295,7 @@ class LocationAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (
-            "Location Information",
+            "Archive Information",
             {
                 "description": (" "),
                 "fields": (
@@ -314,20 +314,20 @@ class LocationAdmin(admin.ModelAdmin):
                 "description": (
                     "The information for this entry were derived from this old database entry."
                 ),
-                "fields": ("app", "location_link"),
+                "fields": ("app", "archive_link"),
                 "classes": ("collapse",),
             },
         ),
     )
 
-    def location_link(self, obj):
+    def archive_link(self, obj):
         url = reverse(
             "admin:hueb_legacy_latein_locationnew_change", args=[obj.location_ref.id],
         )
         link = '<a href="%s">%s</a>' % (url, obj.location_ref)
         return mark_safe(link)
 
-    location_link.short_description = "Location"
+    archive_link.short_description = "Archive"
 
 
 @admin.register(Filing)
