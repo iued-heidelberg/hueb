@@ -1,24 +1,17 @@
 from django.contrib import admin
 
-from .models import (  # OriginalAuthorNew,; OriginalNewAuthor,; TranslationNewTranslator,; TranslationTranslatorNew,
-    Author,
+from .models import (
     AuthorNew,
     Country,
     DdcGerman,
     Language,
     LocAssign,
-    Location,
     LocationNew,
     OrigAssign,
-    Original,
-    OriginalAuthor,
     OriginalNew,
     OriginalNewAuthorNew,
-    Translation,
     TranslationNew,
     TranslationNewTranslatorNew,
-    TranslationTranslator,
-    Translator,
     TranslatorNew,
     User,
 )
@@ -35,22 +28,10 @@ class ReadonlyAdmin(admin.ModelAdmin):
         return False
 
 
-class OriginalAuthorInline(admin.TabularInline):
-    model = OriginalAuthor
-    extra = 0
-    autocomplete_fields = ("author", "original")
-
-
 class OriginalNewAuthorNewInline(admin.TabularInline):
     model = OriginalNewAuthorNew
     extra = 0
     autocomplete_fields = ("author", "original_new")
-
-
-class TranslationTranslatorInline(admin.TabularInline):
-    model = TranslationTranslator
-    extra = 0
-    autocomplete_fields = ("translator", "translation")
 
 
 class TranslationNewTranslatorNewInline(admin.TabularInline):
@@ -61,8 +42,8 @@ class TranslationNewTranslatorNewInline(admin.TabularInline):
 
 class LocAssignInline(admin.TabularInline):
     model = LocAssign
-    fields = ("loc", "signatur")
-    autocomplete_fields = ("loc",)
+    fields = ("loc_new", "signatur")
+    autocomplete_fields = ("loc_new",)
     extra = 0
 
 
@@ -115,12 +96,8 @@ class OrigAssignAdmin(ReadonlyAdmin):
     )
     list_filter = ("migration_generated",)
     autocomplete_fields = (
-        "orig",
-        "trans",
         "orig_new",
         "trans_new",
-        "orig_diff",
-        "trans_diff",
         "orig_diff_new",
         "trans_diff_new",
     )
@@ -166,9 +143,6 @@ class LocAssignAdmin(ReadonlyAdmin):
     )
     list_filter = ("migration_generated",)
     autocomplete_fields = (
-        "loc",
-        "orig",
-        "trans",
         "loc_new",
         "orig_new",
         "trans_new",
@@ -212,49 +186,6 @@ class UserAdmin(ReadonlyAdmin):
     )
 
 
-@admin.register(Translator)
-class TranslatorAdmin(ReadonlyAdmin):
-    list_display = (
-        "id",
-        "name",
-        "comment",
-        "user",
-        "datum",
-        "migration_notes",
-        "migration_generated",
-    )
-    search_fields = ("name", "id")
-    list_filter = ("datum", "migration_generated")
-
-    fieldsets = (
-        (
-            "Translator Information",
-            {
-                "description": ("Information stored about the translator"),
-                "fields": ("name", "comment"),
-            },
-        ),
-        (
-            "Metadata",
-            {
-                "description": ("Information about the original creator of this entry"),
-                "fields": ("user", "datum"),
-            },
-        ),
-        (
-            "Migration",
-            {
-                "description": ("Migration metadata"),
-                "classes": ("collapse",),
-                "fields": ("migration_notes", "migration_generated"),
-            },
-        ),
-    )
-    inlines = [
-        TranslationTranslatorInline,
-    ]
-
-
 @admin.register(TranslatorNew)
 class TranslatorNewAdmin(ReadonlyAdmin):
     list_display = (
@@ -295,49 +226,6 @@ class TranslatorNewAdmin(ReadonlyAdmin):
     )
     inlines = [
         TranslationNewTranslatorNewInline,
-    ]
-
-
-@admin.register(Author)
-class AuthorAdmin(ReadonlyAdmin):
-    list_display = (
-        "id",
-        "name",
-        "comment",
-        "user",
-        "datum",
-        "migration_notes",
-        "migration_generated",
-    )
-    search_fields = ("name", "id")
-    list_filter = ("datum", "migration_generated")
-
-    fieldsets = (
-        (
-            "Author Information",
-            {
-                "description": ("Information stored about the author"),
-                "fields": ("name", "comment"),
-            },
-        ),
-        (
-            "Metadata",
-            {
-                "description": ("Information about the original creator of this entry"),
-                "fields": ("user", "datum"),
-            },
-        ),
-        (
-            "Migration",
-            {
-                "description": ("Migration metadata"),
-                "classes": ("collapse",),
-                "fields": ("migration_notes", "migration_generated"),
-            },
-        ),
-    )
-    inlines = [
-        OriginalAuthorInline,
     ]
 
 
@@ -463,48 +351,6 @@ class LanguageAdmin(ReadonlyAdmin):
     )
 
 
-@admin.register(Location)
-class LocationAdmin(ReadonlyAdmin):
-    list_display = (
-        "id",
-        "name",
-        "adress",
-        "country",
-        "hostname",
-        "ip",
-        "z3950_gateway",
-        "migration_notes",
-        "migration_generated",
-    )
-    list_filter = ("migration_generated",)
-    search_fields = ("name", "address", "country")
-
-    fieldsets = (
-        (
-            "Location Information",
-            {
-                "description": (" "),
-                "fields": (
-                    "name",
-                    "adress",
-                    "country",
-                    "hostname",
-                    "ip",
-                    "z3950_gateway",
-                ),
-            },
-        ),
-        (
-            "Migration",
-            {
-                "description": ("Migration metadata"),
-                "classes": ("collapse",),
-                "fields": ("migration_notes", "migration_generated"),
-            },
-        ),
-    )
-
-
 @admin.register(LocationNew)
 class LocationNewAdmin(ReadonlyAdmin):
     list_display = (
@@ -545,78 +391,6 @@ class LocationNewAdmin(ReadonlyAdmin):
             },
         ),
     )
-
-
-@admin.register(Original)
-class OriginalAdmin(ReadonlyAdmin):
-    list_display = (
-        "id",
-        "title",
-        "subtitle",
-        "subtitle1",
-        "year",
-        "publisher",
-        "published_location",
-        "edition",
-        "language",
-        "comment",
-        "ddc",
-        "real_year",
-        "link",
-        "user",
-        "datum",
-        "country",
-        "migration_notes",
-        "migration_generated",
-    )
-    list_filter = ("migration_generated",)
-    search_fields = (
-        "title",
-        "subtitle",
-        "subtitle1",
-        "year",
-        "publisher",
-        "published_location",
-    )
-    autocomplete_fields = ("ddc",)
-
-    fieldsets = (
-        (
-            "Original Information",
-            {
-                "description": (" "),
-                "fields": (
-                    "title",
-                    "subtitle",
-                    "subtitle1",
-                    "year",
-                    "publisher",
-                    "published_location",
-                    "edition",
-                    "language",
-                    "real_year",
-                    "country",
-                ),
-            },
-        ),
-        (
-            "Original Metadata",
-            {
-                "description": (" "),
-                "fields": ("ddc", "comment", "link", "user", "datum"),
-            },
-        ),
-        (
-            "Migration",
-            {
-                "description": ("Migration metadata"),
-                "classes": ("collapse",),
-                "fields": ("migration_notes", "migration_generated"),
-            },
-        ),
-    )
-
-    inlines = [OriginalAuthorInline, LocAssignInline, TransAssignInline]
 
 
 @admin.register(OriginalNew)
@@ -691,83 +465,6 @@ class OriginalNewAdmin(ReadonlyAdmin):
     inlines = [OriginalNewAuthorNewInline, LocAssignInline, TransNewAssignInline]
 
 
-@admin.register(Translation)
-class TranslationAdmin(ReadonlyAdmin):
-    list_display = (
-        "id",
-        "title",
-        "subtitle",
-        "subtitle1",
-        "author",
-        "year",
-        "publisher",
-        "published_location",
-        "edition",
-        "language",
-        "via_language",
-        "ddc",
-        "comment",
-        "real_year",
-        "link",
-        "user",
-        "datum",
-        "country",
-        "migration_notes",
-        "migration_generated",
-        "author_new",
-    )
-    list_filter = ("migration_generated",)
-    search_fields = (
-        "title",
-        "subtitle",
-        "subtitle1",
-        "year",
-        "publisher",
-        "published_location",
-    )
-    autocomplete_fields = ("author", "ddc")
-
-    fieldsets = (
-        (
-            "Original Information",
-            {
-                "description": (" "),
-                "fields": (
-                    "title",
-                    "subtitle",
-                    "subtitle1",
-                    "author",
-                    "year",
-                    "publisher",
-                    "published_location",
-                    "edition",
-                    "language",
-                    "via_language",
-                    "real_year",
-                    "country",
-                ),
-            },
-        ),
-        (
-            "Original Metadata",
-            {
-                "description": (" "),
-                "fields": ("ddc", "comment", "link", "user", "datum"),
-            },
-        ),
-        (
-            "Migration",
-            {
-                "description": ("Migration metadata"),
-                "classes": ("collapse",),
-                "fields": ("migration_notes", "migration_generated"),
-            },
-        ),
-    )
-
-    inlines = [TranslationTranslatorInline, LocAssignInline, OrigAssignInline]
-
-
 @admin.register(TranslationNew)
 class TranslationNewAdmin(ReadonlyAdmin):
     list_display = (
@@ -802,7 +499,7 @@ class TranslationNewAdmin(ReadonlyAdmin):
         "publisher",
         "published_location",
     )
-    autocomplete_fields = ("author", "ddc")
+    autocomplete_fields = ("author_new", "ddc")
 
     fieldsets = (
         (
