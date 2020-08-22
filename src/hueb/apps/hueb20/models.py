@@ -161,7 +161,7 @@ class Language(models.Model):
         return self.language
 
 
-class Location(models.Model):
+class Archive(models.Model):
     id = models.BigAutoField(primary_key=True)
     name = models.CharField(max_length=255, null=True)
     adress = models.TextField(blank=True, null=True)
@@ -207,7 +207,7 @@ class Document(models.Model):
         "DdcGerman", on_delete=models.DO_NOTHING, blank=True, null=True
     )
     located_in = models.ManyToManyField(
-        Location, through="Filing", through_fields=("document", "location"),
+        Archive, through="Filing", through_fields=("document", "archive"),
     )
     app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
     original_ref = models.OneToOneField(
@@ -247,8 +247,8 @@ class DocumentRelationship(models.Model):
 
 class Filing(models.Model):
     id = models.BigAutoField(primary_key=True)
-    location = models.ForeignKey(
-        Location, on_delete=models.CASCADE, null=True, blank=True
+    archive = models.ForeignKey(
+        Archive, on_delete=models.CASCADE, null=True, blank=True
     )
     document = models.ForeignKey(
         Document, on_delete=models.CASCADE, null=True, blank=True

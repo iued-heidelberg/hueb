@@ -8,7 +8,7 @@ from hueb.apps.hueb20.models import (  # OriginalAuthorNew,; OriginalNewAuthor,;
     DdcGerman,
     Document,
     Language,
-    Location,
+    Archive,
     Person,
     Comment,
 )
@@ -21,7 +21,7 @@ class AdminSmokeTestCase(TestCase):
         DdcGerman,
         Document,
         Language,
-        Location,
+        Archive,
         Person,
         Comment,
     ]
