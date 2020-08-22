@@ -11,6 +11,7 @@ from hueb.apps.hueb20.models import (  # OriginalAuthorNew,; OriginalNewAuthor,;
     Archive,
     Person,
     Comment,
+    CulturalCircle,
 )
 
 
@@ -24,6 +25,7 @@ class AdminSmokeTestCase(TestCase):
         Archive,
         Person,
         Comment,
+        CulturalCircle,
     ]
 
     def setUp(self):
