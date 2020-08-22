@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
-import sys
 
 import sentry_sdk
 from dotenv import load_dotenv
@@ -20,6 +19,10 @@ from sentry_sdk.integrations.django import DjangoIntegration
 load_dotenv()
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "hueb.settings")
+
+
+ENV = os.environ.get("ENV", None)
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -30,8 +33,6 @@ if os.getenv("HUEB_STATIC_DIR") is not None:
 else:
     STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("HUEB_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("HUEB_DEBUG") == "TRUE"
@@ -87,14 +88,22 @@ WSGI_APPLICATION = "hueb.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-if sys.argv[1] == "test":
+if ENV == "GITHUB_WORKFLOW":
+    DEBUG = True
+    SECRET_KEY = "TESTING_KEY"
     DATABASES = {
         "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": "github_actions",
+            "USER": "postgres",
+            "PASSWORD": "postgres",
+            "HOST": "127.0.0.1",
+            "PORT": "5432",
         }
     }
 else:
+    # SECURITY WARNING: keep the secret key used in production secret!
+    SECRET_KEY = os.getenv("HUEB_SECRET_KEY")
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",

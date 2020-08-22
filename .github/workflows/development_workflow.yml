@@ -57,7 +57,16 @@ jobs:
       max-parallel: 4
       matrix:
         python-version: [ 3.8, ]
-
+    services:
+      db:
+        image: postgres:12.3-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: github_actions
+        ports:
+          - 5432:5432
+        options: --mount type=tmpfs,destination=/var/lib/postgresql/data --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
@@ -74,7 +83,7 @@ jobs:
         cd src
         python manage.py test
       env: # Or as an environment variable
-        HUEB_SECRET_KEY: ${{ secrets.HUEB_SECRET_KEY }}
+        ENV: GITHUB_WORKFLOW
 
   StagingDeployment:
     if: ${{ github.event_name == 'push' }}
