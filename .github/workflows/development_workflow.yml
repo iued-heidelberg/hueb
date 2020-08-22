@@ -83,7 +83,7 @@ jobs:
         cd src
         python manage.py test
       env: # Or as an environment variable
-        HUEB_SECRET_KEY: ${{ secrets.HUEB_SECRET_KEY }}
+        SYSTEM_ENV: GITHUB_WORKFLOW
 
   StagingDeployment:
     if: ${{ github.event_name == 'push' }}

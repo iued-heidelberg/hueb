@@ -20,7 +20,7 @@ load_dotenv()
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "hueb.settings")
 
-SYSTEM_ENV = os.environ.get("SYSTEM_ENV", None)
+
 ENV = os.environ.get("ENV", None)
 
 
@@ -90,7 +90,7 @@ WSGI_APPLICATION = "hueb.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-if SYSTEM_ENV == "GITHUB_WORKFLOW":
+if ENV == "GITHUB_WORKFLOW":
     DEBUG = True
     SECRET_KEY = "TESTING_KEY"
     DATABASES = {
