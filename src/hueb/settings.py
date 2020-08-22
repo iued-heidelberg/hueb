@@ -33,8 +33,6 @@ if os.getenv("HUEB_STATIC_DIR") is not None:
 else:
     STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("HUEB_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("HUEB_DEBUG") == "TRUE"
@@ -104,6 +102,8 @@ if ENV == "GITHUB_WORKFLOW":
         }
     }
 else:
+    # SECURITY WARNING: keep the secret key used in production secret!
+    SECRET_KEY = os.getenv("HUEB_SECRET_KEY")
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",

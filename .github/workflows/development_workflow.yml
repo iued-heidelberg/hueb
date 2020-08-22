@@ -83,7 +83,7 @@ jobs:
         cd src
         python manage.py test
       env: # Or as an environment variable
-        SYSTEM_ENV: GITHUB_WORKFLOW
+        ENV: GITHUB_WORKFLOW
 
   StagingDeployment:
     if: ${{ github.event_name == 'push' }}
