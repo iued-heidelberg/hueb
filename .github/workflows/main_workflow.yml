@@ -72,8 +72,8 @@ jobs:
       run: |
         cd src
         python manage.py test
-      env: # Or as an environment variable
-        HUEB_SECRET_KEY: ${{ secrets.HUEB_SECRET_KEY }}
+      env:
+        ENV: GITHUB_WORKFLOW
 
   ProductionDeployment:
     needs: [Tests, flake8, black]
