@@ -1,5 +1,5 @@
 from django.test import TestCase
-from hueb.apps.hueb20.models import Person
+from hueb.apps.hueb20.models.person import Person
 
 
 class IsAliasTestCase(TestCase):

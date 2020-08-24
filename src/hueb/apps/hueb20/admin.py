@@ -3,19 +3,16 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 from hueb.apps.hueb_legacy_latein import models as Legacy
 
-# Register your models here.
-from .models import (
-    Archive,
-    Comment,
-    Country,
-    CulturalCircle,
-    DdcGerman,
-    Document,
-    Filing,
-    Language,
-    Person,
-    YearRange,
-)
+from .models.archive import Archive
+from .models.comment import Comment
+from .models.country import Country
+from .models.culturalCircle import CulturalCircle
+from .models.ddc import DdcGerman
+from .models.document import Document
+from .models.filing import Filing
+from .models.language import Language
+from .models.person import Person
+from .models.yearRange import YearRange
 
 
 class LegacyAuthorNew(admin.TabularInline):

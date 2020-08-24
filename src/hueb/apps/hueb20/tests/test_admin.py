@@ -1,18 +1,15 @@
 from django.contrib.auth.models import User as DjangoUser
 from django.test import Client, TestCase
 from django.urls import reverse
-
-from hueb.apps.hueb20.models import (  # OriginalAuthorNew,; OriginalNewAuthor,; TranslationNewTranslator,; TranslationTranslatorNew,
-    Filing,
-    Country,
-    DdcGerman,
-    Document,
-    Language,
-    Archive,
-    Person,
-    Comment,
-    CulturalCircle,
-)
+from hueb.apps.hueb20.models.archive import Archive
+from hueb.apps.hueb20.models.comment import Comment
+from hueb.apps.hueb20.models.country import Country
+from hueb.apps.hueb20.models.culturalCircle import CulturalCircle
+from hueb.apps.hueb20.models.ddc import DdcGerman
+from hueb.apps.hueb20.models.document import Document
+from hueb.apps.hueb20.models.filing import Filing
+from hueb.apps.hueb20.models.language import Language
+from hueb.apps.hueb20.models.person import Person
 
 
 class AdminSmokeTestCase(TestCase):
