@@ -3,53 +3,20 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 from hueb.apps.hueb_legacy_latein import models as Legacy
 
-# Register your models here.
-from .models import (
-    Archive,
-    Comment,
-    Country,
-    CulturalCircle,
-    DdcGerman,
-    Document,
-    Filing,
-    Language,
-    Person,
-    YearRange,
-)
+from .models.archive import Archive
+from .models.comment import Comment
+from .models.country import Country
+from .models.culturalCircle import CulturalCircle
+from .models.ddc import DdcGerman
+from .models.document import Document
+from .models.filing import Filing
+from .models.language import Language
+from .models.person import Person
 
 
 class LegacyAuthorNew(admin.TabularInline):
     model = Legacy.AuthorNew
     extra = 0
-
-
-class YearRangeInline(admin.StackedInline):
-    model = YearRange
-    fieldsets = (
-        (
-            "Year Range",
-            {
-                "description": (
-                    "Please enter all known digits of the year range for example 19. Jhd -> 19 or 1922 -> 1922."
-                ),
-                "fields": ("start", "end",),
-            },
-        ),
-    )
-    readonly_fields = (
-        "app",
-        "author_ref",
-        "translator_ref",
-    )
-    extra = 0
-    verbose_name = "Year range"
-    verbose_name_plural = verbose_name
-
-
-#
-class LifetimeInline(YearRangeInline):
-    verbose_name = "Lifetime"
-    verbose_name_plural = verbose_name
 
 
 class CommentInline(admin.TabularInline):
@@ -79,68 +46,18 @@ class CommentAdmin(admin.ModelAdmin):
     verbose_name_plural = verbose_name + "s"
 
 
-class YearRangeAdmin(admin.ModelAdmin):
-    readonly_fields = ("app", "author_link", "translator_link", "parsed_string")
-    list_display = (
-        "id",
-        "start",
-        "end",
-    )
-    search_fields = ("start", "end", "id")
-    fieldsets = (
-        (
-            "Timerange Information",
-            {
-                "description": (
-                    "Please enter all known digits of the year range for example 19. Jhd -> 19 or 1922 -> 1922."
-                ),
-                "fields": ("start", "end",),
-            },
-        ),
-        (
-            "Datasource for reference",
-            {
-                "description": (
-                    "The information for this entry were derived from this old database entry."
-                ),
-                "fields": ("app", "author_link", "translator_link", "parsed_string",),
-                "classes": ("collapse",),
-            },
-        ),
-    )
-
-    def author_link(self, obj):
-        url = reverse(
-            "admin:hueb_legacy_latein_authornew_change", args=[obj.author_ref.id]
-        )
-        link = '<a href="%s">%s</a>' % (url, obj.author_ref)
-        return mark_safe(link)
-
-    author_link.short_description = "Author"
-
-    def translator_link(self, obj):
-        url = reverse(
-            "admin:hueb_legacy_latein_translatornew_change",
-            args=[obj.translator_ref.id],
-        )
-        link = '<a href="%s">%s</a>' % (url, obj.translator_ref)
-        return mark_safe(link)
-
-    translator_link.short_description = "Translator"
-
-
 @admin.register(Person)
 class PersonAdmin(admin.ModelAdmin):
     readonly_fields = ("app", "author_link", "translator_link")
-    list_display = ("id", "name", "alias", "is_alias")
-    search_fields = ("name", "id")
+    list_display = ("id", "name", "alias", "is_alias", "lifetime_start", "lifetime_end")
+    search_fields = ("name", "id", "lifetime_start", "lifetime_end")
     autocomplete_fields = ("alias",)
     fieldsets = (
         (
             "Person Information",
             {
                 "description": ("All known data about a person"),
-                "fields": ("name", "alias",),
+                "fields": ("name", "alias", "lifetime_start", "lifetime_end"),
             },
         ),
         (
@@ -154,7 +71,7 @@ class PersonAdmin(admin.ModelAdmin):
             },
         ),
     )
-    inlines = [LifetimeInline, CommentInline]
+    inlines = [CommentInline]
 
     def author_link(self, obj):
         url = reverse(
@@ -179,15 +96,15 @@ class PersonAdmin(admin.ModelAdmin):
 @admin.register(CulturalCircle)
 class CulturalCircleAdmin(admin.ModelAdmin):
     readonly_fields = ("app", "cultural_circle_link")
-    list_display = ("id", "name", "description")
-    search_fields = ("name", "id")
-    inlines = [YearRangeInline, CommentInline]
+    list_display = ("id", "name", "description", "start", "end")
+    search_fields = ("name", "id", "start", "end")
+    inlines = [CommentInline]
     fieldsets = (
         (
             "Country Information",
             {
                 "description": ("Information stored about the cultural circle"),
-                "fields": ("name", "description",),
+                "fields": ("name", "description", "start", "end"),
             },
         ),
         (
@@ -470,8 +387,7 @@ class DocumentAdmin(admin.ModelAdmin):
         "published_location",
         "edition",
         "language",
-        "year",
-        "real_year",
+        "written_in",
         "ddc",
     )
     inlines = [
@@ -482,7 +398,7 @@ class DocumentAdmin(admin.ModelAdmin):
         FilingInline,
         CommentInline,
     ]
-    search_fields = ("id", "title", "author")
+    search_fields = ("id", "title", "author", "written_in")
     fieldsets = (
         (
             "Document Information",
@@ -494,8 +410,7 @@ class DocumentAdmin(admin.ModelAdmin):
                     "edition",
                     "language",
                     "ddc",
-                    "year",
-                    "real_year",
+                    "written_in",
                     "published_location",
                     "cultural_circle",
                 ),
