@@ -2,6 +2,7 @@ import hueb.apps.hueb_legacy_latein.models as Legacy
 from django.contrib.postgres.fields import IntegerRangeField
 from django.db import models
 from hueb.apps.hueb20.models import HUEB20, HUEB_APPLICATIONS
+from simple_history.models import HistoricalRecords
 
 from .archive import Archive
 from .culturalCircle import CulturalCircle
@@ -54,6 +55,7 @@ class Document(models.Model):
         null=True,
         blank=True,
     )
+    history = HistoricalRecords()
 
     def __str__(self):
         if self.title is None:

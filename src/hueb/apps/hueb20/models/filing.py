@@ -1,6 +1,7 @@
 import hueb.apps.hueb_legacy_latein.models as Legacy
 from django.db import models
 from hueb.apps.hueb20.models import HUEB20, HUEB_APPLICATIONS
+from simple_history.models import HistoricalRecords
 
 from .archive import Archive
 from .document import Document
@@ -20,3 +21,4 @@ class Filing(models.Model):
     locAssign_ref = models.ForeignKey(
         Legacy.LocAssign, on_delete=models.DO_NOTHING, null=True, blank=True
     )
+    history = HistoricalRecords()

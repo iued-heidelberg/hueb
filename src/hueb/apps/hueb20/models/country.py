@@ -1,6 +1,7 @@
 import hueb.apps.hueb_legacy_latein.models as Legacy
 from django.db import models
 from hueb.apps.hueb20.models import HUEB20, HUEB_APPLICATIONS
+from simple_history.models import HistoricalRecords
 
 
 class Country(models.Model):
@@ -14,6 +15,7 @@ class Country(models.Model):
         blank=True,
         related_name="country_ref",
     )
+    history = HistoricalRecords()
 
     def __str__(self):
         if self.country is None:
