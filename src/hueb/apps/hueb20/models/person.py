@@ -1,4 +1,5 @@
 import hueb.apps.hueb_legacy_latein.models as Legacy
+from django.contrib.postgres.fields import IntegerRangeField
 from django.db import models
 from django.template.defaultfilters import escape
 from hueb.apps.hueb20.models import HUEB20, HUEB_APPLICATIONS
@@ -8,6 +9,8 @@ class Person(models.Model):
     id = models.BigAutoField(primary_key=True)
     name = models.CharField(max_length=255, null=True, blank=True)
     alias = models.ForeignKey("self", on_delete=models.CASCADE, null=True, blank=True)
+    lifetime_start = IntegerRangeField(null=True, blank=True)
+    lifetime_end = IntegerRangeField(null=True, blank=True)
     app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
     author_ref = models.OneToOneField(
         Legacy.AuthorNew, on_delete=models.DO_NOTHING, null=True, blank=True

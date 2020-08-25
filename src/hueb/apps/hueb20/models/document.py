@@ -1,4 +1,5 @@
 import hueb.apps.hueb_legacy_latein.models as Legacy
+from django.contrib.postgres.fields import IntegerRangeField
 from django.db import models
 from hueb.apps.hueb20.models import HUEB20, HUEB_APPLICATIONS
 
@@ -13,7 +14,7 @@ class Document(models.Model):
     id = models.BigAutoField(primary_key=True)
     title = models.TextField(blank=True, null=True)
     subtitle = models.TextField(blank=True, null=True)
-    year = models.CharField(max_length=100, blank=True, null=True)
+    written_in = IntegerRangeField(null=True, blank=True)
     publishers = models.ManyToManyField(Person, related_name="DocumentPublishers")
     written_by = models.ManyToManyField(Person, related_name="DocumentAuthor")
     document_relationships = models.ManyToManyField(
@@ -27,7 +28,6 @@ class Document(models.Model):
     language = models.ForeignKey(
         Language, on_delete=models.DO_NOTHING, blank=True, null=True
     )
-    real_year = models.IntegerField(blank=True, null=True)
     cultural_circle = models.ForeignKey(
         CulturalCircle, blank=True, null=True, on_delete=models.DO_NOTHING
     )
