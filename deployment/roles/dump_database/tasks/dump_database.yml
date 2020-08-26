@@ -1,7 +1,7 @@
-- name: Create a ext4 filesystem on /dev/sdc
+- name: Create a ext4 filesystem on /dev/sdb
   filesystem:
     fstype: ext4
-    dev: /dev/sdc
+    dev: /dev/sdb
 
 - name: Mount up db_dumps device
   mount:

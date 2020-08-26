@@ -36,6 +36,7 @@
     path: "{{ db_directory }}"
     owner: "postgres"
     state: directory
+    recurse: yes
     mode: 0700
 
 - name: Move DB directory
