@@ -14,8 +14,8 @@
   file:
     path: "/db_dumps"
     recurse: yes
+    mode: 0770
     state: "directory"
-    owner: "{{ user_name }}"
     group: "{{ user_group }}"
 
 - name: Ansible fact - ansible_date_time
