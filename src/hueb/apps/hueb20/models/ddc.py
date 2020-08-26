@@ -1,6 +1,7 @@
 import hueb.apps.hueb_legacy_latein.models as Legacy
 from django.db import models
 from hueb.apps.hueb20.models import HUEB20, HUEB_APPLICATIONS
+from simple_history.models import HistoricalRecords
 
 
 class DdcGerman(models.Model):
@@ -12,6 +13,7 @@ class DdcGerman(models.Model):
     ddc_ref = models.OneToOneField(
         Legacy.DdcGerman, on_delete=models.DO_NOTHING, null=True, blank=True
     )
+    history = HistoricalRecords()
 
     class Meta:
         verbose_name = "DDC"

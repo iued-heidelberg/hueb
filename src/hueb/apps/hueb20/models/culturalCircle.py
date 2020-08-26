@@ -1,6 +1,7 @@
 from django.contrib.postgres.fields import IntegerRangeField
 from django.db import models
 from hueb.apps.hueb20.models import HUEB20, HUEB_APPLICATIONS
+from simple_history.models import HistoricalRecords
 
 
 class CulturalCircle(models.Model):
@@ -10,6 +11,7 @@ class CulturalCircle(models.Model):
     end = IntegerRangeField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
+    history = HistoricalRecords()
 
     def __str__(self):
         if self.name is None:

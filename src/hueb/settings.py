@@ -41,6 +41,7 @@ ALLOWED_HOSTS = [os.getenv("HUEB_ALLOWED_HOSTS")]
 
 
 INSTALLED_APPS = [
+    "simple_history",
     "hueb.apps.hueb20",
     "hueb.apps.hueb_legacy_latein",
     "django_extensions",
@@ -54,6 +55,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "simple_history.middleware.HistoryRequestMiddleware",
     "beeline.middleware.django.HoneyMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",

@@ -3,6 +3,7 @@ from django.contrib.postgres.fields import IntegerRangeField
 from django.db import models
 from django.template.defaultfilters import escape
 from hueb.apps.hueb20.models import HUEB20, HUEB_APPLICATIONS
+from simple_history.models import HistoricalRecords
 
 
 class Person(models.Model):
@@ -24,6 +25,7 @@ class Person(models.Model):
     publisherTranslation_ref = models.OneToOneField(
         Legacy.TranslationNew, on_delete=models.DO_NOTHING, null=True, blank=True
     )
+    history = HistoricalRecords()
 
     def __str__(self):
         if self.name is None:

@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 from hueb.apps.hueb_legacy_latein import models as Legacy
+from simple_history.admin import SimpleHistoryAdmin
 
 from .models.archive import Archive
 from .models.comment import Comment
@@ -32,7 +33,7 @@ class CommentInline(admin.TabularInline):
 
 
 @admin.register(Comment)
-class CommentAdmin(admin.ModelAdmin):
+class CommentAdmin(SimpleHistoryAdmin):
     model = Comment
     fields = ("text", "person", "document", "external")
     readonly_fields = (
@@ -47,7 +48,7 @@ class CommentAdmin(admin.ModelAdmin):
 
 
 @admin.register(Person)
-class PersonAdmin(admin.ModelAdmin):
+class PersonAdmin(SimpleHistoryAdmin):
     readonly_fields = ("app", "author_link", "translator_link")
     list_display = ("id", "name", "alias", "is_alias", "lifetime_start", "lifetime_end")
     search_fields = ("name", "id", "lifetime_start", "lifetime_end")
@@ -94,7 +95,7 @@ class PersonAdmin(admin.ModelAdmin):
 
 
 @admin.register(CulturalCircle)
-class CulturalCircleAdmin(admin.ModelAdmin):
+class CulturalCircleAdmin(SimpleHistoryAdmin):
     readonly_fields = ("app", "cultural_circle_link")
     list_display = ("id", "name", "description", "start", "end")
     search_fields = ("name", "id", "start", "end")
@@ -130,7 +131,7 @@ class CulturalCircleAdmin(admin.ModelAdmin):
 
 
 @admin.register(Country)
-class CountryAdmin(admin.ModelAdmin):
+class CountryAdmin(SimpleHistoryAdmin):
     readonly_fields = ("app", "country_link")
     list_display = (
         "id",
@@ -168,7 +169,7 @@ class CountryAdmin(admin.ModelAdmin):
 
 
 @admin.register(DdcGerman)
-class DdcGermanAdmin(admin.ModelAdmin):
+class DdcGermanAdmin(SimpleHistoryAdmin):
     readonly_fields = ("app", "ddc_link")
     list_display = (
         "id",
@@ -205,7 +206,7 @@ class DdcGermanAdmin(admin.ModelAdmin):
 
 
 @admin.register(Language)
-class LanguageAdmin(admin.ModelAdmin):
+class LanguageAdmin(SimpleHistoryAdmin):
     readonly_fields = ("app", "language_link")
     list_display = (
         "id",
@@ -238,7 +239,7 @@ class LanguageAdmin(admin.ModelAdmin):
 
 
 @admin.register(Archive)
-class ArchiveAdmin(admin.ModelAdmin):
+class ArchiveAdmin(SimpleHistoryAdmin):
     readonly_fields = ("app", "archive_link")
     list_display = (
         "id",
@@ -290,7 +291,7 @@ class ArchiveAdmin(admin.ModelAdmin):
 
 
 @admin.register(Filing)
-class FilingAdmin(admin.ModelAdmin):
+class FilingAdmin(SimpleHistoryAdmin):
     readonly_fields = ("app", "locAssign_link")
     list_display = ("id", "signatur", "link")
     search_fields = ("signatur", "id")
@@ -370,7 +371,7 @@ class OriginalRelationshipInline(admin.TabularInline):
 
 
 @admin.register(Document)
-class DocumentAdmin(admin.ModelAdmin):
+class DocumentAdmin(SimpleHistoryAdmin):
     autocomplete_fields = ("ddc", "cultural_circle", "language")
     readonly_fields = (
         "app",
