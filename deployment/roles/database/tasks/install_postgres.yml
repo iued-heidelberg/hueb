@@ -31,11 +31,18 @@
       - psycopg2
       - virtualenv
 
+- name: "Add postgres to user_group"
+  user:
+    name: "postgres"
+    groups: "{{ user_group }}"
+    append: yes
+
 - name: Creates PostgreSQL data directory
   file:
     path: "{{ db_directory }}"
     owner: "postgres"
     state: directory
+    recurse: yes
     mode: 0700
 
 - name: Move DB directory

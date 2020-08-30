@@ -13,7 +13,7 @@
     password: "{{ user_password }}"
     role_attr_flags: SUPERUSER
   notify:
-  - restart postgres
+    - restart postgres
 
 - name: Create django database
   become_user: postgres
@@ -32,10 +32,24 @@
     priv: ALL
     role_attr_flags: NOSUPERUSER
   notify:
-  - restart postgres
+    - restart postgres
 
+- name: Configure db_dumps
+  template:
+    src: ../templates/dump_db.sh.j2
+    dest: "/db/dump_db.sh"
+  notify:
+    - restart app
 
+- name: Make dump_db executable
+  file:
+    dest: "/db/dump_db.sh"
+    mode: a+x
 
-
-
-
+- name: Create cronjob
+  cron:
+    name: "dump database"
+    user: postgres
+    minute: "0"
+    hour: "0,6,12,18"
+    job: "/db/dump_db.sh"
