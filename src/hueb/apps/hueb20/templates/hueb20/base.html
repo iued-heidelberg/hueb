@@ -1,0 +1,175 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang = "en-US">
+  <head>
+    <meta charset = "UTF-8">
+    <title>Test</title>
+    <link rel = "stylesheet"
+      type = "text/css"
+      href = "{% static 'hueb20/base.css' %}" />
+      <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+  </head>
+  <body>
+
+    <div x-data="{ hamburgerOpen: false, overlayOpen: false }" class="w-full h-full">
+
+      {#Overlay#}
+      <div x-show="overlayOpen" class="fixed top-0 left-0 flex flex-col w-full h-full bg-gray-bg-darker"
+        x-transition:enter="transition ease-in-out duration-500 transform" x-transition:enter-start="-translate-x-full" x-transition:enter-end="translate-x-0"
+        x-transition:leave="transition ease-in-out duration-500 transform" x-transition:leave-start="translate-x-0" x-transition:leave-end="-translate-x-full">
+
+        <div class="block">
+          <button class="p-8 " @click="overlayOpen = false">
+              <svg id="close_cross" class="w-24 h-24 m-4 font-bold transition duration-300 ease-in-out transform fill-current stroke-2 text-sand-bg lg:w-12 lg:h-12 hover:rotate-90" viewBox="0 0 30 30">
+                <path d="M16.41,15,24,7.37A1,1,0,0,0,22.63,6L15,13.59,7.37,6A1,1,0,0,0,6,7.37L13.59,15,6,22.63A1,1,0,1,0,7.37,24L15,16.41,22.63,24A1,1,0,0,0,24,22.63Z"></path>
+              </svg>
+          </button>
+        </div>
+
+        <div>
+          <div class="flex flex-col items-center mt-16 text-5xl md:mt-4 lg:text-lg">
+
+            <h1 class="pb-24 font-light leading-snug lg:pb-12 text-sand-bg lg:text-3xl">
+              <span class="font-bold">H</span>eidelberger<br>
+              <span class="font-bold">Ü</span>bersetzungs<br>
+              <span class="font-bold">B</span>ibliographie
+            </h1>
+
+            <label for="name" class="hidden">Benutzername:</label>
+            <input type="text" class="block w-4/5 p-2 my-8 font-semibold text-center placeholder-opacity-50 lg:my-4 lg:w-1/3 bg-sand-bg text-gray-bg" id="name" placeholder="Benutzername" required>
+
+            <label for="password" class="hidden">Passwort:</label>
+            <input type="password" class="block w-4/5 p-2 my-8 font-semibold text-center placeholder-opacity-50 lg:my-4 lg:w-1/3 bg-sand-bg text-gray-bg" placeholder="Passwort" id="password" required>
+
+            <div class="flex justify-center">
+              <input type="submit" class="p-2 px-8 my-4 mt-20 font-semibold text-center bg-transparent border-b-8 border-transparent lg:mt-10 lg:text-3xl hover:border-sand-bg text-sand-bg" value="Log in">
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+
+
+      {#Main Div#}
+      <div class="z-10 min-h-screen pb-24 bg-sand-bg"  @keydown.escape="hamburgerOpen = false; overlayOpen = false">
+
+        {#Menu Bar#}
+        <nav class="z-10 flex flex-wrap items-center justify-between px-24 shadow-lg lg:h-24" >
+
+          {#Hamburger#}
+          <div class="block lg:hidden">
+            <button class="flex p-2 text-black border border-transparent stroke-2 items-centers hover:border-black" @click="hamburgerOpen = !hamburgerOpen">
+              <svg id="icon-symbol-hamburger" class="w-24 h-24 fill-current " viewBox="0 0 30 30">
+                <path d="M24.61,21.69H5.39a1,1,0,0,0,0,2H24.61a1,1,0,0,0,0-2Z"></path>
+                <path d="M5.39,16H19.12a1,1,0,0,0,0-2H5.39a1,1,0,0,0,0,2Z"></path>
+                <path d="M5.39,8.31H24.61a1,1,0,0,0,0-2H5.39a1,1,0,0,0,0,2Z"></path>
+              </svg>
+            </button>
+          </div>
+
+          {#Menu Elements#}
+          <div :class="{'hidden': !hamburgerOpen}" class="order-last block w-full p-8 text-4xl lg:order-first lg:flex lg:w-auto lg:p-0 lg:text-lg lg:flex-grow lg:justify-between" @click.away="hamburgerOpen = false">
+            {#Left aligned menu items#}
+            <div>
+              <a class="block py-4 font-bold border-b-4 border-transparent lg:mr-4 lg:pr-2 lg:inline-block hover:border-black" href="#" @click="hamburgerOpen = false">Katalog</a>
+              <a class="block py-4 font-bold border-b-4 border-transparent lg:p-2 lg:m-4 lg:inline-block hover:border-black" href="#" @click="hamburgerOpen = false">Suche</a>
+              <a class="block py-4 font-bold border-b-4 border-transparent lg:p-2 lg:m-4 lg:inline-block hover:border-black" href="#" @click="hamburgerOpen = false">Projekt</a>
+            </div>
+            {#Right aligned menu items#}
+            <div>
+              <a class="block py-4 pt-12 font-bold border-b-4 border-transparent lg:p-2 lg:m-4 lg:mr-12 lg:inline-block hover:border-black"  @click="overlayOpen = true">Login</a>
+            </div>
+          </div>
+
+          {#Logos#}
+          <div class="flex items-center flex-shrink-0">
+            <div class="pr-12 lg:py-2 lg:pr-6">
+              <h1 class="text-xl font-light leading-snug lg:text-lg">
+                  <span class="font-bold">H</span>eidelberger<br>
+                  <span class="font-bold">Ü</span>bersetzungs<br>
+                  <span class="font-bold">B</span>ibliographie
+              </h1>
+            </div>
+            <div>
+              <img class="object-contain h-24 lg:h-20 lg:p-2" src="{% static 'hueb20/img/logo.png' %}" alt="Universität Heidelberg">
+            </div>
+          </div>
+
+        </nav>
+
+        {#Content#}
+        <div class="z-0 max-w-full px-24 py-4">
+          <div class="pt-2 pb-10">
+            <h1 class="text-4xl font-bold uppercase">Heidelberger <br> Übersetzungsbibliographie</h1>
+          </div>
+
+          <div class="flex">
+            <div class="w-3/5 pr-8 text-lg leading-relaxed text-gray-900 lg:w-1/2">
+
+                <p class="pb-1">
+                  Im Rahmen der Digital Humanities wird die DFG-geförderte Heidelberger Übersetzungsbibliographie eine Informationsinfrastruktur bereitstellen, die zwei Zwecken dienen soll:
+                </p>
+
+                <p class="py-1">
+                  Zunächst geht es um die Zusammenstellung einer Bibliographie von vorwiegend frühneuzeitlichen Übersetzungen aus dem Englischen und Niederländischen ins Deutsche (Erscheinungszeitraum 1450–1850).
+                </p>
+
+                <p class="py-1">
+                  Diese soll dann gemeinsam mit zwei Vorgängerprojekten zur romanisch-deutschen und lateinisch-deutschen Übersetzung (Saarbrücker Übersetzungsbibliographie) zu einer Gesamtbibliographie integriert werden, um anderen Forschenden umfassende bibliographische Daten zur Übersetzung ins Deutsche in der frühen Neuzeit und darüber hinaus verfügbar zu machen.
+                </p>
+
+                <p class="py-1">
+                  Durch die Zusammenführung der dann insgesamt drei Datenbanken (englisch/niederländisch-deutsche HÜB, lateinisch-deutsche SÜB-L, romanisch-deutsche SÜB) wird eine umfassende Übersetzungsbibliographie frühneuzeitlicher nichtfiktionaler Texte mit Lateinisch, Französisch, Italienisch, Spanisch, Portugiesisch, Englisch und Niederländisch als systematisch erfassten Original- und Brückensprachen entstehen, die Forschenden eine umfassende Datenbasis für Untersuchungen verschiedenster Ausrichtung liefern kann. Darüber hinaus soll die entwickelte Infrastruktur zugleich interessierten Kolleginnen und Kollegen für die   Erfassung eigener bibliographischer Daten zur Verfügung gestellt werden.
+                </p>
+
+            </div>
+            <div class="w-2/5 pl-8 lg:w-2/5">
+
+              <img class="object-contain w-full" src="{% static 'hueb20/img/relief.jpg' %}">
+              <p class="text-xs font-light">
+                Übernommen aus "Pluvinel, Antonium: Maneige royal ou l’on peut remarquer la defaut et la perfection du chevalier" mit Genehmigung der Universitäts- und Landesbibliothek Sachsen-Anhalt
+              </p>
+
+              <div class="pt-8 ">
+                <h2 class="pb-3 text-lg font-extrabold text-gray-900 uppercase">
+                  Kontakt
+                </h2>
+                <p class="text-sm font-normal text-gray-700">
+                  <span class="font-bold text-gray-900">Projekt-Leitung:</span>
+                  Prof. Dr. Vahram Atayan <br>
+                  E-Mail:
+                    <a class="underline hover:text-red-900" href="mailto:vahram.atayan@iued.uni-heidelberg.de">
+                      vahram.atayan@iued.uni-heidelberg.de
+                    </a>
+                  <br>
+                  <span class="font-bold text-gray-900">Projekt-Koordination:</span>
+                  Dr. Anne Weber, Daniele Moretti (Vertretung) <br>
+                  E-Mail:
+                  <a class="underline hover:text-red-900" href="mailto:daniele.moretti@iued.uni-heidelberg.de">
+                    daniele.moretti@iued.uni-heidelberg.de
+                  </a>
+
+
+                </p>
+              </div>
+            </div>
+
+          </div >
+
+        </div>
+      </div>
+
+      {#Footer#}
+      <div class="z-10 flex items-center justify-between h-40 p-16 bg-gray-bg-darker">
+        <a class="text-white text-opacity-50 hover:text-opacity-100 hover:underline" href="#">Github</a>
+        <a class="text-white text-opacity-50 hover:text-opacity-100 hover:underline" href="#">Impressum</a>
+        <a class="text-white text-opacity-50 hover:text-opacity-100 hover:underline" href="#">Datenschutzerklärung</a>
+        <img class="object-contain h-16 " src="{% static 'hueb20/img/iued.png' %}" alt="IUED Logo">
+
+      </div>
+
+    </div>
+
+  </body>
+</html>
