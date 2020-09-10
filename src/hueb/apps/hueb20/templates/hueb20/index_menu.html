@@ -1,0 +1,14 @@
+ <div :class="{'hidden': !hamburgerOpen}" class="order-last block w-full p-8 text-4xl lg:order-first lg:flex lg:w-auto lg:p-0 lg:text-lg lg:flex-grow lg:justify-between" @click.away="hamburgerOpen = false">
+
+  {#Left aligned menu items#}
+  <div>
+    <a class="block py-4 font-bold border-b-4 border-transparent lg:mr-4 lg:pr-2 lg:inline-block hover:border-black" href="#" @click="hamburgerOpen = false">Katalog</a>
+    <a class="block py-4 font-bold border-b-4 border-transparent lg:p-2 lg:m-4 lg:inline-block hover:border-black" href="#" @click="hamburgerOpen = false">Suche</a>
+    <a class="block py-4 font-bold border-b-4 border-transparent lg:p-2 lg:m-4 lg:inline-block hover:border-black" href="#" @click="hamburgerOpen = false">Projekt</a>
+  </div>
+
+  {#Right aligned menu items#}
+  <div>
+    <a class="block py-4 pt-12 font-bold border-b-4 border-transparent lg:p-2 lg:m-4 lg:mr-12 lg:inline-block hover:border-black"  @click="overlayOpen = true">Login</a>
+  </div>
+</div>
