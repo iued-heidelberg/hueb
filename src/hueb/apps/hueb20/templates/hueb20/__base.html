@@ -3,42 +3,45 @@
 <html lang = "en-US">
   <head>
     <meta charset = "UTF-8">
-    <title>Test</title>
+    {% block title %}
+    <title>Heidelberger Übersetzungs Bibliographie</title>
+    {% endblock  %}
     <link rel = "stylesheet"
-      type = "text/css"
-      href = "{% static "hueb20/base.css" %}" />
-      <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+    type = "text/css"
+    href = "{% static "hueb20/base.css" %}" />
   </head>
   <body>
 
-    <div x-data="{ hamburgerOpen: false, overlayOpen: false }" class="w-full h-full">
+    <div x-data="{ hamburgerOpen: false, overlayOpen: {{overlayOpen | lower}} }" class="w-full h-full">
 
       {# Overlay #}
-      <div x-show="overlayOpen" class="fixed top-0 left-0 flex flex-col w-full h-full bg-gray-bg-darker"
-      x-transition:enter="transition ease-in-out duration-500 transform" x-transition:enter-start="-translate-x-full" x-transition:enter-end="translate-x-0"
-      x-transition:leave="transition ease-in-out duration-500 transform" x-transition:leave-start="translate-x-0" x-transition:leave-end="-translate-x-full">
-        {# Overlay Close Button #}
-        <div class="block" >
-          <button class="p-8" @click="overlayOpen = false">
-              <svg id="close_cross" class="w-24 h-24 m-4 font-bold transition duration-300 ease-in-out transform fill-current stroke-2 text-sand-bg lg:w-12 lg:h-12 hover:rotate-90" viewBox="0 0 30 30">
-                <path d="M16.41,15,24,7.37A1,1,0,0,0,22.63,6L15,13.59,7.37,6A1,1,0,0,0,6,7.37L13.59,15,6,22.63A1,1,0,1,0,7.37,24L15,16.41,22.63,24A1,1,0,0,0,24,22.63Z">
-                </path>
-              </svg>
-          </button>
+      <template x-if="overlayOpen">
+        <div class="z-20 fixed top-0 left-0 flex flex-col w-full h-full bg-gray-bg-darker"
+        x-transition:enter="transition ease-in-out duration-500 transform" x-transition:enter-start="-translate-x-full" x-transition:enter-end="translate-x-0"
+        x-transition:leave="transition ease-in-out duration-500 transform" x-transition:leave-start="translate-x-0" x-transition:leave-end="-translate-x-full" x-cloak>
+          {# Overlay Close Button #}
+          <div class="block" >
+            <button class="p-8" @click="overlayOpen = false">
+                <svg id="close_cross" class="w-24 h-24 m-4 font-bold transition duration-300 ease-in-out transform fill-current stroke-2 text-sand-bg lg:w-12 lg:h-12 hover:rotate-90" viewBox="0 0 30 30">
+                  <path d="M16.41,15,24,7.37A1,1,0,0,0,22.63,6L15,13.59,7.37,6A1,1,0,0,0,6,7.37L13.59,15,6,22.63A1,1,0,1,0,7.37,24L15,16.41,22.63,24A1,1,0,0,0,24,22.63Z">
+                  </path>
+                </svg>
+            </button>
+          </div>
+
+          {% block overlay %}
+
+          {% endblock %}
+
         </div>
-
-        {% block overlay %}
-
-        {% endblock %}
-
-      </div>
+      </template>
 
 
       {#Main Div#}
-      <div class="z-10 min-h-screen pb-24 bg-sand-bg"  @keydown.escape="hamburgerOpen = false; overlayOpen = false">
+      <div class="min-h-screen pb-24 bg-sand-bg"  @keydown.escape="hamburgerOpen = false; overlayOpen = false">
 
         {#Menu Bar#}
-        <nav class="z-10 flex flex-wrap items-center justify-between px-24 shadow-lg lg:h-24" >
+        <nav class="flex flex-wrap items-center justify-between px-24 shadow-lg lg:h-24" >
 
           {#Hamburger#}
           <div class="block lg:hidden">
@@ -73,7 +76,7 @@
         </nav>
 
         {#Content#}
-        <div class="z-0 max-w-full px-24 py-4">
+        <div class="max-w-full px-24 py-4">
 
           {% block content %}
 
@@ -83,7 +86,7 @@
       </div>
 
       {#Footer#}
-      <div class="z-10 flex items-center justify-between h-40 p-16 bg-gray-bg-darker fl">
+      <div class="flex items-center justify-between h-40 p-16 bg-gray-bg-darker fl">
         {% block footer %}
 
         {% endblock %}
@@ -93,4 +96,6 @@
     </div>
 
   </body>
+
+  <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
 </html>

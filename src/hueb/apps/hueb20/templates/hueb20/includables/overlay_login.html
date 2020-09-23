@@ -6,14 +6,44 @@
       <span class="font-bold">B</span>ibliographie
     </h1>
 
-    <label for="name" class="hidden">Benutzername:</label>
-    <input type="text" class="block w-4/5 p-2 my-8 font-semibold text-center placeholder-opacity-50 lg:my-4 lg:w-1/3 bg-sand-bg text-gray-bg" id="name" placeholder="Benutzername" required>
 
-    <label for="password" class="hidden">Passwort:</label>
-    <input type="password" class="block w-4/5 p-2 my-8 font-semibold text-center placeholder-opacity-50 lg:my-4 lg:w-1/3 bg-sand-bg text-gray-bg" placeholder="Passwort" id="password" required>
+    <form class="w-4/5 items-center flex flex-col" method="post" action="{% url 'login' %}">
 
-    <div class="flex justify-center">
-      <input type="submit" class="p-2 px-8 my-4 mt-20 font-semibold text-center bg-transparent border-b-8 border-transparent lg:mt-10 lg:text-3xl hover:border-sand-bg text-sand-bg" value="Log in">
-    </div>
+      {% csrf_token %}
+
+      {% if form.errors %}
+        <p class="block w-4/5 p-2 my-8 font-semibold text-center placeholder-opacity-50 lg:my-4 lg:w-1/3 bg-sand-bg text-gray-bg" placeholder>
+          Your username and password didn't match. Please try again.
+        </p>
+      {% endif %}
+
+
+      <label for="{{ form.username.id_for_label }}" class="hidden"  >Benutzername:</label>
+      <input
+        type="text"
+        id="{{ form.username.id_for_label }}"
+        value="{{ form.username.value }}"
+        name="{{ form.username.html_name }}"
+        class="block w-4/5 p-2 my-8 font-semibold text-center placeholder-opacity-50 lg:my-4 lg:w-1/3 bg-sand-bg text-gray-bg" placeholder="Benutzername"
+        required
+      >
+
+      <label for="password" class="hidden">Passwort:</label>
+      <input
+        type="password"
+        id="{{ form.password.id_for_label }}"
+        value="{{ form.password.value }}"
+        name="{{ form.password.html_name }}"
+        class="block w-4/5 p-2 my-8 font-semibold text-center placeholder-opacity-50 lg:my-4 lg:w-1/3 bg-sand-bg text-gray-bg" placeholder="Passwort"
+        required
+      >
+
+      <input type="hidden" name="next" value="#">
+
+      <div class="flex justify-center">
+        <input type="submit" class="p-2 px-8 my-4 mt-20 font-semibold text-center bg-transparent border-b-8 border-transparent lg:mt-10 lg:text-3xl hover:border-sand-bg text-sand-bg" value="Log in">
+      </div>
+
+    </form>
   </div>
 </div>
