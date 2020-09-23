@@ -20,9 +20,19 @@
   {#Right aligned menu items#}
   <div>
 
-    <a class="block py-4 font-bold border-b-4 pt-12 lg:py-4 border-transparent lg:px-2 lg:my-4 lg:mr-12 lg:inline-block hover:border-black"  @click="overlayOpen = true">
-    {% if user.is_authenticated %}{{user.username}}{% endif %}
-    {% if not user.is_authenticated %}Login{% endif %}
+
+
+    <a class="block py-4 font-bold border-b-4 pt-12 lg:py-4 border-transparent lg:px-2 lg:my-4 lg:mr-12 lg:inline-block hover:border-black"
+
+    {% if not user.is_authenticated %}
+      @click="overlayOpen = true">
+      {% if not user.is_authenticated %}Login{% endif %}
+    {% else %}
+      href="/accounts/logout"> Logout
+    {% endif %}
+
+
+
 
     </a>
   </div>
