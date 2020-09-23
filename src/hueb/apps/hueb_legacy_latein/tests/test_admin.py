@@ -1,5 +1,4 @@
-from django.contrib.auth.models import User as DjangoUser
-from django.test import Client, TestCase
+import pytest
 from django.urls import reverse
 
 from hueb.apps.hueb_legacy_latein.models import (  # OriginalAuthorNew,; OriginalNewAuthor,; TranslationNewTranslator,; TranslationTranslatorNew,
@@ -17,33 +16,28 @@ from hueb.apps.hueb_legacy_latein.models import (  # OriginalAuthorNew,; Origina
 )
 
 
-class AdminSmokeTestCase(TestCase):
-    admin_sites = [
-        AuthorNew,
-        Country,
-        DdcGerman,
-        Language,
-        LocAssign,
-        LocationNew,
-        OrigAssign,
-        OriginalNew,
-        TranslationNew,
-        TranslatorNew,
-        User,
-    ]
+admin_sites = [
+    AuthorNew,
+    Country,
+    DdcGerman,
+    Language,
+    LocAssign,
+    LocationNew,
+    OrigAssign,
+    OriginalNew,
+    TranslationNew,
+    TranslatorNew,
+    User,
+]
 
-    def setUp(self):
-        self.client = Client()
-        user = DjangoUser.objects.create_superuser(username="test", password="test",)
-        self.client.force_login(user)
 
-    def test_smoke_admin(self):
-        for obj in self.admin_sites:
-            instance = obj()
-            instance.save()
+@pytest.mark.django_db
+@pytest.mark.parametrize("site", admin_sites)
+def test_smoke_admin(admin_client, site):
+    instance = site()
+    instance.save()
+    info = (site._meta.app_label, site._meta.model_name)
+    admin_url = reverse("admin:%s_%s_change" % info, args=(instance.pk,))
 
-            info = (instance._meta.app_label, instance._meta.model_name)
-            admin_url = reverse("admin:%s_%s_change" % info, args=(instance.pk,))
-
-            response = self.client.get(admin_url)
-            self.assertEqual(response.status_code, 200)
+    response = admin_client.get(admin_url)
+    assert response.status_code == 200
