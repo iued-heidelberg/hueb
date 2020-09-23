@@ -1,11 +1,10 @@
-from django.contrib.auth import views as auth_views
-from django.urls import include, path
+from django.urls import path
 
 from . import views
+from .views import Login
 
 urlpatterns = [
     # ex: /polls/
     path("", views.index, name="Index"),
-    path("accounts/", include("django.contrib.auth.urls")),
-    path("login", auth_views.LoginView.as_view(template_name="hueb20/index.html")),
+    path("accounts/login", Login.as_view(), name="login"),
 ]
