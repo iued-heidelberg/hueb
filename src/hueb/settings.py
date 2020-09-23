@@ -23,7 +23,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "hueb.settings")
 
 ENV = os.environ.get("ENV", None)
 
-LOGIN_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL = "/admin"
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
