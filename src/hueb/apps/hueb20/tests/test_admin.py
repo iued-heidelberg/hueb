@@ -1,5 +1,4 @@
-from django.contrib.auth.models import User as DjangoUser
-from django.test import Client, TestCase
+import pytest
 from django.urls import reverse
 from hueb.apps.hueb20.models.archive import Archive
 from hueb.apps.hueb20.models.comment import Comment
@@ -11,32 +10,37 @@ from hueb.apps.hueb20.models.filing import Filing
 from hueb.apps.hueb20.models.language import Language
 from hueb.apps.hueb20.models.person import Person
 
+admin_sites = [
+    Filing,
+    Country,
+    DdcGerman,
+    Document,
+    Language,
+    Archive,
+    Person,
+    Comment,
+    CulturalCircle,
+]
 
-class AdminSmokeTestCase(TestCase):
-    admin_sites = [
-        Filing,
-        Country,
-        DdcGerman,
-        Document,
-        Language,
-        Archive,
-        Person,
-        Comment,
-        CulturalCircle,
-    ]
 
-    def setUp(self):
-        self.client = Client()
-        user = DjangoUser.objects.create_superuser(username="test", password="test",)
-        self.client.force_login(user)
+@pytest.mark.django_db
+@pytest.mark.parametrize("site", admin_sites)
+def test_smoke_admin(admin_client, site):
+    instance = site()
+    instance.save()
+    info = (site._meta.app_label, site._meta.model_name)
+    admin_url = reverse("admin:%s_%s_change" % info, args=(instance.pk,))
 
-    def test_smoke_admin(self):
-        for obj in self.admin_sites:
-            instance = obj()
-            instance.save()
+    response = admin_client.get(admin_url)
+    assert response.status_code == 200
 
-            info = (instance._meta.app_label, instance._meta.model_name)
-            admin_url = reverse("admin:%s_%s_change" % info, args=(instance.pk,))
 
-            response = self.client.get(admin_url)
-            self.assertEqual(response.status_code, 200)
+@pytest.mark.django_db
+@pytest.mark.parametrize("site", admin_sites)
+def test_smoke_admin_search(admin_client, site):
+    info = (site._meta.app_label, site._meta.model_name)
+    admin_url = reverse("admin:%s_%s_changelist" % info)
+    print(admin_url)
+    search_url = admin_url + "?q=test"
+    response = admin_client.get(search_url)
+    assert response.status_code == 200
