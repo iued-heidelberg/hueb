@@ -251,7 +251,7 @@ class ArchiveAdmin(SimpleHistoryAdmin):
         "z3950_gateway",
     )
     autocomplete_fields = ("country",)
-    search_fields = ("name", "address", "country")
+    search_fields = ("name", "adress", "country__country")
 
     fieldsets = (
         (
@@ -399,7 +399,7 @@ class DocumentAdmin(SimpleHistoryAdmin):
         FilingInline,
         CommentInline,
     ]
-    search_fields = ("id", "title", "author", "written_in")
+    search_fields = ("id", "title", "written_by__name", "written_in")
     fieldsets = (
         (
             "Document Information",
