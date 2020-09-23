@@ -365,7 +365,7 @@ class LocationNewAdmin(ReadonlyAdmin):
         "migration_generated",
     )
     list_filter = ("migration_generated",)
-    search_fields = ("name", "address", "country")
+    search_fields = ("name", "adress", "country")
 
     fieldsets = (
         (
