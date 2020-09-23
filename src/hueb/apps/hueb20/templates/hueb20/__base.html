@@ -1,0 +1,101 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang = "en-US">
+  <head>
+    <meta charset = "UTF-8">
+    {% block title %}
+    <title>Heidelberger Übersetzungs Bibliographie</title>
+    {% endblock  %}
+    <link rel = "stylesheet"
+    type = "text/css"
+    href = "{% static "hueb20/base.css" %}" />
+  </head>
+  <body>
+
+    <div x-data="{ hamburgerOpen: false, overlayOpen: {{overlayOpen | lower}} }" class="w-full h-full">
+
+      {# Overlay #}
+      <template x-if="overlayOpen">
+        <div class="z-20 fixed top-0 left-0 flex flex-col w-full h-full bg-gray-bg-darker"
+        x-transition:enter="transition ease-in-out duration-500 transform" x-transition:enter-start="-translate-x-full" x-transition:enter-end="translate-x-0"
+        x-transition:leave="transition ease-in-out duration-500 transform" x-transition:leave-start="translate-x-0" x-transition:leave-end="-translate-x-full" x-cloak>
+          {# Overlay Close Button #}
+          <div class="block" >
+            <button class="p-8" @click="overlayOpen = false">
+                <svg id="close_cross" class="w-24 h-24 m-4 font-bold transition duration-300 ease-in-out transform fill-current stroke-2 text-sand-bg lg:w-12 lg:h-12 hover:rotate-90" viewBox="0 0 30 30">
+                  <path d="M16.41,15,24,7.37A1,1,0,0,0,22.63,6L15,13.59,7.37,6A1,1,0,0,0,6,7.37L13.59,15,6,22.63A1,1,0,1,0,7.37,24L15,16.41,22.63,24A1,1,0,0,0,24,22.63Z">
+                  </path>
+                </svg>
+            </button>
+          </div>
+
+          {% block overlay %}
+
+          {% endblock %}
+
+        </div>
+      </template>
+
+
+      {#Main Div#}
+      <div class="min-h-screen pb-24 bg-sand-bg"  @keydown.escape="hamburgerOpen = false; overlayOpen = false">
+
+        {#Menu Bar#}
+        <nav class="flex flex-wrap items-center justify-between px-24 shadow-lg lg:h-24" >
+
+          {#Hamburger#}
+          <div class="block lg:hidden">
+            <button class="flex p-2 text-black border border-transparent stroke-2 items-centers hover:border-black" @click="hamburgerOpen = !hamburgerOpen">
+              <svg id="icon-symbol-hamburger" class="w-24 h-24 fill-current " viewBox="0 0 30 30">
+                <path d="M24.61,21.69H5.39a1,1,0,0,0,0,2H24.61a1,1,0,0,0,0-2Z"></path>
+                <path d="M5.39,16H19.12a1,1,0,0,0,0-2H5.39a1,1,0,0,0,0,2Z"></path>
+                <path d="M5.39,8.31H24.61a1,1,0,0,0,0-2H5.39a1,1,0,0,0,0,2Z"></path>
+              </svg>
+            </button>
+          </div>
+
+          {#Menu Elements#}
+          {% block top_menu %}
+          <div></div>
+          {% endblock %}
+
+          {#Logos#}
+          <div class="flex items-center flex-shrink-0">
+            <div class="pr-12 lg:py-2 lg:pr-6">
+              <h1 class="text-xl font-light leading-snug lg:text-lg">
+                  <span class="font-bold">H</span>eidelberger<br>
+                  <span class="font-bold">Ü</span>bersetzungs<br>
+                  <span class="font-bold">B</span>ibliographie
+              </h1>
+            </div>
+            <div>
+              <img class="object-contain h-24 lg:h-20 lg:p-2" src="{% static 'hueb20/img/logo.png' %}" alt="Universität Heidelberg">
+            </div>
+          </div>
+
+        </nav>
+
+        {#Content#}
+        <div class="max-w-full px-24 py-4">
+
+          {% block content %}
+
+          {% endblock %}
+
+        </div>
+      </div>
+
+      {#Footer#}
+      <div class="flex items-center justify-between h-40 p-16 bg-gray-bg-darker fl">
+        {% block footer %}
+
+        {% endblock %}
+      </div>
+
+
+    </div>
+
+  </body>
+
+  <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+</html>
