@@ -295,6 +295,7 @@ class FilingAdmin(SimpleHistoryAdmin):
     readonly_fields = ("app", "locAssign_link")
     list_display = ("id", "signatur", "link")
     search_fields = ("signatur", "id")
+    autocomplete_fields = ("archive",)
     fieldsets = (
         (
             "Filing Information",
@@ -331,6 +332,7 @@ class FilingInline(admin.TabularInline):
     extra = 0
     verbose_name = "Filing Location"
     verbose_name_plural = verbose_name + "s"
+    autocomplete_fields = ("archive",)
 
 
 class DocumentAuthorInline(admin.TabularInline):
