@@ -8,16 +8,6 @@
     name: wget
     state: latest
 
-- name: Install honeytail
-  become: yes
-  shell: wget -q https://honeycomb.io/download/honeytail/linux/honeytail_1.762_amd64.deb && echo 'd7bed8a005cbc6a34b232c54f0f84b945f0bb90905c67f85cceaedee9bbbad1e  honeytail_1.762_amd64.deb' | sha256sum -c && sudo dpkg -i honeytail_1.762_amd64.deb
-
-- name: Delete honeytail image
-  become: yes
-  file:
-    path: honeytail_1.762_amd64.deb
-    state: absent
-
 - name: Write nginx conf file
   template:
     src: ../templates/hueb.conf
@@ -33,12 +23,3 @@
     owner: "www-data"
     state: file
     mode: 0744
-
-
-- name: Write honeytail conf file
-  template:
-    src: ../templates/honeytail.j2
-    dest: /etc/honeytail/honeytail.conf
-  become: yes
-  notify:
-    - restart honeytail
