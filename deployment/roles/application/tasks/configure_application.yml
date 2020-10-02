@@ -1,14 +1,13 @@
 - name: create the .env file
   template:
     src: ../templates/env.j2
-    dest: "{{ src_directory }}/hueb/.env"
+    dest: "{{ hueb_directory }}/.env"
   notify:
     - restart app
 
 - name: Change permissions for .env file
   file:
-    path: "{{ src_directory }}/hueb/.env"
+    path: "{{ hueb_directory }}/.env"
     owner: "{{ user_name }}"
     state: file
     mode: 0700
-
