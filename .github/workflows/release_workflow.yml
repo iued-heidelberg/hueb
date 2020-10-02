@@ -100,6 +100,14 @@ jobs:
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
         with:
           environment: production
+          version: ${{ github.ref }}
+      - name: Honeycomb Honeymarker
+        uses: naiduarvind/gha-honeymarker@v1.0.1
+        with:
+          apikey: ${{ secrets.HONEYCOMB_API }}
+          dataset: hueb_production
+          type: Release
+          message: Relase ${{ steps.vars.outputs.tag }}
       - name: Deploy via ansible
         uses: saubermacherag/ansible-playbook-docker-action@v1.3
         with:
