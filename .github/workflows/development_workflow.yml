@@ -108,7 +108,7 @@ jobs:
           apikey: ${{ secrets.HONEYCOMB_API }}
           dataset: hueb_staging
           type: Release Staging
-          message: Release ${{ github.ref }}
+          message: "Release ${{ github.ref }}"
       - uses: saubermacherag/ansible-playbook-docker-action@v1.3
         with:
           playbookName: "./deployment/deploy.yml"
