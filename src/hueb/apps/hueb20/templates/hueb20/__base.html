@@ -30,7 +30,7 @@
           </div>
 
           {% block overlay %}
-
+            {% include "hueb20/includables/overlay_login.html" %}
           {% endblock %}
 
         </div>
@@ -38,7 +38,7 @@
 
 
       {#Main Div#}
-      <div class="min-h-screen pb-24 bg-sand-bg"  @keydown.escape="hamburgerOpen = false; overlayOpen = false">
+      <div class="min-h-screen bg-sand-bg"  @keydown.escape="hamburgerOpen = false; overlayOpen = false">
 
         {#Menu Bar#}
         <nav class="flex flex-wrap items-center justify-between px-24 shadow-lg lg:h-24" >
@@ -56,7 +56,7 @@
 
           {#Menu Elements#}
           {% block top_menu %}
-          <div></div>
+            {% include "hueb20/index/index_menu.html" %}
           {% endblock %}
 
           {#Logos#}
@@ -76,7 +76,7 @@
         </nav>
 
         {#Content#}
-        <div class="max-w-full px-24 py-4">
+        <div class="max-w-full h-screen">
 
           {% block content %}
 
@@ -88,7 +88,7 @@
       {#Footer#}
       <div class="flex items-center justify-between h-40 p-16 bg-gray-bg-darker fl">
         {% block footer %}
-
+           {% include "hueb20/index/index_footer.html" %}
         {% endblock %}
       </div>
 
