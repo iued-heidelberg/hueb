@@ -38,7 +38,7 @@
 
 
       {#Main Div#}
-      <div class="min-h-screen pb-24 bg-sand-bg"  @keydown.escape="hamburgerOpen = false; overlayOpen = false">
+      <div class="min-h-screen bg-sand-bg"  @keydown.escape="hamburgerOpen = false; overlayOpen = false">
 
         {#Menu Bar#}
         <nav class="flex flex-wrap items-center justify-between px-24 shadow-lg lg:h-24" >
@@ -76,7 +76,7 @@
         </nav>
 
         {#Content#}
-        <div class="max-w-full px-24 py-4">
+        <div class="max-w-full h-screen">
 
           {% block content %}
 
