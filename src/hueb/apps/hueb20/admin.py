@@ -338,8 +338,8 @@ class FilingInline(admin.TabularInline):
 class DocumentAuthorInline(admin.TabularInline):
     model = Document.written_by.through
     extra = 0
-    verbose_name = "Author"
-    verbose_name_plural = verbose_name + "s"
+    verbose_name = "Author or Translator"
+    verbose_name_plural = verbose_name
     autocomplete_fields = ("person",)
 
 

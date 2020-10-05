@@ -34,6 +34,28 @@
   notify:
     - restart postgres
 
+- name: Create django_db_user database
+  become_user: postgres
+  become: yes
+  postgresql_db:
+    name: "{{ django_db_user }}"
+
+- name: The same as above by playbook
+  become_user: postgres
+  postgresql_owner:
+    db: "{{ django_db }}"
+    new_owner: "{{ django_db_user }}"
+    obj_name: "{{ django_db }}"
+    obj_type: database
+
+- name: The same as above by playbook
+  become_user: postgres
+  postgresql_owner:
+    db: "{{ django_db }}"
+    new_owner: "{{ django_db_user }}"
+    reassign_owned_by:
+      - Test
+
 - name: Configure db_dumps
   template:
     src: ../templates/dump_db.sh.j2

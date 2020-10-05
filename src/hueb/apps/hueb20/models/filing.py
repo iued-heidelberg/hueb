@@ -15,7 +15,7 @@ class Filing(models.Model):
     document = models.ForeignKey(
         Document, on_delete=models.CASCADE, null=True, blank=True
     )
-    signatur = models.CharField(max_length=255)
+    signatur = models.CharField(max_length=255, null=True, blank=True)
     link = models.CharField(max_length=255, blank=True, null=True)
     app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
     locAssign_ref = models.ForeignKey(

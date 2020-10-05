@@ -125,6 +125,8 @@ venv.bak/
 deployment/production
 deployment/staging
 deployment/secrets*
+deployment/staging_secrets*
+deployment/production_secrets*
 
 # Spyder project settings
 .spyderproject

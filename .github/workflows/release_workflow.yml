@@ -1,12 +1,8 @@
 name: Tests & Production Deployment
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  release:
+    types: [released, prereleased, edited]
 
 jobs:
   black:
@@ -17,7 +13,7 @@ jobs:
         python-version: [3.8]
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python 3.7
+      - name: Set up Python 3.8
         uses: actions/setup-python@v1
         with:
           python-version: ${{ matrix.python-version }}
@@ -35,7 +31,7 @@ jobs:
         python-version: [3.8]
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python 3.7
+      - name: Set up Python 3.8
         uses: actions/setup-python@v1
         with:
           python-version: ${{ matrix.python-version }}
@@ -88,17 +84,38 @@ jobs:
           ENV: GITHUB_WORKFLOW
 
   ProductionDeployment:
-    if: ${{ github.event_name == 'push' }}
+    if: ${{ github.event_name == 'release' && github.event.action == 'released' }}
     needs: [Tests, flake8, black]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: saubermacherag/ansible-playbook-docker-action@v1.3
+      - name: Set output
+        id: vars
+        run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
+      - name: Create Sentry release
+        uses: getsentry/action-release@v1
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_RELEASE_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+        with:
+          environment: production
+          version: ${{ github.ref }}
+      - name: Honeycomb Honeymarker
+        uses: naiduarvind/gha-honeymarker@v1.0.1
+        with:
+          apikey: ${{ secrets.HONEYCOMB_API }}
+          dataset: hueb_production
+          type: Release
+          message: "Relase ${{ steps.vars.outputs.tag }}"
+      - name: Deploy via ansible
+        uses: saubermacherag/ansible-playbook-docker-action@v1.3
         with:
           playbookName: "./deployment/deploy.yml"
           inventoryFile: "./deployment/production.ini"
           keyFile: "./deployment/production-key"
           keyFileVaultPass: ${{ secrets.PRODUCTION_KEYFILE_VAULT_PASS }}
           extraFile: "./deployment/group_vars/webserver"
-          extraVars: "-e django_secret_key=${{ secrets.PRODUCTION_DJANGO_SECRET_KEY }} -e user_name=${{ secrets.PRODUCTION_USER_NAME }} -e user_password=${{ secrets.PRODUCTION_USER_PASSWORD }} -e password=${{ secrets.PRODUCTION_PASSWORD }} -e django_db_user=${{ secrets.PRODUCTION_DB_USER }} -e django_db_password=${{ secrets.PRODUCTION_DB_PASSWORD }} -e honeycomb_api=${{ secrets.HONEYCOMB_API }} -e sentry_api=${{ secrets.SENTRY_API }}"
+          extraVars: "-e github_tag_name=${{ steps.vars.outputs.tag }}
+          -e django_secret_key=${{ secrets.PRODUCTION_DJANGO_SECRET_KEY }} -e user_name=${{ secrets.PRODUCTION_USER_NAME }} -e user_password=${{ secrets.PRODUCTION_USER_PASSWORD }} -e password=${{ secrets.PRODUCTION_PASSWORD }} -e django_db_user=${{ secrets.PRODUCTION_DB_USER }} -e django_db_password=${{ secrets.PRODUCTION_DB_PASSWORD }} -e honeycomb_api=${{ secrets.HONEYCOMB_API }} -e sentry_api=${{ secrets.SENTRY_API }}"
           verbosity: "vv"

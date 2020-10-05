@@ -9,8 +9,3 @@
 - name: restart app
   service: name=hueb state=restarted enabled=yes daemon_reload=yes
   become: yes
-
-
-- name: restart honeytail
-  service: name=honeytail state=restarted enabled=yes daemon_reload=yes
-  become: yes

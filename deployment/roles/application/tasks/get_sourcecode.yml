@@ -20,6 +20,7 @@
     accept_hostkey: yes
     force: yes
     update: yes
+    version: "{{ github_tag_name | default('HEAD') }}"
   notify:
     - restart app
 
@@ -30,4 +31,3 @@
     recurse: yes
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
-
