@@ -1,0 +1,330 @@
+
+<div class="lg:flex-row flex flex-col">
+
+  <div class="justify-end pt-8 text-5xl border-black lg:text-sand-bg lg:flex-shrink-0 lg:p-8 lg:text-base lg:bg-gray-bg lg:border-sand-bg">
+    <div class="flex justify-end flex-shrink-0 ">
+
+      <div class="relative mx-2 my-2 border-b-4 border-black rounded-none lg:border-sand-bg">
+        <select class="w-full p-2 pr-8 font-bold text-center bg-transparent appearance-none" name="query_attr" id="attr_0">
+          <option value="title">Titel</option>
+          <option value="author">Autor</option>
+          <option value="DDC">DDC</option>
+          <option value="Year">Jahr</option>
+        </select>
+
+        <div class="absolute inset-y-0 right-0 px-1 pt-2 pointer-events-none stroke-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 stroke-current lg:w-6 lg:h-6" fill="none" viewBox="0 0 24 24">
+            <path stroke-width="3" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+      </div>
+
+      <input class="flex p-2 mx-2 my-2 font-medium placeholder-black placeholder-opacity-25 bg-transparent border-b-4 border-black rounded-none appearance-none lg:placeholder-opacity-25 lg:border-sand-bg lg:placeholder-sand-bg " type="search" name="query_term_0" id="value_0" placeholder="Suchbegriff">
+    </div>
+    <div class="flex justify-end ">
+
+      <div class="relative flex-shrink-0 mx-2 my-2 border-b-4 border-black rounded-none lg:border-sand-bg">
+        <select class="w-full p-2 pr-8 font-bold text-center bg-transparent appearance-none " name="query_attr" id="attr_0">
+          <option value="title">Und</option>
+          <option value="author">Oder</option>
+          <option value="DDC">Nicht</option>
+        </select>
+
+        <div class="absolute inset-y-0 right-0 px-1 pt-2 pointer-events-none stroke-2 ">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 stroke-current lg:w-6 lg:h-6" fill="none" viewBox="0 0 24 24">
+            <path stroke-width="3" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+      </div>
+
+      <div class="relative flex-shrink-0 mx-2 my-2 border-b-4 border-black rounded-none lg:border-sand-bg">
+        <select class="w-full p-2 pr-8 font-bold text-center bg-transparent appearance-none" name="query_attr" id="attr_0">
+          <option value="title">Titel</option>
+          <option value="author">Autor</option>
+          <option value="DDC">DDC</option>
+          <option value="Year">Jahr</option>
+        </select>
+
+        <div class="absolute inset-y-0 right-0 px-1 pt-2 pointer-events-none stroke-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 stroke-current lg:w-6 lg:h-6" fill="none" viewBox="0 0 24 24">
+            <path stroke-width="3" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+      </div>
+
+      <input class="flex flex-shrink p-2 mx-2 my-2 font-medium placeholder-black placeholder-opacity-25 bg-transparent border-b-4 border-black rounded-none appearance-none lg:border-sand-bg lg:placeholder-sand-bg lg:placeholder-opacity-25 " type="search" name="query_term_0" id="value_0" placeholder="Suchbegriff">
+    </div>
+
+    <div class="flex justify-center ">
+      <button class="block px-4 py-2 m-4 align-middle border-b-4 border-black lg:border-sand-bg ">
+
+        <p class="inline-block text-3xl font-bold align-middle lg:text-sm"> Filter hinzufügen </p>
+        <div class="items-center inline-block align-middle pointer-events-none">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 stroke-current" fill="none" stroke-width="3" viewBox="0 0 24 24" stroke="currentColor">
+            <path d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          </svg>
+        </div>
+      </button>
+    </div>
+
+    <div class="flex justify-center">
+      <button class="block px-4 py-2 m-4 align-middle border-4 border-black lg:border-sand-bg ">
+
+        <p class="inline-block px-4 text-5xl font-bold align-middle md:text-lg"> Suchen </p>
+        <div class="items-center inline-block align-middle pointer-events-none">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 stroke-current md:w-8 md:h-8" fill="none" stroke-width="3" viewBox="0 0 24 24" stroke="currentColor">
+            <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+      </button>
+    </div>
+  </div>
+
+
+  <div class="pt-8 lg:h-screen lg:flex-shrink lg:overflow-y-auto">
+    <h1 class="mx-8 mt-32 text-4xl font-light lg:text-2xl md:mt-0">Ergebnisse</h1>
+
+    <div class="flex m-8 shadow-lg hover:shadow-xl">
+      <h1 class="h-full p-6 mr-6 text-2xl font-bold lg:text-lg">1.</h1>
+
+      <div class="flex flex-col justify-between w-1/2 p-6 px-4 ">
+        <div class="pb-2">
+          <h1 class="text-2xl font-semibold  lg:text-lg">Medical Memoirs of the General Dispensary in London, for Part of the Years 1773 and 1774</h1>
+          <h2 class="font-normal text-1xl lg:text-base"></h2>
+        </div>
+
+        <div class="flex flex-col flex-wrap lg:flex-row">
+          <div class="py-2 pr-8">
+            <h2 class="text-xl font-thin lg:text-xs">Veröffentlicht</h2>
+            <p class="text-xl lg:text-sm">1774</p>
+          </div>
+
+          <div class="py-2 pr-8">
+            <h2 class="text-xl font-thin lg:text-xs">Sprache</h2>
+            <p class="text-xl lg:text-sm">Englisch</p>
+          </div>
+
+          <div class="py-2 pr-8">
+            <h2 class="text-xl font-thin lg:text-xs">Autor</h2>
+            <p class="text-xl lg:text-sm">Lettsom, John Coakley</p>
+          </div>
+
+          <div class="py-2 pr-8">
+            <h2 class="text-xl font-thin lg:text-xs">Ort</h2>
+            <p class="text-xl lg:text-sm">London</p>
+          </div>
+
+          <div class="py-2 pr-8">
+            <h2 class="text-xl font-thin lg:text-xs">DDC</h2>
+            <p class="text-xl lg:text-sm">610 Medizin und Gesundheit</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center bg-opacity-50 bg-sand-300">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 m-4 stroke-current lg:w-6 lg:h-6" fill="none" viewBox="0 0 24 24">
+          <path stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+      </div>
+
+      <div class="flex flex-col justify-between w-1/2 p-6 px-4 bg-sand-300">
+        <div class="pb-2">
+          <h1 class="text-2xl font-semibold lg:text-lg">Johann Coakley Lettsom der Arzneykunde Doktor, und Mitglied der königlichen Gesellschaft Medicinische Nachrichten von dem allgemeinen Dispensatorio in London : vom April 1773 bis zu dem März 1774</h1>
+        </div>
+
+        <div class="flex flex-col flex-wrap lg:flex-row">
+          <div class="py-2 pr-8">
+            <h2 class="text-xl font-thin lg:text-xs">Veröffentlicht</h2>
+            <p class="text-xl lg:text-sm">1777</p>
+          </div>
+
+          <div class="py-2 pr-8">
+            <h2 class="text-xl font-thin lg:text-xs">Sprache</h2>
+            <p class="text-xl lg:text-sm">Deutsch</p>
+          </div>
+
+          <div class="py-2 pr-8">
+            <h2 class="text-xl font-thin lg:text-xs">Übersetzer</h2>
+            <p class="text-xl lg:text-sm">Richter, Gottlob Emanuel</p>
+          </div>
+
+          <div class="py-2 pr-8">
+            <h2 class="text-xl font-thin lg:text-xs">Ort</h2>
+            <p class="text-xl lg:text-sm">Altenburg</p>
+          </div>
+
+          <div class="py-2 pr-8">
+            <h2 class="text-xl font-thin lg:text-xs">DDC</h2>
+            <p class="text-xl lg:text-sm">610 Medizin und Gesundheit</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="flex m-8 shadow-lg hover:shadow-xl">
+      <h1 class="h-full p-6 mr-6 text-2xl font-bold lg:text-lg">2.</h1>
+
+      <div class="flex flex-col justify-between w-1/2 p-6 px-4 ">
+        <div class="pb-2">
+          <h1 class="text-2xl font-semibold lg:text-lg">A View of the Principal Deistical Writers that Have Appeared in England in the Last and Present Century:</h1>
+          <h2 class="font-normal text-1xl lg:text-base">With Observations Upon Them, and Some Account of the Answers that Have Been Published Against Them. In Several Letters to a Friend, Vol. 2</h2>
+        </div>
+
+        <div class="flex flex-col flex-wrap lg:flex-row">
+          <div class="py-2 pr-8">
+            <h2 class="text-xl font-thin lg:text-xs">Veröffentlicht</h2>
+            <p class="text-xl lg:text-sm">1754-1755</p>
+          </div>
+
+          <div class="py-2 pr-8">
+            <h2 class="text-xl font-thin lg:text-xs">Sprache</h2>
+            <p class="text-xl lg:text-sm">Englisch</p>
+          </div>
+
+          <div class="py-2 pr-8">
+            <h2 class="text-xl font-thin lg:text-xs">Autor</h2>
+            <p class="text-xl lg:text-sm">Leland, John</p>
+          </div>
+
+          <div class="py-2 pr-8">
+            <h2 class="text-xl font-thin lg:text-xs">Ort</h2>
+            <p class="text-xl lg:text-sm">London</p>
+          </div>
+
+          <div class="py-2 pr-8">
+            <h2 class="text-xl font-thin lg:text-xs">DDC</h2>
+            <p class="text-xl lg:text-sm">230 Christentum, Christliche Theologie</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center bg-opacity-50 bg-sand-300">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 m-4 stroke-current lg:w-6 lg:h-6" fill="none" viewBox="0 0 24 24">
+          <path stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+      </div>
+
+      <div class="flex flex-col justify-between w-1/2 p-6 px-4 bg-sand-300">
+        <div class="pb-2">
+          <h1 class="text-2xl font-semibold lg:text-lg">D. John Lelands Abriß der vornehmsten Deistischen Schriften, die in dem vorigen und gegenwärtigen Jahrhunderte in England bekandt geworden sind : nebst Anmerkungen über dieselben und Nachrichten von den gegen sie herausgekommenen Antworten: in verschiedenen Briefen an einen guten Freund. Zweiten Theils zweite Abteilung.</h1>
+          <h2 class="font-normal text-1xl lg:text-base">Es werden in demselben Hrn. Humes Philosophische Versuche geprüft; und die natürliche und geoffenbarte Religion wieder die feindseligen Angriffe derselben in des verstorbenen Lord Viscount Bolingbrokes nach seinem Tode heruasgekommenen WErke verteidiget</h2>
+        </div>
+
+        <div class="flex flex-col flex-wrap lg:flex-row">
+          <div class="py-2 pr-8">
+            <h2 class="text-xl font-thin lg:text-xs">Veröffentlicht</h2>
+            <p class="text-xl lg:text-sm">1755</p>
+          </div>
+
+          <div class="py-2 pr-8">
+            <h2 class="text-xl font-thin lg:text-xs">Sprache</h2>
+            <p class="text-xl lg:text-sm">Deutsch</p>
+          </div>
+
+          <div class="py-2 pr-8">
+            <h2 class="text-xl font-thin lg:text-xs">Übersetzer</h2>
+            <p class="text-xl lg:text-sm">Richter, Gottlob Emanuel</p>
+          </div>
+
+          <div class="py-2 pr-8">
+            <h2 class="text-xl font-thin lg:text-xs">Ort</h2>
+            <p class="text-xl lg:text-sm">Hannover</p>
+          </div>
+
+          <div class="py-2 pr-8">
+            <h2 class="text-xl font-thin lg:text-xs">DDC</h2>
+            <p class="text-xl lg:text-sm">230 Christentum, Christliche Theologie</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="flex m-8 shadow-lg hover:shadow-xl">
+      <h1 class="h-full p-6 mr-6 text-2xl font-bold lg:text-lg">3.</h1>
+
+      <div class="flex flex-col justify-between w-1/2 p-6 px-4 ">
+        <div class="pb-2">
+          <h1 class="text-2xl font-semibold lg:text-lg">An Account of the Voyages Undertaken by the Order of His Present Majesty for Making Discoveries in the Southern Hemisphere, and successively performed by Commodore Byron, Captain Wallis, Captain Carteret, and Captain Cook, in the Dolphin, the Swallow and the Endeavour.</h1>
+          <h2 class="font-normal text-1xl lg:text-base"></h2>
+        </div>
+
+        <div class="flex flex-col flex-wrap lg:flex-row">
+          <div class="py-2 pr-8">
+            <h2 class="text-xl font-thin lg:text-xs">Veröffentlicht</h2>
+            <p class="text-xl lg:text-sm">1773</p>
+          </div>
+
+          <div class="py-2 pr-8">
+            <h2 class="text-xl font-thin lg:text-xs">Sprache</h2>
+            <p class="text-xl lg:text-sm">Englisch</p>
+          </div>
+
+          <div class="py-2 pr-8">
+            <h2 class="text-xl font-thin lg:text-xs">Autor</h2>
+            <p class="text-xl lg:text-sm">Hawkesworth, John</p>
+          </div>
+
+          <div class="py-2 pr-8">
+            <h2 class="text-xl font-thin lg:text-xs">Ort</h2>
+            <p class="text-xl lg:text-sm">London</p>
+          </div>
+
+          <div class="py-2 pr-8">
+            <h2 class="text-xl font-thin lg:text-xs">DDC</h2>
+            <p class="text-xl lg:text-sm">910 Geografie, Reisen</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center bg-opacity-50 bg-sand-300">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 m-4 stroke-current lg:w-6 lg:h-6" fill="none" viewBox="0 0 24 24">
+          <path stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+      </div>
+
+      <div class="flex flex-col justify-between w-1/2 p-6 px-4 bg-sand-300">
+        <div class="pb-2">
+          <h1 class="text-2xl font-semibold lg:text-lg">Geschichte der See-Reisen und Entdeckungen im Süd-Meer, welche auf Befehl Sr. Großbrittannischen Majestät unternommen und von Commodore Byron, Capitain Wallis, Capitain Carteret und Capitain Cook im Dolphin, der Swallow, und dem Endeavour nach einander ausgeführet worden sind : aus den Tagebüchern der verschiedenen Befehlshaber und den Handschriften Joseph Banks in drey Bänden verfaßt; Bd. 2</h1>
+          <h2 class="font-normal text-1xl lg:text-base"></h2>
+        </div>
+
+        <div class="flex flex-col flex-wrap lg:flex-row">
+          <div class="py-2 pr-8">
+            <h2 class="text-xl font-thin lg:text-xs">Veröffentlicht</h2>
+            <p class="text-xl lg:text-sm">1774</p>
+          </div>
+
+          <div class="py-2 pr-8">
+            <h2 class="text-xl font-thin lg:text-xs">Sprache</h2>
+            <p class="text-xl lg:text-sm">Deutsch</p>
+          </div>
+
+          <div class="py-2 pr-8">
+            <h2 class="text-xl font-thin lg:text-xs">Übersetzer</h2>
+            <p class="text-xl lg:text-sm">Schiller, Johann Friedrich</p>
+          </div>
+
+          <div class="py-2 pr-8">
+            <h2 class="text-xl font-thin lg:text-xs">Ort</h2>
+            <p class="text-xl lg:text-sm">Berlin</p>
+          </div>
+
+          <div class="py-2 pr-8">
+            <h2 class="text-xl font-thin lg:text-xs">DDC</h2>
+            <p class="text-xl lg:text-sm">910, Geografie, Reisen</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+
+  </div>
+
+
+
+  </div>
+</div>
