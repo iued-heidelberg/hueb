@@ -8,17 +8,6 @@ from django.shortcuts import render
 
 def get_common_context(request, context={}):
 
-    menu = []
-    menu.append({"name": "Projekt", "link": "/", "disabled": False})
-
-    if request.user.is_authenticated:
-        menu.append({"name": "Suche", "link": "/search", "disabled": False})
-    else:
-        menu.append({"name": "Suche", "link": "#", "disabled": True})
-
-    menu.append({"name": "Katalog", "link": "#", "disabled": True})
-    context["menu"] = menu
-
     context["overlayOpen"] = False
 
     return context
