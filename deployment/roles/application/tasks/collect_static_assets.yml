@@ -1,3 +1,8 @@
+- name: Build css
+  shell: npm run-script build_prod
+  args:
+    chdir: "{{ src_directory }}/hueb/apps/hueb20/"
+
 - name: Get all static files
   django_manage:
     app_path: "{{ src_directory }}"
