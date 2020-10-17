@@ -34,4 +34,13 @@
     - restart app
     - restart nginx
 
+- name: install npm
+  apt:
+    name:
+      - nodejs
+      - npm
 
+- name: Install npm packages
+  shell: npm ci
+  args:
+    chdir: "{{ src_directory }}/hueb/apps/hueb20/"

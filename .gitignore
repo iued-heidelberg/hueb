@@ -5,6 +5,9 @@ build/
 Stunden.md
 venv/
 
+node_modules
+hueb20.css
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
