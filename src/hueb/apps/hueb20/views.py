@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView, LogoutView
 from django.forms.widgets import PasswordInput, TextInput
@@ -34,6 +35,7 @@ def index(request):
     return render(request, "hueb20/index.html", context)
 
 
+@login_required
 def search(request):
     context = get_common_context()
 
