@@ -1,14 +1,6 @@
 name: Tests & Staging Deployment
 
-on:
-  push:
-    branches:
-      - develop
-  pull_request:
-    branches-ignore:
-      # Push events to branches matching refs/heads/mona/octocat
-      - main
-
+on: [push, pull_request]
 jobs:
   black:
     runs-on: ubuntu-latest
@@ -89,7 +81,7 @@ jobs:
           ENV: GITHUB_WORKFLOW
 
   StagingDeployment:
-    if: ${{ github.event_name == 'push' }}
+    if: ${{ github.ref == 'refs/heads/develop' && github.event_name == 'push' }}
     needs: [Tests, flake8, black]
     runs-on: ubuntu-latest
     steps:
