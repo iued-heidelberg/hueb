@@ -10,10 +10,11 @@
     type = "text/css"
     href = "{% static "hueb20/base.css" %}" />
   </head>
-  <body>
 
-    <div x-data="{ hamburgerOpen: false, overlayOpen: {{overlayOpen | lower}} }" class="w-full h-full">
 
+  <body x-data="{ hamburgerOpen: false, overlayOpen: {{overlayOpen | lower}} }">
+
+    <div class="w-full h-full">
       {# Overlay #}
       <template x-if="overlayOpen">
         <div class="z-20 fixed top-0 left-0 flex flex-col w-full h-full bg-gray-bg-darker"
@@ -36,15 +37,18 @@
         </div>
       </template>
 
+    </div>
 
-      {#Main Div#}
-      <div class="min-h-screen bg-sand-bg"  @keydown.escape="hamburgerOpen = false; overlayOpen = false">
+    {#Main Div#}
+    <div class="flex flex-col w-full h-screen"  @keydown.escape="hamburgerOpen = false; overlayOpen = false">
 
         {#Menu Bar#}
-        <nav class="flex flex-wrap items-center justify-between px-24 shadow-lg lg:h-24" >
+      <nav class="flex flex-wrap flex-initial" >
+
+        <div class="items-center flex flex-row flex-wrap lg:h-24 shadow-lg bg-sand-bg justify-between w-full z-10">
 
           {#Hamburger#}
-          <div class="block lg:hidden">
+          <div class="block px-12 lg:hidden ">
             <button class="flex p-2 text-black border border-transparent stroke-2 items-centers hover:border-black" @click="hamburgerOpen = !hamburgerOpen">
               <svg id="icon-symbol-hamburger" class="w-24 h-24 fill-current " viewBox="0 0 30 30">
                 <path d="M24.61,21.69H5.39a1,1,0,0,0,0,2H24.61a1,1,0,0,0,0-2Z"></path>
@@ -54,14 +58,15 @@
             </button>
           </div>
 
-          {#Menu Elements#}
+
           {% block top_menu %}
             {% include "hueb20/index/index_menu.html" %}
           {% endblock %}
 
+
           {#Logos#}
-          <div class="flex items-center flex-shrink-0">
-            <div class="pr-12 lg:py-2 lg:pr-6">
+          <div class="flex-row flex lg:px-12 px-8  items-center flex-none">
+            <div class="pr-4 lg:py-2 lg:pr-6">
               <h1 class="text-xl font-light leading-snug lg:text-lg">
                   <span class="font-bold">H</span>eidelberger<br>
                   <span class="font-bold">Ü</span>bersetzungs<br>
@@ -73,25 +78,27 @@
             </div>
           </div>
 
-        </nav>
-
-        {#Content#}
-        <div class="max-w-full h-screen">
-
-          {% block content %}
-
-          {% endblock %}
+          {#Menu Elements#}
 
         </div>
+
+      </nav>
+
+      {#Content#}
+      <div class="flex flex-auto bg-sand-bg">
+
+        {% block content %}
+
+        {% endblock %}
+
       </div>
 
       {#Footer#}
-      <div class="flex items-center justify-between h-40 p-16 bg-gray-bg-darker fl">
+      <div class="flex flex-initial ">
         {% block footer %}
-           {% include "hueb20/index/index_footer.html" %}
+          {% include "hueb20/index/index_footer.html" %}
         {% endblock %}
       </div>
-
 
     </div>
 

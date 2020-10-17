@@ -1,14 +1,21 @@
 from django import forms
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView, LogoutView
 from django.forms.widgets import PasswordInput, TextInput
 from django.shortcuts import render
 
 
-def get_common_context(context={}):
+def get_common_context(request, context={}):
+
     menu = []
     menu.append({"name": "Projekt", "link": "/", "disabled": False})
-    menu.append({"name": "Suche", "link": "/search", "disabled": False})
+
+    if request.user.is_authenticated:
+        menu.append({"name": "Suche", "link": "/search", "disabled": False})
+    else:
+        menu.append({"name": "Suche", "link": "#", "disabled": True})
+
     menu.append({"name": "Katalog", "link": "#", "disabled": True})
     context["menu"] = menu
 
@@ -28,14 +35,15 @@ class CustomAuthForm(AuthenticationForm):
 
 
 def index(request):
-    context = get_common_context()
+    context = get_common_context(request)
     context["form"] = CustomAuthForm(initial={"username": "", "password": ""})
 
     return render(request, "hueb20/index.html", context)
 
 
+@login_required
 def search(request):
-    context = get_common_context()
+    context = get_common_context(request)
 
     return render(request, "hueb20/search.html", context)
 
@@ -47,7 +55,7 @@ class Login(LoginView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context = get_common_context(context)
+        context = get_common_context(self.request, context)
         context["overlayOpen"] = True
         return context
 
@@ -57,5 +65,5 @@ class Logout(LogoutView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context = get_common_context(context)
+        context = get_common_context(self.request, context)
         return context
