@@ -1,9 +1,11 @@
-from django.shortcuts import render
+from django.views.generic import TemplateView
 from hueb.apps.hueb20.views.authentication import CustomAuthForm
 
 
-def index(request):
-    context = {}
-    context["form"] = CustomAuthForm(initial={"username": "", "password": ""})
+class IndexView(TemplateView):
+    template_name = "hueb20/index.html"
 
-    return render(request, "hueb20/index.html", context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["form"] = CustomAuthForm(initial={"username": "", "password": ""})
+        return context
