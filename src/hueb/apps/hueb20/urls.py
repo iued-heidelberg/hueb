@@ -1,6 +1,7 @@
 from django.urls import path
 from hueb.apps.hueb20.views.authentication import Login, Logout
-from hueb.apps.hueb20.views.index import index, search
+from hueb.apps.hueb20.views.index import index
+from hueb.apps.hueb20.views.search import search
 
 urlpatterns = [
     # ex: /polls/
