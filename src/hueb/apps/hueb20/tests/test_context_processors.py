@@ -1,8 +1,8 @@
 from django.contrib.auth.models import AnonymousUser
-from hueb.apps.hueb20.context_processors import menu
+from hueb.apps.hueb20.context_processors import menu, overlay
 
 
-def test_unauthenticated_user(rf):
+def test_menu_unauthenticated_user(rf):
     request = rf.get("/")
     request.user = AnonymousUser()
 
@@ -23,7 +23,7 @@ def test_unauthenticated_user(rf):
     assert context["menu"][2]["disabled"] == True
 
 
-def test_authenticated_user(rf, django_user_model):
+def test_menu_authenticated_user(rf, django_user_model):
     username = "Test"
     password = "Test"
     user = django_user_model.objects.create_user(username=username, password=password)
@@ -44,3 +44,14 @@ def test_authenticated_user(rf, django_user_model):
     assert context["menu"][2]["name"] == "Katalog"
     assert context["menu"][2]["link"] == "#"
     assert context["menu"][2]["disabled"] == True
+
+
+def test_overlay(rf):
+    request = rf.get("/")
+    request.user = AnonymousUser()
+
+    context = overlay(request)
+
+    assert "overlayOpen" in context
+
+    assert context["overlayOpen"] == False
