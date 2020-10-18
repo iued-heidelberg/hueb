@@ -1,0 +1,85 @@
+<div class="sticky top-0 overflow-y-scroll">
+
+  <form method="get" action="{% url 'search' %}">
+
+    <div class="flex justify-end">
+
+      <div class="relative mx-2 my-2 border-b-4 border-black rounded-none lg:border-sand-bg">
+
+        <select class="w-full p-2 pr-8 font-bold text-center bg-transparent appearance-none" name="query_attr" id="attr_0">
+          <option value="title">Titel</option>
+          <option value="author">Autor</option>
+          <option value="ddc">DDC</option>
+          <option value="year">Jahr</option>
+        </select>
+
+        <div class="absolute inset-y-0 right-0 px-1 pt-2 pointer-events-none stroke-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 stroke-current lg:w-6 lg:h-6" fill="none" viewBox="0 0 24 24">
+            <path stroke-width="3" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+
+      </div>
+
+      <input class="flex p-2 mx-2 my-2 font-medium placeholder-black placeholder-opacity-25 bg-transparent border-b-4 border-black rounded-none appearance-none lg:placeholder-opacity-25 lg:border-sand-bg lg:placeholder-sand-bg " type="search" name="query_term_0" id="value_0" placeholder="Suchbegriff">
+    </div>
+
+      <div class="flex justify-end ">
+
+      <div class="relative flex-shrink-0 mx-2 my-2 border-b-4 border-black rounded-none lg:border-sand-bg">
+        <select class="w-full p-2 pr-8 font-bold text-center bg-transparent appearance-none " name="query_attr" id="attr_0">
+          <option value="title">Und</option>
+          <option value="author">Oder</option>
+          <option value="DDC">Nicht</option>
+        </select>
+
+        <div class="absolute inset-y-0 right-0 px-1 pt-2 pointer-events-none stroke-2 ">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 stroke-current lg:w-6 lg:h-6" fill="none" viewBox="0 0 24 24">
+            <path stroke-width="3" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+      </div>
+
+      <div class="relative flex-shrink-0 mx-2 my-2 border-b-4 border-black rounded-none lg:border-sand-bg">
+        <select class="w-full p-2 pr-8 font-bold text-center bg-transparent appearance-none" name="query_attr" id="attr_0">
+          <option value="title">Titel</option>
+          <option value="author">Autor</option>
+          <option value="DDC">DDC</option>
+          <option value="Year">Jahr</option>
+        </select>
+
+        <div class="absolute inset-y-0 right-0 px-1 pt-2 pointer-events-none stroke-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 stroke-current lg:w-6 lg:h-6" fill="none" viewBox="0 0 24 24">
+            <path stroke-width="3" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+      </div>
+
+      <input class="flex flex-shrink p-2 mx-2 my-2 font-medium placeholder-black placeholder-opacity-25 bg-transparent border-b-4 border-black rounded-none appearance-none lg:border-sand-bg lg:placeholder-sand-bg lg:placeholder-opacity-25 " type="search" name="query_term_0" id="value_0" placeholder="Suchbegriff">
+    </div>
+
+    <div class="flex justify-center ">
+      <button class="block px-4 py-2 m-4 align-middle border-b-4 border-black lg:border-sand-bg ">
+
+        <p class="inline-block text-3xl font-bold align-middle lg:text-sm"> Filter hinzufügen </p>
+        <div class="items-center inline-block align-middle pointer-events-none">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 stroke-current" fill="none" stroke-width="3" viewBox="0 0 24 24" stroke="currentColor">
+            <path d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          </svg>
+        </div>
+      </button>
+    </div>
+
+    <div class="flex justify-center">
+      <button class="block px-4 py-2 m-4 align-middle border-4 border-black lg:border-sand-bg" type="submit">
+
+        <p class="inline-block px-4 text-5xl font-bold align-middle md:text-lg"> Suchen </p>
+        <div class="items-center inline-block align-middle pointer-events-none">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 stroke-current md:w-8 md:h-8" fill="none" stroke-width="3" viewBox="0 0 24 24" stroke="currentColor">
+            <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+      </button>
+    </div>
+  </form>
+</div>
