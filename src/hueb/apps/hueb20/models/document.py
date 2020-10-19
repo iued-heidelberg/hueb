@@ -18,10 +18,12 @@ class Document(models.Model):
     written_in = IntegerRangeField(null=True, blank=True)
     publishers = models.ManyToManyField(Person, related_name="DocumentPublishers")
     written_by = models.ManyToManyField(Person, related_name="DocumentAuthor")
-    document_relationships = models.ManyToManyField(
+    translations = models.ManyToManyField(
         "self",
+        symmetrical=False,
         through="DocumentRelationship",
         through_fields=("document_from", "document_to"),
+        related_name="originals",
     )
 
     published_location = models.CharField(max_length=255, blank=True, null=True)
@@ -62,15 +64,20 @@ class Document(models.Model):
             return " "
         return (self.title[:75] + "[...]") if len(self.title) > 75 else self.title
 
+    # def translations(self):
+    #    self.document_relationships.filter()
+
+    #    return None
+
 
 class DocumentRelationship(models.Model):
     id = models.BigAutoField(primary_key=True)
 
     document_from = models.ForeignKey(
-        "Document", on_delete=models.DO_NOTHING, related_name="source"
+        "Document", on_delete=models.DO_NOTHING, related_name="to_original"
     )
     document_to = models.ForeignKey(
-        "Document", on_delete=models.DO_NOTHING, related_name="target"
+        "Document", on_delete=models.DO_NOTHING, related_name="to_translation"
     )
 
     app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
