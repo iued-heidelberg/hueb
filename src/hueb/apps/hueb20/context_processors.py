@@ -14,3 +14,10 @@ def menu(request):
     context["menu"] = menu
 
     return context
+
+
+def overlay(request, context={}):
+    context = {}
+    context["overlayOpen"] = False
+
+    return context

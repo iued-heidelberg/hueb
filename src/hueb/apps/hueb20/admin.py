@@ -353,7 +353,7 @@ class DocumentPublisherInline(admin.TabularInline):
 
 class TranslationRelationshipInline(admin.TabularInline):
     readonly_fields = ("app",)
-    model = Document.document_relationships.through
+    model = Document.translations.through
     fk_name = "document_from"
     extra = 0
     verbose_name = "Translation"
@@ -364,7 +364,7 @@ class TranslationRelationshipInline(admin.TabularInline):
 class OriginalRelationshipInline(admin.TabularInline):
 
     readonly_fields = ("app",)
-    model = Document.document_relationships.through
+    model = Document.translations.through
     fk_name = "document_to"
     extra = 0
     verbose_name = "Original"

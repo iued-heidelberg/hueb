@@ -83,6 +83,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "hueb.apps.hueb20.context_processors.menu",
+                "hueb.apps.hueb20.context_processors.overlay",
             ],
         },
     },

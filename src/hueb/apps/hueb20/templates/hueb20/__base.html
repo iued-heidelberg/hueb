@@ -17,7 +17,7 @@
     <div class="w-full h-full">
       {# Overlay #}
       <template x-if="overlayOpen">
-        <div class="z-20 fixed top-0 left-0 flex flex-col w-full h-full bg-gray-bg-darker"
+        <div class="fixed top-0 left-0 z-20 flex flex-col w-full h-full bg-gray-bg-darker"
         x-transition:enter="transition ease-in-out duration-500 transform" x-transition:enter-start="-translate-x-full" x-transition:enter-end="translate-x-0"
         x-transition:leave="transition ease-in-out duration-500 transform" x-transition:leave-start="translate-x-0" x-transition:leave-end="-translate-x-full" x-cloak>
           {# Overlay Close Button #}
@@ -45,7 +45,7 @@
         {#Menu Bar#}
       <nav class="flex flex-wrap flex-initial" >
 
-        <div class="items-center flex flex-row flex-wrap lg:h-24 shadow-lg bg-sand-bg justify-between w-full z-10">
+        <div class="z-10 flex flex-row flex-wrap items-center justify-between w-full shadow-lg lg:h-24 bg-sand-bg">
 
           {#Hamburger#}
           <div class="block px-12 lg:hidden ">
@@ -65,7 +65,7 @@
 
 
           {#Logos#}
-          <div class="flex-row flex lg:px-12 px-8  items-center flex-none">
+          <div class="flex flex-row items-center flex-none px-8 lg:px-12">
             <div class="pr-4 lg:py-2 lg:pr-6">
               <h1 class="text-xl font-light leading-snug lg:text-lg">
                   <span class="font-bold">H</span>eidelberger<br>
