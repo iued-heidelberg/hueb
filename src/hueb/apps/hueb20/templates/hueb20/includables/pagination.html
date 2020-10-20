@@ -1,0 +1,42 @@
+{% load tags %}
+
+<div class="flex flex-row flex-no-wrap justify-center m-8 text-xl">
+
+  <div class="{% if not page_obj.has_previous %} invisible {% endif %}">
+    <a class="p-2 m-2 border-b-4 border-transparent hover:border-black" href="?{% param_replace page=1 %}">&laquo; first</a>
+
+    {% if page_obj.has_previous %}
+      {% with page_number=page_obj.previous_page_number%}
+        <a class="p-2 m-2 border-b-4 border-transparent hover:border-black" href="?{% param_replace page=page_number%}">previous</a>
+      {% endwith %}
+    {% else %}
+      {% with page_number=page_obj.current_page_number%}
+        <a class="p-2 m-2 border-b-4 border-transparent hover:border-black" href="?{% param_replace page=page_number%}">previous</a>
+      {% endwith %}
+    {% endif %}
+
+
+
+  </div>
+
+  <div>
+    <span class="p-2 m-2 border-b-4 border-black"> Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+    </span>
+  </div>
+
+  <div class="{% if not page_obj.has_next %} invisible {% endif %}">
+    {% if page_obj.has_next %}
+      {% with page_number=page_obj.next_page_number%}
+        <a class="p-2 m-2 border-b-4 border-transparent hover:border-black" href="?{% param_replace page=page_number%}">next</a>
+      {% endwith %}
+    {% else %}
+      {% with page_number=page_obj.current_page_number%}
+        <a class="p-2 m-2 border-b-4 border-transparent hover:border-black" href="?{% param_replace page=page_number%}">next</a>
+      {% endwith %}
+    {% endif %}
+    <a class="p-2 m-2 border-b-4 border-transparent hover:border-black" href="?{% param_replace page=page_obj.paginator.num_pages %}">last &raquo;</a>
+  </div>
+
+</div>
+
+
