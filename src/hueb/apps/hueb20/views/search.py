@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.shortcuts import render
 from django.views.generic import ListView
 from hueb.apps.hueb20.models.document import Document
@@ -17,7 +18,7 @@ class Search(ListView):
     def get_queryset(self):
         filter_val = self.request.GET.get("filter")
         if filter_val is not None:
-            new_context = (
+            results = (
                 Document.objects.prefetch_related("translations__written_by")
                 .prefetch_related("translations__ddc")
                 .prefetch_related("translations__language")
@@ -27,10 +28,16 @@ class Search(ListView):
                 .prefetch_related("written_by")
                 .select_related("language")
                 .select_related("ddc")
-                .filter(title__icontains=filter_val)
+                .filter(
+                    Q(title__icontains=filter_val)
+                    | Q(written_by__name__icontains=filter_val)
+                    | Q(language__language__icontains=filter_val)
+                )
+                .order_by("id")
             )
+            return results
         else:
-            new_context = (
+            result = (
                 Document.objects.prefetch_related("translations__written_by")
                 .prefetch_related("translations__ddc")
                 .prefetch_related("translations__language")
@@ -42,7 +49,7 @@ class Search(ListView):
                 .select_related("ddc")
                 .all()
             )
-        return new_context
+        return result
 
     def get_context_data(self, **kwargs):
         context = super(Search, self).get_context_data(**kwargs)
