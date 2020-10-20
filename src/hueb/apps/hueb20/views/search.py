@@ -17,9 +17,31 @@ class Search(ListView):
     def get_queryset(self):
         filter_val = self.request.GET.get("filter")
         if filter_val is not None:
-            new_context = Document.objects.filter(title__icontains=filter_val)
+            new_context = (
+                Document.objects.prefetch_related("translations__written_by")
+                .prefetch_related("translations__ddc")
+                .prefetch_related("translations__language")
+                .prefetch_related("originals__written_by")
+                .prefetch_related("originals__ddc")
+                .prefetch_related("originals__language")
+                .prefetch_related("written_by")
+                .select_related("language")
+                .select_related("ddc")
+                .filter(title__icontains=filter_val)
+            )
         else:
-            new_context = Document.objects.all()
+            new_context = (
+                Document.objects.prefetch_related("translations__written_by")
+                .prefetch_related("translations__ddc")
+                .prefetch_related("translations__language")
+                .prefetch_related("originals__written_by")
+                .prefetch_related("originals__ddc")
+                .prefetch_related("originals__language")
+                .prefetch_related("written_by")
+                .select_related("language")
+                .select_related("ddc")
+                .all()
+            )
         return new_context
 
     def get_context_data(self, **kwargs):
