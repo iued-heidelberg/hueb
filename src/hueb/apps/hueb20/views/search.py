@@ -48,6 +48,7 @@ class Search(ListView):
                 .select_related("language")
                 .select_related("ddc")
                 .all()
+                .order_by("id")
             )
         return result
 
