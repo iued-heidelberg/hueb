@@ -13,7 +13,7 @@ def search(request):
 class Search(ListView):
     model = Document
     template_name = "hueb20/search/search.html"
-    paginate_by = 10
+    paginate_by = 20
 
     def get_queryset(self):
         filter_val = self.request.GET.get("filter")
