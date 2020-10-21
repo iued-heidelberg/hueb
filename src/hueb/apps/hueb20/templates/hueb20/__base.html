@@ -3,6 +3,8 @@
 <!DOCTYPE html>
 <html lang = "en-US">
   <head>
+
+
     <meta charset = "UTF-8">
     {% block title %}
     <title>Heidelberger Übersetzungs Bibliographie</title>
@@ -13,9 +15,9 @@
   </head>
 
 
-  <body class="min-w-full min-h-full" x-data="{ hamburgerOpen: false, overlayOpen: {{overlayOpen | lower}} }">
+  <body class="w-screen h-screen"  x-data="{hamburgerOpen: false, overlayOpen: {{overlayOpen | lower}} }">
 
-    <div class="w-full h-full">
+    <div class="absolute z-40">
       {# Overlay #}
       <template x-if="overlayOpen">
         <div class="fixed top-0 left-0 z-20 flex flex-col w-full h-full bg-gray-bg-darker"
@@ -38,17 +40,21 @@
         </div>
       </template>
 
+    </div>
+
+    {#Menu Bar#}
+    <div class="relative inset-x-0 top-0 z-20 ">
+        {% include "hueb20/index/index_menu.html" %}
+    </div>
 
     {#Main Div#}
-    <div class="flex flex-col min-w-full min-h-full"  @keydown.escape="hamburgerOpen = false; overlayOpen = false">
-
-      {#Menu Bar#}
-
-      {% include "hueb20/index/index_menu.html" %}
-
+    <div class="flex flex-col flex-grow min-w-full min-h-full">
+      <div class="h-20 bg-sand-bg">
+        <p>pikabou</p>
+      </div>
 
       {#Content#}
-      <div class="flex flex-auto bg-sand-bg">
+      <div class="flex-1 bg-sand-bg">
 
         {% block content %}
 
@@ -57,13 +63,15 @@
       </div>
 
       {#Footer#}
-      <div class="flex flex-initial ">
+      <div class="flex-none ">
         {% block footer %}
           {% include "hueb20/index/index_footer.html" %}
         {% endblock %}
       </div>
 
     </div>
+
+
 
   </body>
 
