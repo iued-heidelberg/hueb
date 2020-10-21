@@ -40,13 +40,11 @@
 
 
     {#Main Div#}
-    <div class="flex flex-col w-full h-screen"  @keydown.escape="hamburgerOpen = false; overlayOpen = false">
+    <div class="flex flex-col min-w-full min-h-full"  @keydown.escape="hamburgerOpen = false; overlayOpen = false">
 
       {#Menu Bar#}
 
       {% include "hueb20/index/index_menu.html" %}
-
-
 
 
       {#Content#}
