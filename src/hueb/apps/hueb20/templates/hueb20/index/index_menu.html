@@ -1,39 +1,65 @@
- <div :class="{'hidden': !hamburgerOpen}" class="order-last block w-full px-12 py-8 text-4xl lg:order-first lg:flex lg:w-auto lg:py-0 lg:px-8 lg:text-lg lg:flex-grow lg:justify-between" @click.away="hamburgerOpen = false">
-
-  {#Left aligned menu items#}
-  <div>
-    {% for menu_item in menu %}
-          <a
-            class=
-              "block py-4 font-bold border-b-4 border-transparent lg:mr-8 lg:my-4 lg:px-2 lg:inline-block
-              {% if menu_item.disabled %} opacity-50 cursor-default {% endif %}
-              {% if not menu_item.disabled %} hover:border-black {% endif %}
-              "
-            href="{{menu_item.link}}"
-            @click="hamburgerOpen = false">
-
-            {{menu_item.name}}
-          </a>
-    {% endfor %}
+{% load static %}
+<nav class="z-30 flex flex-row flex-wrap items-center justify-between flex-none w-full shadow-lg lg:flex-no-wrap lg:flex-none bg-sand-bg">
+  {#Hamburger#}
+  <div class="flex px-12 lg:hidden">
+    <button class="flex p-2 text-black border border-transparent stroke-2 items-centers hover:border-black" @click="hamburgerOpen = !hamburgerOpen">
+      <svg id="icon-symbol-hamburger" class="w-24 h-24 fill-current " viewBox="0 0 30 30">
+        <path d="M24.61,21.69H5.39a1,1,0,0,0,0,2H24.61a1,1,0,0,0,0-2Z"></path>
+        <path d="M5.39,16H19.12a1,1,0,0,0,0-2H5.39a1,1,0,0,0,0,2Z"></path>
+        <path d="M5.39,8.31H24.61a1,1,0,0,0,0-2H5.39a1,1,0,0,0,0,2Z"></path>
+      </svg>
+    </button>
   </div>
 
-  {#Right aligned menu items#}
-  <div>
 
+  {% block top_menu %}
+  <div :class="{'hidden': !hamburgerOpen}" class="flex flex-col order-last w-5/6 lg:flex-no-wrap lg:flex-row lg:order-first " @click.away="hamburgerOpen = false">
+      {#Left aligned menu items#}
+    <div class="px-12 py-8 text-4xl lg:py-0 lg:px-8 lg:text-lg lg:justify-between">
+      <div>
+        {% for menu_item in menu %}
+              <a
+                class=
+                  "block py-4 font-bold border-b-4 border-transparent lg:mr-8 lg:my-4 lg:px-2 lg:inline-block
+                  {% if menu_item.disabled %} opacity-50 cursor-default {% endif %}
+                  {% if not menu_item.disabled %} hover:border-black {% endif %}
+                  "
+                href="{{menu_item.link}}"
+                @click="hamburgerOpen = false">
 
+                {{menu_item.name}}
+              </a>
+        {% endfor %}
+      </div>
 
-    <a class="block py-4 font-bold border-b-4 pt-12 lg:py-4 border-transparent lg:px-2 lg:my-4 lg:mr-12 lg:inline-block hover:border-black"
+      {#Right aligned menu items#}
+      <div>
+        <a class="py-4 pt-12 font-bold border-b-4 border-transparent lg:py-4 lg:px-2 lg:my-4 lg:mr-12 lg:inline-block hover:border-black"
 
-    {% if not user.is_authenticated %}
-      @click="overlayOpen = true">
-      {% if not user.is_authenticated %}Login{% endif %}
-    {% else %}
-      href="/accounts/logout"> Logout
-    {% endif %}
-
-
-
-
-    </a>
+        {% if not user.is_authenticated %}
+          @click="overlayOpen = true">
+          {% if not user.is_authenticated %}Login{% endif %}
+        {% else %}
+          href="/accounts/logout"> Logout
+        {% endif %}
+        </a>
+      </div>
+    </div>
   </div>
-</div>
+  {% endblock %}
+
+
+  {#Logos#}
+  <div class="flex flex-row flex-no-wrap items-center block px-8 lg:px-12">
+    <div class="pr-4 lg:py-2 lg:pr-6">
+      <h1 class="text-xl font-light leading-snug lg:text-lg">
+          <span class="font-bold">H</span>eidelberger<br>
+          <span class="font-bold">Ü</span>bersetzungs<br>
+          <span class="font-bold">B</span>ibliographie
+      </h1>
+    </div>
+
+    <img class="flex object-contain h-24 py-2 lg:h-20 " src="{% static 'hueb20/img/logo.png' %}" alt="Universität Heidelberg">
+
+  </div>
+</nav>

@@ -1,3 +1,4 @@
+
 {% load static %}
 <!DOCTYPE html>
 <html lang = "en-US">
@@ -12,7 +13,7 @@
   </head>
 
 
-  <body x-data="{ hamburgerOpen: false, overlayOpen: {{overlayOpen | lower}} }">
+  <body class="min-w-full min-h-full" x-data="{ hamburgerOpen: false, overlayOpen: {{overlayOpen | lower}} }">
 
     <div class="w-full h-full">
       {# Overlay #}
@@ -37,52 +38,16 @@
         </div>
       </template>
 
-    </div>
 
     {#Main Div#}
     <div class="flex flex-col w-full h-screen"  @keydown.escape="hamburgerOpen = false; overlayOpen = false">
 
-        {#Menu Bar#}
-      <nav class="flex flex-wrap flex-initial" >
+      {#Menu Bar#}
 
-        <div class="z-10 flex flex-row flex-wrap items-center justify-between w-full shadow-lg lg:h-24 bg-sand-bg">
-
-          {#Hamburger#}
-          <div class="block px-12 lg:hidden ">
-            <button class="flex p-2 text-black border border-transparent stroke-2 items-centers hover:border-black" @click="hamburgerOpen = !hamburgerOpen">
-              <svg id="icon-symbol-hamburger" class="w-24 h-24 fill-current " viewBox="0 0 30 30">
-                <path d="M24.61,21.69H5.39a1,1,0,0,0,0,2H24.61a1,1,0,0,0,0-2Z"></path>
-                <path d="M5.39,16H19.12a1,1,0,0,0,0-2H5.39a1,1,0,0,0,0,2Z"></path>
-                <path d="M5.39,8.31H24.61a1,1,0,0,0,0-2H5.39a1,1,0,0,0,0,2Z"></path>
-              </svg>
-            </button>
-          </div>
+      {% include "hueb20/index/index_menu.html" %}
 
 
-          {% block top_menu %}
-            {% include "hueb20/index/index_menu.html" %}
-          {% endblock %}
 
-
-          {#Logos#}
-          <div class="flex flex-row items-center flex-none px-8 lg:px-12">
-            <div class="pr-4 lg:py-2 lg:pr-6">
-              <h1 class="text-xl font-light leading-snug lg:text-lg">
-                  <span class="font-bold">H</span>eidelberger<br>
-                  <span class="font-bold">Ü</span>bersetzungs<br>
-                  <span class="font-bold">B</span>ibliographie
-              </h1>
-            </div>
-            <div>
-              <img class="object-contain h-24 lg:h-20 lg:p-2" src="{% static 'hueb20/img/logo.png' %}" alt="Universität Heidelberg">
-            </div>
-          </div>
-
-          {#Menu Elements#}
-
-        </div>
-
-      </nav>
 
       {#Content#}
       <div class="flex flex-auto bg-sand-bg">
