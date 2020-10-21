@@ -39,7 +39,7 @@ else:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("HUEB_DEBUG") == "TRUE"
 
-ALLOWED_HOSTS = [os.getenv("HUEB_ALLOWED_HOSTS")]
+ALLOWED_HOSTS = os.getenv("HUEB_ALLOWED_HOSTS").split(",")
 
 
 INSTALLED_APPS = [
