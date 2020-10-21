@@ -10,7 +10,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build_dev": "NODE_ENV=development npx tailwindcss build static/hueb20/tailwind.css -o static/hueb20/hueb20.css",
     "build_prod": "NODE_ENV=production npx tailwindcss build static/hueb20/tailwind.css -o static/hueb20/hueb20.css",
-    "postcss": "postcss --use autoprefixer -o main.css css/hueb20/hueb20.css"
+    "postcss": "postcss --use autoprefixer -r static/hueb20/hueb20.css"
   },
   "keywords": [],
   "author": "",
