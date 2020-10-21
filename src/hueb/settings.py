@@ -39,8 +39,10 @@ else:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("HUEB_DEBUG") == "TRUE"
 
-ALLOWED_HOSTS = os.getenv("HUEB_ALLOWED_HOSTS").split(",")
-
+try:
+    ALLOWED_HOSTS = os.getenv("HUEB_ALLOWED_HOSTS").split(",")
+except AttributeError:
+    ALLOWED_HOSTS = "127.0.0.1"
 
 INSTALLED_APPS = [
     "simple_history",
