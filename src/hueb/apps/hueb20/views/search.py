@@ -1,13 +1,57 @@
-from django.contrib.auth.decorators import login_required
+from django import forms
 from django.db.models import Q
 from django.shortcuts import render
-from django.views.generic import ListView
+from django.views.generic import ListView, View
 from hueb.apps.hueb20.models.document import Document
 
 
-@login_required
-def search(request):
-    return render(request, "hueb20/search/search.html")
+class SearchSelectWidget(forms.widgets.Select):
+    template_name = "hueb20/search/widgets/select.html"
+
+
+class SearchForm(forms.Form):
+    logical_choices = (("and", "And"), ("or", "Or"), ("not", "Not"))
+    attribute_choices = (
+        ("title", "Title"),
+        ("author", "Author"),
+        ("ddc", "DDC"),
+        ("year", "Year"),
+    )
+
+    logical = forms.ChoiceField(choices=logical_choices, widget=SearchSelectWidget)
+    attribute = forms.ChoiceField(choices=attribute_choices, widget=SearchSelectWidget)
+    search_text = forms.CharField(
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                "class": "flex p-2 mx-2 my-2 font-medium placeholder-black placeholder-opacity-25 bg-transparent border-b-4 border-black rounded-none appearance-none lg:placeholder-opacity-25 lg:border-sand-bg lg:placeholder-sand-bg",
+                "placeholder": "Suchbegriff",
+            }
+        ),
+    )
+    search_year = forms.IntegerField(
+        required=False,
+        widget=forms.NumberInput(
+            attrs={
+                "class": "flex p-2 mx-2 my-2 font-medium placeholder-black placeholder-opacity-25 bg-transparent border-b-4 border-black rounded-none appearance-none lg:placeholder-opacity-25 lg:border-sand-bg lg:placeholder-sand-bg",
+            }
+        ),
+    )
+
+
+class ComplexSearch(View):
+    template_name = "hueb20/search/search_complex.html"
+    form_class = SearchForm
+
+    def get(self, request, *args, **kwargs):
+
+        form = SearchForm(data=request.GET)
+        if not form.is_valid():
+            form = SearchForm()
+
+        context = {"form": form}
+
+        return render(request, "hueb20/search/search_complex.html", context)
 
 
 class Search(ListView):
