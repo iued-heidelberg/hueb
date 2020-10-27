@@ -6,11 +6,19 @@ from django.forms.widgets import PasswordInput, TextInput
 
 class CustomAuthForm(AuthenticationForm):
     username = forms.CharField(
-        initial="",
-        widget=TextInput(attrs={"class": "validate", "placeholder": "Benutzername"}),
+        widget=TextInput(
+            attrs={
+                "class": "validate",
+                "placeholder": "Benutzername",
+                "autofocus": True,
+            }
+        ),
     )
     password = forms.CharField(
-        initial="", widget=PasswordInput(attrs={"placeholder": "Passwort"})
+        strip=False,
+        widget=PasswordInput(
+            attrs={"placeholder": "Passwort", "autocomplete": "current-password"}
+        ),
     )
 
 
