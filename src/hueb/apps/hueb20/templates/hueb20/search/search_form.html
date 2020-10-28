@@ -1,11 +1,66 @@
-      <div class="flex justify-end">
+<div x-data="searchForm()" x-init="() => {init()}" class="flex justify-end">
+
+    <div x-ref="operator">
+        {{ form.operator.errors }}
+        {{ form.operator }}
+    </div>
+
+    <div x-ref="attribute" @change="getAttribute()">
+        {{ form.attribute.errors }}
+        {{ form.attribute }}
+    </div>
+
+    <div x-ref="search_text" x-show="!showYear()">
+        {{ form.search_text.errors }}
+        {{ form.search_text }}
+    </div>
 
 
-          {% for field in form.visible_fields %}
-          <div>
-              {{ field.errors }}
-              {{ field }}
-          </div>
-          {% endfor %}
+    <div x-ref="search_year" x-cloak x-show="showYear()">
+        {{ form.search_year.errors }}
+        {{ form.search_year }}
+    </div>
 
-      </div>
+
+</div>
+
+
+
+<script>
+    function searchForm() {
+        return {
+            operator: null,
+            attribute: null,
+            showYear() {
+                showYear = (this.attribute === "year")
+                if (showYear){
+                    this.setSearchText(null)
+                }else{
+                    this.setSearchYear(null)
+                }
+                return showYear;
+            },
+            setSearchYear(search_year){
+                this.$refs.search_year.lastElementChild.value = search_year;
+            },
+            setSearchText(search_text){
+                this.$refs.search_text.lastElementChild.value = search_text;
+            },
+            getOperator(){
+                this.operator = this.$refs.operator.lastElementChild.children[0].value;
+            },
+            getAttribute(){
+                this.attribute = this.$refs.attribute.lastElementChild.children[0].value;
+            },
+            init(){
+                this.getOperator();
+                this.getAttribute();
+                this.showYear()
+            },
+
+
+        }
+    }
+
+
+</script>
