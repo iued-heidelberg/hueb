@@ -12,7 +12,7 @@ class SearchSelectWidget(forms.widgets.Select):
 
 
 class SearchForm(forms.Form):
-    logical_choices = (("and", "And"), ("or", "Or"), ("not", "Not"))
+    operator_choices = (("and", "And"), ("or", "Or"), ("not", "Not"))
     attribute_choices = (
         ("title", "Title"),
         ("author", "Author"),
@@ -20,7 +20,7 @@ class SearchForm(forms.Form):
         ("year", "Year"),
     )
 
-    logical = forms.ChoiceField(choices=logical_choices, widget=SearchSelectWidget)
+    operator = forms.ChoiceField(choices=operator_choices, widget=SearchSelectWidget)
     attribute = forms.ChoiceField(choices=attribute_choices, widget=SearchSelectWidget)
     search_text = forms.CharField(
         required=False,
