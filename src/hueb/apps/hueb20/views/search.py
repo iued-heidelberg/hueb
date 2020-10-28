@@ -1,5 +1,7 @@
 from django import forms
+from django.core.exceptions import ValidationError
 from django.db.models import Q
+from django.forms.formsets import BaseFormSet, formset_factory
 from django.shortcuts import render
 from django.views.generic import ListView, View
 from hueb.apps.hueb20.models.document import Document
@@ -39,17 +41,19 @@ class SearchForm(forms.Form):
     )
 
 
-class ComplexSearch(View):
+class FormsetSearch(View):
     template_name = "hueb20/search/search_complex.html"
-    form_class = SearchForm
 
     def get(self, request, *args, **kwargs):
+        SearchFormset = formset_factory(SearchForm, formset=BaseFormSet, extra=10)
 
-        form = SearchForm(data=request.GET)
-        if not form.is_valid():
-            form = SearchForm()
+        formset = SearchFormset(data=request.GET)
+        try:
+            formset.is_valid()
+        except ValidationError:
+            formset = SearchFormset()
 
-        context = {"form": form}
+        context = {"formset": formset}
 
         return render(request, "hueb20/search/search_complex.html", context)
 

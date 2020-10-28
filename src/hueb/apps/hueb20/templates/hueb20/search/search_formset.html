@@ -1,17 +1,29 @@
 <div class="sticky top-0 overflow-y-scroll">
 
-  <form method="get" action="{% url 'complex_search' %}">
+  <form method="get" action="{% url 'formset_search' %}">
 
-    <div class="flex justify-end">
-
-      {% for field in form.visible_fields %}
-      <div>
-          {{ field.errors }}
-          {{ field }}
-      </div>
-      {% endfor %}
+    {{ formset.management_form }}
+    <div x-ref = "search_forms">
+    {% for form in formset %}
+         {% include "hueb20/search/search_form.html" %}
+    {% endfor %}
 
     </div>
+
+    <div class="hidden" x-ref="empty_form">
+      <div class="flex justify-end">
+
+
+        {% for field in formset.empty_form %}
+        <div>
+            {{ field.errors }}
+            {{ field }}
+        </div>
+        {% endfor %}
+
+      </div>
+    </div>
+
 
     <div class="flex justify-center ">
       <button class="block px-4 py-2 m-4 align-middle border-b-4 border-black lg:border-sand-bg ">
@@ -36,5 +48,10 @@
         </div>
       </button>
     </div>
+
+
+
+
+
   </form>
 </div>
