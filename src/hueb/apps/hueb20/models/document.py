@@ -66,10 +66,10 @@ class Document(models.Model):
         return (self.title[:75] + "[...]") if len(self.title) > 75 else self.title
 
     searchable_attributes = (
-        ("title", "Title"),
-        ("author", "Author"),
+        ("title", "Titel"),
+        ("author", "Autor"),
         ("ddc", "DDC"),
-        ("year", "Year"),
+        ("year", "Veröffentlicht"),
     )
 
     @classmethod
