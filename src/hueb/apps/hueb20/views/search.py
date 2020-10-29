@@ -12,15 +12,11 @@ class SearchSelectWidget(forms.widgets.Select):
 
 class SearchForm(forms.Form):
     operator_choices = (("and", "And"), ("or", "Or"), ("not", "Not"))
-    attribute_choices = (
-        ("title", "Title"),
-        ("author", "Author"),
-        ("ddc", "DDC"),
-        ("year", "Year"),
-    )
 
     operator = forms.ChoiceField(choices=operator_choices, widget=SearchSelectWidget)
-    attribute = forms.ChoiceField(choices=attribute_choices, widget=SearchSelectWidget)
+    attribute = forms.ChoiceField(
+        choices=Document.searchable_attributes, widget=SearchSelectWidget
+    )
     search_text = forms.CharField(
         required=False,
         widget=forms.TextInput(
@@ -39,11 +35,6 @@ class SearchForm(forms.Form):
         ),
     )
 
-    def get_q_object(self):
-        search_text = self.cleaned_data["search_text"]
-        if self.cleaned_data["attribute"] == "title":
-            return Document.q_object_by_title(search_text)
-
 
 class BaseSearchFormSet(BaseFormSet):
     def get_query_object(self):
@@ -52,7 +43,11 @@ class BaseSearchFormSet(BaseFormSet):
 
         for form in self:
 
-            q = form.get_q_object()
+            q = Document.get_q_object(
+                form.cleaned_data["attribute"],
+                form.cleaned_data["search_text"],
+                form.cleaned_data["search_year"],
+            )
             operator = form.cleaned_data["operator"]
 
             if operator == "and":

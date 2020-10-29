@@ -65,9 +65,29 @@ class Document(models.Model):
             return " "
         return (self.title[:75] + "[...]") if len(self.title) > 75 else self.title
 
+    searchable_attributes = (
+        ("title", "Title"),
+        ("author", "Author"),
+        ("ddc", "DDC"),
+        ("year", "Year"),
+    )
+
+    @classmethod
+    def get_q_object(cls, attribute, search_text, search_year):
+        if attribute == "title":
+            return Document.q_object_by_title(search_text)
+        elif attribute == "author":
+            return Document.q_object_by_author(search_text)
+        else:
+            return Q()
+
     @classmethod
     def q_object_by_title(cls, search_text):
         return Q(title__icontains=search_text)
+
+    @classmethod
+    def q_object_by_author(cls, search_text):
+        return Q(written_by__name__icontains=search_text)
 
 
 class DocumentRelationship(models.Model):
