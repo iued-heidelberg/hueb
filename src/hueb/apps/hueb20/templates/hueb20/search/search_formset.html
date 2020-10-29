@@ -1,32 +1,29 @@
-<div class="sticky top-0 overflow-y-scroll">
+<div x-data="searchFormSet()" class="sticky top-0 overflow-y-scroll">
 
-  <form method="get" action="{% url 'formset_search' %}">
+  <div class="hidden" x-ref="emptyForm">
+    {% with form=formset.empty_form %}
+      {% include "hueb20/search/search_form.html" %}
+    {% endwith %}
+  </div>
 
-    {{ formset.management_form }}
-    <div x-ref = "search_forms">
-    {% for form in formset %}
-         {% include "hueb20/search/search_form.html" %}
-    {% endfor %}
 
+  <form method="get"  action="{% url 'formset_search' %}">
+
+    <div x-ref="managementForm">
+      {{ formset.management_form }}
     </div>
 
-    <div class="hidden" x-ref="empty_form">
-      <div class="flex justify-end">
-
-
-        {% for field in formset.empty_form %}
-        <div>
-            {{ field.errors }}
-            {{ field }}
-        </div>
-        {% endfor %}
-
-      </div>
+    <div x-ref = "searchFormSet">
+      {% for form in formset %}
+          {% include "hueb20/search/search_form.html" %}
+      {% endfor %}
     </div>
+
+
 
 
     <div class="flex justify-center ">
-      <button class="block px-4 py-2 m-4 align-middle border-b-4 border-black lg:border-sand-bg ">
+      <button type="button" @click="addFormToFormSet()" class="block px-4 py-2 m-4 align-middle border-b-4 border-black lg:border-sand-bg ">
 
         <p class="inline-block text-3xl font-bold align-middle lg:text-sm"> Filter hinzufügen </p>
         <div class="items-center inline-block align-middle pointer-events-none">
@@ -48,10 +45,57 @@
         </div>
       </button>
     </div>
-
-
-
-
-
   </form>
 </div>
+
+
+
+<script>
+    function searchFormSet() {
+        return {
+            getFormCount(){
+                return document.getElementsByName("form-TOTAL_FORMS")[0].value
+            },
+            setFormCount(value){
+                document.getElementsByName("form-TOTAL_FORMS")[0].value = value
+            },
+            addFormToFormSet(){
+                var formSet = this.getFormSet()
+                var blankForm = this.getBlankForm()
+                var clone = blankForm.cloneNode(true);
+
+                var id = Number(this.getFormCount())
+
+
+                var selects = Array.from(clone.getElementsByTagName('select'))
+                selects.forEach(function(item){
+                  item.id = item.id.replace("__prefix__", id);
+                  item.setAttribute("name", item.id)
+                })
+
+                var inputs = Array.from(clone.getElementsByTagName('input'))
+                inputs.forEach(function(item){
+                  console.log(item)
+                  item.id = item.id.replace("__prefix__", id);
+                  item.setAttribute("name", item.id)
+                })
+
+                formSet.appendChild(clone)
+                this.setFormCount(id+1)
+
+            },
+            removeFormFromFormSet(){
+
+            },
+            getBlankForm(){
+              return this.$refs.emptyForm.children[0]
+            },
+            getFormSet(){
+              return this.$refs.searchFormSet
+            },
+
+        }
+    }
+
+
+</script>
