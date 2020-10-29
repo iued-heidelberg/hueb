@@ -23,7 +23,11 @@ module.exports = {
       },
     },
   },
-  variants: {},
+  variants: {
+    borderWidth: ['responsive', 'hover', 'focus'],
+    opacity: ['responsive', 'hover', 'focus', 'disabled'],
+    cursor: ['responsive', 'hover', 'focus', 'disabled'],
+  },
   plugins: [
   ],
 }

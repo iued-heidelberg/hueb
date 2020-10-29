@@ -45,7 +45,9 @@ class FormsetSearch(View):
     template_name = "hueb20/search/search_complex.html"
 
     def get(self, request, *args, **kwargs):
-        SearchFormset = formset_factory(SearchForm, formset=BaseFormSet, extra=10)
+        SearchFormset = formset_factory(
+            SearchForm, formset=BaseFormSet, extra=0, min_num=1, max_num=6
+        )
 
         formset = SearchFormset(data=request.GET)
         try:

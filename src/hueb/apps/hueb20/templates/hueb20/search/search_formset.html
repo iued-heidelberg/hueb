@@ -1,11 +1,4 @@
-<div x-data="searchFormSet()" class="sticky top-0 overflow-y-scroll">
-
-  <div class="hidden" x-ref="emptyForm">
-    {% with form=formset.empty_form %}
-      {% include "hueb20/search/search_form.html" %}
-    {% endwith %}
-  </div>
-
+<div x-data="searchFormSet()" x-init="() => {init()}" class="sticky top-0 overflow-y-scroll">
 
   <form method="get"  action="{% url 'formset_search' %}">
 
@@ -19,11 +12,8 @@
       {% endfor %}
     </div>
 
-
-
-
-    <div class="flex justify-center ">
-      <button type="button" @click="addFormToFormSet()" class="block px-4 py-2 m-4 align-middle border-b-4 border-black lg:border-sand-bg ">
+    <div class="flex justify-center " @click="canAddForm(); canRemoveForm()">
+      <button type="button" @click="addFormToFormSet()" class="block px-4 py-2 m-4 align-middle border-b-4 border-black lg:border-sand-bg lg:hover:bg-sand-bg lg:hover:text-gray-bg-darker disabled:cursor-not-allowed disabled:opacity-50" x-bind:disabled="!addform">
 
         <p class="inline-block text-3xl font-bold align-middle lg:text-sm"> Filter hinzufügen </p>
         <div class="items-center inline-block align-middle pointer-events-none">
@@ -32,10 +22,20 @@
           </svg>
         </div>
       </button>
+
+      <button type="button" @click="removeFormFromFormset()" class="block px-4 py-2 m-4 align-middle border-b-4 border-black lg:border-sand-bg lg:hover:bg-sand-bg lg:hover:text-gray-bg-darker disabled:cursor-not-allowed disabled:opacity-50" x-bind:disabled="!removeform">
+
+        <p class="inline-block text-3xl font-bold align-middle lg:text-sm"> Filter entfernen </p>
+        <div class="items-center inline-block align-middle pointer-events-none">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 stroke-current" fill="none" stroke-width="3" viewBox="0 0 24 24" stroke="currentColor">
+            <path d="M18 12H6"  />
+          </svg>
+        </div>
+      </button>
     </div>
 
     <div class="flex justify-center">
-      <button class="block px-4 py-2 m-4 align-middle border-4 border-black lg:border-sand-bg" type="submit">
+      <button class="block px-4 py-2 m-4 align-middle border-4 border-black lg:border-sand-bg lg:hover:bg-sand-bg lg:hover:text-gray-bg-darker" type="submit">
 
         <p class="inline-block px-4 text-5xl font-bold align-middle md:text-lg"> Suchen </p>
         <div class="items-center inline-block align-middle pointer-events-none">
@@ -46,56 +46,91 @@
       </button>
     </div>
   </form>
-</div>
 
-
+  <div class="hidden" x-ref="emptyForm">
+    {% with form=formset.empty_form %}
+      {% include "hueb20/search/search_form.html" %}
+    {% endwith %}
+  </div>
 
 <script>
     function searchFormSet() {
         return {
+            addform: null,
+            removeform: null,
+
+            canRemoveForm(){
+              var formcount = this.getFormCount()
+              var new_formcount = formcount - 1
+              this.removeform = this.getMinFormCount() <= new_formcount
+              return this.removeform
+            },
+            canAddForm(){
+              var count = this.getFormCount()
+              this.addform = count < this.getMaxFormCount()
+              return this.addform
+            },
+            getMaxFormCount(){
+              return Number(document.getElementsByName("form-MAX_NUM_FORMS")[0].value)
+            },
+            getMinFormCount(){
+              return Number(document.getElementsByName("form-MIN_NUM_FORMS")[0].value)
+            },
             getFormCount(){
-                return document.getElementsByName("form-TOTAL_FORMS")[0].value
+                return Number(document.getElementsByName("form-TOTAL_FORMS")[0].value)
             },
             setFormCount(value){
                 document.getElementsByName("form-TOTAL_FORMS")[0].value = value
             },
             addFormToFormSet(){
-                var formSet = this.getFormSet()
-                var blankForm = this.getBlankForm()
-                var clone = blankForm.cloneNode(true);
+                if (this.canAddForm()){
+                  var formSet = this.getFormset()
+                  var blankForm = this.getBlankForm()
+                  var clone = blankForm.cloneNode(true);
 
-                var id = Number(this.getFormCount())
+                  var id = this.getFormCount()
+                  var selects = Array.from(clone.getElementsByTagName('select'))
+                  selects.forEach(function(item){
+                    item.id = item.id.replace("__prefix__", id);
+                    item.setAttribute("name", item.id)
+                  })
 
+                  var inputs = Array.from(clone.getElementsByTagName('input'))
+                  inputs.forEach(function(item){
+                    item.id = item.id.replace("__prefix__", id);
+                    item.setAttribute("name", item.id)
+                  })
 
-                var selects = Array.from(clone.getElementsByTagName('select'))
-                selects.forEach(function(item){
-                  item.id = item.id.replace("__prefix__", id);
-                  item.setAttribute("name", item.id)
-                })
-
-                var inputs = Array.from(clone.getElementsByTagName('input'))
-                inputs.forEach(function(item){
-                  console.log(item)
-                  item.id = item.id.replace("__prefix__", id);
-                  item.setAttribute("name", item.id)
-                })
-
-                formSet.appendChild(clone)
-                this.setFormCount(id+1)
+                  formSet.appendChild(clone)
+                  this.setFormCount(id+1)
+                }
 
             },
-            removeFormFromFormSet(){
-
+            removeFormFromFormset(){
+                if (this.canRemoveForm() ){
+                  var formcount = this.getFormCount()
+                  var new_formcount = formcount - 1
+                  var formset = this.getFormset()
+                  formset.removeChild(formset.lastElementChild)
+                  this.setFormCount(new_formcount)
+                }
             },
             getBlankForm(){
               return this.$refs.emptyForm.children[0]
             },
-            getFormSet(){
+            getFormset(){
               return this.$refs.searchFormSet
             },
+            init(){
+              this.canRemoveForm()
+              this.canAddForm()
+            }
 
         }
     }
 
 
 </script>
+</div>
+
+
