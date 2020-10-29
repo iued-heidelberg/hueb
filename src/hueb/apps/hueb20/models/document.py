@@ -1,6 +1,7 @@
 import hueb.apps.hueb_legacy_latein.models as Legacy
 from django.contrib.postgres.fields import IntegerRangeField
 from django.db import models
+from django.db.models import Q
 from hueb.apps.hueb20.models import HUEB20, HUEB_APPLICATIONS
 from simple_history.models import HistoricalRecords
 
@@ -64,10 +65,9 @@ class Document(models.Model):
             return " "
         return (self.title[:75] + "[...]") if len(self.title) > 75 else self.title
 
-    # def translations(self):
-    #    self.document_relationships.filter()
-
-    #    return None
+    @classmethod
+    def q_object_by_title(cls, search_text):
+        return Q(title__icontains=search_text)
 
 
 class DocumentRelationship(models.Model):

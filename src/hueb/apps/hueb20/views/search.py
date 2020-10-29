@@ -2,8 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.db.models import Q
 from django.forms.formsets import BaseFormSet, formset_factory
-from django.shortcuts import render
-from django.views.generic import ListView, View
+from django.views.generic import ListView
 from hueb.apps.hueb20.models.document import Document
 
 
@@ -40,24 +39,77 @@ class SearchForm(forms.Form):
         ),
     )
 
+    def get_q_object(self):
+        search_text = self.cleaned_data["search_text"]
+        if self.cleaned_data["attribute"] == "title":
+            return Document.q_object_by_title(search_text)
 
-class FormsetSearch(View):
-    template_name = "hueb20/search/search_complex.html"
 
-    def get(self, request, *args, **kwargs):
-        SearchFormset = formset_factory(
-            SearchForm, formset=BaseFormSet, extra=0, min_num=1, max_num=6
+class BaseSearchFormSet(BaseFormSet):
+    def get_query_object(self):
+        include_q_objects = Q()
+        exclude_q_objects = Q()
+
+        for form in self:
+
+            q = form.get_q_object()
+            operator = form.cleaned_data["operator"]
+
+            if operator == "and":
+                include_q_objects &= q
+            elif operator == "or":
+                include_q_objects |= q
+            elif operator == "not":
+                exclude_q_objects |= q
+
+        print(include_q_objects)
+        print(exclude_q_objects)
+
+        print(
+            Document.objects.filter(include_q_objects)
+            .exclude(exclude_q_objects)
+            .count()
         )
 
-        formset = SearchFormset(data=request.GET)
+        return Document.objects.filter(include_q_objects).exclude(exclude_q_objects)
+
+
+class FormsetSearch(ListView):
+    template_name = "hueb20/search/search_complex.html"
+    model = Document
+    paginate_by = 20
+
+    SearchFormset = formset_factory(
+        SearchForm,
+        formset=BaseSearchFormSet,
+        extra=0,
+        min_num=1,
+        max_num=6,
+        validate_max=True,
+        validate_min=True,
+    )
+
+    def get_queryset(self):
+        formset = self.SearchFormset(data=self.request.GET)
         try:
             formset.is_valid()
+            return formset.get_query_object().all().order_by("id")
         except ValidationError:
-            formset = SearchFormset()
+            results = Document.objects.all().order_by("id")
+            return results
 
-        context = {"formset": formset}
+    def get_context_data(self, **kwargs):
+        context = super(FormsetSearch, self).get_context_data(**kwargs)
 
-        return render(request, "hueb20/search/search_complex.html", context)
+        try:
+            formset = self.SearchFormset(data=self.request.GET)
+            formset.is_valid()
+        except ValidationError:
+            formset = self.SearchFormset()
+
+        context["formset"] = formset
+
+        return context
 
 
 class Search(ListView):

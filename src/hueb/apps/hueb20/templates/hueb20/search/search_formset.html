@@ -90,14 +90,11 @@
 
                   var id = this.getFormCount()
                   var selects = Array.from(clone.getElementsByTagName('select'))
-                  selects.forEach(function(item){
-                    item.id = item.id.replace("__prefix__", id);
-                    item.setAttribute("name", item.id)
-                  })
-
                   var inputs = Array.from(clone.getElementsByTagName('input'))
-                  inputs.forEach(function(item){
+
+                  selects.concat(inputs).forEach(function(item){
                     item.id = item.id.replace("__prefix__", id);
+                    item.id = item.id.replace("id_", "");
                     item.setAttribute("name", item.id)
                   })
 
