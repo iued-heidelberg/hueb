@@ -1,4 +1,5 @@
-<div x-data="searchForm()" x-init="() => {init()}" class="flex justify-end">
+
+<div x-data="searchForm()" @click="update()" x-init="() => {init()}" class="flex justify-end">
 
     <div x-ref="operator">
         {{ form.operator.errors }}
@@ -10,30 +11,41 @@
         {{ form.attribute }}
     </div>
 
-    <div x-ref="search_text" x-show="!showYear()">
+    <div x-ref="search_text" x-bind:hidden="!showText()">
         {{ form.search_text.errors }}
         {{ form.search_text }}
     </div>
 
-    <div x-ref="search_year" x-cloak x-show="showYear()">
+    <div x-ref="search_year" x-cloak x-bind:hidden="!showYear()">
         {{ form.search_year.errors }}
         {{ form.search_year }}
+    </div>
+
+    <div x-ref="search_ddc" x-cloak x-bind:hidden="!showDDC()">
+        {{ form.search_ddc.errors }}
+        {{ form.search_ddc }}
     </div>
 
     <script>
         function searchForm() {
             return {
+
+                showText(){
+                    return (this.attribute !== "year")&&(this.attribute !== "ddc")
+                },
+                showYear(){
+                    return (this.attribute === "year")
+                },
+                showDDC(){
+                    return (this.attribute === "ddc")
+                },
+                update(){
+                    this.showText();
+                    this.showDDC();
+                    this.showYear();
+                },
                 operator: null,
                 attribute: null,
-                showYear() {
-                    showYear = (this.attribute === "year")
-                    if (showYear){
-                        this.setSearchText(null)
-                    }else{
-                        this.setSearchYear(null)
-                    }
-                    return showYear;
-                },
                 setSearchYear(search_year){
                     this.$refs.search_year.lastElementChild.value = search_year;
                 },
@@ -49,7 +61,6 @@
                 init(){
                     this.getOperator();
                     this.getAttribute();
-                    this.showYear()
                 },
             }
         }

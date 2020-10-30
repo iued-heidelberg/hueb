@@ -34,6 +34,14 @@ class SearchForm(forms.Form):
             }
         ),
     )
+    search_ddc = forms.IntegerField(
+        required=False,
+        widget=forms.NumberInput(
+            attrs={
+                "class": "flex p-2 mx-2 my-2 font-medium placeholder-black placeholder-opacity-25 bg-transparent border-b-4 border-black rounded-none appearance-none lg:placeholder-opacity-25 lg:border-sand-bg lg:placeholder-sand-bg",
+            }
+        ),
+    )
 
 
 class BaseSearchFormSet(BaseFormSet):
