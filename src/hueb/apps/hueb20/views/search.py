@@ -45,6 +45,18 @@ class SearchForm(forms.Form):
 
 
 class BaseSearchFormSet(BaseFormSet):
+    base_queryset = (
+        Document.objects.prefetch_related("translations__written_by")
+        .prefetch_related("translations__ddc")
+        .prefetch_related("translations__language")
+        .prefetch_related("originals__written_by")
+        .prefetch_related("originals__ddc")
+        .prefetch_related("originals__language")
+        .prefetch_related("written_by")
+        .select_related("language")
+        .select_related("ddc")
+    )
+
     def get_query_object(self):
         include_q_objects = Q()
         exclude_q_objects = Q()
@@ -72,9 +84,12 @@ class BaseSearchFormSet(BaseFormSet):
             Document.objects.filter(include_q_objects)
             .exclude(exclude_q_objects)
             .count()
+            queryset = self.base_queryset.filter(include_q_objects).exclude(
+                exclude_q_objects
         )
 
-        return Document.objects.filter(include_q_objects).exclude(exclude_q_objects)
+
+            return queryset
 
 
 class FormsetSearch(ListView):
@@ -96,9 +111,11 @@ class FormsetSearch(ListView):
         formset = self.SearchFormset(data=self.request.GET)
         try:
             formset.is_valid()
-            return formset.get_query_object().all().order_by("id")
+            queryset = formset.get_query_object()
+
+            return queryset.all().order_by("id")
         except ValidationError:
-            results = Document.objects.all().order_by("id")
+            results = self.base_queryset.all().order_by("id")
             return results
 
     def get_context_data(self, **kwargs):
