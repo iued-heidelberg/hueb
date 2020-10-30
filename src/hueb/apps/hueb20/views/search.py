@@ -1,9 +1,15 @@
+import logging
+
+import beeline
 from django import forms
 from django.core.exceptions import ValidationError
 from django.db.models import Q
 from django.forms.formsets import BaseFormSet, formset_factory
 from django.views.generic import ListView
 from hueb.apps.hueb20.models.document import Document
+
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
 
 
 class SearchSelectWidget(forms.widgets.Select):
@@ -58,32 +64,37 @@ class BaseSearchFormSet(BaseFormSet):
     )
 
     def get_query_object(self):
-        include_q_objects = Q()
-        exclude_q_objects = Q()
+        with beeline.tracer(name="building_search_query"):
 
-        for form in self:
+            include_q_objects = Q()
+            exclude_q_objects = Q()
+
+            logger.debug(self.cleaned_data)
+            logger.debug(self.cleaned_data)
+            beeline.add_context_field("form_data", self.cleaned_data)
+
+            for form in self:
 
                 q = Document.get_q_object(form.cleaned_data)
-            operator = form.cleaned_data["operator"]
+                operator = form.cleaned_data["operator"]
 
-            if operator == "and":
-                include_q_objects &= q
-            elif operator == "or":
-                include_q_objects |= q
-            elif operator == "not":
-                exclude_q_objects |= q
+                if operator == "and":
+                    include_q_objects &= q
+                elif operator == "or":
+                    include_q_objects |= q
+                elif operator == "not":
+                    exclude_q_objects |= q
 
-        print(include_q_objects)
-        print(exclude_q_objects)
+            logger.debug(include_q_objects)
+            logger.debug(exclude_q_objects)
+            beeline.add_context_field("include_q_objects", include_q_objects)
+            beeline.add_context_field("exclude_q_objects", exclude_q_objects)
 
-        print(
-            Document.objects.filter(include_q_objects)
-            .exclude(exclude_q_objects)
-            .count()
             queryset = self.base_queryset.filter(include_q_objects).exclude(
                 exclude_q_objects
-        )
+            )
 
+            logger.debug(queryset.query)
 
             return queryset
 
