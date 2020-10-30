@@ -63,11 +63,7 @@ class BaseSearchFormSet(BaseFormSet):
 
         for form in self:
 
-            q = Document.get_q_object(
-                form.cleaned_data["attribute"],
-                form.cleaned_data["search_text"],
-                form.cleaned_data["search_year"],
-            )
+                q = Document.get_q_object(form.cleaned_data)
             operator = form.cleaned_data["operator"]
 
             if operator == "and":

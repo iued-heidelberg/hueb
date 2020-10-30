@@ -73,21 +73,27 @@ class Document(models.Model):
     )
 
     @classmethod
-    def get_q_object(cls, attribute, search_text, search_year):
-        if attribute == "title":
-            return Document.q_object_by_title(search_text)
-        elif attribute == "author":
-            return Document.q_object_by_author(search_text)
+    def get_q_object(cls, query):
+        if query["attribute"] == "title":
+            return Document.q_object_by_title(query["search_text"])
+        elif query["attribute"] == "author":
+            return Document.q_object_by_author(query["search_text"])
+        elif query["attribute"] == "ddc":
+            return Document.q_object_by_ddc(query["search_ddc"])
         else:
             return Q()
 
     @classmethod
-    def q_object_by_title(cls, search_text):
-        return Q(title__icontains=search_text)
+    def q_object_by_title(cls, value):
+        return Q(title__icontains=value)
 
     @classmethod
-    def q_object_by_author(cls, search_text):
-        return Q(written_by__name__icontains=search_text)
+    def q_object_by_author(cls, value):
+        return Q(written_by__name__icontains=value)
+
+    @classmethod
+    def q_object_by_ddc(cls, value):
+        return Q(ddc__ddc_number__contains=value)
 
 
 class DocumentRelationship(models.Model):
