@@ -32,11 +32,21 @@ class SearchForm(forms.Form):
             }
         ),
     )
-    search_year = forms.IntegerField(
+    search_year_from = forms.IntegerField(
         required=False,
         widget=forms.NumberInput(
             attrs={
                 "class": "flex p-2 mx-2 my-2 font-medium placeholder-black placeholder-opacity-25 bg-transparent border-b-4 border-black rounded-none appearance-none lg:placeholder-opacity-25 lg:border-sand-bg lg:placeholder-sand-bg",
+                "placeholder": "von",
+            }
+        ),
+    )
+    search_year_to = forms.IntegerField(
+        required=False,
+        widget=forms.NumberInput(
+            attrs={
+                "class": "flex p-2 mx-2 my-2 font-medium placeholder-black placeholder-opacity-25 bg-transparent border-b-4 border-black rounded-none appearance-none lg:placeholder-opacity-25 lg:border-sand-bg lg:placeholder-sand-bg",
+                "placeholder": "bis",
             }
         ),
     )
@@ -45,6 +55,7 @@ class SearchForm(forms.Form):
         widget=forms.NumberInput(
             attrs={
                 "class": "flex p-2 mx-2 my-2 font-medium placeholder-black placeholder-opacity-25 bg-transparent border-b-4 border-black rounded-none appearance-none lg:placeholder-opacity-25 lg:border-sand-bg lg:placeholder-sand-bg",
+                "placeholder": "DDC Nummer",
             }
         ),
     )
@@ -122,7 +133,7 @@ class FormsetSearch(ListView):
 
             return queryset.all().order_by("id")
         except ValidationError:
-            results = self.base_queryset.all().order_by("id")
+            results = BaseSearchFormSet.base_queryset.all().order_by("id")
             return results
 
     def get_context_data(self, **kwargs):

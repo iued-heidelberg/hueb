@@ -3,6 +3,7 @@ from django.contrib.postgres.fields import IntegerRangeField
 from django.db import models
 from django.db.models import Q
 from hueb.apps.hueb20.models import HUEB20, HUEB_APPLICATIONS
+from psycopg2.extras import NumericRange
 from simple_history.models import HistoricalRecords
 
 from .archive import Archive
@@ -80,6 +81,10 @@ class Document(models.Model):
             return Document.q_object_by_author(query["search_text"])
         elif query["attribute"] == "ddc":
             return Document.q_object_by_ddc(query["search_ddc"])
+        elif query["attribute"] == "year":
+            return Document.q_object_by_written_in(
+                query["search_year_from"], query["search_year_to"]
+            )
         else:
             return Q()
 
@@ -94,6 +99,10 @@ class Document(models.Model):
     @classmethod
     def q_object_by_ddc(cls, value):
         return Q(ddc__ddc_number__contains=value)
+
+    @classmethod
+    def q_object_by_written_in(cls, lower, upper):
+        return Q(written_in__overlap=NumericRange(lower, upper))
 
 
 class DocumentRelationship(models.Model):

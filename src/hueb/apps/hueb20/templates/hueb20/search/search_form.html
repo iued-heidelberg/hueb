@@ -1,5 +1,5 @@
 
-<div x-data="searchForm()" @click="update()" x-init="() => {init()}" class="flex justify-end">
+<div x-data="searchForm()" @click="update()" x-init="() => {init()}" class="flex flex-no-wrap justify-end">
 
     <div x-ref="operator">
         {{ form.operator.errors }}
@@ -17,8 +17,10 @@
     </div>
 
     <div x-ref="search_year" x-cloak x-bind:hidden="!showYear()">
-        {{ form.search_year.errors }}
-        {{ form.search_year }}
+        {{ form.search_year_from.errors }}
+        {{ form.search_year_from }}
+        {{ form.search_year_to.errors }}
+        {{ form.search_year_to }}
     </div>
 
     <div x-ref="search_ddc" x-cloak x-bind:hidden="!showDDC()">
