@@ -396,6 +396,7 @@ class DocumentAdmin(SimpleHistoryAdmin):
         "written_in",
         "ddc",
     )
+    formfield_overrides = {IntegerRangeField: {"widget": TimeRangeWidget}}
     inlines = [
         DocumentAuthorInline,
         DocumentPublisherInline,
