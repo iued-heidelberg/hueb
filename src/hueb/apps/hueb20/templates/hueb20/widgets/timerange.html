@@ -13,10 +13,11 @@
 
   {% endwith %}
 
-  <div x-bind:hidden="select_value !== 'exact' " >
+  <div style="padding-left:170px" x-bind:hidden="select_value !== 'exact' " >
+
     {% include widget.subwidgets.1.template_name with widget=widget.subwidgets.1 %}
   </div>
-  <div x-bind:hidden="select_value !== 'range' " >
+  <div style="padding-left:170px" x-bind:hidden="select_value !== 'range' " >
     {% include widget.subwidgets.2.template_name with widget=widget.subwidgets.2 %}
   </div>
 
