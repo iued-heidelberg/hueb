@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.postgres.fields import IntegerRangeField
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 from hueb.apps.hueb_legacy_latein import models as Legacy
@@ -13,6 +14,7 @@ from .models.document import Document
 from .models.filing import Filing
 from .models.language import Language
 from .models.person import Person
+from .widgets.timerange import TimeRangeWidget
 
 
 class LegacyAuthorNew(admin.TabularInline):
@@ -53,6 +55,7 @@ class PersonAdmin(SimpleHistoryAdmin):
     list_display = ("id", "name", "alias", "is_alias", "lifetime_start", "lifetime_end")
     search_fields = ("name", "id", "lifetime_start", "lifetime_end")
     autocomplete_fields = ("alias",)
+    formfield_overrides = {IntegerRangeField: {"widget": TimeRangeWidget}}
     fieldsets = (
         (
             "Person Information",
