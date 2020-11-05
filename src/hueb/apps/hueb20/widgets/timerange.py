@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 class TimeRangeWidget(MultiWidget):
-    # template_name = "hueb20/widgets/timerange.html"
+    template_name = "hueb20/widgets/timerange.html"
 
     choices = (
         ("exact", _("Exakt")),
