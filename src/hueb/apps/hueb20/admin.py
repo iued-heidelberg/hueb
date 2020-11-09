@@ -54,12 +54,15 @@ def timerange_adaption(timerange):
         if timerange.isempty:
             return " - "
         else:
-            try:
+            if (timerange.lower is not None) and (timerange.upper is not None):
                 if (timerange.lower + 1) == timerange.upper:
                     return str(timerange.lower)
-            except Exception:
+                else:
+                    return str(timerange.lower) + " - " + str(timerange.upper)
+
+            else:
                 if timerange.lower:
-                    lower = timerange.lower
+                    lower = str(timerange.lower)
                 else:
                     lower = "?"
                 if timerange.upper:
