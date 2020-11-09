@@ -1,6 +1,6 @@
 <div x-data="searchFormSet()" x-init="() => {init()}" class="sticky top-0 overflow-y-scroll">
 
-  <form method="get"  action="{% url 'formset_search' %}">
+  <form method="get"  action="{% url 'search' %}">
 
     <div x-ref="managementForm">
       {{ formset.management_form }}
