@@ -52,36 +52,46 @@ class TimeRangeWidget(MultiWidget):
         if value and isinstance(value, NumericRange):
             if not value.isempty:
                 lower = value.lower
-        try:
+                try:
                     upper = value.upper - 1
                 except TypeError:
-            upper = None
+                    upper = None
 
                 if lower == upper:
                     return ["exact", lower, NumericRange(None, None)]
-            else:
+                else:
                     return ["range", None, NumericRange(lower, upper)]
 
         return ["exact", None, NumericRange(None, None)]
 
     def value_from_datadict(self, data, files, name):
+        """Turns form values into an array for the NumericRange Field to use   """
         choice, exact_value, range_value = super().value_from_datadict(
             data, files, name
         )
-        if choice == "exact":
-            if exact_value:
-                return [int(exact_value), int(exact_value) + 1]
-            else:
-                return [None, None]
-        elif choice == "range":
-            if range_value[0]:
-                lower = int(range_value[0])
-            else:
-                lower = None
+        self._value_from_datadict(choice, exact_value, range_value)
 
-            if range_value[1]:
-                upper = int(range_value[1]) + 1
-            else:
-                upper = None
+    def _value_from_datadict(self, choice, exact_value, range_value):
+        lower, upper = None, None
+        if choice:
+            if choice == "exact":
+                try:
+                    lower = int(exact_value)
+                    upper = int(exact_value) + 1
+                except (ValueError, TypeError):
+                    pass
 
-            return [lower, upper]
+            elif choice == "range":
+                try:
+                    lower = int(range_value[0])
+                except (ValueError, TypeError):
+                    pass
+
+                try:
+                    upper = int(range_value[1]) + 1
+                except (ValueError, TypeError):
+                    pass
+
+                return [lower, upper]
+
+        return [lower, upper]

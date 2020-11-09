@@ -34,3 +34,45 @@ def test_decompress(test_input, expected):
     output = tr.decompress(test_input)
     assert output == expected
 
+
+@pytest.mark.parametrize(
+    "test_input,expected",
+    [
+        # an empty value should return an empty object with exact selected
+        (["exact", None, [None, None]], [None, None]),
+        (["exact", "", [None, None]], [None, None]),
+        # an exact value should be extendend with an upper range with the delta of one to compensate for the "[]" to "[)" conversion
+        (["exact", 1, [None, None]], [1, 2]),
+        (["exact", -2, [None, None]], [-2, -1]),
+        (["exact", "1", [None, None]], [1, 2]),
+        (["exact", "-2", [None, None]], [-2, -1]),
+        # a range value should be extendend with an upper range with the delta of one to compensate for the "[]" to "[)" conversion
+        (["range", None, ["1", "2"]], [1, 3]),
+        (["range", None, ["1", "3"]], [1, 4]),
+        (["range", None, ["1", "4"]], [1, 5]),
+        (["range", None, [1, 3]], [1, 4]),
+        (["range", None, [1, 4]], [1, 5]),
+        # an upwards open ended range should return as such without modifiaction
+        (["range", None, ["1", None]], [1, None]),
+        (["range", None, ["2", None]], [2, None]),
+        (["range", None, [3, None]], [3, None]),
+        (["range", None, [4, None]], [4, None]),
+        (["range", None, ["1", ""]], [1, None]),
+        (["range", None, ["2", ""]], [2, None]),
+        (["range", None, [3, ""]], [3, None]),
+        (["range", None, [4, ""]], [4, None]),
+        # an downwards open ended range should return as such but the upper end should be reduced by one to convert a "[)" range into a "[]" for more intuitive editing
+        (["range", None, ["", 0]], [None, 1]),
+        (["range", None, ["", 1]], [None, 2]),
+        (["range", None, [None, "2"]], [None, 3]),
+        (["range", None, [None, "3"]], [None, 4]),
+        (["range", None, ["", 0]], [None, 1]),
+        (["range", None, ["", 1]], [None, 2]),
+        (["range", None, [None, "2"]], [None, 3]),
+        (["range", None, [None, "3"]], [None, 4]),
+    ],
+)
+def test_value_from_datadict(test_input, expected):
+    tr = TimeRangeWidget()
+    output = tr._value_from_datadict(test_input[0], test_input[1], test_input[2])
+    assert output == expected
