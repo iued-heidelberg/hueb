@@ -35,7 +35,12 @@ class TimeRangeWidget(MultiWidget):
 
     def decompress(self, value):
         try:
-            if (int(value.lower) + 1) == int(value.upper):
+            upper = int(value.upper) - 1
+        except Exception:
+            upper = None
+
+        try:
+            if (int(value.lower)) == upper:
                 return [
                     "exact",
                     value.lower,
@@ -45,12 +50,16 @@ class TimeRangeWidget(MultiWidget):
                 return [
                     "range",
                     None,
-                    NumericRange(value.lower, value.upper - 1),
+                    NumericRange(value.lower, upper),
                 ]
         except TypeError:
             pass
 
-        return ["exact", None, None]
+        return [
+            "range",
+            None,
+            NumericRange(value.lower, upper),
+        ]
 
     def value_from_datadict(self, data, files, name):
         choice, exact_value, range_value = super().value_from_datadict(
