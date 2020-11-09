@@ -1,5 +1,9 @@
 import pytest
-from hueb.apps.hueb20.models.utils import close_range, open_range
+from hueb.apps.hueb20.models.utils import (
+    close_range,
+    open_range,
+    timerange_serialization,
+)
 from psycopg2.extras import NumericRange
 
 
@@ -39,3 +43,4 @@ def test_close_range(test_input, expected):
 def test_open_range(test_input, expected):
     output = open_range(test_input)
     assert output == expected
+
