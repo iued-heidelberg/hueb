@@ -24,3 +24,34 @@ def open_range(range_value):
             else:
                 pass
     return range_value
+
+
+def timerange_serialization(timerange):
+    """Serializes a NumericRange to handle all cases
+
+    Args:
+        timerange ([type]): [description]
+
+    Returns:
+        [type]: [description]
+    """
+    if timerange is not None:
+        if not timerange.isempty:
+            try:
+                if timerange.lower == (timerange.upper - 1):
+                    return str(timerange.lower)
+            except (ValueError, TypeError):
+                pass
+
+            if timerange.lower is not None:
+                lower = str(timerange.lower)
+            else:
+                lower = "?"
+            if timerange.upper is not None:
+                upper = str(timerange.upper - 1)
+            else:
+                upper = "?"
+
+            return lower + " - " + upper
+
+    return "-"

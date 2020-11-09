@@ -44,3 +44,34 @@ def test_open_range(test_input, expected):
     output = open_range(test_input)
     assert output == expected
 
+
+@pytest.mark.parametrize(
+    "timerange,expected",
+    [
+        # delta 1 range, return only single value
+        (NumericRange(2, 3), "2"),
+        (NumericRange(3, 4), "3"),
+        (NumericRange(4, 5), "4"),
+        # default range, reduce upper end by one
+        (NumericRange(1, 3), "1 - 2"),
+        (NumericRange(1, 4), "1 - 3"),
+        (NumericRange(1, 5), "1 - 4"),
+        # upper end unknown
+        (NumericRange(1, None), "1 - ?"),
+        (NumericRange(1, None), "1 - ?"),
+        (NumericRange(1, None), "1 - ?"),
+        # lower end unknown
+        (NumericRange(None, 3), "? - 2"),
+        (NumericRange(None, 4), "? - 3"),
+        (NumericRange(None, 5), "? - 4"),
+        # unbound range
+        (NumericRange(None, None), "? - ?"),
+        # empty range
+        (NumericRange(empty=True), "-"),
+        # None
+        (None, "-"),
+    ],
+)
+def test_timerange_serialization(timerange, expected):
+    output = timerange_serialization(timerange)
+    assert output == expected
