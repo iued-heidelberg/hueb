@@ -57,6 +57,19 @@ class TimeRangeWidget(MultiWidget):
             data, files, name
         )
         if choice == "exact":
-            return [int(exact_value), int(exact_value) + 1]
+            if exact_value:
+                return [int(exact_value), int(exact_value) + 1]
+            else:
+                return [None, None]
         elif choice == "range":
-            return [int(range_value[0]), int(range_value[1]) + 1]
+            if range_value[0]:
+                lower = int(range_value[0])
+            else:
+                lower = None
+
+            if range_value[1]:
+                upper = int(range_value[1]) + 1
+            else:
+                upper = None
+
+            return [lower, upper]
