@@ -6,12 +6,12 @@
 
     <div class="justify-end pt-8 text-5xl border-black lg:min-h-full lg:text-sand-bg lg:flex-shrink-0 lg:p-8 lg:text-base lg:bg-gray-bg lg:border-sand-bg">
 
-        {% include "hueb20/search/simple_search_form.html" %}
+      {% include "hueb20/search/search_formset.html" %}
 
     </div>
 
 
-    <div class="flex flex-col justify-between pt-8">
+    <div class="flex flex-col pt-8">
       <h1 class="mx-8 mt-32 text-4xl font-light lg:text-2xl md:mt-0">
         Ergebnisse
       </h1>
@@ -41,9 +41,6 @@
         {% include "hueb20/includables/pagination.html" %}
       </div>
     </div>
-
-
-
 
   </div>
 {% endblock %}

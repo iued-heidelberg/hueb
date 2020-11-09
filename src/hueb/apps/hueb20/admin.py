@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.postgres.fields import IntegerRangeField
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 from hueb.apps.hueb_legacy_latein import models as Legacy
@@ -13,6 +14,7 @@ from .models.document import Document
 from .models.filing import Filing
 from .models.language import Language
 from .models.person import Person
+from .widgets.timerange import TimeRangeWidget
 
 
 class LegacyAuthorNew(admin.TabularInline):
@@ -47,12 +49,28 @@ class CommentAdmin(SimpleHistoryAdmin):
     verbose_name_plural = verbose_name + "s"
 
 
+def timerange_adaption(timerange):
+    if (timerange.lower + 1) == timerange.upper:
+        return str(timerange.lower)
+    else:
+        return str(timerange.lower) + " - " + str(timerange.upper - 1)
+
+
 @admin.register(Person)
 class PersonAdmin(SimpleHistoryAdmin):
+
     readonly_fields = ("app", "author_link", "translator_link")
-    list_display = ("id", "name", "alias", "is_alias", "lifetime_start", "lifetime_end")
+    list_display = (
+        "id",
+        "name",
+        "alias",
+        "is_alias",
+        "adapt_person_lifetime_start_list_view",
+        "adapt_person_lifetime_end_list_view",
+    )
     search_fields = ("name", "id", "lifetime_start", "lifetime_end")
     autocomplete_fields = ("alias",)
+    formfield_overrides = {IntegerRangeField: {"widget": TimeRangeWidget}}
     fieldsets = (
         (
             "Person Information",
@@ -73,6 +91,12 @@ class PersonAdmin(SimpleHistoryAdmin):
         ),
     )
     inlines = [CommentInline]
+
+    def adapt_person_lifetime_start_list_view(self, obj):
+        return timerange_adaption(obj.lifetime_start)
+
+    def adapt_person_lifetime_end_list_view(self, obj):
+        return timerange_adaption(obj.lifetime.end)
 
     def author_link(self, obj):
         url = reverse(
@@ -374,6 +398,9 @@ class OriginalRelationshipInline(admin.TabularInline):
 
 @admin.register(Document)
 class DocumentAdmin(SimpleHistoryAdmin):
+    def adapt_document_written_in_list_view(self, obj):
+        return timerange_adaption(obj.written_in)
+
     autocomplete_fields = ("ddc", "cultural_circle", "language")
     readonly_fields = (
         "app",
@@ -390,9 +417,10 @@ class DocumentAdmin(SimpleHistoryAdmin):
         "published_location",
         "edition",
         "language",
-        "written_in",
+        "adapt_document_written_in_list_view",
         "ddc",
     )
+    formfield_overrides = {IntegerRangeField: {"widget": TimeRangeWidget}}
     inlines = [
         DocumentAuthorInline,
         DocumentPublisherInline,

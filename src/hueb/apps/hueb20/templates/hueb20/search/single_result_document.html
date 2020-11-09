@@ -17,16 +17,21 @@
             unbekannt
           {% endif %}
 
-          {% if original.written_in.lower == None %}
-            ...
-          {% else %}
+          {% if original.written_in.lower|add:"+1" == original.written_in.upper %}
             {{original.written_in.lower}}
-          {% endif %}
-
-          {% if original.written_in.upper == None %}
-
           {% else %}
-            - {{original.written_in.upper}}
+
+            {% if original.written_in.lower == None %}
+              ...
+            {% else %}
+              {{original.written_in.lower}}
+            {% endif %}
+
+            {% if original.written_in.upper == None %}
+
+            {% else %}
+              - {{original.written_in.upper|add:"-1"}}
+            {% endif %}
           {% endif %}
 
         </p>
@@ -83,16 +88,21 @@
             unbekannt
           {% endif %}
 
-          {% if translation.written_in.lower == None %}
-            ...
-          {% else %}
+          {% if translation.written_in.lower|add:"+1" == translation.written_in.upper %}
             {{translation.written_in.lower}}
-          {% endif %}
-
-          {% if translation.written_in.upper == None %}
-
           {% else %}
-            - {{translation.written_in.upper}}
+
+            {% if translation.written_in.lower == None %}
+              ...
+            {% else %}
+              {{translation.written_in.lower}}
+            {% endif %}
+
+            {% if translation.written_in.upper == None %}
+
+            {% else %}
+              - {{translation.written_in.upper|add:"-1"}}
+            {% endif %}
           {% endif %}
 
         </p>

@@ -25,6 +25,22 @@ ENV = os.environ.get("ENV", None)
 
 LOGIN_REDIRECT_URL = "/admin"
 
+if os.getenv("HUEB_ENV") == "development":
+    LOGGING = {
+        "version": 1,
+        "disable_existing_loggers": False,
+        "formatters": {
+            "console": {
+                # exact format is not important, this is the minimum information
+                "format": "%(levelname)s %(asctime)s %(name)-12s  %(message)s",
+            },
+        },
+        "handlers": {
+            "console": {"class": "logging.StreamHandler", "formatter": "console"},
+        },
+        "root": {"handlers": ["console"], "level": "DEBUG",},
+    }
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
