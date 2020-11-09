@@ -29,7 +29,6 @@ class TimeRangeWidget(MultiWidget):
         The Integer Rangefield that is used to store the Timerange returns an list containing the lower and upper values of the range. This causes the render function of MultiWidget to short curcuit and not call decompress before rendering the widget out.
         We can avoid this 'if not isinstance(value, list):'-check in the Multiwidget-Check by reinitializing value as a Range-Object before render() is called
         """
-
         value = NumericRange(value[0], value[1])
         context = super().get_context(name, value, attrs)
         return context
@@ -46,7 +45,7 @@ class TimeRangeWidget(MultiWidget):
                 return [
                     "range",
                     None,
-                    NumericRange(value.lower, value.upper),
+                    NumericRange(value.lower, value.upper - 1),
                 ]
         except TypeError:
             pass
@@ -60,4 +59,4 @@ class TimeRangeWidget(MultiWidget):
         if choice == "exact":
             return [int(exact_value), int(exact_value) + 1]
         elif choice == "range":
-            return [int(range_value[0]), int(range_value[1])]
+            return [int(range_value[0]), int(range_value[1]) + 1]
