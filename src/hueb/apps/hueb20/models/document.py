@@ -70,7 +70,7 @@ class Document(models.Model):
         ("title", "Titel"),
         ("author", "Autor"),
         ("ddc", "DDC"),
-        ("year", "Veröffentlicht"),
+        ("year", "Jahr"),
     )
 
     @classmethod

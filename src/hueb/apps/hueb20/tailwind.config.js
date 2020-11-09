@@ -1,6 +1,7 @@
 module.exports = {
   purge: [
     './templates/hueb20/**/*.html',
+    './views/**/*.py',
   ],
   theme: {
     extend: {
