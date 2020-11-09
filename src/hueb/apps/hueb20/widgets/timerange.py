@@ -9,6 +9,10 @@ logger = logging.getLogger(__name__)
 
 
 class TimeRangeWidget(MultiWidget):
+    """Widget for editing NumericRanges used as YearRanges
+
+    """
+
     template_name = "hueb20/widgets/timerange.html"
 
     choices = (
@@ -34,32 +38,31 @@ class TimeRangeWidget(MultiWidget):
         return context
 
     def decompress(self, value):
+        """
+        Decompresses the timerange stored in the database into the array of values needed for the timerange widget.
+
+        It reduces the upper end of the passed numeric range by 1 to convert the range from upper end excluded ("[)") into upper end included ("[]").
+
+        Args:
+            value (NumericRange): NumericRange value out of the database
+
+        Returns:
+            [str, Integer, NumericRange]: list of the three values needed in the widget
+        """
+        if value and isinstance(value, NumericRange):
+            if not value.isempty:
+                lower = value.lower
         try:
-            upper = int(value.upper) - 1
-        except Exception:
+                    upper = value.upper - 1
+                except TypeError:
             upper = None
 
-        try:
-            if (int(value.lower)) == upper:
-                return [
-                    "exact",
-                    value.lower,
-                    NumericRange(None, None, "[)"),
-                ]
+                if lower == upper:
+                    return ["exact", lower, NumericRange(None, None)]
             else:
-                return [
-                    "range",
-                    None,
-                    NumericRange(value.lower, upper),
-                ]
-        except TypeError:
-            pass
+                    return ["range", None, NumericRange(lower, upper)]
 
-        return [
-            "range",
-            None,
-            NumericRange(value.lower, upper),
-        ]
+        return ["exact", None, NumericRange(None, None)]
 
     def value_from_datadict(self, data, files, name):
         choice, exact_value, range_value = super().value_from_datadict(
