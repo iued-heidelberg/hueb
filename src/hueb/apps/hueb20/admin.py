@@ -49,32 +49,6 @@ class CommentAdmin(SimpleHistoryAdmin):
     verbose_name_plural = verbose_name + "s"
 
 
-def timerange_adaption(timerange):
-    if timerange is not None:
-        if timerange.isempty:
-            return " - "
-        else:
-            if (timerange.lower is not None) and (timerange.upper is not None):
-                if (timerange.lower + 1) == timerange.upper:
-                    return str(timerange.lower)
-                else:
-                    return str(timerange.lower) + " - " + str(timerange.upper)
-
-            else:
-                if timerange.lower:
-                    lower = str(timerange.lower)
-                else:
-                    lower = "?"
-                if timerange.upper:
-                    upper = str(timerange.upper)
-                else:
-                    upper = "?"
-
-                return lower + " - " + upper
-
-    return " - "
-
-
 @admin.register(Person)
 class PersonAdmin(SimpleHistoryAdmin):
 
@@ -110,16 +84,6 @@ class PersonAdmin(SimpleHistoryAdmin):
         ),
     )
     inlines = [CommentInline]
-
-    def adapt_person_lifetime_start_list_view(self, obj):
-        return timerange_adaption(obj.lifetime_start)
-
-    adapt_person_lifetime_start_list_view.short_description = "Lifetime Start"
-
-    def adapt_person_lifetime_end_list_view(self, obj):
-        return timerange_adaption(obj.lifetime_end)
-
-    adapt_person_lifetime_end_list_view.short_description = "Lifetime End"
 
     def author_link(self, obj):
         url = reverse(
@@ -421,10 +385,6 @@ class OriginalRelationshipInline(admin.TabularInline):
 
 @admin.register(Document)
 class DocumentAdmin(SimpleHistoryAdmin):
-    def adapt_document_written_in_list_view(self, obj):
-        return timerange_adaption(obj.written_in)
-
-    adapt_document_written_in_list_view.short_description = "Written in"
 
     autocomplete_fields = ("ddc", "cultural_circle", "language")
     readonly_fields = (

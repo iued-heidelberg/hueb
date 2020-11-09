@@ -3,6 +3,7 @@ from django.contrib.postgres.fields import IntegerRangeField
 from django.db import models
 from django.template.defaultfilters import escape
 from hueb.apps.hueb20.models import HUEB20, HUEB_APPLICATIONS
+from hueb.apps.hueb20.models.utils import timerange_serialization
 from simple_history.models import HistoricalRecords
 
 
@@ -38,3 +39,12 @@ class Person(models.Model):
             return True
         else:
             return False
+
+    def adapt_person_lifetime_start_list_view(self):
+        return timerange_serialization(self.lifetime_start)
+
+    def adapt_person_lifetime_end_list_view(self):
+        return timerange_serialization(self.lifetime_end)
+
+    adapt_person_lifetime_end_list_view.short_description = "Lifetime End"
+    adapt_person_lifetime_start_list_view.short_description = "Lifetime Start"

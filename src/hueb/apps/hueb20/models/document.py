@@ -3,6 +3,7 @@ from django.contrib.postgres.fields import IntegerRangeField
 from django.db import models
 from django.db.models import Q
 from hueb.apps.hueb20.models import HUEB20, HUEB_APPLICATIONS
+from hueb.apps.hueb20.models.utils import timerange_serialization
 from psycopg2.extras import NumericRange
 from simple_history.models import HistoricalRecords
 
@@ -72,6 +73,11 @@ class Document(models.Model):
         ("ddc", "DDC"),
         ("year", "Jahr"),
     )
+
+    def adapt_document_written_in_list_view(self):
+        return timerange_serialization(self.written_in)
+
+    adapt_document_written_in_list_view.short_description = "Written in"
 
     @classmethod
     def get_q_object(cls, query):
