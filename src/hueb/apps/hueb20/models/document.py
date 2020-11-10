@@ -82,6 +82,16 @@ class Document(models.Model):
 
     adapt_document_written_in_list_view.short_description = "Written in"
 
+    def get_archives_count(self):
+        return self.located_in.count()
+
+    get_archives_count.short_description = "Anzahl Archive"
+
+    def get_archives(self):
+        return "\n".join([archive.name for archive in self.located_in.all()])
+
+    get_archives.short_description = "Archive"
+
     @classmethod
     def get_q_object(cls, query):
         if query["attribute"] == "title":

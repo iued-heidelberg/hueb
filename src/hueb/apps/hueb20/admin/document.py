@@ -74,6 +74,8 @@ class DocumentAdmin(SimpleHistoryAdmin):
         "language",
         "adapt_document_written_in_list_view",
         "ddc",
+        "get_archives_count",
+        "get_archives",
     )
     formfield_overrides = {IntegerRangeField: {"widget": TimeRangeWidget}}
     inlines = [
