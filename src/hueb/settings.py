@@ -22,6 +22,8 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "hueb.settings")
 
 LOGIN_REDIRECT_URL = "/admin"
 
+DEBUG = False
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -98,6 +100,7 @@ if ENV == "GITHUB_WORKFLOW":
     }
 else:
     # SECURITY WARNING: keep the secret key used in production secret!
+    DEBUG = False
     SECRET_KEY = os.getenv("HUEB_SECRET_KEY")
     DATABASES = {
         "default": {
@@ -109,6 +112,7 @@ else:
             "PORT": os.getenv("HUEB_DATABASE_PORT"),
         }
     }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -165,6 +169,7 @@ if os.getenv("HUEB_ENV") == "development":
         "root": {"handlers": ["console"], "level": "DEBUG",},
     }
 else:
+    DEBUG = False
     if os.getenv("HUEB_SENTRY_INACTIVE") is None:
         sentry_sdk.init(
             dsn=os.getenv("HUEB_SENTRY_API_KEY"),
