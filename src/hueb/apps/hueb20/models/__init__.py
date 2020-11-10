@@ -1,11 +1,10 @@
-LATEIN = "LATEIN"
-LIDOS = "LIDOS "
-LEGACY = "LEGACY"
-HUEB20 = "HUEB20"
-
-HUEB_APPLICATIONS = [
-    (LATEIN, "HÜB Latein Datensatz"),
-    (LIDOS, "HÜB Lidos Datensatz"),
-    (LEGACY, "HÜB Basis Datensatz"),
-    (HUEB20, "HÜB 2020 Datensatz"),
-]
+from .archive import Archive
+from .comment import Comment
+from .country import Country
+from .culturalCircle import CulturalCircle
+from .ddc import DdcGerman
+from .document import Document
+from .filing import Filing
+from .language import Language
+from .person import Person
+from .utils import *

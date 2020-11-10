@@ -1,6 +1,6 @@
 from django.db import models
 from django.template.defaultfilters import escape
-from hueb.apps.hueb20.models import HUEB20, HUEB_APPLICATIONS
+from hueb.apps.hueb20.models.utils import HUEB20, HUEB_APPLICATIONS
 from simple_history.models import HistoricalRecords
 
 from .culturalCircle import CulturalCircle

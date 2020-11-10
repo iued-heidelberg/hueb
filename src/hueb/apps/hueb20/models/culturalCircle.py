@@ -1,6 +1,6 @@
 from django.contrib.postgres.fields import IntegerRangeField
 from django.db import models
-from hueb.apps.hueb20.models import HUEB20, HUEB_APPLICATIONS
+from hueb.apps.hueb20.models.utils import HUEB20, HUEB_APPLICATIONS
 from simple_history.models import HistoricalRecords
 
 

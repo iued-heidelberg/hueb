@@ -2,8 +2,11 @@ import hueb.apps.hueb_legacy_latein.models as Legacy
 from django.contrib.postgres.fields import IntegerRangeField
 from django.db import models
 from django.db.models import Q
-from hueb.apps.hueb20.models import HUEB20, HUEB_APPLICATIONS
-from hueb.apps.hueb20.models.utils import timerange_serialization
+from hueb.apps.hueb20.models.utils import (
+    HUEB20,
+    HUEB_APPLICATIONS,
+    timerange_serialization,
+)
 from psycopg2.extras import NumericRange
 from simple_history.models import HistoricalRecords
 
