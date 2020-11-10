@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib.postgres.fields import IntegerRangeField
+from django.db.models import Count
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 from hueb.apps.hueb20.models import Document
@@ -127,6 +128,7 @@ class DocumentAdmin(SimpleHistoryAdmin):
         qs = (
             super(DocumentAdmin, self)
             .get_queryset(request)
+            .annotate(archives_count=Count("located_in"))
             .prefetch_related("written_by")
             .prefetch_related("located_in")
             .select_related("language")
@@ -134,6 +136,17 @@ class DocumentAdmin(SimpleHistoryAdmin):
             .select_related("cultural_circle")
         )
         return qs
+
+    def get_archives_count(self, obj):
+        return int(obj.archives_count)
+
+    get_archives_count.admin_order_field = "archives_count"
+    get_archives_count.short_description = "Anzahl Archive"
+
+    def get_archives(self, obj):
+        return "\n".join([archive.name for archive in obj.located_in.all()])
+
+    get_archives.short_description = "Archive"
 
     def origAssign_link(self, obj):
         url = reverse(
