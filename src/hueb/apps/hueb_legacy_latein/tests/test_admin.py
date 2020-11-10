@@ -31,6 +31,7 @@ admin_sites = [
 ]
 
 
+@pytest.mark.slow
 @pytest.mark.django_db
 @pytest.mark.parametrize("site", admin_sites)
 def test_smoke_admin(admin_client, site):
@@ -43,6 +44,7 @@ def test_smoke_admin(admin_client, site):
     assert response.status_code == 200
 
 
+@pytest.mark.slow
 @pytest.mark.django_db
 @pytest.mark.parametrize("site", admin_sites)
 def test_smoke_admin_search(admin_client, site):
