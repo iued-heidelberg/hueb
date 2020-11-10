@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 from django.contrib import admin
 from django.contrib.postgres.fields import IntegerRangeField
 from django.db.models import Count
@@ -56,6 +58,8 @@ class OriginalRelationshipInline(admin.TabularInline):
 
 @admin.register(Document)
 class DocumentAdmin(SimpleHistoryAdmin):
+
+    actions = ["duplicate"]
 
     autocomplete_fields = ("ddc", "cultural_circle", "language")
     readonly_fields = (
@@ -216,3 +220,24 @@ class DocumentAdmin(SimpleHistoryAdmin):
         return mark_safe(link)
 
     translationTranslator_link.short_description = "Translator"
+
+    def duplicate(self, request, queryset):
+        documents = queryset.all()
+        for document in documents:
+            new_document = deepcopy(document)
+            new_document.id = None
+            new_document.save()
+            for written_by in document.written_by.all():
+                new_document.written_by.add(written_by)
+            for publisher in document.publishers.all():
+                new_document.publishers.add(publisher)
+            for translations in document.translations.all():
+                new_document.translations.add(translations)
+            for filing in document.filing_set.all():
+                new_filing = deepcopy(filing)
+                new_filing.id = None
+                new_filing.save()
+                new_filing.document = new_document
+                new_filing.archive = filing.archive
+                new_filing.save()
+            new_document.save()
