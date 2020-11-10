@@ -123,6 +123,18 @@ class DocumentAdmin(SimpleHistoryAdmin):
         ),
     )
 
+    def get_queryset(self, request):
+        qs = (
+            super(DocumentAdmin, self)
+            .get_queryset(request)
+            .prefetch_related("written_by")
+            .prefetch_related("located_in")
+            .select_related("language")
+            .select_related("ddc")
+            .select_related("cultural_circle")
+        )
+        return qs
+
     def origAssign_link(self, obj):
         url = reverse(
             "admin:hueb_legacy_latein_origassign_change", args=[obj.origAssign_ref.id],
