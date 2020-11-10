@@ -20,27 +20,7 @@ load_dotenv()
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "hueb.settings")
 
-
-ENV = os.environ.get("ENV", None)
-
 LOGIN_REDIRECT_URL = "/admin"
-
-if os.getenv("HUEB_ENV") == "development":
-    LOGGING = {
-        "version": 1,
-        "disable_existing_loggers": False,
-        "formatters": {
-            "console": {
-                # exact format is not important, this is the minimum information
-                "format": "%(levelname)s %(asctime)s %(name)-12s  %(message)s",
-            },
-        },
-        "handlers": {
-            "console": {"class": "logging.StreamHandler", "formatter": "console"},
-        },
-        "root": {"handlers": ["console"], "level": "DEBUG",},
-    }
-
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -50,15 +30,6 @@ if os.getenv("HUEB_STATIC_DIR") is not None:
     STATIC_ROOT = os.getenv("HUEB_STATIC_DIR")
 else:
     STATIC_ROOT = os.path.join(BASE_DIR, "static")
-
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("HUEB_DEBUG") == "TRUE"
-
-try:
-    ALLOWED_HOSTS = os.getenv("HUEB_ALLOWED_HOSTS").split(",")
-except AttributeError:
-    ALLOWED_HOSTS = "127.0.0.1"
 
 INSTALLED_APPS = [
     "simple_history",
@@ -109,9 +80,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "hueb.wsgi.application"
 
-
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
+ENV = os.environ.get("ENV", None)
 if ENV == "GITHUB_WORKFLOW":
     DEBUG = True
     SECRET_KEY = "TESTING_KEY"
@@ -154,7 +125,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
-
 LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = "UTC"
@@ -172,13 +142,35 @@ INTERNAL_IPS = ["127.0.0.1"]
 
 STATIC_URL = "/static/"
 
+try:
+    ALLOWED_HOSTS = os.getenv("HUEB_ALLOWED_HOSTS").split(",")
+except AttributeError:
+    ALLOWED_HOSTS = "127.0.0.1"
 
-if os.getenv("HUEB_SENTRY_INACTIVE") is None:
-    sentry_sdk.init(
-        dsn=os.getenv("HUEB_SENTRY_API_KEY"),
-        integrations=[DjangoIntegration()],
-        # If you wish to associate users to errors (assuming you are using
-        # django.contrib.auth) you may enable sending PII data.
-        send_default_pii=True,
-        environment=os.getenv("HUEB_ENV"),
-    )
+
+if os.getenv("HUEB_ENV") == "development":
+    DEBUG = True
+    LOGGING = {
+        "version": 1,
+        "disable_existing_loggers": False,
+        "formatters": {
+            "console": {
+                # exact format is not important, this is the minimum information
+                "format": "%(levelname)s %(asctime)s %(name)-12s  %(message)s",
+            },
+        },
+        "handlers": {
+            "console": {"class": "logging.StreamHandler", "formatter": "console"},
+        },
+        "root": {"handlers": ["console"], "level": "DEBUG",},
+    }
+else:
+    if os.getenv("HUEB_SENTRY_INACTIVE") is None:
+        sentry_sdk.init(
+            dsn=os.getenv("HUEB_SENTRY_API_KEY"),
+            integrations=[DjangoIntegration()],
+            # If you wish to associate users to errors (assuming you are using
+            # django.contrib.auth) you may enable sending PII data.
+            send_default_pii=True,
+            environment=os.getenv("HUEB_ENV"),
+        )
