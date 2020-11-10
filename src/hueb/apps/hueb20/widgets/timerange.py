@@ -69,7 +69,7 @@ class TimeRangeWidget(MultiWidget):
         choice, exact_value, range_value = super().value_from_datadict(
             data, files, name
         )
-        self._value_from_datadict(choice, exact_value, range_value)
+        return self._value_from_datadict(choice, exact_value, range_value)
 
     def _value_from_datadict(self, choice, exact_value, range_value):
         lower, upper = None, None
