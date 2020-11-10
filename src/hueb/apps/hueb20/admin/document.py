@@ -70,13 +70,17 @@ class DocumentAdmin(SimpleHistoryAdmin):
         "id",
         "title",
         "subtitle",
+        "get_written_by",
+        "adapt_document_written_in_list_view",
+        "get_publishers",
         "published_location",
         "edition",
         "language",
-        "adapt_document_written_in_list_view",
         "ddc",
+        "cultural_circle",
         "get_archives_count",
         "get_archives",
+        "get_translations",
     )
     formfield_overrides = {IntegerRangeField: {"widget": TimeRangeWidget}}
     inlines = [
@@ -131,6 +135,8 @@ class DocumentAdmin(SimpleHistoryAdmin):
             .annotate(archives_count=Count("located_in"))
             .prefetch_related("written_by")
             .prefetch_related("located_in")
+            .prefetch_related("publishers")
+            .prefetch_related("translations")
             .select_related("language")
             .select_related("ddc")
             .select_related("cultural_circle")
@@ -147,6 +153,21 @@ class DocumentAdmin(SimpleHistoryAdmin):
         return "\n".join([archive.name for archive in obj.located_in.all()])
 
     get_archives.short_description = "Archive"
+
+    def get_publishers(self, obj):
+        return "\n".join([publisher.name for publisher in obj.publishers.all()])
+
+    get_publishers.short_description = "Publisher"
+
+    def get_written_by(self, obj):
+        return "\n".join([writer.name for writer in obj.written_by.all()])
+
+    get_written_by.short_description = "Written by"
+
+    def get_translations(self, obj):
+        return "\n".join([translation.title for translation in obj.translations.all()])
+
+    get_translations.short_description = "Translation"
 
     def origAssign_link(self, obj):
         url = reverse(
