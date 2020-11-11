@@ -7,7 +7,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("hueb20", "0025_load_cultural_circles"),
+        ("hueb20", "0024_auto_20200822_1153"),
     ]
 
     operations = [
