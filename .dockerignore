@@ -1,0 +1,8 @@
+doc/
+env/
+res/
+db_migration/
+deployment/ansible/
+
+**/*.env
+**/.env
