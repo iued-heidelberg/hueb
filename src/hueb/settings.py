@@ -28,8 +28,8 @@ DEBUG = False
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
-if os.getenv("HUEB_STATIC_DIR") is not None:
-    STATIC_ROOT = os.getenv("HUEB_STATIC_DIR")
+if os.getenv("STATIC_DIR") is not None:
+    STATIC_ROOT = os.getenv("STATIC_DIR")
 else:
     STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
@@ -86,7 +86,7 @@ WSGI_APPLICATION = "hueb.wsgi.application"
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 ENV = os.environ.get("ENV", None)
 if ENV == "GITHUB_WORKFLOW":
-    DEBUG = True
+
     SECRET_KEY = "TESTING_KEY"
     DATABASES = {
         "default": {
@@ -98,20 +98,21 @@ if ENV == "GITHUB_WORKFLOW":
             "PORT": "5432",
         }
     }
-else:
-    # SECURITY WARNING: keep the secret key used in production secret!
-    DEBUG = False
-    SECRET_KEY = os.getenv("HUEB_SECRET_KEY")
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": os.getenv("HUEB_DATABASE_NAME"),
-            "USER": os.getenv("HUEB_DATABASE_USER"),
-            "PASSWORD": os.getenv("HUEB_DATABASE_PASSWORD"),
-            "HOST": os.getenv("HUEB_DATABASE_HOST"),
-            "PORT": os.getenv("HUEB_DATABASE_PORT"),
-        }
-    }
+
+
+# SECURITY WARNING: keep the secret key used in production secret!
+DEBUG = os.environ.get("DEBUG", False)
+SECRET_KEY = os.environ["SECRET_KEY"]
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("DB_NAME"),
+        "USER": os.getenv("DB_USER"),
+        "PASSWORD": os.getenv("DB_PASSWORD"),
+        "HOST": os.getenv("DB_HOST"),
+        "PORT": os.getenv("DB_PORT"),
+    },
+}
 
 
 # Password validation
@@ -146,14 +147,14 @@ INTERNAL_IPS = ["127.0.0.1"]
 
 STATIC_URL = "/static/"
 
-try:
-    ALLOWED_HOSTS = os.getenv("HUEB_ALLOWED_HOSTS").split(",")
-except AttributeError:
-    ALLOWED_HOSTS = "127.0.0.1"
+if os.getenv("ALLOWED_HOSTS") is not None:
+    try:
+        ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(",")
+    except AttributeError:
+        ALLOWED_HOSTS = "127.0.0.1"
 
 
-if os.getenv("HUEB_ENV") == "development":
-    DEBUG = True
+if os.getenv("ENV") == "development":
     LOGGING = {
         "version": 1,
         "disable_existing_loggers": False,
@@ -168,14 +169,14 @@ if os.getenv("HUEB_ENV") == "development":
         },
         "root": {"handlers": ["console"], "level": "DEBUG",},
     }
-else:
-    DEBUG = False
-    if os.getenv("HUEB_SENTRY_INACTIVE") is None:
-        sentry_sdk.init(
-            dsn=os.getenv("HUEB_SENTRY_API_KEY"),
-            integrations=[DjangoIntegration()],
-            # If you wish to associate users to errors (assuming you are using
-            # django.contrib.auth) you may enable sending PII data.
-            send_default_pii=True,
-            environment=os.getenv("HUEB_ENV"),
-        )
+
+
+if os.getenv("SENTRY_API_KEY") is not None:
+    sentry_sdk.init(
+        dsn=os.getenv("SENTRY_API_KEY"),
+        integrations=[DjangoIntegration()],
+        # If you wish to associate users to errors (assuming you are using
+        # django.contrib.auth) you may enable sending PII data.
+        send_default_pii=True,
+        environment=os.getenv("ENV"),
+    )
