@@ -34,7 +34,8 @@ class DdcGermanAdmin(SimpleHistoryAdmin):
 
     def ddc_link(self, obj):
         url = reverse(
-            "admin:hueb_legacy_latein_ddcgerman_change", args=[obj.ddc_ref.id],
+            "admin:hueb_legacy_latein_ddcgerman_change",
+            args=[obj.ddc_ref.id],
         )
         link = '<a href="%s">%s</a>' % (url, obj.ddc_ref)
         return mark_safe(link)

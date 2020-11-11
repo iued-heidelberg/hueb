@@ -15,7 +15,10 @@ class Migration(migrations.Migration):
             name="ddcgerman",
             options={"verbose_name": "DDC", "verbose_name_plural": "DDCs"},
         ),
-        migrations.RemoveField(model_name="person", name="lifetime",),
+        migrations.RemoveField(
+            model_name="person",
+            name="lifetime",
+        ),
         migrations.AddField(
             model_name="yearrange",
             name="lifetime",

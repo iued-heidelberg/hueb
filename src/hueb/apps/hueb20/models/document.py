@@ -45,7 +45,9 @@ class Document(models.Model):
         DdcGerman, on_delete=models.DO_NOTHING, blank=True, null=True
     )
     located_in = models.ManyToManyField(
-        Archive, through="Filing", through_fields=("document", "archive"),
+        Archive,
+        through="Filing",
+        through_fields=("document", "archive"),
     )
     app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
     original_ref = models.OneToOneField(

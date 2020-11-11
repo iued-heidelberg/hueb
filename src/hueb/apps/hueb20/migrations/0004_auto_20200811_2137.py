@@ -11,6 +11,8 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RenameField(
-            model_name="document", old_name="location", new_name="located_in",
+            model_name="document",
+            old_name="location",
+            new_name="located_in",
         ),
     ]

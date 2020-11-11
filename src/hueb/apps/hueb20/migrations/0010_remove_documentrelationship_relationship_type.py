@@ -11,6 +11,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RemoveField(
-            model_name="documentrelationship", name="relationship_type",
+            model_name="documentrelationship",
+            name="relationship_type",
         ),
     ]

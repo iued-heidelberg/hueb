@@ -11,37 +11,47 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AlterModelOptions(
-            name="authornew", options={"verbose_name_plural": "Latein Author"},
+            name="authornew",
+            options={"verbose_name_plural": "Latein Author"},
         ),
         migrations.AlterModelOptions(
-            name="country", options={"verbose_name_plural": "Latein Country"},
+            name="country",
+            options={"verbose_name_plural": "Latein Country"},
         ),
         migrations.AlterModelOptions(
-            name="ddcgerman", options={"verbose_name_plural": "Latein DDC"},
+            name="ddcgerman",
+            options={"verbose_name_plural": "Latein DDC"},
         ),
         migrations.AlterModelOptions(
-            name="language", options={"verbose_name_plural": "Latein Language"},
+            name="language",
+            options={"verbose_name_plural": "Latein Language"},
         ),
         migrations.AlterModelOptions(
-            name="locassign", options={"verbose_name_plural": "Latein LocAssign"},
+            name="locassign",
+            options={"verbose_name_plural": "Latein LocAssign"},
         ),
         migrations.AlterModelOptions(
-            name="locationnew", options={"verbose_name_plural": "Latein Location"},
+            name="locationnew",
+            options={"verbose_name_plural": "Latein Location"},
         ),
         migrations.AlterModelOptions(
-            name="origassign", options={"verbose_name_plural": "Latein OrigAssign"},
+            name="origassign",
+            options={"verbose_name_plural": "Latein OrigAssign"},
         ),
         migrations.AlterModelOptions(
-            name="originalnew", options={"verbose_name_plural": "Latein Original"},
+            name="originalnew",
+            options={"verbose_name_plural": "Latein Original"},
         ),
         migrations.AlterModelOptions(
             name="translationnew",
             options={"verbose_name_plural": "Latein Translation"},
         ),
         migrations.AlterModelOptions(
-            name="translatornew", options={"verbose_name_plural": "Latein Translator"},
+            name="translatornew",
+            options={"verbose_name_plural": "Latein Translator"},
         ),
         migrations.AlterModelOptions(
-            name="user", options={"verbose_name_plural": "Latein User"},
+            name="user",
+            options={"verbose_name_plural": "Latein User"},
         ),
     ]

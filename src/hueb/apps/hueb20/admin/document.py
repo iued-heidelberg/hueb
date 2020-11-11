@@ -175,7 +175,8 @@ class DocumentAdmin(SimpleHistoryAdmin):
 
     def origAssign_link(self, obj):
         url = reverse(
-            "admin:hueb_legacy_latein_origassign_change", args=[obj.origAssign_ref.id],
+            "admin:hueb_legacy_latein_origassign_change",
+            args=[obj.origAssign_ref.id],
         )
         link = '<a href="%s">%s</a>' % (url, obj.origAssign_ref)
         return mark_safe(link)
@@ -184,7 +185,8 @@ class DocumentAdmin(SimpleHistoryAdmin):
 
     def original_link(self, obj):
         url = reverse(
-            "admin:hueb_legacy_latein_originalnew_change", args=[obj.original_ref.id],
+            "admin:hueb_legacy_latein_originalnew_change",
+            args=[obj.original_ref.id],
         )
         link = '<a href="%s">%s</a>' % (url, obj.original_ref)
         return mark_safe(link)

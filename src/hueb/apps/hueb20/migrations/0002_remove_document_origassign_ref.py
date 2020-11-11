@@ -10,5 +10,8 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(model_name="document", name="origAssign_ref",),
+        migrations.RemoveField(
+            model_name="document",
+            name="origAssign_ref",
+        ),
     ]

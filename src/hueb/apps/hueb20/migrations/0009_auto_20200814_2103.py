@@ -11,8 +11,14 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(model_name="document", name="translated_from",),
-        migrations.RemoveField(model_name="document", name="translated_to",),
+        migrations.RemoveField(
+            model_name="document",
+            name="translated_from",
+        ),
+        migrations.RemoveField(
+            model_name="document",
+            name="translated_to",
+        ),
         migrations.CreateModel(
             name="DocumentRelationship",
             fields=[

@@ -37,7 +37,10 @@ class Migration(migrations.Migration):
                 ),
             ],
         ),
-        migrations.RemoveField(model_name="document", name="country",),
+        migrations.RemoveField(
+            model_name="document",
+            name="country",
+        ),
         migrations.AddField(
             model_name="document",
             name="cultural_circle",

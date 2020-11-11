@@ -11,8 +11,13 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RenameModel(old_name="Location", new_name="Archive",),
+        migrations.RenameModel(
+            old_name="Location",
+            new_name="Archive",
+        ),
         migrations.RenameField(
-            model_name="filing", old_name="location", new_name="archive",
+            model_name="filing",
+            old_name="location",
+            new_name="archive",
         ),
     ]

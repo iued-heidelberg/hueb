@@ -9,9 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 class TimeRangeWidget(MultiWidget):
-    """Widget for editing NumericRanges used as YearRanges
-
-    """
+    """Widget for editing NumericRanges used as YearRanges"""
 
     template_name = "hueb20/widgets/timerange.html"
 

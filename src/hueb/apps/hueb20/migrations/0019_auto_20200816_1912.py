@@ -11,8 +11,14 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(model_name="yearrange", name="end_uncertainty",),
-        migrations.RemoveField(model_name="yearrange", name="start_uncertainty",),
+        migrations.RemoveField(
+            model_name="yearrange",
+            name="end_uncertainty",
+        ),
+        migrations.RemoveField(
+            model_name="yearrange",
+            name="start_uncertainty",
+        ),
         migrations.AddField(
             model_name="yearrange",
             name="end",

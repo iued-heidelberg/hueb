@@ -49,7 +49,8 @@ class ArchiveAdmin(SimpleHistoryAdmin):
 
     def archive_link(self, obj):
         url = reverse(
-            "admin:hueb_legacy_latein_locationnew_change", args=[obj.location_ref.id],
+            "admin:hueb_legacy_latein_locationnew_change",
+            args=[obj.location_ref.id],
         )
         link = '<a href="%s">%s</a>' % (url, obj.location_ref)
         return mark_safe(link)

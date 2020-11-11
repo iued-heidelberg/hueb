@@ -35,7 +35,8 @@ class CountryAdmin(SimpleHistoryAdmin):
 
     def country_link(self, obj):
         url = reverse(
-            "admin:hueb_legacy_latein_country_change", args=[obj.country_ref.id],
+            "admin:hueb_legacy_latein_country_change",
+            args=[obj.country_ref.id],
         )
         link = '<a href="%s">%s</a>' % (url, obj.country_ref)
         return mark_safe(link)

@@ -24,7 +24,9 @@ class Migration(migrations.Migration):
                 ),
                 ("migration_generated", models.BooleanField()),
             ],
-            options={"db_table": "sueb_latein_author",},
+            options={
+                "db_table": "sueb_latein_author",
+            },
         ),
         migrations.CreateModel(
             name="AuthorNew",
@@ -39,7 +41,9 @@ class Migration(migrations.Migration):
                 ),
                 ("migration_generated", models.BooleanField()),
             ],
-            options={"db_table": "sueb_latein_author_new",},
+            options={
+                "db_table": "sueb_latein_author_new",
+            },
         ),
         migrations.CreateModel(
             name="Country",
@@ -52,7 +56,9 @@ class Migration(migrations.Migration):
                 ),
                 ("migration_generated", models.BooleanField()),
             ],
-            options={"db_table": "sueb_latein_country",},
+            options={
+                "db_table": "sueb_latein_country",
+            },
         ),
         migrations.CreateModel(
             name="DdcGerman",
@@ -66,7 +72,9 @@ class Migration(migrations.Migration):
                 ),
                 ("migration_generated", models.BooleanField()),
             ],
-            options={"db_table": "sueb_latein_ddc_german",},
+            options={
+                "db_table": "sueb_latein_ddc_german",
+            },
         ),
         migrations.CreateModel(
             name="Language",
@@ -79,7 +87,9 @@ class Migration(migrations.Migration):
                 ),
                 ("migration_generated", models.BooleanField()),
             ],
-            options={"db_table": "sueb_latein_language",},
+            options={
+                "db_table": "sueb_latein_language",
+            },
         ),
         migrations.CreateModel(
             name="Location",
@@ -100,7 +110,9 @@ class Migration(migrations.Migration):
                 ),
                 ("migration_generated", models.BooleanField()),
             ],
-            options={"db_table": "sueb_latein_location",},
+            options={
+                "db_table": "sueb_latein_location",
+            },
         ),
         migrations.CreateModel(
             name="LocationNew",
@@ -121,7 +133,9 @@ class Migration(migrations.Migration):
                 ),
                 ("migration_generated", models.BooleanField()),
             ],
-            options={"db_table": "sueb_latein_location_new",},
+            options={
+                "db_table": "sueb_latein_location_new",
+            },
         ),
         migrations.CreateModel(
             name="Original",
@@ -174,7 +188,9 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"db_table": "sueb_latein_original",},
+            options={
+                "db_table": "sueb_latein_original",
+            },
         ),
         migrations.CreateModel(
             name="OriginalNew",
@@ -227,7 +243,9 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"db_table": "sueb_latein_original_new",},
+            options={
+                "db_table": "sueb_latein_original_new",
+            },
         ),
         migrations.CreateModel(
             name="Translation",
@@ -289,7 +307,9 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"db_table": "sueb_latein_translation",},
+            options={
+                "db_table": "sueb_latein_translation",
+            },
         ),
         migrations.CreateModel(
             name="TranslationNew",
@@ -351,7 +371,9 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"db_table": "sueb_latein_translation_new",},
+            options={
+                "db_table": "sueb_latein_translation_new",
+            },
         ),
         migrations.CreateModel(
             name="User",
@@ -362,7 +384,9 @@ class Migration(migrations.Migration):
                 ("passwort", models.CharField(max_length=12)),
                 ("anmerkungen", models.TextField()),
             ],
-            options={"db_table": "sueb_latein_user",},
+            options={
+                "db_table": "sueb_latein_user",
+            },
         ),
         migrations.CreateModel(
             name="TranslatorNew",
@@ -386,7 +410,9 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"db_table": "sueb_latein_translator_new",},
+            options={
+                "db_table": "sueb_latein_translator_new",
+            },
         ),
         migrations.CreateModel(
             name="Translator",
@@ -410,7 +436,9 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"db_table": "sueb_latein_translator",},
+            options={
+                "db_table": "sueb_latein_translator",
+            },
         ),
         migrations.CreateModel(
             name="TranslationTranslatorNew",
@@ -431,7 +459,9 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"db_table": "sueb_latein_translation_translator_new",},
+            options={
+                "db_table": "sueb_latein_translation_translator_new",
+            },
         ),
         migrations.CreateModel(
             name="TranslationTranslator",
@@ -452,7 +482,9 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"db_table": "sueb_latein_translation_translator",},
+            options={
+                "db_table": "sueb_latein_translation_translator",
+            },
         ),
         migrations.CreateModel(
             name="TranslationNewTranslatorNew",
@@ -473,7 +505,9 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"db_table": "sueb_latein_translation_new_translator_new",},
+            options={
+                "db_table": "sueb_latein_translation_new_translator_new",
+            },
         ),
         migrations.CreateModel(
             name="TranslationNewTranslator",
@@ -494,7 +528,9 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"db_table": "sueb_latein_translation_new_translator",},
+            options={
+                "db_table": "sueb_latein_translation_new_translator",
+            },
         ),
         migrations.AddField(
             model_name="translationnew",
@@ -577,7 +613,9 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"db_table": "sueb_latein_original_new_author_new",},
+            options={
+                "db_table": "sueb_latein_original_new_author_new",
+            },
         ),
         migrations.CreateModel(
             name="OriginalNewAuthor",
@@ -598,7 +636,9 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"db_table": "sueb_latein_original_new_author",},
+            options={
+                "db_table": "sueb_latein_original_new_author",
+            },
         ),
         migrations.AddField(
             model_name="originalnew",
@@ -629,7 +669,9 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"db_table": "sueb_latein_original_author_new",},
+            options={
+                "db_table": "sueb_latein_original_author_new",
+            },
         ),
         migrations.CreateModel(
             name="OriginalAuthor",
@@ -650,7 +692,9 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"db_table": "sueb_latein_original_author",},
+            options={
+                "db_table": "sueb_latein_original_author",
+            },
         ),
         migrations.AddField(
             model_name="original",
@@ -748,7 +792,9 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"db_table": "sueb_latein_orig_assign",},
+            options={
+                "db_table": "sueb_latein_orig_assign",
+            },
         ),
         migrations.CreateModel(
             name="LocAssign",
@@ -815,7 +861,9 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"db_table": "sueb_latein_loc_assign",},
+            options={
+                "db_table": "sueb_latein_loc_assign",
+            },
         ),
         migrations.AddField(
             model_name="authornew",

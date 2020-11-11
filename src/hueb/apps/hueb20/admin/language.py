@@ -15,7 +15,10 @@ class LanguageAdmin(SimpleHistoryAdmin):
     search_fields = ("language", "id")
 
     fieldsets = (
-        ("Language Information", {"description": (" "), "fields": ("language",)},),
+        (
+            "Language Information",
+            {"description": (" "), "fields": ("language",)},
+        ),
         (
             "Datasource for reference",
             {
@@ -30,7 +33,8 @@ class LanguageAdmin(SimpleHistoryAdmin):
 
     def language_link(self, obj):
         url = reverse(
-            "admin:hueb_legacy_latein_language_change", args=[obj.language_ref.id],
+            "admin:hueb_legacy_latein_language_change",
+            args=[obj.language_ref.id],
         )
         link = '<a href="%s">%s</a>' % (url, obj.language_ref)
         return mark_safe(link)

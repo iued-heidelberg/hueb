@@ -11,6 +11,8 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RenameField(
-            model_name="document", old_name="authors", new_name="written_by",
+            model_name="document",
+            old_name="authors",
+            new_name="written_by",
         ),
     ]

@@ -33,7 +33,8 @@ class FilingAdmin(SimpleHistoryAdmin):
 
     def locAssign_link(self, obj):
         url = reverse(
-            "admin:hueb_legacy_latein_locassign_change", args=[obj.locAssign_ref.id],
+            "admin:hueb_legacy_latein_locassign_change",
+            args=[obj.locAssign_ref.id],
         )
         link = '<a href="%s">%s</a>' % (url, obj.locAssign_ref)
         return mark_safe(link)

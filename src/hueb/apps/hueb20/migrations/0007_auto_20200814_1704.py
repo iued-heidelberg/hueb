@@ -11,7 +11,10 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(model_name="yearrange", name="person_lifetime",),
+        migrations.RemoveField(
+            model_name="yearrange",
+            name="person_lifetime",
+        ),
         migrations.AddField(
             model_name="person",
             name="lifetime",

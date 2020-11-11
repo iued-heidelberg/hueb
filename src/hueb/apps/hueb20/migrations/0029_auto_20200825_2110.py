@@ -11,8 +11,14 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(model_name="document", name="real_year",),
-        migrations.RemoveField(model_name="document", name="year",),
+        migrations.RemoveField(
+            model_name="document",
+            name="real_year",
+        ),
+        migrations.RemoveField(
+            model_name="document",
+            name="year",
+        ),
         migrations.AddField(
             model_name="culturalcircle",
             name="end",
@@ -48,5 +54,7 @@ class Migration(migrations.Migration):
                 blank=True, null=True
             ),
         ),
-        migrations.DeleteModel(name="YearRange",),
+        migrations.DeleteModel(
+            name="YearRange",
+        ),
     ]

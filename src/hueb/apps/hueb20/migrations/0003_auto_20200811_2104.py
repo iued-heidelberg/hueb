@@ -11,7 +11,10 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(model_name="document", name="archive",),
+        migrations.RemoveField(
+            model_name="document",
+            name="archive",
+        ),
         migrations.AddField(
             model_name="archive",
             name="document",

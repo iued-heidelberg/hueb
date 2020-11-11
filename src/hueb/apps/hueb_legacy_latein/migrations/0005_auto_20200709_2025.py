@@ -11,36 +11,47 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AlterModelOptions(
-            name="author", options={"verbose_name_plural": "OLD Author"},
+            name="author",
+            options={"verbose_name_plural": "OLD Author"},
         ),
         migrations.AlterModelOptions(
-            name="country", options={"verbose_name_plural": "COMMON Country"},
+            name="country",
+            options={"verbose_name_plural": "COMMON Country"},
         ),
         migrations.AlterModelOptions(
-            name="ddcgerman", options={"verbose_name_plural": "COMMON DDC"},
+            name="ddcgerman",
+            options={"verbose_name_plural": "COMMON DDC"},
         ),
         migrations.AlterModelOptions(
-            name="language", options={"verbose_name_plural": "COMMON Language"},
+            name="language",
+            options={"verbose_name_plural": "COMMON Language"},
         ),
         migrations.AlterModelOptions(
-            name="locassign", options={"verbose_name_plural": "COMMON LocAssign"},
+            name="locassign",
+            options={"verbose_name_plural": "COMMON LocAssign"},
         ),
         migrations.AlterModelOptions(
-            name="location", options={"verbose_name_plural": "OLD Location"},
+            name="location",
+            options={"verbose_name_plural": "OLD Location"},
         ),
         migrations.AlterModelOptions(
-            name="origassign", options={"verbose_name_plural": "COMMON OrigAssign"},
+            name="origassign",
+            options={"verbose_name_plural": "COMMON OrigAssign"},
         ),
         migrations.AlterModelOptions(
-            name="original", options={"verbose_name_plural": "OLD Original"},
+            name="original",
+            options={"verbose_name_plural": "OLD Original"},
         ),
         migrations.AlterModelOptions(
-            name="translation", options={"verbose_name_plural": "OLD Translation"},
+            name="translation",
+            options={"verbose_name_plural": "OLD Translation"},
         ),
         migrations.AlterModelOptions(
-            name="translator", options={"verbose_name_plural": "OLD Translator"},
+            name="translator",
+            options={"verbose_name_plural": "OLD Translator"},
         ),
         migrations.AlterModelOptions(
-            name="user", options={"verbose_name_plural": "COMMON User"},
+            name="user",
+            options={"verbose_name_plural": "COMMON User"},
         ),
     ]
