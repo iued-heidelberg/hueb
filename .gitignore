@@ -125,11 +125,11 @@ env.bak/
 venv.bak/
 
 #Ansible
-deployment/production
-deployment/staging
-deployment/secrets*
-deployment/staging_secrets*
-deployment/production_secrets*
+production
+staging
+secrets*.ini
+staging_secrets.ini
+production_secrets.ini
 
 # Spyder project settings
 .spyderproject
