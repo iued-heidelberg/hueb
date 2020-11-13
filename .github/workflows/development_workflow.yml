@@ -107,6 +107,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Get short SHA for tag
+        id: vars
+        shell: bash
+        run: |
+          echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
       - uses: saubermacherag/ansible-playbook-docker-action@v1.3
         with:
           playbookName: "./deployment/deploy.yml"
@@ -130,4 +135,4 @@ jobs:
           apikey: ${{ secrets.HONEYCOMB_API }}
           dataset: hueb_staging
           type: Release Staging
-          message: "Release ${{ github.ref }}"
+          message: "Release ${{ steps.vars.outputs.sha_short }}"

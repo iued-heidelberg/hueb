@@ -118,4 +118,4 @@ jobs:
           apikey: ${{ secrets.HONEYCOMB_API }}
           dataset: hueb_production
           type: Release
-          message: "Relase ${{ steps.vars.outputs.tag }}"
+          message: "Release ${{ steps.vars.outputs.tag }}"
