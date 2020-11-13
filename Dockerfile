@@ -65,6 +65,9 @@ ARG version
 ENV VERSION=${version}
 LABEL VERSION=${version}
 
+HEALTHCHECK --interval=5s --start-period=10s --timeout=3s \
+  CMD curl -f http://localhost/ || exit 1
+
 USER hueb_user
 VOLUME ["/etc/hueb", "/data"]
 EXPOSE 80
