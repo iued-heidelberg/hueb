@@ -129,10 +129,11 @@ jobs:
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
         with:
           environment: staging
+          version: hueb20@${{ steps.vars.outputs.sha_short }}
       - name: Honeycomb Honeymarker
         uses: naiduarvind/gha-honeymarker@v1.0.1
         with:
           apikey: ${{ secrets.HONEYCOMB_API }}
           dataset: hueb_staging
           type: Release Staging
-          message: "Release ${{ steps.vars.outputs.sha_short }}"
+          message: "Release hueb20@${{ steps.vars.outputs.sha_short }}"

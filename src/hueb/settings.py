@@ -186,4 +186,5 @@ if os.getenv("SENTRY_API_KEY") is not None:
         # django.contrib.auth) you may enable sending PII data.
         send_default_pii=True,
         environment=os.getenv("ENV"),
+        release="hueb20@" + os.getenv("GIT_SHA", "NONE"),
     )

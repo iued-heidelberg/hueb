@@ -1,5 +1,7 @@
 FROM python:3.8
 
+
+
 RUN apt-get update && \
   apt-get install -y --no-install-recommends \
   build-essential \
@@ -55,6 +57,13 @@ RUN chmod +x /usr/local/bin/hueb && \
   cd /hueb/src && \
   mkdir -p data && \
   chown -R hueb_user:hueb_user /hueb /data data
+
+ARG git_sha
+ENV GIT_SHA=${git_sha}
+LABEL git_sha=${git_sha}
+ARG version
+ENV VERSION=${version}
+LABEL VERSION=${version}
 
 USER hueb_user
 VOLUME ["/etc/hueb", "/data"]
