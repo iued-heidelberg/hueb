@@ -22,16 +22,11 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "hueb.settings")
 
 LOGIN_REDIRECT_URL = "/admin"
 
-DEBUG = False
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
-if os.getenv("STATIC_DIR") is not None:
-    STATIC_ROOT = os.getenv("STATIC_DIR")
-else:
-    STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 INSTALLED_APPS = [
     "simple_history",
@@ -80,12 +75,48 @@ TEMPLATES = [
     },
 ]
 
+# Password validation
+# https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
+
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+    },
+]
+
+
 WSGI_APPLICATION = "hueb.wsgi.application"
+
+# Internationalization
+# https://docs.djangoproject.com/en/2.1/topics/i18n/
+LANGUAGE_CODE = "en-us"
+
+TIME_ZONE = "UTC"
+
+USE_I18N = True
+
+USE_L10N = True
+
+USE_TZ = True
+
+
+INTERNAL_IPS = ["127.0.0.1"]
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 ENV = os.environ.get("ENV", None)
+
 if ENV == "GITHUB_WORKFLOW":
+    DEBUG = False
     SECRET_KEY = "TESTING_KEY"
     DATABASES = {
         "default": {
@@ -113,43 +144,9 @@ else:
     }
 
 
-# Password validation
-# https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
-
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
-]
-
-
-# Internationalization
-# https://docs.djangoproject.com/en/2.1/topics/i18n/
-LANGUAGE_CODE = "en-us"
-
-TIME_ZONE = "UTC"
-
-USE_I18N = True
-
-USE_L10N = True
-
-USE_TZ = True
-
-
-INTERNAL_IPS = ["127.0.0.1"]
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
-STATIC_URL = "/static/"
 
 if os.getenv("ALLOWED_HOSTS") is not None:
     try:
@@ -159,6 +156,8 @@ if os.getenv("ALLOWED_HOSTS") is not None:
 
 
 if os.getenv("ENV") == "development":
+    DEBUG = True
+
     LOGGING = {
         "version": 1,
         "disable_existing_loggers": False,
@@ -188,3 +187,11 @@ if os.getenv("SENTRY_API_KEY") is not None:
         environment=os.getenv("ENV"),
         release="hueb20@" + os.getenv("GIT_SHA", "NONE"),
     )
+
+
+if os.getenv("STATIC_DIR") is not None:
+    STATIC_ROOT = os.getenv("STATIC_DIR")
+else:
+    STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+STATIC_URL = "/static/"
