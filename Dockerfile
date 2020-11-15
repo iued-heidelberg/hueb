@@ -41,8 +41,8 @@ RUN pip3 install -U \
   -r requirements.txt && \
   rm -rf ~/.cache/pip
 
-COPY deployment/docker/hueb.bash /usr/local/bin/hueb
-COPY deployment/docker/supervisord.conf /etc/supervisord.conf
+COPY deployment/docker/hueb/hueb.bash /usr/local/bin/hueb
+COPY deployment/docker/hueb/supervisord.conf /etc/supervisord.conf
 
 COPY src /hueb/src
 

@@ -6,3 +6,5 @@ deployment/ansible/
 
 **/*.env
 **/.env
+
+/src/static/*
