@@ -1,6 +1,8 @@
 FROM python:3.8
 
-
+RUN \
+  echo "deb https://deb.nodesource.com/node_12.x buster main" > /etc/apt/sources.list.d/nodesource.list && \
+  wget -qO- https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
 
 RUN apt-get update && \
   apt-get install -y --no-install-recommends \
@@ -8,6 +10,7 @@ RUN apt-get update && \
   default-libmysqlclient-dev \
   gettext \
   git \
+  nodejs \
   libpq-dev \
   libxml2-dev \
   libxslt1-dev \
@@ -45,6 +48,9 @@ COPY deployment/docker/hueb/hueb.bash /usr/local/bin/hueb
 COPY deployment/docker/hueb/supervisord.conf /etc/supervisord.conf
 
 COPY src /hueb/src
+
+RUN cd /hueb/src/hueb/apps/hueb20 && \
+  npm run-script build_prod
 
 RUN chmod +x /usr/local/bin/hueb && \
   cd /hueb/src && \
