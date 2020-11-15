@@ -5,14 +5,18 @@ export DATA_DIR=/data/
 export HOME=/hueb
 export NUM_WORKERS=$((2 * $(nproc --all)))
 
+
 if [ ! -d /data/logs ]; then
+    echo "Creating log directory at /data/logs"
     mkdir /data/logs;
 fi
 if [ ! -d /data/media ]; then
+    echo "Creating media directory at /data/media"
     mkdir /data/media;
 fi
-
+echo "Collecting static files"
 python3 -m manage collectstatic --noinput
+echo "Migrating Database"
 python3 -m manage migrate --noinput
 
 if [ "$1" == "all" ]; then
