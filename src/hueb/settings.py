@@ -29,6 +29,7 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 
 INSTALLED_APPS = [
+    "whitenoise.runserver_nostatic",
     "simple_history",
     "hueb.apps.hueb20",
     "hueb.apps.hueb_legacy_latein",
@@ -43,9 +44,10 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    "django.middleware.security.SecurityMiddleware",
     "simple_history.middleware.HistoryRequestMiddleware",
     "beeline.middleware.django.HoneyMiddleware",
-    "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -195,3 +197,4 @@ else:
     STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 STATIC_URL = "/static/"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"

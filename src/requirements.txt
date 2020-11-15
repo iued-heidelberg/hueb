@@ -4,6 +4,7 @@ asgiref==3.3.1
 aspy.refactor-imports==2.1.1
 attrs==20.3.0
 black==20.8b1
+Brotli==1.0.9
 cached-property==1.5.2
 certifi==2020.11.8
 cfgv==3.2.0
@@ -61,5 +62,6 @@ virtualenv==20.1.0
 watchdog==0.10.3
 websocket-client==0.57.0
 Werkzeug==1.0.1
+whitenoise==5.2.0
 wrapt==1.12.1
 zipp==3.4.0
