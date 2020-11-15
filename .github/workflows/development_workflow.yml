@@ -87,6 +87,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
       - name: Get short SHA for tag
         id: vars
         shell: bash
@@ -108,6 +115,8 @@ jobs:
           tags: |
             ghcr.io/bockstaller/hueb:${{ steps.vars.outputs.sha_short }}
             ghcr.io/bockstaller/hueb:staging-latest
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
 
   StagingDeployment:
     if: ${{ github.ref == 'refs/heads/develop' && github.event_name == 'push' }}
