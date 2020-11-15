@@ -19,20 +19,13 @@ python3 -m manage collectstatic --noinput
 echo "Migrating Database"
 python3 -m manage migrate --noinput
 
-if [ "$1" == "all" ]; then
+echo "Starting gunicorn"
+exec gunicorn hueb.wsgi \
+    --name hueb \
+    --workers $NUM_WORKERS \
+    --max-requests 1200 \
+    --max-requests-jitter 50 \
+    --log-level=info \
+    --bind=0.0.0.0:8000
 
-    exec sudo -E /usr/bin/supervisord -n -c /etc/supervisord.conf
-fi
-
-if [ "$1" == "webworker" ]; then
-    exec gunicorn hueb.wsgi \
-        --name hueb \
-        --workers $NUM_WORKERS \
-        --max-requests 1200 \
-        --max-requests-jitter 50 \
-        --log-level=info \
-        --bind=unix:/tmp/hueb.sock
-fi
-
-echo "Specify argument: all|webworker"
 exit 1

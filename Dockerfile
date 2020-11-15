@@ -8,15 +8,10 @@ RUN apt-get update && \
   default-libmysqlclient-dev \
   gettext \
   git \
-  libffi-dev \
-  libjpeg-dev \
-  libmemcached-dev \
   libpq-dev \
-  libssl-dev \
   libxml2-dev \
   libxslt1-dev \
   locales \
-  nginx \
   python-dev \
   python-virtualenv \
   python3-dev \
@@ -48,12 +43,10 @@ RUN pip3 install -U \
 
 COPY deployment/docker/hueb.bash /usr/local/bin/hueb
 COPY deployment/docker/supervisord.conf /etc/supervisord.conf
-COPY deployment/docker/nginx.conf /etc/nginx/nginx.conf
 
 COPY src /hueb/src
 
 RUN chmod +x /usr/local/bin/hueb && \
-  rm /etc/nginx/sites-enabled/default && \
   cd /hueb/src && \
   mkdir -p data && \
   chown -R hueb_user:hueb_user /hueb /data data
@@ -70,6 +63,6 @@ HEALTHCHECK --interval=5s --start-period=10s --timeout=3s \
 
 USER hueb_user
 VOLUME ["/etc/hueb", "/data"]
-EXPOSE 80
+EXPOSE 8000
 ENTRYPOINT ["hueb"]
 CMD ["all"]
