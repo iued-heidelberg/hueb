@@ -8,3 +8,5 @@ deployment/ansible/
 **/.env
 
 /src/static/*
+
+**/node_modules/

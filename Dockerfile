@@ -50,6 +50,7 @@ COPY deployment/docker/hueb/supervisord.conf /etc/supervisord.conf
 COPY src /hueb/src
 
 RUN cd /hueb/src/hueb/apps/hueb20 && \
+  npm ci && \
   npm run-script build_prod
 
 RUN chmod +x /usr/local/bin/hueb && \

@@ -8,19 +8,17 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build_dev": "NODE_ENV=development npx tailwindcss build static/hueb20/tailwind.css -o static/hueb20/hueb20.css",
-    "build_prod": "NODE_ENV=production npx tailwindcss build static/hueb20/tailwind.css -o static/hueb20/hueb20.css",
+    "build_dev": "NODE_ENV=development tailwindcss build static/hueb20/tailwind.css -o static/hueb20/hueb20.css",
+    "build_prod": "NODE_ENV=production tailwindcss build static/hueb20/tailwind.css -o static/hueb20/hueb20.css",
     "postcss": "postcss --use autoprefixer -r static/hueb20/hueb20.css"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "autoprefixer": "^10.0.1",
-    "postcss": "^8.1.2",
-    "tailwindcss": "^1.9.3"
-  },
+  "devDependencies": {},
   "dependencies": {
+    "postcss": "^8.1.2",
+    "tailwindcss": "^1.9.3",
     "postcss-cli": "^8.1.0"
   }
 }
