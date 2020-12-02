@@ -15,8 +15,10 @@ Including another URLconf
 """
 
 
+import debug_toolbar
 from django.urls import include, path
 
 urlpatterns = [
     path("", include("hueb.apps.hueb20.urls")),
+    path("__debug__/", include(debug_toolbar.urls)),
 ]

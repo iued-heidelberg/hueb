@@ -1,6 +1,6 @@
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import path
 from hueb import settings
 from hueb.apps.hueb20.views.authentication import Login, Logout
 from hueb.apps.hueb20.views.index import IndexView
@@ -14,13 +14,3 @@ urlpatterns = [
     path("accounts/login", Login.as_view(), name="login"),
     path("accounts/logout", Logout.as_view(), name="logout"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-
-try:
-    if settings.DEBUG:
-        import debug_toolbar
-
-        urlpatterns = [
-            path("__debug__/", include(debug_toolbar.urls)),
-        ] + urlpatterns
-except AttributeError:
-    pass
