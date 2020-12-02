@@ -28,6 +28,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 
+STATIC_URL = "/static/"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+
 INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
     "simple_history",
@@ -44,8 +48,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "simple_history.middleware.HistoryRequestMiddleware",
     "beeline.middleware.django.HoneyMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -132,7 +136,9 @@ if ENV == "GITHUB_WORKFLOW":
     }
 else:
     # SECURITY WARNING: keep the secret key used in production secret!
-    DEBUG = os.environ.get("DEBUG", False)
+
+    DEBUG = os.getenv("DEBUG") == "True"
+    print(DEBUG)
     SECRET_KEY = os.environ["SECRET_KEY"]
     DATABASES = {
         "default": {
@@ -150,16 +156,13 @@ else:
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 
-if os.getenv("ALLOWED_HOSTS") is not None:
-    try:
-        ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(",")
-    except AttributeError:
-        ALLOWED_HOSTS = "127.0.0.1"
+try:
+    ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(",")
+except AttributeError:
+    ALLOWED_HOSTS = "127.0.0.1"
 
 
 if os.getenv("ENV") == "development":
-    DEBUG = True
-
     LOGGING = {
         "version": 1,
         "disable_existing_loggers": False,
@@ -195,6 +198,3 @@ if os.getenv("STATIC_DIR") is not None:
     STATIC_ROOT = os.getenv("STATIC_DIR")
 else:
     STATIC_ROOT = os.path.join(BASE_DIR, "static")
-
-STATIC_URL = "/static/"
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
