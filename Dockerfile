@@ -44,13 +44,18 @@ RUN pip3 install -U \
   -r requirements.txt && \
   rm -rf ~/.cache/pip
 
+COPY src/hueb/apps/hueb20/package.json /hueb/src/hueb/apps/hueb20/package.json
+COPY src/hueb/apps/hueb20/package-lock.json /hueb/src/hueb/apps/hueb20/package-lock.json
+
+RUN cd /hueb/src/hueb/apps/hueb20 && \
+  npm ci
+
 COPY deployment/docker/hueb/hueb.bash /usr/local/bin/hueb
 COPY deployment/docker/hueb/supervisord.conf /etc/supervisord.conf
 
 COPY src /hueb/src
 
 RUN cd /hueb/src/hueb/apps/hueb20 && \
-  npm ci && \
   npm run-script build_prod
 
 RUN chmod +x /usr/local/bin/hueb && \
