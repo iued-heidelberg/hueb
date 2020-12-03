@@ -38,13 +38,16 @@ services:
       - proxy_network
 
   database:
-    image: postgres:12
+    build:
+      context: ./postgres
+      dockerfile: Dockerfile
     environment:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
     volumes:
       - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
+      - ${BACKUP_DIR}:/backup
     restart: always
     networks:
       - db_network
