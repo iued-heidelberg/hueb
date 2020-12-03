@@ -58,6 +58,10 @@ COPY src /hueb/src
 RUN cd /hueb/src/hueb/apps/hueb20 && \
   npm run-script build_prod
 
+ARG SECRET_KEY='dummy_value'
+RUN cd /hueb/src/ && \
+  python3 -m manage collectstatic --noinput
+
 RUN chmod +x /usr/local/bin/hueb && \
   cd /hueb/src && \
   mkdir -p data && \
