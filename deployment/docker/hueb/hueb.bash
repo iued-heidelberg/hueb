@@ -1,9 +1,12 @@
 #!/bin/bash
+set -e
+
 cd /hueb/src
 export DJANGO_SETTINGS_MODULE=hueb.settings
 export DATA_DIR=/data/
 export HOME=/hueb
 export NUM_WORKERS=$((2 * $(nproc --all)))
+
 
 
 if [ ! -d /data/logs ]; then
