@@ -11,6 +11,8 @@
       - apt-transport-https
       - ca-certificates
       - curl
+      - git
+      - git-lfs
       - gnupg-agent
       - software-properties-common
     state: latest
@@ -34,3 +36,58 @@
       - docker-ce-cli
       - containerd.io
     state: latest
+
+- name: Ensure group "docker" exists
+  group:
+    name: docker
+    state: present
+
+- name: Add the user 'ubuntu' to group "docker"
+  user:
+    name: ubuntu
+    group: docker
+
+- name: Install docker-compose
+  remote_user: ubuntu
+  get_url:
+    url: https://github.com/docker/compose/releases/download/1.27.4/docker-compose-Linux-x86_64
+    dest: /usr/local/bin/docker-compose
+    mode: "770"
+    group: docker
+    owner: ubuntu
+
+- name: Reset connection to apply changes to groups and user
+  meta: reset_connection
+
+- name: authenticate at ghcr.io
+  become_user: ubuntu
+  command: echo {{github_registry_pat}} | docker login ghcr.io -u {{ github_user }} --password-stdin
+
+- name: clone repository
+  git:
+    repo: https://github.com/bockstaller/hueb.git
+    dest: "{{ git_directory }}"
+    accept_hostkey: yes
+    force: yes
+    update: yes
+    version: "{{ sha }}"
+
+- name: Template .env file
+  template:
+    src: templates/env.j2
+    dest: "{{ docker_directory }}/.env"
+    owner: ubuntu
+    group: docker
+    mode: "0660"
+
+- name: Pull containers
+  become: yes
+  command: docker-compose pull
+  args:
+    chdir: "{{ docker_directory }}"
+
+- name: Brind docker-compose up
+  become: yes
+  command: docker-compose up -d
+  args:
+    chdir: "{{ docker_directory }}"

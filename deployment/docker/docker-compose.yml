@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   hueb:
-    image: ghcr.io/bockstaller/hueb:${TAG}
+    image: ghcr.io/bockstaller/hueb_app:${TAG}
     depends_on:
       - database
       - proxy
@@ -11,16 +11,18 @@ services:
     environment:
       - ENV=${ENV}
       - DEBUG=${DEBUG}
-      - SECRET_KEY=${SECRET_KEY}
+      - STATIC_DIR=${STATIC_DIR}
       - ALLOWED_HOSTS=${ALLOWED_HOSTS}
-      - HUEB_HONEYCOMB_API_KEY=${HONEYCOMB_API_KEY}
+
+      - HONEYCOMB_API_KEY=${HONEYCOMB_API_KEY}
       - SENTRY_API_KEY=${SENTRY_API_KEY}
+      - SECRET_KEY=${SECRET_KEY}
+
       - DB_NAME=${DB_NAME}
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_HOST=database
       - DB_PORT=${DB_PORT}
-      - STATIC_DIR=${STATIC_DIR}
     restart: always
     networks:
       - proxy_network
@@ -38,9 +40,7 @@ services:
       - proxy_network
 
   database:
-    build:
-      context: ./postgres
-      dockerfile: Dockerfile
+    image: ghcr.io/bockstaller/hueb_db:${TAG}
     environment:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
@@ -49,8 +49,11 @@ services:
       - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
       - ${BACKUP_DIR}:/backup
     restart: always
+    ports:
+      - 127.0.0.1:${HOST_PG_PORT}:5432
     networks:
       - db_network
+      - proxy_network
 
 networks:
   proxy_network:
