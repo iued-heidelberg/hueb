@@ -1,6 +1,0 @@
-##
-# Configure the server for the Django app
-##
-
-- include: setup_nginx.yml
-- include: setup_gunicorn.yml

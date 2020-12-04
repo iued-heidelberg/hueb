@@ -1,6 +1,4 @@
 ##
 # Configure the server for the Django app
 ##
-- include: dump_database.yml
-
 

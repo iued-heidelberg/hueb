@@ -7,6 +7,5 @@
   gather_facts: True
   roles:
     - base
-    - database
-    - application
-    - services
+    - docker
+    - certbot

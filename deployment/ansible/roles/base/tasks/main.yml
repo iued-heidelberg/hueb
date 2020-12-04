@@ -1,4 +1,46 @@
 ##
 # Configure the server for the Django app
 ##
-- include: setup_machine.yml
+- name: Update apt-get-cache if it is stale
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Upgrade all packages to the latest version
+  apt:
+    name: "*"
+    state: latest
+
+- name: enable SSH forwarding for sudo
+  lineinfile:
+    dest: /etc/sudoers
+    insertafter: '^#?\s*Defaults\s+env_keep\b'
+    line: 'Defaults    env_keep += "SSH_AUTH_SOCK"'
+
+- name: Create ext4 filesystem on /dev/sdc
+  become: yes
+  filesystem:
+    fstype: ext4
+    dev: /dev/sdc
+
+- name: Mount db device
+  become: yes
+  mount:
+    path: /db_dump
+    src: /dev/sdc
+    fstype: ext4
+    state: mounted
+
+- name: Create ext4 filesystem on /dev/sdb
+  become: yes
+  filesystem:
+    fstype: ext4
+    dev: /dev/sdb
+
+- name: Mount db device
+  become: yes
+  mount:
+    path: /db
+    src: /dev/sdb
+    fstype: ext4
+    state: mounted

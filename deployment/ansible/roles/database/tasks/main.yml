@@ -1,7 +1,0 @@
-##
-# Configure the server for the Django app
-##
-- include: create_users.yml
-- include: attach_volumes.yml
-- include: install_postgres.yml
-- include: configure_postgres.yml
