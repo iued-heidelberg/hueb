@@ -1,4 +1,4 @@
-FROM postgres:12.5
+FROM postgres:13
 RUN apt-get -y update && \
   apt-get install -y supervisor cron && \
   apt-get clean && \
