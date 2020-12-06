@@ -1,6 +1,14 @@
 ##
 # Configure the server for the Django app
 ##
+- name: Create a backup directory
+  file:
+    path: "{ { backup_dir } }"
+    state: directory
+    recurse: yes
+    owner: ubuntu
+    group: docker
+
 - name: Update apt-get-cache if it is stale
   apt:
     update_cache: yes
@@ -23,13 +31,40 @@
     fstype: ext4
     dev: /dev/sdc
 
-- name: Mount db device
+- name: Mount db_dump device
   become: yes
   mount:
     path: /db_dump
     src: /dev/sdc
     fstype: ext4
     state: mounted
+
+- name: Create a backup directory
+  file:
+    path: "{ { backup_dir } }"
+    state: directory
+    recurse: yes
+    mode: "0660"
+    owner: ubuntu
+    group: docker
+
+- name: Change ownership recursively
+  become: yes
+  command: chown -R ubuntu /db_dump
+  args:
+    chdir: "/"
+
+- name: Change ownership recursively
+  become: yes
+  command: chgrp -R docker /db_dump
+  args:
+    chdir: "/"
+
+- name: Change ownership recursively
+  become: yes
+  command: chmod -R 770 /db_dump
+  args:
+    chdir: "/"
 
 - name: Create ext4 filesystem on /dev/sdb
   become: yes

@@ -15,6 +15,7 @@
       - git-lfs
       - gnupg-agent
       - software-properties-common
+
     state: latest
     update_cache: yes
 
@@ -23,9 +24,19 @@
     url: https://download.docker.com/linux/ubuntu/gpg
     state: present
 
+- name: Add Postgres GPG apt Key
+  apt_key:
+    url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+    state: present
+
 - name: Add Docker Repository
   apt_repository:
     repo: deb https://download.docker.com/linux/ubuntu focal stable
+    state: present
+
+- name: Add Postgres Repository
+  apt_repository:
+    repo: deb http://apt.postgresql.org/pub/repos/apt focal-pgdg main
     state: present
 
 - name: Update apt and install docker-ce
@@ -35,6 +46,13 @@
       - docker-ce
       - docker-ce-cli
       - containerd.io
+    state: latest
+
+- name: Update apt and install postgres common
+  apt:
+    update_cache: yes
+    name:
+      - postgresql-client-13
     state: latest
 
 - name: Ensure group "docker" exists
@@ -69,8 +87,9 @@
     dest: "{{ git_directory }}"
     accept_hostkey: yes
     force: yes
+    refspec: "+refs/heads/*:refs/remotes/origin/*"
     update: yes
-    version: "{{ sha }}"
+    version: "{{sha}}"
 
 - name: Template .env file
   template:
@@ -86,7 +105,7 @@
   args:
     chdir: "{{ docker_directory }}"
 
-- name: Brind docker-compose up
+- name: Bring docker-compose up
   become: yes
   command: docker-compose up -d
   args:
