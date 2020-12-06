@@ -11,4 +11,4 @@ touch $new_fileName
 
 echo "Dumping: " "$POSTGRES_DB"
 
-/usr/lib/postgresql/12/bin/pg_dump -h localhost -U $POSTGRES_USER $POSTGRES_DB | gzip > $new_fileName
+pg_dump -h $1 -U $POSTGRES_USER $POSTGRES_DB | gzip > $new_fileName
