@@ -41,10 +41,15 @@ services:
 
   database:
     image: ghcr.io/bockstaller/hueb_db:${TAG}
+    build:
+      context: ./postgres/
+      dockerfile: Dockerfile
     environment:
+      - PGUSER=${DB_USER}
+      - PGPASSWORD=${DB_PASSWORD}
+      - PGDATABASE=${DB_NAME}
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - POSTGRES_DB=${DB_NAME}
     volumes:
       - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
       - ${BACKUP_DIR}:/backup
