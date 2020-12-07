@@ -6,5 +6,7 @@
       prompt: "What is your backup file path /db_dump/... .gz ?"
       private: no
   roles:
+    - base
     - copy_src
+    - create_backup
     - load_backup

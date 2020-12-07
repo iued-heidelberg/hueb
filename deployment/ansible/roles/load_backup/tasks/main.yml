@@ -66,26 +66,6 @@
   args:
     chdir: "{{ docker_directory }}"
 
-- name: make backup executable
-  become: yes
-  file:
-    path: "{{ docker_directory }}/postgres/pg_backup.sh"
-    owner: ubuntu
-    group: docker
-    mode: "0770"
-    state: file
-
-- name: create backup
-  become: yes
-  shell: "sudo ./pg_backup.sh /db_dump"
-  args:
-    chdir: "{{ docker_directory }}/postgres/"
-  environment:
-    PGPASSWORD: "{{ db_password }}"
-    PGUSER: "{{ db_user }}"
-    PGPORT: "{{host_db_port}}"
-    POSTGRES_USER: "{{ db_user }}"
-
 - name: drop existing database
   shell: "dropdb -h localhost -p {{host_db_port}} -U {{db_user}} --if-exists --force {{db_name}}"
   environment:

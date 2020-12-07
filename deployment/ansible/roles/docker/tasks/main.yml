@@ -24,19 +24,9 @@
     url: https://download.docker.com/linux/ubuntu/gpg
     state: present
 
-- name: Add Postgres GPG apt Key
-  apt_key:
-    url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
-    state: present
-
 - name: Add Docker Repository
   apt_repository:
     repo: deb https://download.docker.com/linux/ubuntu focal stable
-    state: present
-
-- name: Add Postgres Repository
-  apt_repository:
-    repo: deb http://apt.postgresql.org/pub/repos/apt focal-pgdg main
     state: present
 
 - name: Update apt and install docker-ce
@@ -47,6 +37,16 @@
       - docker-ce-cli
       - containerd.io
     state: latest
+
+- name: Add Postgres GPG apt Key
+  apt_key:
+    url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+    state: present
+
+- name: Add Postgres Repository
+  apt_repository:
+    repo: deb http://apt.postgresql.org/pub/repos/apt focal-pgdg main
+    state: present
 
 - name: Update apt and install postgres common
   apt:
@@ -98,6 +98,15 @@
     owner: ubuntu
     group: docker
     mode: "0660"
+
+- name: Rewrite permissions on certificates
+  become: yes
+  file:
+    path: /etc/letsencrypt/live
+    state: directory
+    mode: "0660"
+    owner: ubuntu
+    group: docker
 
 - name: Pull containers
   become: yes

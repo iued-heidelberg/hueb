@@ -5,7 +5,18 @@
   hosts: webserver
   become: true
   gather_facts: True
+  vars:
+    certbot_admin_email: lukas.bockstaller@posteo.de
+    certbot_create_if_missing: true
+    certbot_auto_renew_user: "ubuntu"
+    certbot_create_standalone_stop_services:
+      - docker
+    certbot_certs:
+      - domains:
+          - "{{ url }}"
   roles:
     - base
+    - copy_src
+    - create_backup
+    - geerlingguy.certbot
     - docker
-    - certbot
