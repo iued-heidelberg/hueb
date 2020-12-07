@@ -1,3 +1,5 @@
+project_dir: /Users/bockstaller/Documents/code/hueb/
+
 git_directory: /hueb
 docker_directory: "{{ git_directory }}/deployment/docker"
 

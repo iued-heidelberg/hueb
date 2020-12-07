@@ -1,0 +1,104 @@
+- name: Add Postgres GPG apt Key
+  become: yes
+  apt_key:
+    url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+    state: present
+
+- name: Add Postgres Repository
+  become: yes
+  apt_repository:
+    repo: deb http://apt.postgresql.org/pub/repos/apt focal-pgdg main
+    state: present
+
+- name: Update cache
+  become: yes
+  apt:
+    update_cache: yes
+
+- name: Install required system packages
+  become: yes
+  apt:
+    name:
+      - postgresql-client-common
+      - postgresql-client-13
+    state: latest
+    update_cache: yes
+
+- name: Change ownership recursively
+  become: yes
+  command: chown -R ubuntu /db_dump
+  args:
+    chdir: "/"
+
+- name: Change ownership recursively
+  become: yes
+  command: chgrp -R docker /db_dump
+  args:
+    chdir: "/"
+
+- name: Change ownership recursively
+  become: yes
+  command: chmod -R 770 /db_dump
+  args:
+    chdir: "/"
+
+- name: remove temp.sql file
+  become: yes
+  file:
+    path: "/db_dump/temp.sql"
+    state: "absent"
+
+- name: remove temp.sql file
+  become: yes
+  file:
+    path: "/db_dump/temp.sql"
+    state: "touch"
+
+- name: decompress backup file
+  become: yes
+  shell: "gunzip -ck /db_dump/{{backup_file}}.gz > /db_dump/temp.sql"
+  args:
+    chdir: "/"
+
+- name: stop application
+  become: yes
+  command: docker-compose stop hueb
+  args:
+    chdir: "{{ docker_directory }}"
+
+- name: make backup executable
+  become: yes
+  file:
+    path: "{{ docker_directory }}/postgres/pg_backup.sh"
+    owner: ubuntu
+    group: docker
+    mode: "0770"
+    state: file
+
+- name: create backup
+  become: yes
+  shell: "sudo ./pg_backup.sh /db_dump"
+  args:
+    chdir: "{{ docker_directory }}/postgres/"
+  environment:
+    PGPASSWORD: "{{ db_password }}"
+    PGUSER: "{{ db_user }}"
+    PGPORT: "{{host_db_port}}"
+    POSTGRES_USER: "{{ db_user }}"
+
+- name: drop existing database
+  shell: "dropdb -h localhost -p {{host_db_port}} -U {{db_user}} --if-exists --force {{db_name}}"
+  environment:
+    PGPASSWORD: "{{ db_password }}"
+
+- name: recreate database
+  shell: "export PGPASSWORD={{db_password}} && createdb -h localhost -p {{host_db_port}} -U {{db_user}} {{db_name}}"
+
+- name: fill database
+  shell: "export PGPASSWORD={{db_password}} && psql -h localhost -p {{host_db_port}} -U {{db_user}} {{db_name}} < /db_dump/temp.sql"
+
+- name: restart application
+  become: yes
+  command: docker-compose start hueb
+  args:
+    chdir: "{{ docker_directory }}"

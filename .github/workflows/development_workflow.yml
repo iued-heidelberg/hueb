@@ -171,7 +171,7 @@ jobs:
         with:
           playbookName: "./deployment/deploy.yml"
           inventoryFile: "./deployment/staging.ini"
-          keyFile: "./deployment/staging-key"
+          keyFile: "./deployment/ansible/credentials/staging-key"
           keyFileVaultPass: ${{ secrets.STAGING_KEYFILE_VAULT_PASS }}
           extraFile: "./deployment/group_vars/webserver"
           extraVars: "-e django_secret_key=${{ secrets.STAGING_DJANGO_SECRET_KEY }} -e user_name=${{ secrets.STAGING_USER_NAME }} -e user_password=${{ secrets.STAGING_USER_PASSWORD }} -e password=${{ secrets.STAGING_PASSWORD }} -e django_db_user=${{ secrets.STAGING_DB_USER }} -e django_db_password=${{ secrets.STAGING_DB_PASSWORD }} -e honeycomb_api=${{ secrets.HONEYCOMB_API }} -e sentry_api=${{ secrets.SENTRY_API }}"

@@ -1,0 +1,24 @@
+- name: Create hueb directory if it does not exist
+  become: yes
+  file:
+    path: /hueb/
+    state: directory
+    mode: "0770"
+
+- name: Synchronization of src on the control machine to dest on the remote hosts
+  become: yes
+  ansible.posix.synchronize:
+    src: "{{ project_dir }}"
+    dest: /hueb/
+    recursive: yes
+    delete: yes
+
+- name: Create hueb directory if it does not exist
+  become: yes
+  file:
+    path: /hueb
+    state: directory
+    mode: "0770"
+    group: docker
+    owner: ubuntu
+    recurse: yes
