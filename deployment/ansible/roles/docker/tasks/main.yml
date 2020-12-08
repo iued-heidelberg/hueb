@@ -81,20 +81,18 @@
   become_user: ubuntu
   command: echo {{github_registry_pat}} | docker login ghcr.io -u {{ github_user }} --password-stdin
 
-- name: clone repository
-  git:
-    repo: https://github.com/bockstaller/hueb.git
-    dest: "{{ git_directory }}"
-    accept_hostkey: yes
-    force: yes
-    refspec: "+refs/heads/*:refs/remotes/origin/*"
-    update: yes
-    version: "{{sha}}"
-
 - name: Template .env file
   template:
     src: templates/env.j2
     dest: "{{ docker_directory }}/.env"
+    owner: ubuntu
+    group: docker
+    mode: "0660"
+
+- name: Template nginx.conf file
+  template:
+    src: templates/nginx.conf.j2
+    dest: "{{ docker_directory }}/nginx/nginx.conf"
     owner: ubuntu
     group: docker
     mode: "0660"
@@ -104,9 +102,10 @@
   file:
     path: /etc/letsencrypt/live
     state: directory
-    mode: "0660"
+    mode: "0770"
     owner: ubuntu
     group: docker
+    recurse: yes
 
 - name: Pull containers
   become: yes
@@ -116,6 +115,6 @@
 
 - name: Bring docker-compose up
   become: yes
-  command: docker-compose up -d
+  command: docker-compose up -d --force-recreate
   args:
     chdir: "{{ docker_directory }}"
