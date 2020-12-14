@@ -1,20 +1,16 @@
-project_dir: /Users/bockstaller/Documents/code/hueb/
+
 
 git_directory: /hueb
 docker_directory: "{{ git_directory }}/deployment/docker"
 
-
 github_user: bockstaller
-sha: fdf9bebc4720921e8d3c6e34842f8fe322a5c780
-tag: fdf9beb
 
 backup_dir: /db_dump/local_backup
 nginx_conf: "{{docker_directory}}/nginx/nginx.conf"
-ssl_dir: placeholder
+static_directory: /data/static
 
 debug: False
-environment: production
-static_directory: /data/static
+
 
 
 
