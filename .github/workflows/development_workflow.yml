@@ -111,6 +111,7 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v2
         with:
+          build-args: git_sha=${{ steps.vars.outputs.sha_short }}
           push: true
           tags: |
             ghcr.io/bockstaller/hueb_app:${{ steps.vars.outputs.sha_short }}
@@ -175,12 +176,8 @@ jobs:
           keyFile: "./deployment/ansible/credentials/staging-key"
           keyFileVaultPass: ${{ secrets.STAGING_KEYFILE_VAULT_PASS }}
           extraFile: "./deployment/ansible/group_vars/webserver"
-          extraVars:
-            "git_sha=${{ steps.vars.outputs.sha_short }} tag=${{ steps.vars.outputs.sha_short }} environment=staging url=${{ secrets.STAGING_URL }} github_registry_pat=${{ secrets.PAT }} honeycomb_api_key=${{ secrets.HONEYCOMB_API }} sentry_api_key=${{ secrets.SENTRY_API }} django_secret_key=${{ secrets.STAGING_DJANGO_SECRET }} db_name=${{ secrets.STAGING_DB_NAME }} db_user=${{ secrets.STAGING_DB_USER }} db_password=${{ secrets.STAGING_DB_PASSWORD }} db_port=${{ secrets.STAGING_DB_PORT }} host_db_port=${{ secrets.STAGING_HOST_DB_PORT }} project_dir="hueb"
-            "
-
+          extraVars: "git_sha=${{ steps.vars.outputs.sha_short }} tag=${{ steps.vars.outputs.sha_short }} environment=staging url=${{ secrets.STAGING_URL }} github_registry_pat=${{ secrets.PAT }} honeycomb_api_key=${{ secrets.HONEYCOMB_API }} sentry_api_key=${{ secrets.SENTRY_API }} django_secret_key=${{ secrets.STAGING_DJANGO_SECRET }} db_name=${{ secrets.STAGING_DB_NAME }} db_user=${{ secrets.STAGING_DB_USER }} db_password=${{ secrets.STAGING_DB_PASSWORD }} db_port=${{ secrets.STAGING_DB_PORT }} host_db_port=${{ secrets.STAGING_HOST_DB_PORT }} project_dir=/hueb"
           verbosity: "vv"
-        env:
 
       - name: Create Sentry release
         uses: getsentry/action-release@v1
