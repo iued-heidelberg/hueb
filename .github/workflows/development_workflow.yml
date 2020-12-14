@@ -173,6 +173,7 @@ jobs:
         with:
           playbookName: "./deployment/ansible/provision.yml"
           inventoryFile: "./deployment/ansible/inventory/staging.ini"
+          requirementsFile: "./deployment/ansible/requirements.yml"
           keyFile: "./deployment/ansible/inventory/staging-key"
           keyFileVaultPass: ${{ secrets.STAGING_KEYFILE_VAULT_PASS }}
           extraFile: "./deployment/ansible/group_vars/webserver"
