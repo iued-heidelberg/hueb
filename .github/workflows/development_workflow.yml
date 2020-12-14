@@ -166,16 +166,22 @@ jobs:
         id: vars
         shell: bash
         run: |
-          echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+          echo "::set-output name=sha_short::$(git rev-parse --short HEAD)" && \
+          echo "::set-output name=sha::$(git rev-parse HEAD)"
       - uses: saubermacherag/ansible-playbook-docker-action@v1.3
         with:
-          playbookName: "./deployment/deploy.yml"
-          inventoryFile: "./deployment/staging.ini"
+          playbookName: "./deployment/ansible/provision.yml"
+          inventoryFile: "./deployment/ansible/inventory/staging.ini"
           keyFile: "./deployment/ansible/credentials/staging-key"
           keyFileVaultPass: ${{ secrets.STAGING_KEYFILE_VAULT_PASS }}
-          extraFile: "./deployment/group_vars/webserver"
-          extraVars: "-e django_secret_key=${{ secrets.STAGING_DJANGO_SECRET_KEY }} -e user_name=${{ secrets.STAGING_USER_NAME }} -e user_password=${{ secrets.STAGING_USER_PASSWORD }} -e password=${{ secrets.STAGING_PASSWORD }} -e django_db_user=${{ secrets.STAGING_DB_USER }} -e django_db_password=${{ secrets.STAGING_DB_PASSWORD }} -e honeycomb_api=${{ secrets.HONEYCOMB_API }} -e sentry_api=${{ secrets.SENTRY_API }}"
+          extraFile: "./deployment/ansible/group_vars/webserver"
+          extraVars:
+            "git_sha=${{ steps.vars.outputs.sha_short }} tag=${{ steps.vars.outputs.sha_short }} environment=staging url=${{ secrets.STAGING_URL }} github_registry_pat=${{ secrets.PAT }} honeycomb_api_key=${{ secrets.HONEYCOMB_API }} sentry_api_key=${{ secrets.SENTRY_API }} django_secret_key=${{ secrets.STAGING_DJANGO_SECRET }} db_name=${{ secrets.STAGING_DB_NAME }} db_user=${{ secrets.STAGING_DB_USER }} db_password=${{ secrets.STAGING_DB_PASSWORD }} db_port=${{ secrets.STAGING_DB_PORT }} host_db_port=${{ secrets.STAGING_HOST_DB_PORT }} project_dir="hueb"
+            "
+
           verbosity: "vv"
+        env:
+
       - name: Create Sentry release
         uses: getsentry/action-release@v1
         env:
