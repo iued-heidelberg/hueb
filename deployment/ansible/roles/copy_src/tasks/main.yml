@@ -11,6 +11,7 @@
     src: "{{ project_dir }}"
     dest: /hueb/
     recursive: yes
+    checksum: yes
     delete: yes
 
 - name: Create hueb directory if it does not exist
