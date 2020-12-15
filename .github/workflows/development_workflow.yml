@@ -179,7 +179,7 @@ jobs:
           keyFile: "./deployment/ansible/inventory/staging-key"
           keyFileVaultPass: ${{ secrets.STAGING_KEYFILE_VAULT_PASS }}
           extraFile: "./deployment/ansible/group_vars/webserver"
-          extraVars: "-e git_sha=${{ steps.vars.outputs.sha_short }} -e tag=${{ steps.vars.outputs.sha_short }} -e environment=staging -e url=${{ secrets.STAGING_URL }} -e github_registry_pat=${{ secrets.PAT }} -e honeycomb_api_key=${{ secrets.HONEYCOMB_API }} -e sentry_api_key=${{ secrets.SENTRY_API }} -e django_secret_key=${{ secrets.STAGING_DJANGO_SECRET }} -e db_name=${{ secrets.STAGING_DB_NAME }} -e db_user=${{ secrets.STAGING_DB_USER }} -e db_password=${{ secrets.STAGING_DB_PASSWORD }} -e db_port=${{ secrets.STAGING_DB_PORT }} -e host_db_port=${{ secrets.STAGING_HOST_DB_PORT }} -e project_dir=/hueb"
+          extraVars: "-e git_sha=${{ steps.vars.outputs.sha_short }} -e tag=${{ steps.vars.outputs.sha_short }} -e environment=staging -e url=${{ secrets.STAGING_URL }} -e github_registry_pat=${{ secrets.PAT }} -e honeycomb_api_key=${{ secrets.HONEYCOMB_API }} -e sentry_api_key=${{ secrets.SENTRY_API }} -e django_secret_key=${{ secrets.STAGING_DJANGO_SECRET }} -e db_name=${{ secrets.STAGING_DB_NAME }} -e db_user=${{ secrets.STAGING_DB_USER }} -e db_password=${{ secrets.STAGING_DB_PASSWORD }} -e db_port=${{ secrets.STAGING_DB_PORT }} -e host_db_port=${{ secrets.STAGING_HOST_DB_PORT }} -e project_dir=/github/workspace/"
           verbosity: "vv"
 
       - name: Create Sentry release
