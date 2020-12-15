@@ -1,9 +1,8 @@
 name: Tests & Production Deployment
 
 on:
-  [push, pull_request]
-  #release:
-  #  types: [released, prereleased, edited]
+  release:
+    types: [released, prereleased, edited]
 
 jobs:
   black:
@@ -180,3 +179,53 @@ jobs:
             ghcr.io/bockstaller/hueb_db:${{ steps.vars.outputs.tag }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
+
+  ProductionDeployment:
+    if: ${{ github.event_name == 'release' && github.event.action == 'released' }}
+    needs:
+      [
+        Application_Container_build,
+        Postgres_Container_build,
+        Tests,
+        flake8,
+        black,
+      ]
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Get short SHA for tag
+        id: vars
+        shell: bash
+        run: |
+          echo "::set-output name=sha_short::$(git rev-parse --short HEAD)" && \
+          echo "::set-output name=sha::$(git rev-parse HEAD)" && \
+          echo ::set-output name=tag::${GITHUB_REF#refs/*/}
+      - uses: bockstaller/ansible-playbook-docker-action@master
+        with:
+          playbookName: "./deployment/ansible/provision.yml"
+          inventoryFile: "./deployment/ansible/inventory/production.ini"
+          rolesFile: "./deployment/ansible/requirements.yml"
+          collectionsFile: "./deployment/ansible/requirements.yml"
+          rolesPath: "/github/home/.ansible/roles"
+          keyFile: "./deployment/ansible/inventory/production-key"
+          keyFileVaultPass: ${{ secrets.PRODUCTION_KEYFILE_VAULT_PASS }}
+          extraFile: "./deployment/ansible/group_vars/webserver"
+          extraVars: "-e git_sha=${{ steps.vars.outputs.sha_short }} -e tag=${{ steps.vars.outputs.tag }} -e env=production -e url=${{ secrets.PRODUCTION_URL }} -e github_registry_pat=${{ secrets.PAT }} -e honeycomb_api_key=${{ secrets.HONEYCOMB_API }} -e sentry_api_key=${{ secrets.SENTRY_API }} -e django_secret_key=${{ secrets.PRODUCTION_DJANGO_SECRET }} -e db_name=${{ secrets.PRODUCTION_DB_NAME }} -e db_user=${{ secrets.PRODUCTION_DB_USER }} -e db_password=${{ secrets.PRODUCTION_DB_PASSWORD }} -e db_port=${{ secrets.PRODUCTION_DB_PORT }} -e host_db_port=${{ secrets.PRODUCTION_HOST_DB_PORT }} -e project_dir=/github/workspace/"
+          verbosity: "vv"
+
+      - name: Create Sentry release
+        uses: getsentry/action-release@v1
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_RELEASE_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+        with:
+          environment: production
+          version: hueb20@${{ steps.vars.outputs.tag }}
+      - name: Honeycomb Honeymarker
+        uses: naiduarvind/gha-honeymarker@v1.0.1
+        with:
+          apikey: ${{ secrets.HONEYCOMB_API }}
+          dataset: hueb_production
+          type: Release Production
+          message: "Release hueb20@${{ steps.vars.outputs.tag }}"
