@@ -169,11 +169,12 @@ jobs:
         run: |
           echo "::set-output name=sha_short::$(git rev-parse --short HEAD)" && \
           echo "::set-output name=sha::$(git rev-parse HEAD)"
-      - uses: saubermacherag/ansible-playbook-docker-action@v1.4
+      - uses: bockstaller/ansible-playbook-docker-action@master
         with:
           playbookName: "./deployment/ansible/provision.yml"
           inventoryFile: "./deployment/ansible/inventory/staging.ini"
-          requirementsFile: "./deployment/ansible/requirements.yml"
+          rolesFile: "./deployment/ansible/requirements.yml"
+          collectionsFile: "./deployment/ansible/requirements.yml"
           rolesPath: "/github/home/.ansible/roles"
           keyFile: "./deployment/ansible/inventory/staging-key"
           keyFileVaultPass: ${{ secrets.STAGING_KEYFILE_VAULT_PASS }}
