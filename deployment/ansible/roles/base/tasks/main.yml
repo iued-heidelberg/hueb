@@ -39,15 +39,6 @@
     fstype: ext4
     state: mounted
 
-- name: Create a backup directory
-  file:
-    path: "{ { backup_dir } }"
-    state: directory
-    recurse: yes
-    mode: "0660"
-    owner: ubuntu
-    group: docker
-
 - name: Change ownership recursively
   become: yes
   command: chown -R ubuntu /db_dump
