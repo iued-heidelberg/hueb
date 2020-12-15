@@ -89,6 +89,15 @@ jobs:
         shell: bash
         run: |
           echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+
+      - name: Set output
+        id: tag_vars
+        if: ${{ github.event_name == 'release' && github.event.action == 'released' }}
+        run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
+      - name: get tag
+        run: |
+          echo ${{ steps.vars.outputs.tag }}
+          echo ${GITHUB_REF#refs/*/}
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
       - name: Login to GitHub Container Registry
@@ -107,10 +116,7 @@ jobs:
             ghcr.io/bockstaller/hueb_app:${{ steps.vars.outputs.sha_short }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
-      - name: Set output
-        id: tag_vars
-        if: ${{ github.event_name == 'release' && github.event.action == 'released' }}
-        run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
+
       - name: Build and push
         id: docker_push
         if: ${{ github.event_name == 'release' && github.event.action == 'released' }}
@@ -122,7 +128,7 @@ jobs:
           push: true
           tags: |
             ghcr.io/bockstaller/hueb_app:production-latest
-            ghcr.io/bockstaller/hueb_app:${{ steps.vars.outputs.tag }}
+            ghcr.io/bockstaller/hueb_app:${GITHUB_REF#refs/*/}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
 
@@ -176,7 +182,7 @@ jobs:
           file: ./deployment/docker/postgres/Dockerfile
           tags: |
             ghcr.io/bockstaller/hueb_db:production-latest
-            ghcr.io/bockstaller/hueb_db:${{ steps.vars.outputs.tag }}
+            ghcr.io/bockstaller/hueb_db:${GITHUB_REF#refs/*/}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
 
