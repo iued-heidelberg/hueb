@@ -1,6 +1,11 @@
 name: Tests & Staging Deployment
 
-on: [push, pull_request]
+on:
+  push:
+    tags-ignore:
+      - "v*.*.*"
+  pull_request:
+
 jobs:
   black:
     runs-on: ubuntu-20.04
