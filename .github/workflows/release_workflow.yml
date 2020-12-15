@@ -6,35 +6,22 @@ on:
 
 jobs:
   black:
-    runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 4
-      matrix:
-        python-version: [3.8]
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v1
+      - uses: actions/setup-python@v2
         with:
-          python-version: ${{ matrix.python-version }}
-      - name: Black Check
-        uses: jpetrucciani/black-check@19.10b0
-        with:
-          # File or directory to run black on
-          path: .
+          python-version: 3.8
+      - uses: psf/black@stable
 
   flake8:
-    runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 4
-      matrix:
-        python-version: [3.8]
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python 3.8
+      - name: Set up Python 3.7
         uses: actions/setup-python@v1
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: 3.8
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
@@ -50,14 +37,10 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
   Tests:
-    runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 4
-      matrix:
-        python-version: [3.8]
+    runs-on: ubuntu-20.04
     services:
       db:
-        image: postgres:12.3-alpine
+        image: postgres:13
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -67,55 +50,132 @@ jobs:
         options: --mount type=tmpfs,destination=/var/lib/postgresql/data --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python 3.8
         uses: actions/setup-python@v1
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: 3.8
       - name: Install Dependencies
         run: |
           python -V
           python -m pip install --upgrade pip
           python -m pip install -r src/requirements.txt
+      - name: Collect static files
+        run: |
+          cd src
+          ./manage.py collectstatic
+        env: # Or as an environment variable
+          ENV: GITHUB_WORKFLOW
       - name: Run Tests
         run: |
           cd src
           pytest -v
-        env:
+        env: # Or as an environment variable
           ENV: GITHUB_WORKFLOW
 
-  ProductionDeployment:
-    if: ${{ github.event_name == 'release' && github.event.action == 'released' }}
-    needs: [Tests, flake8, black]
-    runs-on: ubuntu-latest
+  Application_Container_build:
+    runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-${{ github.sha }}
+      - name: Get short SHA for tag
+        id: vars
+        shell: bash
+        run: |
+          echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.PAT }}
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          build-args: git_sha=${{ steps.vars.outputs.sha_short }}
+          push: true
+          tags: |
+            ghcr.io/bockstaller/hueb_app:${{ steps.vars.outputs.sha_short }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
       - name: Set output
         id: vars
+        #if: ${{ github.event_name == 'release' && github.event.action == 'released' }}
         run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
-      - name: Deploy via ansible
-        uses: saubermacherag/ansible-playbook-docker-action@v1.3
+      - name: Build and push
+        id: docker_push
+        #if: ${{ github.event_name == 'release' && github.event.action == 'released' }}
+        uses: docker/build-push-action@v2
         with:
-          playbookName: "./deployment/deploy.yml"
-          inventoryFile: "./deployment/production.ini"
-          keyFile: "./deployment/production-key"
-          keyFileVaultPass: ${{ secrets.PRODUCTION_KEYFILE_VAULT_PASS }}
-          extraFile: "./deployment/group_vars/webserver"
-          extraVars: "-e github_tag_name=${{ steps.vars.outputs.tag }}
-          -e django_secret_key=${{ secrets.PRODUCTION_DJANGO_SECRET_KEY }} -e user_name=${{ secrets.PRODUCTION_USER_NAME }} -e user_password=${{ secrets.PRODUCTION_USER_PASSWORD }} -e password=${{ secrets.PRODUCTION_PASSWORD }} -e django_db_user=${{ secrets.PRODUCTION_DB_USER }} -e django_db_password=${{ secrets.PRODUCTION_DB_PASSWORD }} -e honeycomb_api=${{ secrets.HONEYCOMB_API }} -e sentry_api=${{ secrets.SENTRY_API }}"
-          verbosity: "vv"
-      - name: Create Sentry release
-        uses: getsentry/action-release@v1
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_RELEASE_AUTH_TOKEN }}
-          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
-          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+          build-args: |
+            git_sha=${{ steps.vars.outputs.sha_short }}
+            version=${{ steps.vars.outputs.tag }}
+          push: true
+          tags: |
+            ghcr.io/bockstaller/hueb_app:production-latest
+            ghcr.io/bockstaller/hueb_app:${{ steps.vars.outputs.tag }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
+
+  Postgres_Container_build:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Cache Docker layers
+        uses: actions/cache@v2
         with:
-          environment: production
-          version: ${{ github.ref }}
-      - name: Honeycomb Honeymarker
-        uses: naiduarvind/gha-honeymarker@v1.0.1
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-${{ github.sha }}
+      - name: Get short SHA for tag
+        id: vars
+        shell: bash
+        run: |
+          echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
         with:
-          apikey: ${{ secrets.HONEYCOMB_API }}
-          dataset: hueb_production
-          type: Release
-          message: "Release ${{ steps.vars.outputs.tag }}"
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.PAT }}
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          context: ./deployment/docker/postgres/.
+          file: ./deployment/docker/postgres/Dockerfile
+          tags: |
+            ghcr.io/bockstaller/hueb_db:${{ steps.vars.outputs.sha_short }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
+      - name: Set output
+        id: vars
+        #if: ${{ github.event_name == 'release' && github.event.action == 'released' }}
+        run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
+      - name: Build and push
+        id: docker_push
+        #if: ${{ github.event_name == 'release' && github.event.action == 'released' }}
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          context: ./deployment/docker/postgres/.
+          file: ./deployment/docker/postgres/Dockerfile
+          tags: |
+            ghcr.io/bockstaller/hueb_db:production-latest
+            ghcr.io/bockstaller/hueb_app:${{ steps.vars.outputs.tag }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
