@@ -108,7 +108,7 @@ jobs:
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
       - name: Set output
-        id: vars
+        id: tag_vars
         #if: ${{ github.event_name == 'release' && github.event.action == 'released' }}
         run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
       - name: Build and push
@@ -163,7 +163,7 @@ jobs:
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
       - name: Set output
-        id: vars
+        id: tag_var
         #if: ${{ github.event_name == 'release' && github.event.action == 'released' }}
         run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
       - name: Build and push
