@@ -106,7 +106,7 @@ jobs:
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
       - name: Build and push as staging-latest
-        id: docker_build
+        id: docker_push
         if: ${{ github.ref == 'refs/heads/develop' && github.event_name == 'push' }}
         uses: docker/build-push-action@v2
         with:
