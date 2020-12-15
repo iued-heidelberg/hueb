@@ -7,6 +7,16 @@
     mode: "0770"
     state: file
 
+- name: Create backup directory if it does not exist
+  become: yes
+  file:
+    path: "{{ backup_dir }}"
+    state: directory
+    mode: "0770"
+    group: docker
+    owner: ubuntu
+    recurse: yes
+
 - name: create backup
   become: yes
   shell: "sudo ./pg_backup.sh /db_dump/backup"

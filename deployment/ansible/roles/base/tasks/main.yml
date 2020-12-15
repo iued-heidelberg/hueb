@@ -2,14 +2,26 @@
 # Configure the server for the Django app
 ##
 - name: Update apt-get-cache if it is stale
+  become: yes
   apt:
     update_cache: yes
     cache_valid_time: 3600
 
 - name: Upgrade all packages to the latest version
+  become: yes
   apt:
     name: "*"
     state: latest
+
+- name: Ensure group "docker" exists
+  group:
+    name: docker
+    state: present
+
+- name: Add the user 'ubuntu' to group "docker"
+  user:
+    name: ubuntu
+    group: docker
 
 - name: enable SSH forwarding for sudo
   lineinfile:
@@ -31,6 +43,20 @@
     fstype: ext4
     state: mounted
 
+- name: Create ext4 filesystem on /dev/sdb
+  become: yes
+  filesystem:
+    fstype: ext4
+    dev: /dev/sdb
+
+- name: Mount db device
+  become: yes
+  mount:
+    path: /db
+    src: /dev/sdb
+    fstype: ext4
+    state: mounted
+
 - name: Change ownership recursively
   become: yes
   command: chown -R ubuntu /db_dump
@@ -49,16 +75,20 @@
   args:
     chdir: "/"
 
-- name: Create ext4 filesystem on /dev/sdb
+- name: Change ownership recursively
   become: yes
-  filesystem:
-    fstype: ext4
-    dev: /dev/sdb
+  command: chown -R ubuntu /db
+  args:
+    chdir: "/"
 
-- name: Mount db device
+- name: Change ownership recursively
   become: yes
-  mount:
-    path: /db
-    src: /dev/sdb
-    fstype: ext4
-    state: mounted
+  command: chgrp -R docker /db
+  args:
+    chdir: "/"
+
+- name: Change ownership recursively
+  become: yes
+  command: chmod -R 770 /db
+  args:
+    chdir: "/"

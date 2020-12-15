@@ -1,6 +1,7 @@
 - name: restore a db backup
   hosts: webserver
   gather_facts: True
+  become: true
   vars_prompt:
     - name: backup_file
       prompt: "What is your backup file path /db_dump/... .gz ?"

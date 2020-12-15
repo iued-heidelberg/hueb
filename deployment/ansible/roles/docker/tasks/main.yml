@@ -78,8 +78,8 @@
   meta: reset_connection
 
 - name: authenticate at ghcr.io
-  become_user: ubuntu
-  command: echo {{github_registry_pat}} | docker login ghcr.io -u {{ github_user }} --password-stdin
+  become: yes
+  shell: echo {{github_registry_pat}} | docker login ghcr.io -u {{ github_user }} --password-stdin
 
 - name: Template .env file
   template:

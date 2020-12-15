@@ -5,7 +5,7 @@ docker_directory: "{{ git_directory }}/deployment/docker"
 
 github_user: bockstaller
 
-backup_dir: /db_dump/local_backup
+backup_dir: /db_dump/backup
 nginx_conf: "{{docker_directory}}/nginx/nginx.conf"
 static_directory: /data/static
 

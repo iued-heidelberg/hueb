@@ -72,10 +72,10 @@
     PGPASSWORD: "{{ db_password }}"
 
 - name: recreate database
-  shell: "export PGPASSWORD={{db_password}} && createdb -h localhost -p {{host_db_port}} -U {{db_user}} {{db_name}}"
+  shell: "export PGPASSWORD='{{db_password}}' && createdb -h localhost -p {{host_db_port}} -U {{db_user}} {{db_name}}"
 
 - name: fill database
-  shell: "export PGPASSWORD={{db_password}} && psql -h localhost -p {{host_db_port}} -U {{db_user}} {{db_name}} < /db_dump/temp.sql"
+  shell: "export PGPASSWORD='{{db_password}}' && psql -h localhost -p {{host_db_port}} -U {{db_user}} {{db_name}} < /db_dump/temp.sql"
 
 - name: restart application
   become: yes

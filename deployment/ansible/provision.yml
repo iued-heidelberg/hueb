@@ -18,5 +18,5 @@
     - base
     - copy_src
     - create_backup
-    - geerlingguy.certbot
     - docker
+    - geerlingguy.certbot
