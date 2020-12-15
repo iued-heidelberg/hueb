@@ -1,8 +1,9 @@
 name: Tests & Production Deployment
 
 on:
-  release:
-    types: [released, prereleased, edited]
+  push:
+    tags:
+      - "v*.*.*"
 
 jobs:
   black:
@@ -90,14 +91,6 @@ jobs:
         run: |
           echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
 
-      - name: Set output
-        id: tag_vars
-        if: ${{ github.event_name == 'release' && github.event.action == 'released' }}
-        run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
-      - name: get tag
-        run: |
-          echo ${{ steps.vars.outputs.tag }}
-          echo ${GITHUB_REF#refs/*/}
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
       - name: Login to GitHub Container Registry
@@ -117,18 +110,21 @@ jobs:
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
 
+      - name: Set tag
+        id: tag_vars
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+
       - name: Build and push
         id: docker_push
-        if: ${{ github.event_name == 'release' && github.event.action == 'released' }}
         uses: docker/build-push-action@v2
         with:
           build-args: |
             git_sha=${{ steps.vars.outputs.sha_short }}
-            version=${{ steps.vars.outputs.tag }}
+            version=${{ env.RELEASE_VERSION }}
           push: true
           tags: |
             ghcr.io/bockstaller/hueb_app:production-latest
-            ghcr.io/bockstaller/hueb_app:${GITHUB_REF#refs/*/}
+            ghcr.io/bockstaller/hueb_app:${{ env.RELEASE_VERSION }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
 
@@ -168,13 +164,11 @@ jobs:
             ghcr.io/bockstaller/hueb_db:${{ steps.vars.outputs.sha_short }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
-      - name: Set output
-        id: tag_var
-        if: ${{ github.event_name == 'release' && github.event.action == 'released' }}
-        run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
+      - name: Set tag
+        id: tag_vars
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
       - name: Build and push
         id: docker_push
-        if: ${{ github.event_name == 'release' && github.event.action == 'released' }}
         uses: docker/build-push-action@v2
         with:
           push: true
@@ -182,12 +176,11 @@ jobs:
           file: ./deployment/docker/postgres/Dockerfile
           tags: |
             ghcr.io/bockstaller/hueb_db:production-latest
-            ghcr.io/bockstaller/hueb_db:${GITHUB_REF#refs/*/}
+            ghcr.io/bockstaller/hueb_db:${{ env.RELEASE_VERSION }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
 
   ProductionDeployment:
-    if: ${{ github.event_name == 'release' && github.event.action == 'released' }}
     needs:
       [
         Application_Container_build,
@@ -205,7 +198,9 @@ jobs:
         run: |
           echo "::set-output name=sha_short::$(git rev-parse --short HEAD)" && \
           echo "::set-output name=sha::$(git rev-parse HEAD)" && \
-          echo ::set-output name=tag::${GITHUB_REF#refs/*/}
+      - name: Set tag
+        id: tag_vars
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
       - uses: bockstaller/ansible-playbook-docker-action@master
         with:
           playbookName: "./deployment/ansible/provision.yml"
@@ -216,7 +211,7 @@ jobs:
           keyFile: "./deployment/ansible/inventory/production-key"
           keyFileVaultPass: ${{ secrets.PRODUCTION_KEYFILE_VAULT_PASS }}
           extraFile: "./deployment/ansible/group_vars/webserver"
-          extraVars: "-e git_sha=${{ steps.vars.outputs.sha_short }} -e tag=${{ steps.vars.outputs.tag }} -e env=production -e url=${{ secrets.PRODUCTION_URL }} -e github_registry_pat=${{ secrets.PAT }} -e honeycomb_api_key=${{ secrets.HONEYCOMB_API }} -e sentry_api_key=${{ secrets.SENTRY_API }} -e django_secret_key=${{ secrets.PRODUCTION_DJANGO_SECRET }} -e db_name=${{ secrets.PRODUCTION_DB_NAME }} -e db_user=${{ secrets.PRODUCTION_DB_USER }} -e db_password=${{ secrets.PRODUCTION_DB_PASSWORD }} -e db_port=${{ secrets.PRODUCTION_DB_PORT }} -e host_db_port=${{ secrets.PRODUCTION_HOST_DB_PORT }} -e project_dir=/github/workspace/"
+          extraVars: "-e git_sha=${{ steps.vars.outputs.sha_short }} -e tag=${{ env.RELEASE_VERSION }} -e env=production -e url=${{ secrets.PRODUCTION_URL }} -e github_registry_pat=${{ secrets.PAT }} -e honeycomb_api_key=${{ secrets.HONEYCOMB_API }} -e sentry_api_key=${{ secrets.SENTRY_API }} -e django_secret_key=${{ secrets.PRODUCTION_DJANGO_SECRET }} -e db_name=${{ secrets.PRODUCTION_DB_NAME }} -e db_user=${{ secrets.PRODUCTION_DB_USER }} -e db_password=${{ secrets.PRODUCTION_DB_PASSWORD }} -e db_port=${{ secrets.PRODUCTION_DB_PORT }} -e host_db_port=${{ secrets.PRODUCTION_HOST_DB_PORT }} -e project_dir=/github/workspace/"
           verbosity: "vv"
 
       - name: Create Sentry release
@@ -227,11 +222,11 @@ jobs:
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
         with:
           environment: production
-          version: hueb20@${{ steps.vars.outputs.tag }}
+          version: hueb20@${{ env.RELEASE_VERSION }}
       - name: Honeycomb Honeymarker
         uses: naiduarvind/gha-honeymarker@v1.0.1
         with:
           apikey: ${{ secrets.HONEYCOMB_API }}
           dataset: hueb_production
           type: Release Production
-          message: "Release hueb20@${{ steps.vars.outputs.tag }}"
+          message: "Release hueb20@${{ env.RELEASE_VERSION }}"
