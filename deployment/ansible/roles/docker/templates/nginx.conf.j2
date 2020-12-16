@@ -52,7 +52,7 @@ http {
       ssl_stapling_verify on;
 
       add_header Strict-Transport-Security "max-age=15768000; includeSubdomains; preload;";
-      add_header Content-Security-Policy "default-src 'none'; frame-ancestors 'none'; script-src 'self' https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js; img-src 'self'; style-src 'self'; base-uri 'self'; form-action 'self';";
+      add_header Content-Security-Policy "default-src 'none'; frame-ancestors 'none'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js; img-src 'self'; style-src 'self' 'unsafe-inline'; base-uri 'self'; form-action 'self'; font-src 'self'; connect-src 'self';";
       add_header Referrer-Policy "no-referrer, strict-origin-when-cross-origin";
       add_header X-Frame-Options SAMEORIGIN;
       add_header X-Content-Type-Options nosniff;
