@@ -7,4 +7,5 @@ from .document import Document
 from .filing import Filing
 from .language import Language
 from .person import Person
+from .review import Review
 from .utils import *
