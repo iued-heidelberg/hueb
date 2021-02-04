@@ -1,11 +1,10 @@
 from django.db import models
 from django.template.defaultfilters import escape
+from hueb.apps.hueb20.models.culturalCircle import CulturalCircle
+from hueb.apps.hueb20.models.document import Document
+from hueb.apps.hueb20.models.person import Person
 from hueb.apps.hueb20.models.utils import HUEB20, HUEB_APPLICATIONS
 from simple_history.models import HistoricalRecords
-
-from .culturalCircle import CulturalCircle
-from .document import Document
-from .person import Person
 
 
 class Comment(models.Model):

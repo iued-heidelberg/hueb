@@ -2,6 +2,11 @@ import hueb.apps.hueb_legacy_latein.models as Legacy
 from django.contrib.postgres.fields import IntegerRangeField
 from django.db import models
 from django.db.models import Q
+from hueb.apps.hueb20.models.archive import Archive
+from hueb.apps.hueb20.models.culturalCircle import CulturalCircle
+from hueb.apps.hueb20.models.ddc import DdcGerman
+from hueb.apps.hueb20.models.language import Language
+from hueb.apps.hueb20.models.person import Person
 from hueb.apps.hueb20.models.utils import (
     HUEB20,
     HUEB_APPLICATIONS,
@@ -9,12 +14,6 @@ from hueb.apps.hueb20.models.utils import (
 )
 from psycopg2.extras import NumericRange
 from simple_history.models import HistoricalRecords
-
-from .archive import Archive
-from .culturalCircle import CulturalCircle
-from .ddc import DdcGerman
-from .language import Language
-from .person import Person
 
 
 class Document(models.Model):

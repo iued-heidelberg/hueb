@@ -1,10 +1,9 @@
 import hueb.apps.hueb_legacy_latein.models as Legacy
 from django.db import models
+from hueb.apps.hueb20.models.archive import Archive
+from hueb.apps.hueb20.models.document import Document
 from hueb.apps.hueb20.models.utils import HUEB20, HUEB_APPLICATIONS
 from simple_history.models import HistoricalRecords
-
-from .archive import Archive
-from .document import Document
 
 
 class Filing(models.Model):
