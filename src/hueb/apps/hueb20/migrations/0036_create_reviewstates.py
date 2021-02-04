@@ -34,10 +34,14 @@ def create_reviews(apps, schema_editor):
         Review.objects.bulk_create(reviews)
 
 
+def uncreate_reviews(apps, schema_editor):
+    pass
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
         ("hueb20", "0035_historicalreview_review"),
     ]
 
-    operations = [migrations.RunPython(create_reviews)]
+    operations = [migrations.RunPython(create_reviews, uncreate_reviews)]

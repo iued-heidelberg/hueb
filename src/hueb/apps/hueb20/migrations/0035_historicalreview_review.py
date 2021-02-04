@@ -175,7 +175,7 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 (
-                    "DdcGerman",
+                    "ddc_german",
                     models.ForeignKey(
                         blank=True,
                         db_constraint=False,
