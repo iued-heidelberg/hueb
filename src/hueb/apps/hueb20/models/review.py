@@ -84,7 +84,7 @@ class Review(models.Model):
         blank=True,
         related_name="review_filing",
     )
-    DdcGerman = models.ForeignKey(
+    ddc_german = models.ForeignKey(
         DdcGerman,
         on_delete=models.CASCADE,
         null=True,

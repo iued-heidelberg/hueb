@@ -44,7 +44,7 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 (
-                    "DdcGerman",
+                    "ddc_german",
                     models.ForeignKey(
                         blank=True,
                         null=True,
