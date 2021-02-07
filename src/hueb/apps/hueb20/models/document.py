@@ -7,6 +7,7 @@ from hueb.apps.hueb20.models.culturalCircle import CulturalCircle
 from hueb.apps.hueb20.models.ddc import DdcGerman
 from hueb.apps.hueb20.models.language import Language
 from hueb.apps.hueb20.models.person import Person
+from hueb.apps.hueb20.models.reviewable import Reviewable
 from hueb.apps.hueb20.models.utils import (
     HUEB20,
     HUEB_APPLICATIONS,
@@ -16,7 +17,7 @@ from psycopg2.extras import NumericRange
 from simple_history.models import HistoricalRecords
 
 
-class Document(models.Model):
+class Document(Reviewable):
     id = models.BigAutoField(primary_key=True)
     title = models.TextField(blank=True, null=True)
     subtitle = models.TextField(blank=True, null=True)

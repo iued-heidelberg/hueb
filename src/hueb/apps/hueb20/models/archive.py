@@ -1,11 +1,12 @@
 import hueb.apps.hueb_legacy_latein.models as Legacy
 from django.db import models
 from hueb.apps.hueb20.models.country import Country
+from hueb.apps.hueb20.models.reviewable import Reviewable
 from hueb.apps.hueb20.models.utils import HUEB20, HUEB_APPLICATIONS
 from simple_history.models import HistoricalRecords
 
 
-class Archive(models.Model):
+class Archive(Reviewable):
     id = models.BigAutoField(primary_key=True)
     name = models.CharField(max_length=255, null=True)
     adress = models.TextField(blank=True, null=True)

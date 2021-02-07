@@ -1,10 +1,11 @@
 import hueb.apps.hueb_legacy_latein.models as Legacy
 from django.db import models
+from hueb.apps.hueb20.models.reviewable import Reviewable
 from hueb.apps.hueb20.models.utils import HUEB20, HUEB_APPLICATIONS
 from simple_history.models import HistoricalRecords
 
 
-class DdcGerman(models.Model):
+class DdcGerman(Reviewable):
 
     id = models.BigAutoField(primary_key=True)
     ddc_number = models.CharField(max_length=3)

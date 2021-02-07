@@ -13,6 +13,19 @@ HUEB_APPLICATIONS = [
 ]
 
 
+NOT_REVIEWED = "NOT_REVIEWED"
+CHANGES_NECESSARY = "CHANGES_NECESSARY"
+REREVIEW_NECESSARY = "REREVIEW_NECESSESARY"
+OK = "OK"
+
+REVIEW_STATES = [
+    (NOT_REVIEWED, "Not reviewed"),
+    (CHANGES_NECESSARY, "Changes necessary"),
+    (REREVIEW_NECESSARY, "Rereview necessary"),
+    (OK, "Successfully reviewed"),
+]
+
+
 def close_range(range_value):
     if range_value is not None:
         if not range_value.isempty:

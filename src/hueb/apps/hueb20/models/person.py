@@ -2,6 +2,7 @@ import hueb.apps.hueb_legacy_latein.models as Legacy
 from django.contrib.postgres.fields import IntegerRangeField
 from django.db import models
 from django.template.defaultfilters import escape
+from hueb.apps.hueb20.models.reviewable import Reviewable
 from hueb.apps.hueb20.models.utils import (
     HUEB20,
     HUEB_APPLICATIONS,
@@ -10,7 +11,7 @@ from hueb.apps.hueb20.models.utils import (
 from simple_history.models import HistoricalRecords
 
 
-class Person(models.Model):
+class Person(Reviewable):
     id = models.BigAutoField(primary_key=True)
     name = models.CharField(max_length=255, null=True, blank=True)
     alias = models.ForeignKey("self", on_delete=models.CASCADE, null=True, blank=True)

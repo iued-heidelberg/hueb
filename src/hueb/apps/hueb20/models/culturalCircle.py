@@ -1,10 +1,11 @@
 from django.contrib.postgres.fields import IntegerRangeField
 from django.db import models
+from hueb.apps.hueb20.models.reviewable import Reviewable
 from hueb.apps.hueb20.models.utils import HUEB20, HUEB_APPLICATIONS
 from simple_history.models import HistoricalRecords
 
 
-class CulturalCircle(models.Model):
+class CulturalCircle(Reviewable):
     id = models.BigAutoField(primary_key=True)
     name = models.CharField(max_length=255, help_text="Name of the cultural circle")
     start = IntegerRangeField(null=True, blank=True)

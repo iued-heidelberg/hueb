@@ -2,11 +2,12 @@ import hueb.apps.hueb_legacy_latein.models as Legacy
 from django.db import models
 from hueb.apps.hueb20.models.archive import Archive
 from hueb.apps.hueb20.models.document import Document
+from hueb.apps.hueb20.models.reviewable import Reviewable
 from hueb.apps.hueb20.models.utils import HUEB20, HUEB_APPLICATIONS
 from simple_history.models import HistoricalRecords
 
 
-class Filing(models.Model):
+class Filing(Reviewable):
     id = models.BigAutoField(primary_key=True)
     archive = models.ForeignKey(
         Archive, on_delete=models.CASCADE, null=True, blank=True
