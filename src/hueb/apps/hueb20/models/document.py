@@ -14,7 +14,6 @@ from hueb.apps.hueb20.models.utils import (
     timerange_serialization,
 )
 from psycopg2.extras import NumericRange
-from simple_history.models import HistoricalRecords
 
 
 class Document(Reviewable):
@@ -65,7 +64,6 @@ class Document(Reviewable):
         null=True,
         blank=True,
     )
-    history = HistoricalRecords()
 
     def __str__(self):
         if self.title is None:

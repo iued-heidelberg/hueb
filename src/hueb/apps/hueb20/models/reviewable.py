@@ -1,5 +1,6 @@
 from django.db import models
 from hueb.apps.hueb20.models.utils import NOT_REVIEWED, REVIEW_STATES
+from simple_history.models import HistoricalRecords
 
 
 class Reviewable(models.Model):
@@ -11,6 +12,7 @@ class Reviewable(models.Model):
     state = models.CharField(max_length=20, choices=REVIEW_STATES, default=NOT_REVIEWED)
     reviewed = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    history = HistoricalRecords(inherit=True)
 
     class Meta:
         abstract = True

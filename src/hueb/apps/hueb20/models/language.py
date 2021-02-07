@@ -2,7 +2,6 @@ import hueb.apps.hueb_legacy_latein.models as Legacy
 from django.db import models
 from hueb.apps.hueb20.models.reviewable import Reviewable
 from hueb.apps.hueb20.models.utils import HUEB20, HUEB_APPLICATIONS
-from simple_history.models import HistoricalRecords
 
 
 class Language(Reviewable):
@@ -16,7 +15,6 @@ class Language(Reviewable):
         blank=True,
         related_name="language_ref",
     )
-    history = HistoricalRecords()
 
     def __str__(self):
         if self.language is None:

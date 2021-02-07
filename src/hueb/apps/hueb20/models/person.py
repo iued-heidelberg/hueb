@@ -8,7 +8,6 @@ from hueb.apps.hueb20.models.utils import (
     HUEB_APPLICATIONS,
     timerange_serialization,
 )
-from simple_history.models import HistoricalRecords
 
 
 class Person(Reviewable):
@@ -30,7 +29,6 @@ class Person(Reviewable):
     publisherTranslation_ref = models.OneToOneField(
         Legacy.TranslationNew, on_delete=models.DO_NOTHING, null=True, blank=True
     )
-    history = HistoricalRecords()
 
     def __str__(self):
         if self.name is None:

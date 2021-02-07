@@ -4,7 +4,6 @@ from hueb.apps.hueb20.models.archive import Archive
 from hueb.apps.hueb20.models.document import Document
 from hueb.apps.hueb20.models.reviewable import Reviewable
 from hueb.apps.hueb20.models.utils import HUEB20, HUEB_APPLICATIONS
-from simple_history.models import HistoricalRecords
 
 
 class Filing(Reviewable):
@@ -21,4 +20,3 @@ class Filing(Reviewable):
     locAssign_ref = models.ForeignKey(
         Legacy.LocAssign, on_delete=models.DO_NOTHING, null=True, blank=True
     )
-    history = HistoricalRecords()

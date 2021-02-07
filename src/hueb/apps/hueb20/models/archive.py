@@ -3,7 +3,6 @@ from django.db import models
 from hueb.apps.hueb20.models.country import Country
 from hueb.apps.hueb20.models.reviewable import Reviewable
 from hueb.apps.hueb20.models.utils import HUEB20, HUEB_APPLICATIONS
-from simple_history.models import HistoricalRecords
 
 
 class Archive(Reviewable):
@@ -18,7 +17,6 @@ class Archive(Reviewable):
     location_ref = models.OneToOneField(
         Legacy.LocationNew, on_delete=models.DO_NOTHING, null=True, blank=True
     )
-    history = HistoricalRecords()
 
     def __str__(self):
         if self.name is None:
