@@ -43,6 +43,12 @@ class Document(Reviewable):
     ddc = models.ForeignKey(
         DdcGerman, on_delete=models.DO_NOTHING, blank=True, null=True
     )
+
+    contributions = models.ManyToManyField(
+        Person,
+        through="Contribution",
+    )
+
     located_in = models.ManyToManyField(
         Archive,
         through="Filing",

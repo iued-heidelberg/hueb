@@ -1,5 +1,6 @@
 from .archive import Archive
 from .comment import Comment
+from .contribution import Contribution
 from .country import Country
 from .culturalCircle import CulturalCircle
 from .ddc import DdcGerman
