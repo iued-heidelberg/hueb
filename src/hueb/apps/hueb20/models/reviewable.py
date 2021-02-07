@@ -1,12 +1,19 @@
 from django.db import models
-from hueb.apps.hueb20.models.utils import NOT_REVIEWED, REVIEW_STATES
 from simple_history.models import HistoricalRecords
 
 
 class Reviewable(models.Model):
-    def __init__(self, review_state=NOT_REVIEWED):
-        if review_state in REVIEW_STATES:
-            self.review = review_state
+    NOT_REVIEWED = "NOT_REVIEWED"
+    CHANGES_NECESSARY = "CHANGES_NECESSARY"
+    REREVIEW_NECESSARY = "REREVIEW_NECESSESARY"
+    OK = "OK"
+
+    REVIEW_STATES = [
+        (NOT_REVIEWED, "Not reviewed"),
+        (CHANGES_NECESSARY, "Changes necessary"),
+        (REREVIEW_NECESSARY, "Rereview necessary"),
+        (OK, "Successfully reviewed"),
+    ]
 
     id = models.BigAutoField(primary_key=True)
     state = models.CharField(max_length=20, choices=REVIEW_STATES, default=NOT_REVIEWED)
@@ -16,3 +23,7 @@ class Reviewable(models.Model):
 
     class Meta:
         abstract = True
+
+    def __init__(self, review_state=NOT_REVIEWED):
+        if review_state in self.REVIEW_STATES:
+            self.review = review_state
