@@ -120,7 +120,7 @@ class Document(Reviewable):
         return Q(written_in__overlap=NumericRange(lower, upper))
 
 
-class DocumentRelationship(models.Model):
+class DocumentRelationship(Reviewable):
     id = models.BigAutoField(primary_key=True)
 
     document_from = models.ForeignKey(
@@ -128,6 +128,13 @@ class DocumentRelationship(models.Model):
     )
     document_to = models.ForeignKey(
         "Document", on_delete=models.DO_NOTHING, related_name="to_translation"
+    )
+
+    original_ref = models.OneToOneField(
+        Legacy.OriginalNew, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
+    translation_ref = models.OneToOneField(
+        Legacy.TranslationNew, on_delete=models.DO_NOTHING, null=True, blank=True
     )
 
     app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
