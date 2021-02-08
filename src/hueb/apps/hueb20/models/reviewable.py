@@ -23,7 +23,3 @@ class Reviewable(models.Model):
 
     class Meta:
         abstract = True
-
-    def __init__(self, review_state=NOT_REVIEWED):
-        if review_state in self.REVIEW_STATES:
-            self.review = review_state
