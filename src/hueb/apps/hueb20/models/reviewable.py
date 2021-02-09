@@ -23,3 +23,4 @@ class Reviewable(models.Model):
 
     class Meta:
         abstract = True
+        permissions = [("can_review", "Can review hueb entries")]
