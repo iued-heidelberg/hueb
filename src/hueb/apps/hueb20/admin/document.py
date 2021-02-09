@@ -8,31 +8,23 @@ from django.utils.safestring import mark_safe
 from hueb.apps.hueb20.models import Document
 from hueb.apps.hueb20.widgets.timerange import TimeRangeWidget
 from hueb.apps.hueb_legacy_latein import models as Legacy
-from simple_history.admin import SimpleHistoryAdmin
+from hueb.apps.hueb20.admin.review import ReviewAdmin, TabularInlineReviewAdmin
 
 from .comment import CommentInline
 from .filing import FilingInline
 
 
-class LegacyAuthorNew(admin.TabularInline):
-    model = Legacy.AuthorNew
+class ContributionInline(TabularInlineReviewAdmin):
+    readonly_fields = ("app",)
+    model = Document.contributions.through
     extra = 0
-
-
-class DocumentAuthorInline(admin.TabularInline):
-    model = Document.written_by.through
-    extra = 0
-    verbose_name = "Author or Translator"
+    verbose_name = "Contributions"
     verbose_name_plural = verbose_name
     autocomplete_fields = ("person",)
+    fields = ("person", "contribution_type", "state", "app")
+    exclude = ("originalAuthor_ref", "translationTranslator_ref", "reviewed")
 
 
-class DocumentPublisherInline(admin.TabularInline):
-    model = Document.publishers.through
-    extra = 0
-    verbose_name = "Publisher"
-    verbose_name_plural = verbose_name + "s"
-    autocomplete_fields = ("person",)
 
 
 class TranslationRelationshipInline(admin.TabularInline):
@@ -88,8 +80,7 @@ class DocumentAdmin(SimpleHistoryAdmin):
     )
     formfield_overrides = {IntegerRangeField: {"widget": TimeRangeWidget}}
     inlines = [
-        DocumentAuthorInline,
-        DocumentPublisherInline,
+        ContributionInline,
         TranslationRelationshipInline,
         OriginalRelationshipInline,
         FilingInline,
