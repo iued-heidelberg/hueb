@@ -1,16 +1,17 @@
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.safestring import mark_safe
+from hueb.apps.hueb20.admin.review import ReviewAdmin, TabularInlineReviewAdmin
 from hueb.apps.hueb20.models import Document, Filing
-from simple_history.admin import SimpleHistoryAdmin
 
 
 @admin.register(Filing)
-class FilingAdmin(SimpleHistoryAdmin):
+class FilingAdmin(ReviewAdmin):
     readonly_fields = ("app", "locAssign_link")
     list_display = ("id", "signatur", "link")
     search_fields = ("signatur", "id")
     autocomplete_fields = ("archive",)
+
     fieldsets = (
         (
             "Filing Information",
@@ -18,6 +19,10 @@ class FilingAdmin(SimpleHistoryAdmin):
                 "description": ("Stores the filing locations of documents"),
                 "fields": ("signatur", "link"),
             },
+        ),
+        (
+            "Review",
+            {"fields": ("state",)},
         ),
         (
             "Datasource for reference",
@@ -42,10 +47,12 @@ class FilingAdmin(SimpleHistoryAdmin):
     locAssign_link.short_description = "Filing Location"
 
 
-class FilingInline(admin.TabularInline):
-    readonly_fields = ("app", "locAssign_ref")
+class FilingInline(TabularInlineReviewAdmin):
+    readonly_fields = ("app",)
     model = Document.located_in.through
     extra = 0
     verbose_name = "Filing Location"
     verbose_name_plural = verbose_name + "s"
     autocomplete_fields = ("archive",)
+    fields = ("archive", "signatur", "link", "state", "app")
+    exclude = ("locAssign_ref", "reviewed")

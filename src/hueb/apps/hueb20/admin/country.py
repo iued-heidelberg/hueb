@@ -1,12 +1,12 @@
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.safestring import mark_safe
+from hueb.apps.hueb20.admin.review import ReviewAdmin
 from hueb.apps.hueb20.models import Country
-from simple_history.admin import SimpleHistoryAdmin
 
 
 @admin.register(Country)
-class CountryAdmin(SimpleHistoryAdmin):
+class CountryAdmin(ReviewAdmin):
     readonly_fields = ("app", "country_link")
     list_display = (
         "id",
@@ -20,6 +20,10 @@ class CountryAdmin(SimpleHistoryAdmin):
                 "description": ("Information stored about the country"),
                 "fields": ("country",),
             },
+        ),
+        (
+            "Review",
+            {"fields": ("state",)},
         ),
         (
             "Datasource for reference",

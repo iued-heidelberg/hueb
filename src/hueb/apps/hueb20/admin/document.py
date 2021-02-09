@@ -5,10 +5,9 @@ from django.contrib.postgres.fields import IntegerRangeField
 from django.db.models import Count
 from django.urls import reverse
 from django.utils.safestring import mark_safe
+from hueb.apps.hueb20.admin.review import ReviewAdmin, TabularInlineReviewAdmin
 from hueb.apps.hueb20.models import Document
 from hueb.apps.hueb20.widgets.timerange import TimeRangeWidget
-from hueb.apps.hueb_legacy_latein import models as Legacy
-from hueb.apps.hueb20.admin.review import ReviewAdmin, TabularInlineReviewAdmin
 
 from .comment import CommentInline
 from .filing import FilingInline
@@ -25,9 +24,7 @@ class ContributionInline(TabularInlineReviewAdmin):
     exclude = ("originalAuthor_ref", "translationTranslator_ref", "reviewed")
 
 
-
-
-class TranslationRelationshipInline(admin.TabularInline):
+class TranslationRelationshipInline(TabularInlineReviewAdmin):
     readonly_fields = ("app",)
     model = Document.translations.through
     fk_name = "document_from"
@@ -35,9 +32,11 @@ class TranslationRelationshipInline(admin.TabularInline):
     verbose_name = "Translation"
     verbose_name_plural = verbose_name + "s"
     autocomplete_fields = ("document_to",)
+    fields = ("document_to", "state", "app")
+    exclude = ["reviewed", "original_ref", "translation_ref"]
 
 
-class OriginalRelationshipInline(admin.TabularInline):
+class OriginalRelationshipInline(TabularInlineReviewAdmin):
 
     readonly_fields = ("app",)
     model = Document.translations.through
@@ -46,10 +45,12 @@ class OriginalRelationshipInline(admin.TabularInline):
     verbose_name = "Original"
     verbose_name_plural = verbose_name + "s"
     autocomplete_fields = ("document_from",)
+    fields = ("document_from", "state", "app")
+    exclude = ["reviewed", "original_ref", "translation_ref"]
 
 
 @admin.register(Document)
-class DocumentAdmin(SimpleHistoryAdmin):
+class DocumentAdmin(ReviewAdmin):
 
     actions = ["duplicate"]
 
@@ -103,6 +104,10 @@ class DocumentAdmin(SimpleHistoryAdmin):
                     "cultural_circle",
                 ),
             },
+        ),
+        (
+            "Review",
+            {"fields": ("state",)},
         ),
         (
             "Datasource for reference",

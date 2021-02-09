@@ -1,12 +1,12 @@
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.safestring import mark_safe
+from hueb.apps.hueb20.admin.review import ReviewAdmin
 from hueb.apps.hueb20.models import Archive
-from simple_history.admin import SimpleHistoryAdmin
 
 
 @admin.register(Archive)
-class ArchiveAdmin(SimpleHistoryAdmin):
+class ArchiveAdmin(ReviewAdmin):
     readonly_fields = ("app", "archive_link")
     list_display = (
         "id",
@@ -34,6 +34,10 @@ class ArchiveAdmin(SimpleHistoryAdmin):
                     "z3950_gateway",
                 ),
             },
+        ),
+        (
+            "Review",
+            {"fields": ("state",)},
         ),
         (
             "Datasource for reference",

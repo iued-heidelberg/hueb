@@ -1,14 +1,14 @@
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.safestring import mark_safe
+from hueb.apps.hueb20.admin.review import ReviewAdmin
 from hueb.apps.hueb20.models import CulturalCircle
-from simple_history.admin import SimpleHistoryAdmin
 
 from .comment import CommentInline
 
 
 @admin.register(CulturalCircle)
-class CulturalCircleAdmin(SimpleHistoryAdmin):
+class CulturalCircleAdmin(ReviewAdmin):
     readonly_fields = ("app", "cultural_circle_link")
     list_display = ("id", "name", "description", "start", "end")
     search_fields = ("name", "id", "start", "end")
@@ -20,6 +20,10 @@ class CulturalCircleAdmin(SimpleHistoryAdmin):
                 "description": ("Information stored about the cultural circle"),
                 "fields": ("name", "description", "start", "end"),
             },
+        ),
+        (
+            "Review",
+            {"fields": ("state",)},
         ),
         (
             "Datasource for reference",

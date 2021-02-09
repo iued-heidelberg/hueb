@@ -2,15 +2,15 @@ from django.contrib import admin
 from django.contrib.postgres.fields import IntegerRangeField
 from django.urls import reverse
 from django.utils.safestring import mark_safe
+from hueb.apps.hueb20.admin.review import ReviewAdmin
 from hueb.apps.hueb20.models import Person
 from hueb.apps.hueb20.widgets.timerange import TimeRangeWidget
-from simple_history.admin import SimpleHistoryAdmin
 
 from .comment import CommentInline
 
 
 @admin.register(Person)
-class PersonAdmin(SimpleHistoryAdmin):
+class PersonAdmin(ReviewAdmin):
 
     readonly_fields = ("app", "author_link", "translator_link")
     list_display = (
@@ -31,6 +31,10 @@ class PersonAdmin(SimpleHistoryAdmin):
                 "description": ("All known data about a person"),
                 "fields": ("name", "alias", "lifetime_start", "lifetime_end"),
             },
+        ),
+        (
+            "Review",
+            {"fields": ("state",)},
         ),
         (
             "Datasource for reference",

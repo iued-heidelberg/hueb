@@ -1,12 +1,12 @@
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.safestring import mark_safe
+from hueb.apps.hueb20.admin.review import ReviewAdmin
 from hueb.apps.hueb20.models import DdcGerman
-from simple_history.admin import SimpleHistoryAdmin
 
 
 @admin.register(DdcGerman)
-class DdcGermanAdmin(SimpleHistoryAdmin):
+class DdcGermanAdmin(ReviewAdmin):
     readonly_fields = ("app", "ddc_link")
     list_display = (
         "id",
@@ -19,6 +19,10 @@ class DdcGermanAdmin(SimpleHistoryAdmin):
         (
             "DDC Information",
             {"description": (" "), "fields": ("ddc_number", "ddc_name")},
+        ),
+        (
+            "Review",
+            {"fields": ("state",)},
         ),
         (
             "Datasource for reference",
