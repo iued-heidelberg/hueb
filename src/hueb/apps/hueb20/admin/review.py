@@ -18,7 +18,9 @@ class ReviewAdmin(SimpleHistoryAdmin):
 class TabularInlineReviewAdmin(admin.TabularInline):
     def get_readonly_fields(self, request, obj=None):
         if not request.user.has_perm("hueb20.can_review"):
-            return ("state", "reviewed")
+            return (
+                "state",
+                "reviewed",
+            ).update(self.readonly_fields)
         else:
-
-            return ()
+            return self.readonly_fields
