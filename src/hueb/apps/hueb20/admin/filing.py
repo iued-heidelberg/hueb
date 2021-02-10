@@ -54,5 +54,10 @@ class FilingInline(TabularInlineReviewAdmin):
     verbose_name = "Filing Location"
     verbose_name_plural = verbose_name + "s"
     autocomplete_fields = ("archive",)
-    fields = ("archive", "signatur", "link", "state", "app")
+    fields = (
+        "archive",
+        "signatur",
+        "link",
+        "state",
+    )
     exclude = ("locAssign_ref", "reviewed")

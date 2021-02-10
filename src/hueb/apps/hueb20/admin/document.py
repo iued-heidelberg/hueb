@@ -20,7 +20,7 @@ class ContributionInline(TabularInlineReviewAdmin):
     verbose_name = "Contributions"
     verbose_name_plural = verbose_name
     autocomplete_fields = ("person",)
-    fields = ("person", "contribution_type", "state", "app")
+    fields = ("person", "contribution_type", "state")
     exclude = ("originalAuthor_ref", "translationTranslator_ref", "reviewed")
 
 
@@ -32,7 +32,10 @@ class TranslationRelationshipInline(TabularInlineReviewAdmin):
     verbose_name = "Translation"
     verbose_name_plural = verbose_name + "s"
     autocomplete_fields = ("document_to",)
-    fields = ("document_to", "state", "app")
+    fields = (
+        "document_to",
+        "state",
+    )
     exclude = ["reviewed", "original_ref", "translation_ref"]
 
 
@@ -45,7 +48,7 @@ class OriginalRelationshipInline(TabularInlineReviewAdmin):
     verbose_name = "Original"
     verbose_name_plural = verbose_name + "s"
     autocomplete_fields = ("document_from",)
-    fields = ("document_from", "state", "app")
+    fields = ("document_from", "state")
     exclude = ["reviewed", "original_ref", "translation_ref"]
 
 
