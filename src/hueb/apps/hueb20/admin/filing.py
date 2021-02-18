@@ -7,7 +7,7 @@ from hueb.apps.hueb20.models import Document, Filing
 
 @admin.register(Filing)
 class FilingAdmin(ReviewAdmin):
-    readonly_fields = ("app", "locAssign_link")
+    readonly_fields = ("app", "locAssign_link", "id")
     list_display = ("id", "signatur", "link")
     search_fields = ("signatur", "id")
     autocomplete_fields = ("archive",)
@@ -17,7 +17,7 @@ class FilingAdmin(ReviewAdmin):
             "Filing Information",
             {
                 "description": ("Stores the filing locations of documents"),
-                "fields": ("signatur", "link"),
+                "fields": ("id", "signatur", "link"),
             },
         ),
         (
@@ -48,13 +48,14 @@ class FilingAdmin(ReviewAdmin):
 
 
 class FilingInline(TabularInlineReviewAdmin):
-    readonly_fields = ("app",)
+    readonly_fields = ("app", "id")
     model = Document.located_in.through
     extra = 0
     verbose_name = "Filing Location"
     verbose_name_plural = verbose_name + "s"
     autocomplete_fields = ("archive",)
     fields = (
+        "id",
         "archive",
         "signatur",
         "link",

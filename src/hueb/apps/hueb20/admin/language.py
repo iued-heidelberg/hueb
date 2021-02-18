@@ -7,7 +7,7 @@ from hueb.apps.hueb20.models import Language
 
 @admin.register(Language)
 class LanguageAdmin(ReviewAdmin):
-    readonly_fields = ("app", "language_link")
+    readonly_fields = ("app", "language_link", "id")
     list_display = (
         "id",
         "language",
@@ -17,7 +17,13 @@ class LanguageAdmin(ReviewAdmin):
     fieldsets = (
         (
             "Language Information",
-            {"description": (" "), "fields": ("language",)},
+            {
+                "description": (" "),
+                "fields": (
+                    "id",
+                    "language",
+                ),
+            },
         ),
         (
             "Review",

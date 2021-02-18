@@ -14,18 +14,18 @@ from .filing import FilingInline
 
 
 class ContributionInline(TabularInlineReviewAdmin):
-    readonly_fields = ("app",)
+    readonly_fields = ("app", "id")
     model = Document.contributions.through
     extra = 0
     verbose_name = "Contributions"
     verbose_name_plural = verbose_name
     autocomplete_fields = ("person",)
-    fields = ("person", "contribution_type", "state")
+    fields = ("id", "person", "contribution_type", "state")
     exclude = ("originalAuthor_ref", "translationTranslator_ref", "reviewed")
 
 
 class TranslationRelationshipInline(TabularInlineReviewAdmin):
-    readonly_fields = ("app",)
+    readonly_fields = ("app", "id")
     model = Document.translations.through
     fk_name = "document_from"
     extra = 0
@@ -33,6 +33,7 @@ class TranslationRelationshipInline(TabularInlineReviewAdmin):
     verbose_name_plural = verbose_name + "s"
     autocomplete_fields = ("document_to",)
     fields = (
+        "id",
         "document_to",
         "state",
     )
@@ -41,14 +42,14 @@ class TranslationRelationshipInline(TabularInlineReviewAdmin):
 
 class OriginalRelationshipInline(TabularInlineReviewAdmin):
 
-    readonly_fields = ("app",)
+    readonly_fields = ("app", "id")
     model = Document.translations.through
     fk_name = "document_to"
     extra = 0
     verbose_name = "Original"
     verbose_name_plural = verbose_name + "s"
     autocomplete_fields = ("document_from",)
-    fields = ("document_from", "state")
+    fields = ("id", "document_from", "state")
     exclude = ["reviewed", "original_ref", "translation_ref"]
 
 
@@ -59,6 +60,7 @@ class DocumentAdmin(ReviewAdmin):
 
     autocomplete_fields = ("ddc", "cultural_circle", "language")
     readonly_fields = (
+        "id",
         "app",
         "origAssign_link",
         "original_link",
@@ -97,6 +99,7 @@ class DocumentAdmin(ReviewAdmin):
             {
                 "description": ("Stores the information known about documents"),
                 "fields": (
+                    "id",
                     "title",
                     "subtitle",
                     "edition",

@@ -7,7 +7,7 @@ from hueb.apps.hueb20.models import Archive
 
 @admin.register(Archive)
 class ArchiveAdmin(ReviewAdmin):
-    readonly_fields = ("app", "archive_link")
+    readonly_fields = ("id", "app", "archive_link")
     list_display = (
         "id",
         "name",
@@ -26,6 +26,7 @@ class ArchiveAdmin(ReviewAdmin):
             {
                 "description": (" "),
                 "fields": (
+                    "id",
                     "name",
                     "adress",
                     "country",

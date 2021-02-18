@@ -7,7 +7,11 @@ from hueb.apps.hueb20.models import Country
 
 @admin.register(Country)
 class CountryAdmin(ReviewAdmin):
-    readonly_fields = ("app", "country_link")
+    readonly_fields = (
+        "app",
+        "country_link",
+        "id",
+    )
     list_display = (
         "id",
         "country",
@@ -18,7 +22,10 @@ class CountryAdmin(ReviewAdmin):
             "Country Information",
             {
                 "description": ("Information stored about the country"),
-                "fields": ("country",),
+                "fields": (
+                    "id",
+                    "country",
+                ),
             },
         ),
         (

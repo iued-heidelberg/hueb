@@ -9,7 +9,10 @@ class CommentInline(admin.TabularInline):
         "external",
         "text",
     )
-    readonly_fields = ("app",)
+    readonly_fields = (
+        "app",
+        "id",
+    )
     extra = 0
     verbose_name = "Comment"
     verbose_name_plural = verbose_name + "s"
@@ -18,8 +21,15 @@ class CommentInline(admin.TabularInline):
 @admin.register(Comment)
 class CommentAdmin(SimpleHistoryAdmin):
     model = Comment
-    fields = ("text", "person", "document", "external")
+    fields = (
+        "id",
+        "text",
+        "person",
+        "document",
+        "external",
+    )
     readonly_fields = (
+        "id",
         "app",
         "text",
         "person",

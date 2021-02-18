@@ -7,7 +7,7 @@ from hueb.apps.hueb20.models import DdcGerman
 
 @admin.register(DdcGerman)
 class DdcGermanAdmin(ReviewAdmin):
-    readonly_fields = ("app", "ddc_link")
+    readonly_fields = ("app", "ddc_link", "id")
     list_display = (
         "id",
         "ddc_number",
@@ -18,7 +18,7 @@ class DdcGermanAdmin(ReviewAdmin):
     fieldsets = (
         (
             "DDC Information",
-            {"description": (" "), "fields": ("ddc_number", "ddc_name")},
+            {"description": (" "), "fields": ("id", "ddc_number", "ddc_name")},
         ),
         (
             "Review",

@@ -12,7 +12,7 @@ from .comment import CommentInline
 @admin.register(Person)
 class PersonAdmin(ReviewAdmin):
 
-    readonly_fields = ("app", "author_link", "translator_link")
+    readonly_fields = ("app", "author_link", "translator_link", "id")
     list_display = (
         "id",
         "name",
@@ -31,6 +31,7 @@ class PersonAdmin(ReviewAdmin):
             {
                 "description": ("All known data about a person"),
                 "fields": (
+                    "id",
                     "name",
                     "alias",
                     "organisation",
