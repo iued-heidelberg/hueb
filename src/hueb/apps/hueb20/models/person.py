@@ -14,6 +14,7 @@ class Person(Reviewable):
     id = models.BigAutoField(primary_key=True)
     name = models.CharField(max_length=255, null=True, blank=True)
     alias = models.ForeignKey("self", on_delete=models.CASCADE, null=True, blank=True)
+    organisation = models.BooleanField(default=False, null=False, blank=None)
     lifetime_start = IntegerRangeField(null=True, blank=True)
     lifetime_end = IntegerRangeField(null=True, blank=True)
     app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)

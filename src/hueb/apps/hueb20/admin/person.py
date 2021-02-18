@@ -20,6 +20,7 @@ class PersonAdmin(ReviewAdmin):
         "is_alias",
         "adapt_person_lifetime_start_list_view",
         "adapt_person_lifetime_end_list_view",
+        "organisation",
     )
     search_fields = ("name", "id", "lifetime_start", "lifetime_end")
     autocomplete_fields = ("alias",)
@@ -29,7 +30,13 @@ class PersonAdmin(ReviewAdmin):
             "Person Information",
             {
                 "description": ("All known data about a person"),
-                "fields": ("name", "alias", "lifetime_start", "lifetime_end"),
+                "fields": (
+                    "name",
+                    "alias",
+                    "organisation",
+                    "lifetime_start",
+                    "lifetime_end",
+                ),
             },
         ),
         (
