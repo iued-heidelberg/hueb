@@ -14,18 +14,18 @@ from .filing import FilingInline
 
 
 class ContributionInline(TabularInlineReviewAdmin):
-    readonly_fields = ("app", "id")
+    readonly_fields = ("app", "id", "person_id")
     model = Document.contributions.through
     extra = 0
     verbose_name = "Contributions"
     verbose_name_plural = verbose_name
     autocomplete_fields = ("person",)
-    fields = ("id", "person", "contribution_type", "state")
+    fields = ("person_id", "person", "contribution_type", "state")
     exclude = ("originalAuthor_ref", "translationTranslator_ref", "reviewed")
 
 
 class TranslationRelationshipInline(TabularInlineReviewAdmin):
-    readonly_fields = ("app", "id")
+    readonly_fields = ("app", "document_to_id")
     model = Document.translations.through
     fk_name = "document_from"
     extra = 0
@@ -33,7 +33,7 @@ class TranslationRelationshipInline(TabularInlineReviewAdmin):
     verbose_name_plural = verbose_name + "s"
     autocomplete_fields = ("document_to",)
     fields = (
-        "id",
+        "document_to_id",
         "document_to",
         "state",
     )
@@ -42,14 +42,14 @@ class TranslationRelationshipInline(TabularInlineReviewAdmin):
 
 class OriginalRelationshipInline(TabularInlineReviewAdmin):
 
-    readonly_fields = ("app", "id")
+    readonly_fields = ("app", "document_from_id")
     model = Document.translations.through
     fk_name = "document_to"
     extra = 0
     verbose_name = "Original"
     verbose_name_plural = verbose_name + "s"
     autocomplete_fields = ("document_from",)
-    fields = ("id", "document_from", "state")
+    fields = ("document_from_id", "document_from", "state")
     exclude = ["reviewed", "original_ref", "translation_ref"]
 
 
