@@ -11,7 +11,9 @@ class LanguageAdmin(ReviewAdmin):
     list_display = (
         "id",
         "language",
+        "state",
     )
+    list_filter = ("state", "app")
     search_fields = ("language", "id")
 
     fieldsets = (

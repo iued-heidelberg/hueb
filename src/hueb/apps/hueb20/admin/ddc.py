@@ -8,11 +8,8 @@ from hueb.apps.hueb20.models import DdcGerman
 @admin.register(DdcGerman)
 class DdcGermanAdmin(ReviewAdmin):
     readonly_fields = ("app", "ddc_link", "id")
-    list_display = (
-        "id",
-        "ddc_number",
-        "ddc_name",
-    )
+    list_display = ("id", "ddc_number", "ddc_name", "state")
+    list_filter = ("state", "app")
     search_fields = ("ddc_number", "ddc_name")
 
     fieldsets = (

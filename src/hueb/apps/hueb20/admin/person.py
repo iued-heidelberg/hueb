@@ -21,7 +21,9 @@ class PersonAdmin(ReviewAdmin):
         "adapt_person_lifetime_start_list_view",
         "adapt_person_lifetime_end_list_view",
         "organisation",
+        "state",
     )
+    list_filter = ("state", "app")
     search_fields = ("name", "id", "lifetime_start", "lifetime_end")
     autocomplete_fields = ("alias",)
     formfield_overrides = {IntegerRangeField: {"widget": TimeRangeWidget}}

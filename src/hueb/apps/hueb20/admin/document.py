@@ -83,7 +83,9 @@ class DocumentAdmin(ReviewAdmin):
         "get_archives_count",
         "get_archives",
         "get_translations",
+        "state",
     )
+    list_filter = ("state", "app")
     formfield_overrides = {IntegerRangeField: {"widget": TimeRangeWidget}}
     inlines = [
         ContributionInline,

@@ -8,7 +8,8 @@ from hueb.apps.hueb20.models import Document, Filing
 @admin.register(Filing)
 class FilingAdmin(ReviewAdmin):
     readonly_fields = ("app", "locAssign_link", "id")
-    list_display = ("id", "signatur", "link")
+    list_display = ("id", "signatur", "link", "state")
+    list_filter = ("state", "app")
     search_fields = ("signatur", "id")
     autocomplete_fields = ("archive",)
 

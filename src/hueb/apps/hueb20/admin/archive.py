@@ -16,7 +16,9 @@ class ArchiveAdmin(ReviewAdmin):
         "hostname",
         "ip",
         "z3950_gateway",
+        "state",
     )
+    list_filter = ("state", "app")
     autocomplete_fields = ("country",)
     search_fields = ("name", "adress", "country__country")
 

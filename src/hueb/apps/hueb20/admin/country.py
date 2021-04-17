@@ -12,10 +12,8 @@ class CountryAdmin(ReviewAdmin):
         "country_link",
         "id",
     )
-    list_display = (
-        "id",
-        "country",
-    )
+    list_display = ("id", "country", "state")
+    list_filter = ("state", "app")
     search_fields = ("country", "id")
     fieldsets = (
         (

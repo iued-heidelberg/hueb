@@ -10,7 +10,8 @@ from .comment import CommentInline
 @admin.register(CulturalCircle)
 class CulturalCircleAdmin(ReviewAdmin):
     readonly_fields = ("app", "id", "cultural_circle_link")
-    list_display = ("id", "name", "description", "start", "end")
+    list_display = ("id", "name", "description", "start", "end", "state")
+    list_filter = ("state", "app")
     search_fields = ("name", "id", "start", "end")
     inlines = [CommentInline]
     fieldsets = (
