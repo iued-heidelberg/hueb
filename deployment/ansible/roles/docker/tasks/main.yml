@@ -118,3 +118,9 @@
   command: docker-compose up -d --force-recreate
   args:
     chdir: "{{ docker_directory }}"
+
+- name: Drop unused images
+  become: yes
+  command: docker image prune -a -f
+  args:
+    chdir: "{{ docker_directory }}"
