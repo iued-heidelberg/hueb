@@ -38,3 +38,9 @@ class Contribution(Reviewable):
     )
 
     app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
+
+    def mark_reviewed(self, updated=[]):
+        if self not in updated:
+            super().mark_reviewed(updated=updated)
+            self.person.mark_reviewed(updated)
+            self.document.mark_reviewed(updated)

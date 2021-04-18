@@ -21,6 +21,17 @@ class Reviewable(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     history = HistoricalRecords(inherit=True)
 
+    def mark_reviewed(self, updated=[]):
+        if self not in updated:
+            self.state = self.OK
+            self.save()
+            updated.append(self)
+
+        return
+
+    def linked_name(self):
+        return str(self)
+
     class Meta:
         abstract = True
         permissions = [("can_review", "Can review hueb entries")]

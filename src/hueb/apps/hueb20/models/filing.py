@@ -20,3 +20,10 @@ class Filing(Reviewable):
     locAssign_ref = models.ForeignKey(
         Legacy.LocAssign, on_delete=models.DO_NOTHING, null=True, blank=True
     )
+
+    def mark_reviewed(self, updated=[]):
+        if self not in updated:
+            super().mark_reviewed(updated=updated)
+
+            self.archive.mark_reviewed(updated)
+            self.document.mark_reviewed(updated)

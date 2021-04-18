@@ -71,6 +71,24 @@ class Document(Reviewable):
         blank=True,
     )
 
+    def mark_reviewed(self, updated=[]):
+        if self not in updated:
+            super().mark_reviewed(updated=updated)
+
+            self.language.mark_reviewed(updated)
+            self.cultural_circle.mark_reviewed(updated)
+            self.ddc.mark_reviewed(updated)
+
+            for contribution in self.contribution_set.all():
+                contribution.mark_reviewed(updated)
+
+            for filing in self.filing_set.all():
+                filing.mark_reviewed(updated)
+
+            # Marking related documents as reviewed will lead to an explosion of review updates. The effect of those will not be obvious to the user.
+            # for relationship in self.to_original.all().union(self.to_translation.all()):
+            #    relationship.mark_reviewed(updated)
+
     def __str__(self):
         if self.title is None:
             return " "
@@ -138,3 +156,9 @@ class DocumentRelationship(Reviewable):
     )
 
     app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
+
+    def mark_reviewed(self, updated=[]):
+        if self not in updated:
+            super().mark_reviewed(updated=updated)
+            self.document_from.mark_reviewed(updated)
+            self.document_to.mark_reviewed(updated)

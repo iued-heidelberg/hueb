@@ -22,3 +22,8 @@ class Archive(Reviewable):
         if self.name is None:
             return " "
         return self.name
+
+    def mark_reviewed(self, updated=[]):
+        if self not in updated:
+            super().mark_reviewed(updated=updated)
+            self.country.mark_reviewed(updated)
