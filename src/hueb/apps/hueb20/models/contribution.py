@@ -44,7 +44,7 @@ class Contribution(Reviewable):
         if self not in updated:
             super().mark_reviewed(updated=updated)
             self.person.mark_reviewed(updated)
-            self.document.mark_reviewed(updated)
+            super(Document, self.document).mark_reviewed(updated)
 
     def __str__(self):
         person = str(self.person)
