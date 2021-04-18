@@ -1,5 +1,6 @@
 import hueb.apps.hueb_legacy_latein.models as Legacy
 from django.db import models
+from django.urls import reverse
 from hueb.apps.hueb20.models.reviewable import Reviewable
 from hueb.apps.hueb20.models.utils import HUEB20, HUEB_APPLICATIONS
 
@@ -20,3 +21,11 @@ class DdcGerman(Reviewable):
 
     def __str__(self):
         return self.ddc_number + " " + self.ddc_name
+
+    def linked_name(self):
+        url = reverse(
+            "admin:hueb20_ddcgerman_change",
+            args=[self.id],
+        )
+        link = '<a href="%s">DDC: %s</a>' % (url, str(self))
+        return link

@@ -1,5 +1,6 @@
 from django.contrib.postgres.fields import IntegerRangeField
 from django.db import models
+from django.urls import reverse
 from hueb.apps.hueb20.models.reviewable import Reviewable
 from hueb.apps.hueb20.models.utils import HUEB20, HUEB_APPLICATIONS
 
@@ -16,3 +17,11 @@ class CulturalCircle(Reviewable):
         if self.name is None:
             return " "
         return self.name
+
+    def linked_name(self):
+        url = reverse(
+            "admin:hueb20_culturalcircle_change",
+            args=[self.id],
+        )
+        link = '<a href="%s">Cultural Circle: %s</a>' % (url, str(self))
+        return link

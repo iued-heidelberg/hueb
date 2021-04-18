@@ -1,5 +1,6 @@
 import hueb.apps.hueb_legacy_latein.models as Legacy
 from django.db import models
+from django.urls import reverse
 from hueb.apps.hueb20.models.archive import Archive
 from hueb.apps.hueb20.models.document import Document
 from hueb.apps.hueb20.models.reviewable import Reviewable
@@ -27,3 +28,16 @@ class Filing(Reviewable):
 
             self.archive.mark_reviewed(updated)
             self.document.mark_reviewed(updated)
+
+    def __str__(self):
+        document = str(self.document)
+        archive = str(self.archive)
+        return '"{}" archived in "{}"'.format(document, archive)
+
+    def linked_name(self):
+        url = reverse(
+            "admin:hueb20_filing_change",
+            args=[self.id],
+        )
+        link = '<a href="%s">Filing: %s</a>' % (url, str(self))
+        return link

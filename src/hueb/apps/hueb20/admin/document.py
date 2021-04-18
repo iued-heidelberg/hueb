@@ -5,23 +5,13 @@ from django.contrib.postgres.fields import IntegerRangeField
 from django.db.models import Count
 from django.urls import reverse
 from django.utils.safestring import mark_safe
+from hueb.apps.hueb20.admin.contribution import ContributionInline
 from hueb.apps.hueb20.admin.review import ReviewAdmin, TabularInlineReviewAdmin
 from hueb.apps.hueb20.models import Document
 from hueb.apps.hueb20.widgets.timerange import TimeRangeWidget
 
 from .comment import CommentInline
 from .filing import FilingInline
-
-
-class ContributionInline(TabularInlineReviewAdmin):
-    readonly_fields = ("app", "id", "person_id")
-    model = Document.contributions.through
-    extra = 0
-    verbose_name = "Contributions"
-    verbose_name_plural = verbose_name
-    autocomplete_fields = ("person",)
-    fields = ("person_id", "person", "contribution_type", "state")
-    exclude = ("originalAuthor_ref", "translationTranslator_ref", "reviewed")
 
 
 class TranslationRelationshipInline(TabularInlineReviewAdmin):

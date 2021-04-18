@@ -1,5 +1,6 @@
 import hueb.apps.hueb_legacy_latein.models as Legacy
 from django.db import models
+from django.urls import reverse
 from hueb.apps.hueb20.models.document import Document
 from hueb.apps.hueb20.models.person import Person
 from hueb.apps.hueb20.models.reviewable import Reviewable
@@ -44,3 +45,17 @@ class Contribution(Reviewable):
             super().mark_reviewed(updated=updated)
             self.person.mark_reviewed(updated)
             self.document.mark_reviewed(updated)
+
+    def __str__(self):
+        person = str(self.person)
+        document = str(self.document)
+        contribution = self.get_contribution_type_display()
+        return '"{}" is "{}" for "{}"'.format(person, contribution, document)
+
+    def linked_name(self):
+        url = reverse(
+            "admin:hueb20_contribution_change",
+            args=[self.id],
+        )
+        link = '<a href="%s">Contribution: %s</a>' % (url, str(self))
+        return link

@@ -2,6 +2,7 @@ import hueb.apps.hueb_legacy_latein.models as Legacy
 from django.contrib.postgres.fields import IntegerRangeField
 from django.db import models
 from django.db.models import Q
+from django.urls import reverse
 from hueb.apps.hueb20.models.archive import Archive
 from hueb.apps.hueb20.models.culturalCircle import CulturalCircle
 from hueb.apps.hueb20.models.ddc import DdcGerman
@@ -93,6 +94,14 @@ class Document(Reviewable):
         if self.title is None:
             return " "
         return (self.title[:75] + "[...]") if len(self.title) > 75 else self.title
+
+    def linked_name(self):
+        url = reverse(
+            "admin:hueb20_document_change",
+            args=[self.id],
+        )
+        link = '<a href="%s">Document: %s</a>' % (url, str(self))
+        return link
 
     searchable_attributes = (
         ("title", "Titel"),

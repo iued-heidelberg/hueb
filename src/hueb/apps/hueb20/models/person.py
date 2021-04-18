@@ -2,6 +2,7 @@ import hueb.apps.hueb_legacy_latein.models as Legacy
 from django.contrib.postgres.fields import IntegerRangeField
 from django.db import models
 from django.template.defaultfilters import escape
+from django.urls import reverse
 from hueb.apps.hueb20.models.reviewable import Reviewable
 from hueb.apps.hueb20.models.utils import (
     HUEB20,
@@ -35,6 +36,14 @@ class Person(Reviewable):
         if self.name is None:
             return " "
         return escape(self.name)
+
+    def linked_name(self):
+        url = reverse(
+            "admin:hueb20_person_change",
+            args=[self.id],
+        )
+        link = '<a href="%s">Person: %s</a>' % (url, str(self))
+        return link
 
     @property
     def is_alias(self):

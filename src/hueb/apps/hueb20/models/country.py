@@ -1,5 +1,6 @@
 import hueb.apps.hueb_legacy_latein.models as Legacy
 from django.db import models
+from django.urls import reverse
 from hueb.apps.hueb20.models.reviewable import Reviewable
 from hueb.apps.hueb20.models.utils import HUEB20, HUEB_APPLICATIONS
 
@@ -20,3 +21,11 @@ class Country(Reviewable):
         if self.country is None:
             return " "
         return self.country
+
+    def linked_name(self):
+        url = reverse(
+            "admin:hueb20_country_change",
+            args=[self.id],
+        )
+        link = '<a href="%s">Country: %s</a>' % (url, str(self))
+        return link

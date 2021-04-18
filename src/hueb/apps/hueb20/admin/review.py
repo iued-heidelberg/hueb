@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.http import HttpResponseRedirect
+from django.utils.html import format_html
 from simple_history.admin import SimpleHistoryAdmin
 
 
@@ -24,7 +25,9 @@ class ReviewAdmin(SimpleHistoryAdmin):
                 obj.mark_reviewed(updated=updated)
                 self.message_user(
                     request,
-                    "Marked as reviewed: \n{}".format(self._list_of_urls(updated)),
+                    format_html(
+                        "Marked as reviewed: \n{}".format(self._list_of_urls(updated))
+                    ),
                 )
                 return HttpResponseRedirect(".")
 
@@ -32,7 +35,7 @@ class ReviewAdmin(SimpleHistoryAdmin):
 
     def _list_of_urls(self, objects):
         links = [inst.linked_name() for inst in objects]
-        link_list = "\n - ".join(links)
+        link_list = "\n ".join(links)
         return link_list
 
 
