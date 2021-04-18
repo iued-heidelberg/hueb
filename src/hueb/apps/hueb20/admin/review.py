@@ -1,4 +1,4 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.http import HttpResponseRedirect
 from django.utils.html import format_html
 from simple_history.admin import SimpleHistoryAdmin
@@ -28,6 +28,15 @@ class ReviewAdmin(SimpleHistoryAdmin):
                     format_html(
                         "Marked as reviewed: \n{}".format(self._list_of_urls(updated))
                     ),
+                )
+                return HttpResponseRedirect(".")
+            else:
+                self.message_user(
+                    request,
+                    format_html(
+                        "Not enough permissions to add review. But entry is saved."
+                    ),
+                    messages.ERROR,
                 )
                 return HttpResponseRedirect(".")
 
