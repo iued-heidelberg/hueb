@@ -63,3 +63,7 @@ class ArchiveAdmin(ReviewAdmin):
         return mark_safe(link)
 
     archive_link.short_description = "Archive"
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request).select_related("country")
+        return qs

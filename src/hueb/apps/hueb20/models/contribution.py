@@ -6,18 +6,17 @@ from hueb.apps.hueb20.models.person import Person
 from hueb.apps.hueb20.models.reviewable import Reviewable
 from hueb.apps.hueb20.models.utils import HUEB20, HUEB_APPLICATIONS
 
-PUBLISHER = "PUBLISHER"
-WRITER = "WRITER"
-OTHER = "OTHER"
-
-CONTRIBUTION_TYPES = [
-    (PUBLISHER, "Publisher"),
-    (WRITER, "Writer"),
-    (OTHER, "Other"),
-]
-
 
 class Contribution(Reviewable):
+    PUBLISHER = "PUBLISHER"
+    WRITER = "WRITER"
+    OTHER = "OTHER"
+
+    CONTRIBUTION_TYPES = [
+        (PUBLISHER, "Publisher"),
+        (WRITER, "Writer"),
+        (OTHER, "Other"),
+    ]
 
     id = models.BigAutoField(primary_key=True)
     person = models.ForeignKey(Person, on_delete=models.CASCADE, null=True, blank=True)

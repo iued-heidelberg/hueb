@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 from hueb.apps.hueb20.admin.contribution import ContributionInline
 from hueb.apps.hueb20.admin.review import ReviewAdmin, TabularInlineReviewAdmin
-from hueb.apps.hueb20.models import Document
+from hueb.apps.hueb20.models import Contribution, Document
 from hueb.apps.hueb20.widgets.timerange import TimeRangeWidget
 
 from .comment import CommentInline
@@ -131,10 +131,9 @@ class DocumentAdmin(ReviewAdmin):
             super(DocumentAdmin, self)
             .get_queryset(request)
             .annotate(archives_count=Count("located_in"))
-            .prefetch_related("written_by")
-            .prefetch_related("located_in")
-            .prefetch_related("publishers")
+            .prefetch_related("contribution_set__person")
             .prefetch_related("translations")
+            .prefetch_related("filing_set__archive")
             .select_related("language")
             .select_related("ddc")
             .select_related("cultural_circle")
@@ -148,17 +147,31 @@ class DocumentAdmin(ReviewAdmin):
     get_archives_count.short_description = "Anzahl Archive"
 
     def get_archives(self, obj):
-        return "\n".join([archive.name for archive in obj.located_in.all()])
+        return "\n".join([str(filing.archive) for filing in obj.filing_set.all()])
 
     get_archives.short_description = "Archive"
 
     def get_publishers(self, obj):
-        return "\n".join([publisher.name for publisher in obj.publishers.all()])
+        return "\n".join(
+            [
+                str(contribution.person)
+                if contribution.contribution_type == Contribution.PUBLISHER
+                else ""
+                for contribution in obj.contribution_set.all()
+            ]
+        )
 
     get_publishers.short_description = "Publisher"
 
     def get_written_by(self, obj):
-        return "\n".join([writer.name for writer in obj.written_by.all()])
+        return "\n".join(
+            [
+                str(contribution.person)
+                if contribution.contribution_type == Contribution.WRITER
+                else ""
+                for contribution in obj.contribution_set.all()
+            ]
+        )
 
     get_written_by.short_description = "Written by"
 

@@ -62,6 +62,15 @@ class ContributionAdmin(ReviewAdmin):
 
     translator_link.short_description = "Filing Location"
 
+    def get_queryset(self, request):
+        qs = (
+            super()
+            .get_queryset(request)
+            .select_related("document")
+            .select_related("person")
+        )
+        return qs
+
 
 class ContributionInline(TabularInlineReviewAdmin):
     readonly_fields = ("app", "id", "person_id")

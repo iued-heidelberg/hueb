@@ -47,6 +47,15 @@ class FilingAdmin(ReviewAdmin):
 
     locAssign_link.short_description = "Filing Location"
 
+    def get_queryset(self, request):
+        qs = (
+            super()
+            .get_queryset(request)
+            .select_related("document")
+            .select_related("archive")
+        )
+        return qs
+
 
 class FilingInline(TabularInlineReviewAdmin):
     readonly_fields = ("app", "id")

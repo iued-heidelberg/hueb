@@ -1,5 +1,5 @@
 from django.db import migrations
-from hueb.apps.hueb20.models.contribution import PUBLISHER, WRITER
+from hueb.apps.hueb20.models.contribution import Contribution as contri  # noqa: F401
 
 
 def create_contributions(apps, schema_editor):
@@ -14,7 +14,7 @@ def create_contributions(apps, schema_editor):
             c = Contribution(
                 person=author,
                 document=document,
-                contribution_type=WRITER,
+                contribution_type=contri.WRITER,  # noqa: F811
                 originalAuthor_ref=document.originalAuthor_ref,
                 translationTranslator_ref=document.translationTranslator_ref,
             )
@@ -25,7 +25,7 @@ def create_contributions(apps, schema_editor):
             c = Contribution(
                 person=publisher,
                 document=document,
-                contribution_type=PUBLISHER,
+                contribution_type=contri.PUBLISHER,  # noqa: F811
             )
             c.save()
 

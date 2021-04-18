@@ -77,3 +77,7 @@ class PersonAdmin(ReviewAdmin):
         return mark_safe(link)
 
     translator_link.short_description = "Translator"
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request).select_related("alias")
+        return qs
