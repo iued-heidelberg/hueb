@@ -84,7 +84,7 @@ class DocumentAdmin(ReviewAdmin):
         FilingInline,
         CommentInline,
     ]
-    search_fields = ("id", "title", "written_by__name", "written_in")
+    search_fields = ("id", "title", "contributions__name", "written_in")
     fieldsets = (
         (
             "Document Information",

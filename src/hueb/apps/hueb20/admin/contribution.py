@@ -15,7 +15,7 @@ class ContributionAdmin(ReviewAdmin):
     )
     list_display = ("id", "person", "contribution_type", "document")
     list_filter = ("state", "app")
-    search_fields = ("person", "document")
+    search_fields = ("person__name", "contribution_type", "document__title")
     autocomplete_fields = ("person", "document")
 
     fieldsets = (
