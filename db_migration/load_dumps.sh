@@ -33,7 +33,7 @@ echo "  Loading dump for di_sueb"
 mysql -u root -p${rootpasswd} di_sueb < archive/original_dumps/di_sueb.dump
 echo " "
 
-echo "Loading di_sueb into Postgres"
+echo "Loading all into Postgres"
 echo " "
 echo "  Dropping dump_di_sueb"
 psql -c "DROP DATABASE IF EXISTS hueb_db_archive;"
