@@ -1,3 +1,4 @@
+#!/bin/bash
 echo "Create working copies of databases"
 echo "  Creating hueb_db"
 psql -c "SELECT pg_terminate_backend(pg_stat_activity.pid)

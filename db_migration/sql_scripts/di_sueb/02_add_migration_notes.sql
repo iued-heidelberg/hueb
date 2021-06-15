@@ -4,71 +4,71 @@ SET search_path to di_sueb;
 -- These calls adds a migration_note attribute to each table.
 -- This attribute can be used to explain necessary changes to table entries to allow the foreign key constraint creation.
 
-ALTER TABLE author
+ALTER TABLE sueb_author
 ADD COLUMN IF NOT EXISTS migration_notes VARCHAR(1023),
 ADD COLUMN IF NOT EXISTS migration_generated BOOLEAN NOT NULL DEFAULT FALSE;
 
-ALTER TABLE collection
+ALTER TABLE sueb_collection
 ADD COLUMN IF NOT EXISTS migration_notes VARCHAR(1023),
 ADD COLUMN IF NOT EXISTS migration_generated BOOLEAN NOT NULL DEFAULT FALSE;
 
-ALTER TABLE country
+ALTER TABLE sueb_country
 ADD COLUMN IF NOT EXISTS migration_notes VARCHAR(1023),
 ADD COLUMN IF NOT EXISTS migration_generated BOOLEAN NOT NULL DEFAULT FALSE;
 
-ALTER TABLE ddc_german
+ALTER TABLE sueb_ddc_german
 ADD COLUMN IF NOT EXISTS migration_notes VARCHAR(1023),
 ADD COLUMN IF NOT EXISTS migration_generated BOOLEAN NOT NULL DEFAULT FALSE;
 
-ALTER TABLE language
+ALTER TABLE sueb_language
 ADD COLUMN IF NOT EXISTS migration_notes VARCHAR(1023),
 ADD COLUMN IF NOT EXISTS migration_generated BOOLEAN NOT NULL DEFAULT FALSE;
 
-ALTER TABLE loc_assign
+ALTER TABLE sueb_loc_assign
 ADD COLUMN IF NOT EXISTS migration_notes VARCHAR(1023),
 ADD COLUMN IF NOT EXISTS migration_generated BOOLEAN NOT NULL DEFAULT FALSE;
 
-ALTER TABLE location
+ALTER TABLE sueb_location
 ADD COLUMN IF NOT EXISTS migration_notes VARCHAR(1023),
 ADD COLUMN IF NOT EXISTS migration_generated BOOLEAN NOT NULL DEFAULT FALSE;
 
-ALTER TABLE manual_keys
+ALTER TABLE sueb_manual_keys
 ADD COLUMN IF NOT EXISTS migration_notes VARCHAR(1023),
 ADD COLUMN IF NOT EXISTS migration_generated BOOLEAN NOT NULL DEFAULT FALSE;
 
-ALTER TABLE orig_assign
+ALTER TABLE sueb_orig_assign
 ADD COLUMN IF NOT EXISTS migration_notes VARCHAR(1023),
 ADD COLUMN IF NOT EXISTS migration_generated BOOLEAN NOT NULL DEFAULT FALSE;
 
-ALTER TABLE original
+ALTER TABLE sueb_original
 ADD COLUMN IF NOT EXISTS migration_notes VARCHAR(1023),
 ADD COLUMN IF NOT EXISTS migration_generated BOOLEAN NOT NULL DEFAULT FALSE;
 
-ALTER TABLE pnd_alias
+ALTER TABLE sueb_pnd_alias
 ADD COLUMN IF NOT EXISTS migration_notes VARCHAR(1023),
 ADD COLUMN IF NOT EXISTS migration_generated BOOLEAN NOT NULL DEFAULT FALSE;
 
-ALTER TABLE pnd_main
+ALTER TABLE sueb_pnd_main
 ADD COLUMN IF NOT EXISTS migration_notes VARCHAR(1023),
 ADD COLUMN IF NOT EXISTS migration_generated BOOLEAN NOT NULL DEFAULT FALSE;
 
-ALTER TABLE pnd_title
+ALTER TABLE sueb_pnd_title
 ADD COLUMN IF NOT EXISTS migration_notes VARCHAR(1023),
 ADD COLUMN IF NOT EXISTS migration_generated BOOLEAN NOT NULL DEFAULT FALSE;
 
-ALTER TABLE swd_main
+ALTER TABLE sueb_swd_main
 ADD COLUMN IF NOT EXISTS migration_notes VARCHAR(1023),
 ADD COLUMN IF NOT EXISTS migration_generated BOOLEAN NOT NULL DEFAULT FALSE;
 
-ALTER TABLE swd_term
+ALTER TABLE sueb_swd_term
 ADD COLUMN IF NOT EXISTS migration_notes VARCHAR(1023),
 ADD COLUMN IF NOT EXISTS migration_generated BOOLEAN NOT NULL DEFAULT FALSE;
 
-ALTER TABLE translation
+ALTER TABLE sueb_translation
 ADD COLUMN IF NOT EXISTS migration_notes VARCHAR(1023),
 ADD COLUMN IF NOT EXISTS migration_generated BOOLEAN NOT NULL DEFAULT FALSE;
 
-ALTER TABLE translator
+ALTER TABLE sueb_translator
 ADD COLUMN IF NOT EXISTS migration_notes VARCHAR(1023),
 ADD COLUMN IF NOT EXISTS migration_generated BOOLEAN NOT NULL DEFAULT FALSE;
 

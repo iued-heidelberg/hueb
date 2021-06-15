@@ -45,97 +45,153 @@ drop table if exists original_new;
 */
 drop table if exists translation_new;
 
+ALTER TABLE IF EXISTS author
+RENAME TO sueb_author;
+
+ALTER TABLE IF EXISTS "collection"
+RENAME TO sueb_collection;
+
+ALTER TABLE IF EXISTS country
+RENAME TO sueb_country;
+
+ALTER TABLE IF EXISTS ddc_german
+RENAME TO sueb_ddc_german;
+
+ALTER TABLE IF EXISTS "language"
+RENAME TO sueb_language;
+
+ALTER TABLE IF EXISTS loc_assign
+RENAME TO sueb_loc_assign;
+
+ALTER TABLE IF EXISTS "location"
+RENAME TO sueb_location;
+
+ALTER TABLE IF EXISTS manual_keys
+RENAME TO sueb_manual_keys;
+
+ALTER TABLE IF EXISTS orig_assign
+RENAME TO sueb_orig_assign;
+
+ALTER TABLE IF EXISTS original
+RENAME TO sueb_original;
+
+ALTER TABLE IF EXISTS pnd_alias
+RENAME TO sueb_pnd_alias;
+
+ALTER TABLE IF EXISTS pnd_main
+RENAME TO sueb_pnd_main;
+
+ALTER TABLE IF EXISTS pnd_title
+RENAME TO sueb_pnd_title;
+
+ALTER TABLE IF EXISTS swd_main
+RENAME TO sueb_swd_main;
+
+ALTER TABLE IF EXISTS swd_term
+RENAME TO sueb_swd_term;
+
+ALTER TABLE IF EXISTS translation
+RENAME TO sueb_translation;
+
+ALTER TABLE IF EXISTS translator
+RENAME TO sueb_translator;
+
+
 -- renaming primary_keys
-SELECT rename_column_if_exists('author', 'auth_id', 'id');
-SELECT rename_column_if_exists('collection', 'col_id', 'id');
-SELECT rename_column_if_exists('country', 'c_id', 'id');
-SELECT rename_column_if_exists('ddc_german', 'ddc_id', 'id');
-SELECT rename_column_if_exists('language', 'lang_id', 'id');
-SELECT rename_column_if_exists('loc_assign', 'loc_assign_id', 'id');
-SELECT rename_column_if_exists('location', 'loc_id', 'id');
-SELECT rename_column_if_exists('manual_keys', 'mankey_id', 'id');
-SELECT rename_column_if_exists('orig_assign', 'orig_assign_id', 'id');
-SELECT rename_column_if_exists('original', 'orig_id', 'id');
+SELECT rename_column_if_exists('sueb_author', 'auth_id', 'id');
+SELECT rename_column_if_exists('sueb_collection', 'col_id', 'id');
+SELECT rename_column_if_exists('sueb_country', 'c_id', 'id');
+SELECT rename_column_if_exists('sueb_ddc_german', 'ddc_id', 'id');
+SELECT rename_column_if_exists('sueb_language', 'lang_id', 'id');
+SELECT rename_column_if_exists('sueb_loc_assign', 'loc_assign_id', 'id');
+SELECT rename_column_if_exists('sueb_location', 'loc_id', 'id');
+SELECT rename_column_if_exists('sueb_manual_keys', 'mankey_id', 'id');
+SELECT rename_column_if_exists('sueb_orig_assign', 'orig_assign_id', 'id');
+SELECT rename_column_if_exists('sueb_original', 'orig_id', 'id');
 
-SELECT rename_column_if_exists('pnd_alias', 'pnd_alias_id', 'id');
-SELECT rename_column_if_exists('pnd_main', 'pnd_id', 'id');
+SELECT rename_column_if_exists('sueb_pnd_alias', 'pnd_alias_id', 'id');
+SELECT rename_column_if_exists('sueb_pnd_main', 'pnd_id', 'id');
 
-SELECT rename_column_if_exists('pnd_title', 'pnd_title_id', 'id');
+SELECT rename_column_if_exists('sueb_pnd_title', 'pnd_title_id', 'id');
 
-SELECT rename_column_if_exists('swd_main', 'swd_id', 'id');
-SELECT rename_column_if_exists('swd_term', 'swd_term_id', 'id');
+SELECT rename_column_if_exists('sueb_swd_main', 'swd_id', 'id');
+SELECT rename_column_if_exists('sueb_swd_term', 'swd_term_id', 'id');
 
-SELECT rename_column_if_exists('translation', 'trans_id', 'id');
-SELECT rename_column_if_exists('translator', 'translator_id', 'id');
+SELECT rename_column_if_exists('sueb_translation', 'trans_id', 'id');
+SELECT rename_column_if_exists('sueb_translator', 'translator_id', 'id');
+
+
 
 
 -- adding sequences
-SELECT(add_sequence('author'));
-SELECT(add_sequence('collection'));
-SELECT(add_sequence('country'));
-SELECT(add_sequence('ddc_german'));
-SELECT(add_sequence('language'));
-SELECT(add_sequence('loc_assign'));
-SELECT(add_sequence('location'));
-SELECT(add_sequence('manual_keys'));
-SELECT(add_sequence('orig_assign'));
-SELECT(add_sequence('original'));
-SELECT(add_sequence('pnd_alias'));
-SELECT(add_sequence('pnd_main'));
-SELECT(add_sequence('swd_term'));
-SELECT(add_sequence('translation'));
-SELECT(add_sequence('translator'));
+SELECT(add_sequence('sueb_author'));
+SELECT(add_sequence('sueb_collection'));
+SELECT(add_sequence('sueb_country'));
+SELECT(add_sequence('sueb_ddc_german'));
+SELECT(add_sequence('sueb_language'));
+SELECT(add_sequence('sueb_loc_assign'));
+SELECT(add_sequence('sueb_location'));
+SELECT(add_sequence('sueb_manual_keys'));
+SELECT(add_sequence('sueb_orig_assign'));
+SELECT(add_sequence('sueb_original'));
+SELECT(add_sequence('sueb_pnd_alias'));
+SELECT(add_sequence('sueb_pnd_main'));
+SELECT(add_sequence('sueb_pnd_title'));
+SELECT(add_sequence('sueb_swd_main'));
+SELECT(add_sequence('sueb_swd_term'));
+SELECT(add_sequence('sueb_translation'));
+SELECT(add_sequence('sueb_translator'));
 
 
-ALTER TABLE country ADD PRIMARY KEY (id);
+ALTER TABLE sueb_country ADD PRIMARY KEY (id);
 
-SELECT rename_column_if_exists('loc_assign', 'loc_id', 'location_id');
-SELECT rename_column_if_exists('loc_assign', 'orig_id', 'original_id');
-SELECT rename_column_if_exists('loc_assign', 'trans_id', 'translation_id');
-
-
-SELECT rename_column_if_exists('location', 'country', 'country_id');
+SELECT rename_column_if_exists('sueb_loc_assign', 'loc_id', 'location_id');
+SELECT rename_column_if_exists('sueb_loc_assign', 'orig_id', 'original_id');
+SELECT rename_column_if_exists('sueb_loc_assign', 'trans_id', 'translation_id');
 
 
-SELECT rename_column_if_exists('manual_keys', 'orig_id', 'original_id');
-SELECT rename_column_if_exists('manual_keys', 'trans_id', 'translation_id');
+SELECT rename_column_if_exists('sueb_location', 'country', 'country_id');
 
 
-ALTER TABLE manual_keys
+SELECT rename_column_if_exists('sueb_manual_keys', 'orig_id', 'original_id');
+SELECT rename_column_if_exists('sueb_manual_keys', 'trans_id', 'translation_id');
+
+
+ALTER TABLE sueb_manual_keys
 DROP COLUMN IF EXISTS off_id;
 
 
-ALTER TABLE orig_assign
+ALTER TABLE sueb_orig_assign
 DROP COLUMN IF EXISTS orig_diff_id,
 DROP COLUMN IF EXISTS trans_diff_id;
 
-SELECT rename_column_if_exists('orig_assign', 'orig_id', 'original_id');
-SELECT rename_column_if_exists('orig_assign', 'trans_id', 'translation_id');
+SELECT rename_column_if_exists('sueb_orig_assign', 'orig_id', 'original_id');
+SELECT rename_column_if_exists('sueb_orig_assign', 'trans_id', 'translation_id');
 
 
 -- dropping empty columns from original
-ALTER TABLE original
+ALTER TABLE sueb_original
 DROP COLUMN IF EXISTS manual_keys,
 DROP COLUMN IF EXISTS additional_keys; --empty
 
 -- renaming original columns
-SELECT rename_column_if_exists('original', 'auth_id', 'author_id');
-SELECT rename_column_if_exists('original', 'col_id', 'collection_id');
-SELECT rename_column_if_exists('original', 'language', 'language_id');
+SELECT rename_column_if_exists('sueb_original', 'auth_id', 'author_id');
+SELECT rename_column_if_exists('sueb_original', 'col_id', 'collection_id');
+SELECT rename_column_if_exists('sueb_original', 'language', 'language_id');
 
 
-ALTER TABLE translation
+ALTER TABLE sueb_translation
 DROP COLUMN IF EXISTS manual_keys,
 DROP COLUMN IF EXISTS additional_keys; --empty
 
 -- renaming original columns
-SELECT rename_column_if_exists('original', 'col_id', 'collection_id');
-SELECT rename_column_if_exists('original', 'language', 'language_id');
-SELECT rename_column_if_exists('original', 'via_language', 'via_language_id');
+SELECT rename_column_if_exists('sueb_original', 'col_id', 'collection_id');
+SELECT rename_column_if_exists('sueb_original', 'language', 'language_id');
+SELECT rename_column_if_exists('sueb_original', 'via_language', 'via_language_id');
 
 -- renaming translation columns
-SELECT rename_column_if_exists('translation', 'auth_id', 'author_id');
-SELECT rename_column_if_exists('translation', 'col_id', 'collection_id');
-SELECT rename_column_if_exists('translation', 'language', 'language_id');
-SELECT rename_column_if_exists('translation', 'via_language', 'via_language_id');
+SELECT rename_column_if_exists('sueb_translation', 'auth_id', 'author_id');
+SELECT rename_column_if_exists('sueb_translation', 'col_id', 'collection_id');
+SELECT rename_column_if_exists('sueb_translation', 'language', 'language_id');
+SELECT rename_column_if_exists('sueb_translation', 'via_language', 'via_language_id');
 

@@ -106,21 +106,26 @@ BEGIN
   LANGUAGE plpgsql VOLATILE;
 
 CREATE OR REPLACE FUNCTION add_sequence(ptable TEXT)
-RETURNS VOID AS $BODY$
+  RETURNS VOID AS $BODY$
+DECLARE
+  schemaname varchar := '';
+  seq_name varchar  := '';
 BEGIN
+  seq_name := CONCAT (schemaname, ptable, '_id_seq');
 
   EXECUTE FORMAT('
-    DROP SEQUENCE IF EXISTS %I_id_seq CASCADE;
-    CREATE SEQUENCE %I_id_seq;
-    ALTER TABLE %s ALTER COLUMN id SET DEFAULT nextval($$%I_id_seq$$);
+
+    DROP SEQUENCE IF EXISTS %I CASCADE;
+    CREATE SEQUENCE %I;
+    ALTER TABLE %s ALTER COLUMN id SET DEFAULT nextval($$%I$$);
 
     ALTER TABLE %s ALTER COLUMN id SET NOT NULL;
 
 
-    SELECT setval($$%I_id_seq$$,
+    SELECT setval($$%I$$,
       (SELECT MAX(id)
         FROM %I)
-    );', ptable, ptable, ptable, ptable, ptable, ptable, ptable, ptable, ptable);
+    );', seq_name, seq_name, ptable, seq_name, ptable, seq_name, ptable);
 
 END$BODY$
   LANGUAGE plpgsql VOLATILE;
