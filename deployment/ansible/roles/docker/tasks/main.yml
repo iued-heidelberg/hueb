@@ -124,3 +124,10 @@
   command: docker image prune -a -f
   args:
     chdir: "{{ docker_directory }}"
+
+- name: Create cron call
+  ansible.builtin.cron:
+    name: "Run periodic jobs"
+    hour: "3"
+    minute: "32"
+    job: cd "{{ docker_directory }}" && /usr/local/bin/docker-compose restart proxy
