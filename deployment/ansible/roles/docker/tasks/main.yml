@@ -128,6 +128,6 @@
 - name: Create cron call
   ansible.builtin.cron:
     name: "Run periodic jobs"
-    hour: "3"
-    minute: "32"
-    job: cd "{{ docker_directory }}" && /usr/local/bin/docker-compose restart proxy
+    hour: "23"
+    minute: "55"
+    job: certbot renew --pre-hook "service docker stop" --post-hook "service docker start" >> /cert.log 2>&1

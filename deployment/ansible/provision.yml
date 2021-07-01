@@ -9,6 +9,9 @@
     certbot_admin_email: lukas.bockstaller@posteo.de
     certbot_create_if_missing: true
     certbot_auto_renew_user: ubuntu
+    certbot_auto_renew: true
+    certbot_auto_renew_hour: "21"
+    certbot_auto_renew_minute: "34"
     certbot_create_standalone_stop_services:
       - docker
     certbot_certs:
