@@ -62,7 +62,7 @@ jobs:
       - name: Collect static files
         run: |
           cd src
-          ./manage.py collectstatic
+          python manage.py collectstatic
         env: # Or as an environment variable
           ENV: GITHUB_WORKFLOW
       - name: Run Tests
