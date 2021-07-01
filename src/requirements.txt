@@ -24,6 +24,7 @@ execnet==1.7.1
 fett==0.3.2
 filelock==3.0.12
 flake8==3.9.2
+graphviz==0.16
 gunicorn==20.0.4
 honeycomb-beeline==2.14.0
 identify==1.5.9
