@@ -160,3 +160,4 @@ media
 /src/static/
 .vscode
 postgres_dump.*.gz
+.python-version
