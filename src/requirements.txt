@@ -57,7 +57,7 @@ pytest-xdist==2.1.0
 python-dotenv==0.15.0
 python-jsonrpc-server==0.3.4
 pytz==2020.4
-PyYAML==5.3.1
+PyYAML==5.4
 regex==2020.10.28
 requests==2.25.1
 seed-isort-config==2.2.0
