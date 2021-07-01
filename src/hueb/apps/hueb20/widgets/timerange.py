@@ -63,7 +63,7 @@ class TimeRangeWidget(MultiWidget):
         return ["exact", None, NumericRange(None, None)]
 
     def value_from_datadict(self, data, files, name):
-        """Turns form values into an array for the NumericRange Field to use   """
+        """Turns form values into an array for the NumericRange Field to use"""
         choice, exact_value, range_value = super().value_from_datadict(
             data, files, name
         )
