@@ -1,3 +1,4 @@
+#!/bin/bash
 echo "Please enter root user MySQL password!"
 echo "Note: password will be hidden when typing"
 read -s rootpasswd
@@ -40,8 +41,7 @@ psql -c "DROP DATABASE IF EXISTS hueb_db_archive;"
 echo "  Creating dump_di_sueb"
 createdb hueb_db_archive
 echo "  Loading mysql into postgres"
-pgloader mysql://root:${rootpasswd}@localhost/di_sueb postgresql:///hueb_db_archive
-pgloader mysql://root:${rootpasswd}@localhost/di_sueb_lidos postgresql:///hueb_db_archive
-pgloader mysql://root:${rootpasswd}@localhost/di_sueb_latein postgresql:///hueb_db_archive
-
-
+export PASSWORD=${rootpasswd}
+pgloader ./archive/pgloader_scripts/di_sueb.sql
+pgloader ./archive/pgloader_scripts/di_sueb_lidos.sql
+pgloader ./archive/pgloader_scripts/di_sueb_latein.sql

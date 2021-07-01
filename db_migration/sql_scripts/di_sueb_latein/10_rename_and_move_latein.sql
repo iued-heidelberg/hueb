@@ -2,9 +2,6 @@
 SET search_path to di_sueb_latein;
 
 -- dropping superfluous sequences
-
-
-
 ALTER TABLE IF EXISTS sueb_latein_author
 SET SCHEMA public;
 

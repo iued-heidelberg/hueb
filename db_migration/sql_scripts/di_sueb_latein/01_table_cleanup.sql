@@ -138,7 +138,7 @@ SELECT(add_sequence('sueb_latein_translation_new'));
 SELECT(add_sequence('sueb_latein_translator'));
 SELECT(add_sequence('sueb_latein_translator_new'));
 
-ALTER SEQUENCE user_user_id_seq RENAME TO sueb_latein_user_user_id_seq;
+--ALTER SEQUENCE user_user_id_seq RENAME TO sueb_latein_user_user_id_seq;
 
 
 
