@@ -20,6 +20,7 @@ RUN apt-get update && \
   python3-dev \
   sudo \
   supervisor \
+  graphviz-dev \
   zlib1g-dev && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* && \
@@ -32,6 +33,7 @@ RUN apt-get update && \
   echo 'hueb_user ALL=(ALL) NOPASSWD:SETENV: /usr/bin/supervisord' >> /etc/sudoers && \
   mkdir /static && \
   mkdir /etc/supervisord
+
 
 COPY src/requirements.txt /hueb/src/requirements.txt
 
