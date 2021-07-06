@@ -161,3 +161,4 @@ media
 .vscode
 postgres_dump.*.gz
 .python-version
+db_migration/cleaned_data.sql

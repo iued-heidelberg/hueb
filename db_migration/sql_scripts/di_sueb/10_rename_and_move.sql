@@ -1,9 +1,25 @@
 \set ON_ERROR_STOP true
+SET search_path to public;
+
+DROP TABLE IF EXISTS sueb_author CASCADE;
+DROP TABLE IF EXISTS sueb_collection CASCADE;
+DROP TABLE IF EXISTS sueb_country CASCADE;
+DROP TABLE IF EXISTS sueb_ddc_german CASCADE;
+DROP TABLE IF EXISTS sueb_language CASCADE;
+DROP TABLE IF EXISTS sueb_loc_assign CASCADE;
+DROP TABLE IF EXISTS sueb_location CASCADE;
+DROP TABLE IF EXISTS sueb_manual_keys CASCADE;
+DROP TABLE IF EXISTS sueb_orig_assign CASCADE;
+DROP TABLE IF EXISTS sueb_original CASCADE;
+DROP TABLE IF EXISTS sueb_pnd_alias CASCADE;
+DROP TABLE IF EXISTS sueb_pnd_main CASCADE;
+DROP TABLE IF EXISTS sueb_pnd_title CASCADE;
+DROP TABLE IF EXISTS sueb_swd_main CASCADE;
+DROP TABLE IF EXISTS sueb_swd_term CASCADE;
+DROP TABLE IF EXISTS sueb_translation CASCADE;
+DROP TABLE IF EXISTS sueb_translator CASCADE;
+
 SET search_path to di_sueb;
-
--- dropping superfluous sequences
-
-
 ALTER TABLE IF EXISTS sueb_author
 SET SCHEMA public;
 
