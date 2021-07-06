@@ -34,5 +34,4 @@ SELECT(clean_up_relation('sueb_lidos_translation', 'language_id', 'sueb_lidos_la
 
 SELECT(clean_up_relation('sueb_lidos_translation', 'via_language_id', 'sueb_lidos_language'));
 
-SELECT(clean_up_relation('sueb_lidos_translation', 'manual_keys_id', 'sueb_lidos_manual_keys'));
 

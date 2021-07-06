@@ -99,6 +99,6 @@ DROP COLUMN IF EXISTS additional_keys;
 
 SELECT rename_column_if_exists('sueb_lidos_translation', 'auth_id', 'author_id');
 SELECT rename_column_if_exists('sueb_lidos_translation', 'language', 'language_id');
-SELECT rename_column_if_exists('sueb_lidos_translation', 'manual_keys', 'manual_keys_id');
+
 
 SELECT rename_column_if_exists('sueb_lidos_translation', 'via_language', 'via_language_id');

@@ -4,53 +4,32 @@ SET search_path to di_sueb_lidos ;
 -- dropping superfluous sequences
 
 
-ALTER TABLE IF EXISTS sueb_author
+ALTER TABLE IF EXISTS sueb_lidos_author
 SET SCHEMA public;
 
-ALTER TABLE IF EXISTS sueb_collection
+ALTER TABLE IF EXISTS sueb_lidos_ddc_german
 SET SCHEMA public;
 
-ALTER TABLE IF EXISTS sueb_country
+ALTER TABLE IF EXISTS sueb_lidos_filter
 SET SCHEMA public;
 
-ALTER TABLE IF EXISTS sueb_ddc_german
+ALTER TABLE IF EXISTS sueb_lidos_language
 SET SCHEMA public;
 
-ALTER TABLE IF EXISTS sueb_language
+ALTER TABLE IF EXISTS sueb_lidos_lidos_ex
 SET SCHEMA public;
 
-ALTER TABLE IF EXISTS sueb_loc_assign
+ALTER TABLE IF EXISTS sueb_lidos_manual_keys
 SET SCHEMA public;
 
-ALTER TABLE IF EXISTS sueb_location
+ALTER TABLE IF EXISTS sueb_lidos_orig_assign
 SET SCHEMA public;
 
-ALTER TABLE IF EXISTS sueb_manual_keys
+ALTER TABLE IF EXISTS sueb_lidos_original
 SET SCHEMA public;
 
-ALTER TABLE IF EXISTS sueb_orig_assign
+ALTER TABLE IF EXISTS sueb_lidos_translation
 SET SCHEMA public;
 
-ALTER TABLE IF EXISTS sueb_original
-SET SCHEMA public;
-
-ALTER TABLE IF EXISTS sueb_pnd_alias
-SET SCHEMA public;
-
-ALTER TABLE IF EXISTS sueb_pnd_main
-SET SCHEMA public;
-
-ALTER TABLE IF EXISTS sueb_pnd_title
-SET SCHEMA public;
-
-ALTER TABLE IF EXISTS sueb_swd_main
-SET SCHEMA public;
-
-ALTER TABLE IF EXISTS sueb_swd_term
-SET SCHEMA public;
-
-ALTER TABLE IF EXISTS sueb_translation
-SET SCHEMA public;
-
-ALTER TABLE IF EXISTS sueb_translator
+ALTER TABLE IF EXISTS sueb_lidos_translator
 SET SCHEMA public;
