@@ -1,8 +1,7 @@
 from django.db import models
 
 
-# Create your models here.
-class SuebLidosAuthor(models.Model):
+class Author(models.Model):
     id = models.IntegerField(primary_key=True)
     comment = models.TextField(blank=True, null=True)
     name = models.CharField(max_length=255)
@@ -13,7 +12,7 @@ class SuebLidosAuthor(models.Model):
         db_table = "sueb_lidos_author"
 
 
-class SuebLidosDdcGerman(models.Model):
+class DdcGerman(models.Model):
     id = models.IntegerField(primary_key=True)
     ddc_number = models.CharField(max_length=3)
     ddc_name = models.CharField(max_length=255)
@@ -24,7 +23,7 @@ class SuebLidosDdcGerman(models.Model):
         db_table = "sueb_lidos_ddc_german"
 
 
-class SuebLidosFilter(models.Model):
+class Filter(models.Model):
     id = models.IntegerField(primary_key=True)
     a = models.CharField(max_length=255, blank=True, null=True)
     b = models.CharField(max_length=255, blank=True, null=True)
@@ -37,7 +36,7 @@ class SuebLidosFilter(models.Model):
         db_table = "sueb_lidos_filter"
 
 
-class SuebLidosLanguage(models.Model):
+class Language(models.Model):
     id = models.IntegerField(primary_key=True)
     language = models.CharField(max_length=255)
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
@@ -47,7 +46,7 @@ class SuebLidosLanguage(models.Model):
         db_table = "sueb_lidos_language"
 
 
-class SuebLidosLidosEx(models.Model):
+class LidosEx(models.Model):
     id = models.IntegerField(primary_key=True)
     number_01 = models.CharField(
         db_column="01", max_length=255, blank=True, null=True
@@ -123,13 +122,11 @@ class SuebLidosLidosEx(models.Model):
         db_table = "sueb_lidos_lidos_ex"
 
 
-class SuebLidosManualKeys(models.Model):
+class ManualKeys(models.Model):
     id = models.IntegerField(primary_key=True)
-    original = models.ForeignKey(
-        "SuebLidosOriginal", models.DO_NOTHING, blank=True, null=True
-    )
+    original = models.ForeignKey("Original", models.DO_NOTHING, blank=True, null=True)
     translation = models.ForeignKey(
-        "SuebLidosTranslation", models.DO_NOTHING, blank=True, null=True
+        "Translation", models.DO_NOTHING, blank=True, null=True
     )
     term = models.CharField(max_length=255)
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
@@ -139,13 +136,11 @@ class SuebLidosManualKeys(models.Model):
         db_table = "sueb_lidos_manual_keys"
 
 
-class SuebLidosOrigAssign(models.Model):
+class OrigAssign(models.Model):
     id = models.IntegerField(primary_key=True)
-    original = models.ForeignKey(
-        "SuebLidosOriginal", models.DO_NOTHING, blank=True, null=True
-    )
+    original = models.ForeignKey("Original", models.DO_NOTHING, blank=True, null=True)
     translation = models.ForeignKey(
-        "SuebLidosTranslation", models.DO_NOTHING, blank=True, null=True
+        "Translation", models.DO_NOTHING, blank=True, null=True
     )
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
     migration_generated = models.BooleanField()
@@ -154,23 +149,21 @@ class SuebLidosOrigAssign(models.Model):
         db_table = "sueb_lidos_orig_assign"
 
 
-class SuebLidosOriginal(models.Model):
+class Original(models.Model):
     id = models.IntegerField(primary_key=True)
-    ddc = models.ForeignKey(
-        SuebLidosDdcGerman, models.DO_NOTHING, blank=True, null=True
-    )
-    author = models.ForeignKey(SuebLidosAuthor, models.DO_NOTHING)
+    ddc = models.ForeignKey(DdcGerman, models.DO_NOTHING, blank=True, null=True)
+    author = models.ForeignKey(Author, models.DO_NOTHING)
     title = models.TextField(blank=True, null=True)
     subtitle = models.TextField(blank=True, null=True)
     year = models.CharField(max_length=100, blank=True, null=True)
     publisher = models.CharField(max_length=255, blank=True, null=True)
     published_location = models.CharField(max_length=255, blank=True, null=True)
     edition = models.TextField(blank=True, null=True)
-    language = models.ForeignKey(
-        SuebLidosLanguage, models.DO_NOTHING, blank=True, null=True
-    )
+    language = models.ForeignKey(Language, models.DO_NOTHING, blank=True, null=True)
     comment = models.TextField(blank=True, null=True)
-    manual_keys = models.ForeignKey(SuebLidosManualKeys, models.DO_NOTHING)
+    manual_keys = models.ForeignKey(
+        ManualKeys, models.DO_NOTHING, related_name="OriginalManualKeys"
+    )
     real_year = models.IntegerField(blank=True, null=True)
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
     migration_generated = models.BooleanField()
@@ -179,27 +172,27 @@ class SuebLidosOriginal(models.Model):
         db_table = "sueb_lidos_original"
 
 
-class SuebLidosTranslation(models.Model):
+class Translation(models.Model):
     id = models.IntegerField(primary_key=True)
-    ddc = models.ForeignKey(
-        SuebLidosDdcGerman, models.DO_NOTHING, blank=True, null=True
-    )
-    translator = models.ForeignKey("SuebLidosTranslator", models.DO_NOTHING)
-    author = models.ForeignKey(
-        SuebLidosAuthor, models.DO_NOTHING, blank=True, null=True
-    )
+    ddc = models.ForeignKey(DdcGerman, models.DO_NOTHING, blank=True, null=True)
+    translator = models.ForeignKey("Translator", models.DO_NOTHING)
+    author = models.ForeignKey(Author, models.DO_NOTHING, blank=True, null=True)
     title = models.TextField(blank=True, null=True)
     subtitle = models.TextField(blank=True, null=True)
     year = models.CharField(max_length=100, blank=True, null=True)
     publisher = models.CharField(max_length=255, blank=True, null=True)
     published_location = models.CharField(max_length=255, blank=True, null=True)
     edition = models.TextField(blank=True, null=True)
-    language_id = models.IntegerField(blank=True, null=True)
+    language = models.ForeignKey(Language, models.DO_NOTHING, blank=True, null=True)
     via_language = models.ForeignKey(
-        SuebLidosLanguage, models.DO_NOTHING, blank=True, null=True
+        Language,
+        models.DO_NOTHING,
+        blank=True,
+        null=True,
+        related_name="bridgeTranslation",
     )
     comment = models.TextField(blank=True, null=True)
-    manual_keys_id = models.CharField(max_length=255, blank=True, null=True)
+    manual_keys = models.CharField(max_length=255, blank=True, null=True)
     real_year = models.IntegerField(blank=True, null=True)
     invisible = models.IntegerField(blank=True, null=True)
     migration_notes = models.CharField(max_length=1023, blank=True, null=True)
@@ -209,7 +202,7 @@ class SuebLidosTranslation(models.Model):
         db_table = "sueb_lidos_translation"
 
 
-class SuebLidosTranslator(models.Model):
+class Translator(models.Model):
     id = models.IntegerField(primary_key=True)
     comment = models.TextField(blank=True, null=True)
     name = models.CharField(max_length=255)
