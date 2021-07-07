@@ -12,22 +12,6 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name="SuebManualKeys",
-            fields=[
-                ("id", models.IntegerField(primary_key=True, serialize=False)),
-                ("term", models.CharField(max_length=255)),
-                (
-                    "migration_notes",
-                    models.CharField(blank=True, max_length=1023, null=True),
-                ),
-                ("migration_generated", models.BooleanField()),
-            ],
-            options={
-                "db_table": "sueb_manual_keys",
-                "managed": False,
-            },
-        ),
-        migrations.CreateModel(
             name="SuebAuthor",
             fields=[
                 ("id", models.IntegerField(primary_key=True, serialize=False)),
@@ -159,6 +143,21 @@ class Migration(migrations.Migration):
             ],
             options={
                 "db_table": "sueb_swd_main",
+            },
+        ),
+        migrations.CreateModel(
+            name="SuebManualKeys",
+            fields=[
+                ("id", models.IntegerField(primary_key=True, serialize=False)),
+                ("term", models.CharField(max_length=255)),
+                (
+                    "migration_notes",
+                    models.CharField(blank=True, max_length=1023, null=True),
+                ),
+                ("migration_generated", models.BooleanField()),
+            ],
+            options={
+                "db_table": "sueb_manual_keys",
             },
         ),
         migrations.CreateModel(
@@ -521,5 +520,25 @@ class Migration(migrations.Migration):
             options={
                 "db_table": "sueb_loc_assign",
             },
+        ),
+        migrations.AddField(
+            model_name="suebmanualkeys",
+            name="original",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.DO_NOTHING,
+                to="hueb_legacy.sueboriginal",
+            ),
+        ),
+        migrations.AddField(
+            model_name="suebmanualkeys",
+            name="translation",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.DO_NOTHING,
+                to="hueb_legacy.suebtranslation",
+            ),
         ),
     ]
