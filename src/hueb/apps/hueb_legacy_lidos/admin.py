@@ -259,8 +259,8 @@ class ManualKeysAdmin(ReadonlyAdmin):
         "migration_generated",
     )
     search_fields = (
-        "original",
-        "translation",
+        "original__title",
+        "translation__title",
         "term",
         "id",
     )
@@ -293,8 +293,8 @@ class OrigAssignAdmin(ReadonlyAdmin):
         "migration_generated",
     )
     search_fields = (
-        "original",
-        "translation",
+        "original__title",
+        "translation__title",
         "id",
     )
     list_filter = ("migration_generated",)
@@ -342,15 +342,14 @@ class OriginalAdmin(ReadonlyAdmin):
         "id",
         "title",
         "subtitle",
-        "author",
+        "author__name",
         "year",
         "publisher",
         "published_location",
         "edition",
-        "language",
+        "language__language",
         "comment",
-        "manual_keys",
-        "ddc",
+        "manual_keys__term",
         "real_year",
     )
     list_filter = ("migration_generated",)
@@ -412,17 +411,14 @@ class TranslationAdmin(ReadonlyAdmin):
         "id",
         "title",
         "subtitle",
-        "translator",
-        "author",
         "year",
         "publisher",
         "published_location",
         "edition",
-        "via_language",
-        "language",
+        "via_language__language",
+        "language__language",
         "comment",
         "manual_keys",
-        "ddc",
         "real_year",
         "invisible",
         "migration_generated",
