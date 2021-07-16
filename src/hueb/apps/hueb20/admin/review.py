@@ -1,10 +1,11 @@
 from django.contrib import admin, messages
 from django.http import HttpResponseRedirect
 from django.utils.html import format_html
+from import_export.admin import ExportMixin
 from simple_history.admin import SimpleHistoryAdmin
 
 
-class ReviewAdmin(SimpleHistoryAdmin):
+class ReviewAdmin(ExportMixin, SimpleHistoryAdmin):
     change_form_template = "admin/review_change_form.html"
 
     def get_form(self, request, obj=None, **kwargs):

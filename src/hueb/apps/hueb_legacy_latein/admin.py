@@ -1,4 +1,5 @@
 from django.contrib import admin
+from import_export.admin import ExportMixin
 
 from .models import (
     AuthorNew,
@@ -17,7 +18,7 @@ from .models import (
 )
 
 
-class ReadonlyAdmin(admin.ModelAdmin):
+class ReadonlyAdmin(ExportMixin, admin.ModelAdmin):
     def has_change_permission(self, request, obj=None):
         return False
 
