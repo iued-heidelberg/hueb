@@ -20,7 +20,7 @@ fi
 echo "Collecting static files"
 python3 -m manage collectstatic --noinput
 echo "Migrating Database"
-python3 -m manage migrate --noinput --fake-initial
+python3 -m manage migrate --noinput
 
 echo "Starting gunicorn"
 exec gunicorn hueb.wsgi \
