@@ -32,13 +32,13 @@ class ReadonlyAdmin(ExportMixin, admin.ModelAdmin):
 class OriginalNewAuthorNewInline(admin.TabularInline):
     model = OriginalNewAuthorNew
     extra = 0
-    autocomplete_fields = ("author", "original_new")
+    autocomplete_fields = ("author", "original")
 
 
 class TranslationNewTranslatorNewInline(admin.TabularInline):
     model = TranslationNewTranslatorNew
     extra = 0
-    autocomplete_fields = ("translation_new", "translator")
+    autocomplete_fields = ("translation", "translator")
 
 
 class LocAssignInline(admin.TabularInline):
@@ -102,6 +102,21 @@ class OrigAssignAdmin(ReadonlyAdmin):
         "orig_diff_new",
         "trans_diff_new",
     )
+
+    def get_queryset(self, request):
+        qs = (
+            super(OrigAssignAdmin, self)
+            .get_queryset(request)
+            .select_related("orig")
+            .select_related("trans")
+            .select_related("orig_new")
+            .select_related("trans_new")
+            .select_related("orig_diff")
+            .select_related("trans_diff")
+            .select_related("orig_diff_new")
+            .select_related("trans_diff_new")
+        )
+        return qs
 
     fieldsets = (
         ("Old relationships", {"description": (" "), "fields": ("orig", "trans")}),
@@ -168,6 +183,19 @@ class LocAssignAdmin(ReadonlyAdmin):
         ),
     )
 
+    def get_queryset(self, request):
+        qs = (
+            super(LocAssignAdmin, self)
+            .get_queryset(request)
+            .select_related("orig")
+            .select_related("trans")
+            .select_related("loc")
+            .select_related("orig_new")
+            .select_related("trans_new")
+            .select_related("loc_new")
+        )
+        return qs
+
 
 @admin.register(User)
 class UserAdmin(ReadonlyAdmin):
@@ -229,6 +257,12 @@ class TranslatorNewAdmin(ReadonlyAdmin):
         TranslationNewTranslatorNewInline,
     ]
 
+    def get_queryset(self, request):
+        qs = (
+            super(TranslatorNewAdmin, self).get_queryset(request).select_related("user")
+        )
+        return qs
+
 
 @admin.register(AuthorNew)
 class AuthorNewAdmin(ReadonlyAdmin):
@@ -272,6 +306,10 @@ class AuthorNewAdmin(ReadonlyAdmin):
     inlines = [
         OriginalNewAuthorNewInline,
     ]
+
+    def get_queryset(self, request):
+        qs = super(AuthorNewAdmin, self).get_queryset(request).select_related("user")
+        return qs
 
 
 @admin.register(Country)
@@ -427,6 +465,20 @@ class OriginalNewAdmin(ReadonlyAdmin):
     )
     autocomplete_fields = ("ddc",)
 
+    def get_queryset(self, request):
+        qs = (
+            super(OriginalNewAdmin, self)
+            .get_queryset(request)
+            .select_related("language")
+            .select_related("ddc")
+            .select_related("user")
+            .select_related("country")
+            .select_related("person")
+            .select_related("document")
+            .select_related("documentrelationship")
+        )
+        return qs
+
     fieldsets = (
         (
             "Original Information",
@@ -540,4 +592,79 @@ class TranslationNewAdmin(ReadonlyAdmin):
         ),
     )
 
+    def get_queryset(self, request):
+        qs = (
+            super(TranslationNewAdmin, self)
+            .get_queryset(request)
+            .select_related("language")
+            .select_related("via_language")
+            .select_related("author")
+            .select_related("author_new")
+            .select_related("ddc")
+            .select_related("user")
+            .select_related("country")
+            .select_related("person")
+            .select_related("document")
+            .select_related("documentrelationship")
+        )
+        return qs
+
     inlines = [TranslationNewTranslatorNewInline, LocAssignInline, OrigNewAssignInline]
+
+
+@admin.register(TranslationNewTranslatorNew)
+class TranslationNewTranslatorNewAdmin(ReadonlyAdmin):
+    list_display = (
+        "id",
+        "translation",
+        "translator",
+    )
+    autocomplete_fields = (
+        "translation",
+        "translator",
+    )
+
+    def get_queryset(self, request):
+        qs = (
+            super(TranslationNewTranslatorNewAdmin, self)
+            .get_queryset(request)
+            .select_related("translation")
+            .select_related("translator")
+        )
+        return qs
+
+    fieldsets = (
+        (
+            "Relationship",
+            {"description": (" "), "fields": ("translation", "translator")},
+        ),
+    )
+
+
+@admin.register(OriginalNewAuthorNew)
+class OriginalNewAuthorNewAdmin(ReadonlyAdmin):
+    list_display = (
+        "id",
+        "original",
+        "author",
+    )
+    autocomplete_fields = (
+        "original",
+        "author",
+    )
+
+    def get_queryset(self, request):
+        qs = (
+            super(OriginalNewAuthorNewAdmin, self)
+            .get_queryset(request)
+            .select_related("original")
+            .select_related("author")
+        )
+        return qs
+
+    fieldsets = (
+        (
+            "Relationship",
+            {"description": (" "), "fields": ("original", "author")},
+        ),
+    )

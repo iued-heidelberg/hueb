@@ -284,6 +284,15 @@ class ManualKeysAdmin(ReadonlyAdmin):
         ),
     )
 
+    def get_queryset(self, request):
+        qs = (
+            super(ManualKeysAdmin, self)
+            .get_queryset(request)
+            .select_related("original")
+            .select_related("translation")
+        )
+        return qs
+
 
 @admin.register(OrigAssign)
 class OrigAssignAdmin(ReadonlyAdmin):
@@ -319,6 +328,15 @@ class OrigAssignAdmin(ReadonlyAdmin):
             },
         ),
     )
+
+    def get_queryset(self, request):
+        qs = (
+            super(OrigAssignAdmin, self)
+            .get_queryset(request)
+            .select_related("original")
+            .select_related("translation")
+        )
+        return qs
 
 
 @admin.register(Original)
@@ -385,6 +403,17 @@ class OriginalAdmin(ReadonlyAdmin):
             },
         ),
     )
+
+    def get_queryset(self, request):
+        qs = (
+            super(OriginalAdmin, self)
+            .get_queryset(request)
+            .select_related("author")
+            .select_related("language")
+            .select_related("manual_keys")
+            .select_related("ddc")
+        )
+        return qs
 
 
 @admin.register(Translation)
@@ -459,6 +488,18 @@ class TranslationAdmin(ReadonlyAdmin):
             },
         ),
     )
+
+    def get_queryset(self, request):
+        qs = (
+            super(TranslationAdmin, self)
+            .get_queryset(request)
+            .select_related("author")
+            .select_related("translator")
+            .select_related("language")
+            .select_related("via_language")
+            .select_related("ddc")
+        )
+        return qs
 
 
 @admin.register(Translator)

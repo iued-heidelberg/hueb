@@ -434,9 +434,7 @@ class OriginalNewAuthor(models.Model):
 
 class OriginalNewAuthorNew(models.Model):
     id = models.BigAutoField(primary_key=True)
-    original_new = models.ForeignKey(
-        OriginalNew, models.DO_NOTHING, blank=True, null=True
-    )
+    original = models.ForeignKey(OriginalNew, models.DO_NOTHING, blank=True, null=True)
     author = models.ForeignKey(AuthorNew, models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
@@ -458,7 +456,7 @@ class TranslationNewTranslator(models.Model):
 
 class TranslationNewTranslatorNew(models.Model):
     id = models.BigAutoField(primary_key=True)
-    translation_new = models.ForeignKey(
+    translation = models.ForeignKey(
         TranslationNew, models.DO_NOTHING, blank=True, null=True
     )
     translator = models.ForeignKey(
