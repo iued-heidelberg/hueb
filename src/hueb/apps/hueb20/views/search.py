@@ -2,7 +2,6 @@ import logging
 
 import beeline
 from django import forms
-from django.core.exceptions import ValidationError
 from django.db.models import Q
 from django.forms.formsets import BaseFormSet, formset_factory
 from django.views.generic import ListView
@@ -127,22 +126,19 @@ class Search(ListView):
 
     def get_queryset(self):
         formset = self.SearchFormset(data=self.request.GET)
-        try:
-            formset.is_valid()
-            queryset = formset.get_query_object()
 
+        if formset.is_valid():
+            queryset = formset.get_query_object()
             return queryset.all().order_by("id")
-        except ValidationError:
+        else:
             results = BaseSearchFormSet.base_queryset.all().order_by("id")
             return results
 
     def get_context_data(self, **kwargs):
         context = super(Search, self).get_context_data(**kwargs)
 
-        try:
-            formset = self.SearchFormset(data=self.request.GET)
-            formset.is_valid()
-        except ValidationError:
+        formset = self.SearchFormset(data=self.request.GET)
+        if not formset.is_valid():
             formset = self.SearchFormset()
 
         context["formset"] = formset
