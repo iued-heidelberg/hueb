@@ -5,7 +5,7 @@ import beeline
 
 
 def honeycomb_config():
-    if os.getenv("HONEYCOMB_API_KEY") is not None:
+    if os.getenv("HONEYCOMB_API_KEY") not in [None, "", " "]:
         beeline.init(
             writekey=os.getenv("HONEYCOMB_API_KEY"),
             dataset="hueb_" + os.getenv("ENV"),

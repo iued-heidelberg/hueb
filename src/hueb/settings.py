@@ -185,7 +185,8 @@ if os.getenv("ENV") == "development":
     }
 
 
-if os.getenv("SENTRY_API_KEY") is not None:
+if os.getenv("SENTRY_API_KEY") not in [None, "", " "]:
+
     sentry_sdk.init(
         dsn=os.getenv("SENTRY_API_KEY"),
         integrations=[DjangoIntegration()],
