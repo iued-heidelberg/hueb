@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   hueb:
-    image: ghcr.io/bockstaller/hueb_app:${TAG}
+    image: ghcr.io/iued-heidelberg/hueb_app:${TAG}
     depends_on:
       - database
       - proxy
@@ -41,7 +41,7 @@ services:
       - proxy_network
 
   database:
-    image: ghcr.io/bockstaller/hueb_db:${TAG}
+    image: ghcr.io/iued-heidelberg/hueb_db:${TAG}
     build:
       context: ./postgres/
       dockerfile: Dockerfile

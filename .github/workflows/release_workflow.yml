@@ -101,8 +101,6 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.PAT }}
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
@@ -110,7 +108,7 @@ jobs:
           build-args: git_sha=${{ steps.vars.outputs.sha_short }}
           push: true
           tags: |
-            ghcr.io/bockstaller/hueb_app:${{ steps.vars.outputs.sha_short }}
+            ghcr.io/iued-heidelberg/hueb_app:${{ steps.vars.outputs.sha_short }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
 
@@ -127,8 +125,8 @@ jobs:
             version=${{ env.RELEASE_VERSION }}
           push: true
           tags: |
-            ghcr.io/bockstaller/hueb_app:production-latest
-            ghcr.io/bockstaller/hueb_app:${{ env.RELEASE_VERSION }}
+            ghcr.io/iued-heidelberg/hueb_app:production-latest
+            ghcr.io/iued-heidelberg/hueb_app:${{ env.RELEASE_VERSION }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
 
@@ -155,8 +153,6 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.PAT }}
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
@@ -165,7 +161,7 @@ jobs:
           context: ./deployment/docker/postgres/.
           file: ./deployment/docker/postgres/Dockerfile
           tags: |
-            ghcr.io/bockstaller/hueb_db:${{ steps.vars.outputs.sha_short }}
+            ghcr.io/iued-heidelberg/hueb_db:${{ steps.vars.outputs.sha_short }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
       - name: Set tag
@@ -179,8 +175,8 @@ jobs:
           context: ./deployment/docker/postgres/.
           file: ./deployment/docker/postgres/Dockerfile
           tags: |
-            ghcr.io/bockstaller/hueb_db:production-latest
-            ghcr.io/bockstaller/hueb_db:${{ env.RELEASE_VERSION }}
+            ghcr.io/iued-heidelberg/hueb_db:production-latest
+            ghcr.io/iued-heidelberg/hueb_db:${{ env.RELEASE_VERSION }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
 
@@ -205,7 +201,7 @@ jobs:
       - name: Set tag
         id: tag_vars
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-      - uses: bockstaller/ansible-playbook-docker-action@master
+      - uses: iued-heidelberg/ansible-playbook-docker-action@master
         with:
           playbookName: "./deployment/ansible/provision.yml"
           inventoryFile: "./deployment/ansible/inventory/production.ini"
