@@ -9,6 +9,8 @@ RUN mkdir /backup
 
 COPY pg_backup.sh /pg_backup.sh
 RUN chmod a+x /pg_backup.sh
+COPY pg_backup.sh /delete_old_backups.sh
+RUN chmod a+x /pg_backup.sh
 
 COPY cronjob /etc/cron.d/backup_job
 RUN chmod 0644 /etc/cron.d/backup_job

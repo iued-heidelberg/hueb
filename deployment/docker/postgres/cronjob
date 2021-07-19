@@ -1,2 +1,3 @@
 0 */6 * * * . /project_env.sh && /pg_backup.sh /backup > /proc/1/fd/1 2>/proc/1/fd/2
+0 */6 * * * . /project_env.sh && /delete_old_backups.sh > /proc/1/fd/1 2>/proc/1/fd/2
 # Don't remove the empty line at the end of this file. It is required to run the cron job
