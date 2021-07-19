@@ -16,9 +16,9 @@ The current implementation progress (07.21) is the following:
 - all old databases are ported from ancient MySQL dumps to PostgreSQL, cleaned up, and made read-only accessible in the backend. Currently, they are kept in separate tables and not merged into the main data model because they aren't reviewed yet
 - a public landing site and basic search functionality is implemented
 
-![alt text](https://github.com/iued-heidelberg/hueb/raw/master/.img/index.png "Screenshot of the landing page, mainly containing the German text from above.")
+![alt text](https://github.com/iued-heidelberg/hueb/raw/development/.img/index.png "Screenshot of the landing page, mainly containing the German text from above.")
 
-![alt text](https://github.com/iued-heidelberg/hueb/raw/master/.img/search.png "Screenshot of the search view with two example documents.")
+![alt text](https://github.com/iued-heidelberg/hueb/raw/development/.img/search.png "Screenshot of the search view with two example documents.")
 
 
 **For my successors:**
