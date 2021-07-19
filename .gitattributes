@@ -3,3 +3,6 @@
 db_migration/archive/cleaned_data.sql filter=lfs diff=lfs merge=lfs -text
 db_migration/archive/mysql_import.sql filter=lfs diff=lfs merge=lfs -text
 db_migration/archive/backup_2021_07_19.sql filter=lfs diff=lfs merge=lfs -text
+db_migration/archive/mysql_import.gz filter=lfs diff=lfs merge=lfs -text
+db_migration/archive/cleaned_data.gz filter=lfs diff=lfs merge=lfs -text
+db_migration/archive/backup_2021_07_19.gz filter=lfs diff=lfs merge=lfs -text
