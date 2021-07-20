@@ -1,5 +1,6 @@
 # HUEB - Heidelberger Übersetzungs Bibliographie
 
+Official description from the project site:
 > Im Rahmen der Digital Humanities wird die DFG-geförderte Heidelberger Übersetzungsbibliographie eine Informationsinfrastruktur bereitstellen, die zwei Zwecken dienen soll:
 >
 > Zunächst geht es um die Zusammenstellung einer Bibliographie von vorwiegend frühneuzeitlichen Übersetzungen aus dem Englischen und Niederländischen ins Deutsche (Erscheinungszeitraum 1450–1850).
@@ -70,7 +71,11 @@ cd ../..
 ```
 ./manage.py migrate
 ```
-10. Run the application
+10. Run tests
+```
+pytest
+```
+11. Run the application
 ```
 ./manage.py runserver
 ```
@@ -118,7 +123,7 @@ Currently we have two different servers hosted in the [heiCLOUD](https://heiclou
 - [hueb-staging.iued.uni-heidelberg.de](hueb-staging.iued.uni-heidelberg.de)
 - [hueb.iued.uni-heidelberg.de](hueb.iued.uni-heidelberg.de)
 
-On both servers, the backups are located on `/db_dump/backup/*` and the repository in `/hueb. Later one is only used to have all deployment scripts and configuration file (`/hueb/deployment/docker.env`) locally.
+On both servers, the backups are located on `/db_dump/backup/*` and the repository in `/hueb`. Later one is only used to have all deployment scripts and configuration file (`/hueb/deployment/docker.env`) locally.
 
 ### Components
 The applications consist out of three services, listed in the [docker_compose.yml](deployment/docker/docker-compose.yml):
@@ -129,7 +134,7 @@ The applications consist out of three services, listed in the [docker_compose.ym
 ### Continuous Integration & Deployment
 Commits pushed to Github will cause the `.github/workflows/development_workflows.yml` to run. This workflow runs [black](black.readthedocs.io), [flake8](flake8.pycqa.org), tests, the application- and database container build in parallel. The container images are pushed to [Githubs container registry](ghcr.io) under the tags TODO
 
-The staging CI Process is normally aborted at this point. The exception is a commit published on the `development branch. It is deployed via Ansible directly to [hueb-staging.iued.uni-heidelberg.de](hueb-staging.iued.uni-heidelberg.de).
+The staging CI Process is normally aborted at this point. The exception is a commit published on the `development` branch. It is deployed via Ansible directly to [hueb-staging.iued.uni-heidelberg.de](hueb-staging.iued.uni-heidelberg.de).
 
 A deployment to [hueb.iued.uni-heidelberg.de](hueb.iued.uni-heidelberg.de) is triggered by pushing a tag with the structure `v*.*.*` and runs the same steps as for staging. It uses the tags: TODO for its docker images and adds two steps to publish release notifications to [Sentry](sentry.com) and [Honeycomb](honeycomb.io).
 
@@ -165,5 +170,4 @@ Where could you start? Where is more work to do?
 2. Migrate the old datasets to the new data model. The data is in Postgres and Django models exist. The migration should be relatively straightforward. You can use `hueb/src/apps/hueb20/data_migrations` as a reference. The bigger challenge is keeping the data sources distinguishable and making sure the data is correct. I suggest continuing marking all data with their source using the `HUEB_APPLICATIONS` enum provided in [utils.py](hueb/src/hueb/apps/hueb20/models/utils.py). Correctness will be especially challenging for the `hueb_legacy_latein` dataset because it contained tables named `*_new`, which added multiple m:m-tables. I suspect that the models with two `New` like `OriginalNewAuthorNew` are the most promising ones, which is the reason why they are displayed in the admin UI. But some kind of review is probably necessary.
 3. Make a better search interface. The current one was created without real feedback or user interaction and more as a proof of concept. The implementation with Q-objects is probably fine for a start.
 4. Make a better backend. The backend is pretty barebones. It uses autocompletion and whatnot but could benefit a lot from some kind of guidance/workflow for our users. For example: add a view to see which documents you've added yourself, what changes have you made last, create a nicer list view which isn't so wide, ...
-
 
