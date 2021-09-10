@@ -72,7 +72,7 @@ seed-isort-config==2.2.0
 sentry-sdk==0.19.2
 six==1.15.0
 snooty-lextudio==1.8.10.dev0
-sqlparse==0.4.1
+sqlparse==0.4.2
 statsd==3.3.0
 tablib==3.0.0
 toml==0.10.2
