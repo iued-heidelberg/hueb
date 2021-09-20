@@ -1,7 +1,7 @@
 from django.db import migrations
 from hueb.apps.hueb20.models.contribution import Contribution as contri  # noqa: F401
 
-
+#Fills out document.written_by based on contributions
 def fill_written_by(apps, schema_editor):
     Document = apps.get_model("hueb20", "Document")
 
