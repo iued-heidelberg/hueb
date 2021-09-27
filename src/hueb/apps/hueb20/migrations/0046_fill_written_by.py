@@ -8,7 +8,9 @@ def fill_written_by(apps, schema_editor):
     documents = Document.objects.all()
 
     for document in documents:
-        for contribution in document.contribution_set.filter(contribution_type=contri.WRITER):
+        for contribution in document.contribution_set.filter(
+            contribution_type=contri.WRITER
+        ):
             document.written_by.add(contribution.person)
 
 
