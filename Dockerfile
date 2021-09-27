@@ -16,7 +16,7 @@ RUN apt-get update && \
   libxslt1-dev \
   locales \
   python-dev \
-  python-virtualenv \
+  python3-virtualenv \
   python3-dev \
   sudo \
   supervisor \
