@@ -72,6 +72,9 @@ class Document(Reviewable):
         blank=True,
     )
 
+    def get_author_contributions(self):
+        return self.contribution_set.filter(contribution_type="WRITER")
+
     def mark_reviewed(self, updated=[]):
         if self not in updated:
             super().mark_reviewed(updated=updated)
@@ -136,7 +139,9 @@ class Document(Reviewable):
 
     @classmethod
     def q_object_by_author(cls, value):
-        return Q(written_by__name__icontains=value)
+        return Q(contribution__person__name__icontains=value) & Q(
+            contribution__contribution_type="WRITER"
+        )
 
     @classmethod
     def q_object_by_ddc(cls, value):
