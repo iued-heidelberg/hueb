@@ -74,6 +74,7 @@ class Document(Reviewable):
 
     def get_author_contributions(self):
         return self.contribution_set.filter(contribution_type="WRITER")
+        # Function is used to display authors only on single_result_document
 
     def mark_reviewed(self, updated=[]):
         if self not in updated:
