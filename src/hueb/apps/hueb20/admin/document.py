@@ -236,10 +236,16 @@ class DocumentAdmin(ReviewAdmin):
             new_document = deepcopy(document)
             new_document.id = None
             new_document.save()
-            for written_by in document.written_by.all():
-                new_document.written_by.add(written_by)
-            for publisher in document.publishers.all():
-                new_document.publishers.add(publisher)
+            for contribution in document.contribution_set.all():
+                c = Contribution(
+                    person=contribution.person,
+                    document=new_document,
+                    contribution_type=contribution.contribution_type,
+                    originalAuthor_ref=new_document.originalAuthor_ref,
+                    translationTranslator_ref=new_document.translationTranslator_ref,
+                )
+                c.save()
+                new_document.contribution_set.add(c)
             for translations in document.translations.all():
                 new_document.translations.add(translations)
             for filing in document.filing_set.all():

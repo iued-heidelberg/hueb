@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.utils.html import format_html
 from import_export.admin import ExportMixin
 from simple_history.admin import SimpleHistoryAdmin
+from hueb.apps.hueb20.models.document import DocumentRelationship
 
 
 class ReviewAdmin(ExportMixin, SimpleHistoryAdmin):
@@ -19,7 +20,32 @@ class ReviewAdmin(ExportMixin, SimpleHistoryAdmin):
 
         return form
 
+    def is_not_linked(self, request, obj):
+        return (
+            "_save_without_link" not in request.POST
+            and not DocumentRelationship.objects.filter(document_from=obj).exists()
+            and not DocumentRelationship.objects.filter(document_to=obj).exists()
+        )
+
+    def response_add(self, request, obj):
+        if self.is_not_linked(request, obj) and not "_popup" in request.get_full_path():
+            self.message_user(
+                request,
+                format_html("Linked Document Required!"),
+                level=messages.WARNING,
+            )
+            return HttpResponseRedirect("../{id}/change/".format(id=obj.id))
+        return super().response_add(request, obj)
+
     def response_change(self, request, obj):
+        if self.is_not_linked(request, obj):
+            self.message_user(
+                request,
+                format_html("Linked Document Required!"),
+                level=messages.WARNING,
+            )
+            return HttpResponseRedirect(".")
+
         if "_mark_reviewed" in request.POST:
             if request.user.has_perm("hueb20.can_review"):
                 updated = []
