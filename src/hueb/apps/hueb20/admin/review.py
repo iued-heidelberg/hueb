@@ -27,25 +27,7 @@ class ReviewAdmin(ExportMixin, SimpleHistoryAdmin):
             and not DocumentRelationship.objects.filter(document_to=obj).exists()
         )
 
-    def response_add(self, request, obj):
-        if self.is_not_linked(request, obj) and not "_popup" in request.get_full_path():
-            self.message_user(
-                request,
-                format_html("Linked Document Required!"),
-                level=messages.WARNING,
-            )
-            return HttpResponseRedirect("../{id}/change/".format(id=obj.id))
-        return super().response_add(request, obj)
-
     def response_change(self, request, obj):
-        if self.is_not_linked(request, obj):
-            self.message_user(
-                request,
-                format_html("Linked Document Required!"),
-                level=messages.WARNING,
-            )
-            return HttpResponseRedirect(".")
-
         if "_mark_reviewed" in request.POST:
             if request.user.has_perm("hueb20.can_review"):
                 updated = []

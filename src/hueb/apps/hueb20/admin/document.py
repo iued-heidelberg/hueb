@@ -9,6 +9,9 @@ from hueb.apps.hueb20.admin.contribution import ContributionInline
 from hueb.apps.hueb20.admin.review import ReviewAdmin, TabularInlineReviewAdmin
 from hueb.apps.hueb20.models import Contribution, Document
 from hueb.apps.hueb20.widgets.timerange import TimeRangeWidget
+from django.contrib import admin, messages
+from django.http import HttpResponseRedirect
+from django.utils.html import format_html
 
 from .comment import CommentInline
 from .filing import FilingInline
@@ -45,6 +48,8 @@ class OriginalRelationshipInline(TabularInlineReviewAdmin):
 
 @admin.register(Document)
 class DocumentAdmin(ReviewAdmin):
+
+    change_form_template = "admin/document_change_form.html"
 
     actions = ["duplicate"]
 
@@ -125,6 +130,26 @@ class DocumentAdmin(ReviewAdmin):
             },
         ),
     )
+
+    def response_add(self, request, obj):
+        if self.is_not_linked(request, obj) and not "_popup" in request.get_full_path():
+            self.message_user(
+                request,
+                format_html("Linked Document Required!"),
+                level=messages.WARNING,
+            )
+            return HttpResponseRedirect("../{id}/change/".format(id=obj.id))
+        return super().response_add(request, obj)
+
+    def response_change(self, request, obj):
+        if self.is_not_linked(request, obj) and "_mark_reviewed" not in request.POST:
+            self.message_user(
+                request,
+                format_html("Linked Document Required!"),
+                level=messages.WARNING,
+            )
+            return HttpResponseRedirect(".")
+        return super().response_change(request, obj)
 
     def get_queryset(self, request):
         qs = (
