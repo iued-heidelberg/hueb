@@ -1,6 +1,7 @@
 import hueb.apps.hueb_legacy_latein.models as Legacy
 from django.contrib.postgres.fields import IntegerRangeField
 from django.db import models
+from django import forms
 from django.db.models import Q
 from django.urls import reverse
 from hueb.apps.hueb20.models.archive import Archive
@@ -72,9 +73,12 @@ class Document(Reviewable):
         blank=True,
     )
 
-    def get_author_contributions(self):
+    def get_authors(self):
         return self.contribution_set.filter(contribution_type="WRITER")
-        # Function is used to display authors only on single_result_document
+
+    def __init__(self, *args, **kwargs):
+        super(Document, self).__init__(*args, **kwargs)
+        self.__total__ = None
 
     def mark_reviewed(self, updated=[]):
         if self not in updated:
@@ -171,6 +175,53 @@ class DocumentRelationship(Reviewable):
     )
 
     app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
+
+    @classmethod
+    def get_q_object(cls, query):
+        if query["attribute"] == "title":
+            return DocumentRelationship.q_object_by_title(query["search_text"])
+        elif query["attribute"] == "author":
+            return DocumentRelationship.q_object_by_author(query["search_text"])
+        elif query["attribute"] == "ddc":
+            return DocumentRelationship.q_object_by_ddc(query["search_ddc"])
+        elif query["attribute"] == "year":
+            return DocumentRelationship.q_object_by_written_in(
+                query["search_year_from"], query["search_year_to"]
+            )
+        else:
+            return Q()
+
+    @classmethod
+    def q_object_by_title(cls, value):
+        return Q(document_from__title__icontains=value) | Q(
+            document_to__title__icontains=value
+        )
+
+    @classmethod
+    def q_object_by_author(cls, value):
+        return (
+            Q(document_from__contribution__person__name__icontains=value)
+            & Q(document_from__contribution__contribution_type="WRITER")
+        ) | (
+            Q(document_to__contribution__person__name__icontains=value)
+            & Q(document_to__contribution__contribution_type="WRITER")
+        )
+
+    @classmethod
+    def q_object_by_ddc(cls, value):
+        return Q(document_from__ddc__ddc_number__contains=value) | Q(
+            document_to__ddc__ddc_number__contains=value
+        )
+
+    @classmethod
+    def q_object_by_written_in(cls, lower, upper):
+        return Q(document_from__written_in__overlap=NumericRange(lower, upper)) | Q(
+            document_to__written_in__overlap=NumericRange(lower, upper)
+        )
+
+    def __init__(self, *args, **kwargs):
+        super(DocumentRelationship, self).__init__(*args, **kwargs)
+        self.__total__ = None
 
     def mark_reviewed(self, updated=[]):
         if self not in updated:

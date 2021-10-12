@@ -5,7 +5,7 @@ from django import forms
 from django.db.models import Q
 from django.forms.formsets import BaseFormSet, formset_factory
 from django.views.generic import ListView
-from hueb.apps.hueb20.models.document import Document
+from hueb.apps.hueb20.models.document import Document, DocumentRelationship
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -62,15 +62,12 @@ class SearchForm(forms.Form):
 
 class BaseSearchFormSet(BaseFormSet):
     base_queryset = (
-        Document.objects.prefetch_related("translations__written_by")
-        .prefetch_related("translations__ddc")
-        .prefetch_related("translations__language")
-        .prefetch_related("originals__written_by")
-        .prefetch_related("originals__ddc")
-        .prefetch_related("originals__language")
-        .prefetch_related("written_by")
-        .select_related("language")
-        .select_related("ddc")
+        DocumentRelationship.objects.prefetch_related("document_to__written_by")
+        .select_related("document_to__ddc")
+        .select_related("document_to__language")
+        .prefetch_related("document_from__written_by")
+        .select_related("document_from__ddc")
+        .select_related("document_from__language")
     )
 
     def get_query_object(self):
@@ -85,7 +82,7 @@ class BaseSearchFormSet(BaseFormSet):
 
             for form in self:
 
-                q = Document.get_q_object(form.cleaned_data)
+                q = DocumentRelationship.get_q_object(form.cleaned_data)
                 operator = form.cleaned_data["operator"]
 
                 if operator == "and":
@@ -105,7 +102,6 @@ class BaseSearchFormSet(BaseFormSet):
             )
 
             logger.debug(queryset.query)
-
             return queryset
 
 

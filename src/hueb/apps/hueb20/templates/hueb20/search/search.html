@@ -19,20 +19,9 @@
       <div>
         {% for result in object_list%}
           <div>
-                {% if result.translations.exists %}
-                {% for translation in result.translations.all %}
-                  {% with original=result translation=translation %}
-                    {% include "hueb20/search/single_result_document.html" %}
-                  {% endwith %}
-                {% endfor %}
-            {% endif %}
-            {% if result.originals.exists %}
-                {% for original in result.originals.all %}
-                  {% with original=original translation=result %}
-                    {% include "hueb20/search/single_result_document.html" %}
-                  {% endwith %}
-                {% endfor %}
-            {% endif %}
+            {% with original=result.document_from translation=result.document_to %}
+              {% include "hueb20/search/single_result_document.html" %}
+            {% endwith %}
           </div>
         {% endfor %}
       </div>
@@ -44,4 +33,5 @@
 
   </div>
 {% endblock %}
+
 

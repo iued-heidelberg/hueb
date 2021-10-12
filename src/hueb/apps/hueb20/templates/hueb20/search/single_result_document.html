@@ -41,12 +41,12 @@
         <h2 class="text-xl font-thin lg:text-xs">Sprache</h2>
         <p class="text-xl lg:text-sm">{{original.language|default_if_none:"Sprache unbekannt"}}</p>
       </div>
-      
+
       <div class="py-2 pr-8">
         <h2 class="text-xl font-thin lg:text-xs">Autor</h2>
         <p class="text-xl break-words lg:text-sm">
-          {% if original.get_author_contributions.exists %}
-            {% for contribution in original.get_author_contributions.all %}
+          {% if original.get_authors.exists %}
+            {% for contribution in original.get_authors.all %}
                 {{contribution.person}}<br>
             {% endfor %}
           {% else %}
@@ -116,8 +116,8 @@
       <div class="py-2 pr-8">
         <h2 class="text-xl font-thin lg:text-xs">Übersetzer</h2>
         <p class="text-xl break-words lg:text-sm">
-          {% if translation.get_author_contributions.exists %}
-            {% for contribution in translation.get_author_contributions.all %}
+          {% if translation.get_authors.exists %}
+            {% for contribution in translation.get_authors.all %}
                 {{contribution.person}}<br>
             {% endfor %}
           {% else %}
