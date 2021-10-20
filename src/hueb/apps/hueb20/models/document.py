@@ -76,6 +76,17 @@ class Document(Reviewable):
     def get_authors(self):
         return self.contribution_set.filter(contribution_type="WRITER")
 
+    def get_contributor_names(self, contribution_type):
+        contributors = []
+        for contribution in self.contribution_set.filter(
+            contribution_type=contribution_type
+        ):
+            contributors.append(contribution.person.name)
+        return contributors
+
+    def get_publishers(self):
+        return self.contribution_set.filter(contribution_type="PUBLISHER")
+
     def __init__(self, *args, **kwargs):
         super(Document, self).__init__(*args, **kwargs)
         self.__total__ = None
@@ -116,6 +127,13 @@ class Document(Reviewable):
         ("author", "Autor"),
         ("ddc", "DDC"),
         ("year", "Jahr"),
+    )
+
+    sortable_attributes = (
+        ("id", "Sortieren"),
+        ("title", "Sortiert nach Titel"),
+        ("written_by__name", "Sortiert nach Autor"),
+        ("written_in", "Sortiert nach Jahr"),
     )
 
     def adapt_document_written_in_list_view(self):

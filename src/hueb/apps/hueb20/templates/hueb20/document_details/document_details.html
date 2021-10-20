@@ -1,0 +1,155 @@
+<div class="flex flex-auto min-w-full m-10" xmlns:max-width="http://www.w3.org/1999/xhtml">
+ <!-- <h1 class="h-full p-6 mr-6 text-2xl font-bold lg:text-lg">1.</h1> -->
+
+  <div class="flex-row min-w-full justify-between flex-auto w-2/5 p-6 px-20 bg-opacity-25 bg-sand-300 ">
+    <table>
+      <tr>
+        <td style="width:30%"><h2 class="text-xl font-thin lg:text-l">Titel: </h2></td>
+        <td><h2 class="text-xl font-semibold lg:text-l">{{object.title|default_if_none:"Titel unbekannt"}}</h2></td>
+      </tr>
+      <tr>
+        <td><h2 class="text-xl font-thin lg:text-l">Untertitel: </h2></td>
+        <td><p class="text-xl lg:text-l">{{object.subtitle}}</p></td>
+      </tr>
+    <div class="flex-no-wrap flex-row">
+      <tr class="py-2 pr-8">
+        <td><h2 class="text-xl font-thin lg:text-l">Edition: </h2></td>
+        <td><p class="text-xl lg:text-l">{{object.edition|default_if_none:" - "}}</p></td>
+      </tr>
+
+      <tr class="py-2 pr-8">
+        <td><h2 class="text-xl font-thin lg:text-l">Erscheinungsjahr:</h2></td>
+        <td><p class="text-xl lg:text-l">
+
+          {% if object.written_in.isempty%}
+            unbekannt
+          {% endif %}
+
+          {% if object.written_in.lower|add:"+1" == object.written_in.upper %}
+            {{object.written_in.lower}}
+          {% else %}
+
+            {% if object.written_in.lower == None %}
+              ...
+            {% else %}
+              {{object.written_in.lower}}
+            {% endif %}
+
+            {% if object.written_in.upper == None %}
+
+            {% else %}
+              - {{object.written_in.upper|add:"-1"}}
+            {% endif %}
+          {% endif %}
+
+        </p></td>
+      </tr>
+
+      <tr class="py-2 pr-8">
+        <td><h2 class="text-xl font-thin lg:text-l">Originalsprache:</h2></td>
+        <td><p class="text-xl lg:text-l">{{object.language|default_if_none:"Sprache unbekannt"}}</p></td>
+      </tr>
+
+      <tr class="py-2 pr-8">
+        <td><h2 class="text-xl font-thin lg:text-l">Kulturkreis:</h2></td>
+        <td><p class="text-xl lg:text-l">{{object.cultural_circle|default_if_none:"unbekannt"}}</p></td>
+      </tr>
+
+      <tr class="py-2 pr-8">
+        <td><h2 class="text-xl font-thin lg:text-l">Autor:</h2></td>
+        <td><p class="text-xl break-words lg:text-l">
+          {% if object.get_authors.exists %}
+            {% for contribution in object.get_authors.all %}
+                {{contribution.person}}<br>
+            {% endfor %}
+          {% else %}
+            unbekannt
+          {% endif %}
+        </p></td>
+      </tr>
+      <tr class="py-2 pr-8">
+        <td><h2 class="text-xl font-thin lg:text-l">Verlag/Verleger:</h2></td>
+        <td><p class="text-xl break-words lg:text-l">
+          {% if object.get_publishers.exists %}
+            {% for contribution in original.get_publishers.all %}
+                {{contribution.person}}<br>
+            {% endfor %}
+          {% else %}
+            unbekannt
+          {% endif %}
+        </p></td>
+      </tr>
+
+      <tr class="py-2 pr-8">
+        <td><h2 class="text-xl font-thin lg:text-l">Erscheinungsort:</h2></td>
+        <td><p class="text-xl break-words lg:text-l">{{object.published_location|default_if_none:"Veröffentlichungsort unbekannt"}}</p></td>
+      </tr>
+
+      <tr class="py-2 pr-8">
+        <td><h2 class="text-xl font-thin lg:text-l">DDC:</h2></td>
+        <td><p class="text-xl break-words lg:text-l">{{object.ddc|default_if_none:"DDC unbekannt"}}</p></td>
+      </tr>
+
+      <tr class="py-2 pr-8">
+        <td><h2 class="text-xl font-thin lg:text-l">Standorte:</h2></td>
+        {% if object.located_in.exists %}
+          <td><p class="text-xl break-words lg:text-l">
+            {% for location in object.located_in.all %}
+              {{location.name}}
+              <br>
+            {% endfor %}
+          </p></td>
+        {% else %}
+          <td><p class="block text-5xl font-bold md:text-lg"> {{"Location unbekannt"}}</p>
+          </td>
+        {% endif %}
+      </tr>
+
+      <tr class="py-2 pr-8">
+        <td><h2 class="text-xl font-thin lg:text-l">
+          {% if object.translations.exists %}
+          Übersetzung
+          {% else %}
+          Original
+          {% endif %}
+        </h2></td>
+        {% if object.translations.exists %}
+          <td>
+            {% for linkedDoc in object.translations.all %}
+              <a href="{% url "documentDetailView" linkedDoc.id %}">
+              <p class="block text-5xl font-bold md:text-lg"> {{linkedDoc.title}} </p>
+              </a><br>
+            {% endfor %}
+          </td>
+        {% else %}
+          <td>
+            {% for linkedDoc in object.originals.all %}
+              <a href="{% url "documentDetailView" linkedDoc.id %}">
+              <p class="block text-5xl font-bold md:text-lg"> {{linkedDoc.title}}</p>
+              </a><br>
+            {% endfor %}
+          </td>
+        {% endif %}
+      </tr>
+
+      <tr class="py-2 pr-8">
+        <td><h2 class="text-xl font-thin lg:text-l">Kommentare:</h2></td>
+        {% if object.document_comment.exists %}
+          <td><p class="text-xl break-words lg:text-l">
+            {% for comment in object.document_comment.all %}
+              {% if comment.external %}
+                {{comment.text}}
+                <br>
+              {% endif %}
+            {% endfor %}
+          </p></td>
+        {% else %}
+          <td><p class="block text-5xl font-bold md:text-lg"> {{"-"}}</p>
+          </td>
+        {% endif %}
+      </tr>
+
+    </div>
+    </table>
+  </div>
+</div>

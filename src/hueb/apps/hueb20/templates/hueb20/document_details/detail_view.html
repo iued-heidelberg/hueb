@@ -1,0 +1,25 @@
+{% extends 'hueb20/__base.html' %}
+
+
+{% block content %}
+  <div class="flex flex-col w-full lg:flex-row" style="width: 100%">
+
+    <div class="flex flex-col w-full lg:flex-row">
+
+      <div class="flex flex-col pt-8">
+        <h1 class="mx-8 mt-32 text-4xl font-thin lg:text-xl md:mt-0">
+          Details zum Dokument:
+        </h1>
+
+      <div class="min-w-full">
+        {% include "hueb20/document_details/document_details.html" %}
+      </div>
+    </div>
+    </div>
+
+    <div class="justify-end pt-8 text-5xl border-black lg:min-h-full lg:text-sand-bg lg:flex-shrink-0 lg:p-8 lg:text-base lg:bg-gray-bg lg:border-sand-bg">
+        {% include "hueb20/document_details/export_formset.html" %}
+    </div>
+  </div>
+{% endblock %}
+

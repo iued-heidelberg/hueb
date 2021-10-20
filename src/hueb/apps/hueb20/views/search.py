@@ -6,6 +6,7 @@ from django.db.models import Q
 from django.forms.formsets import BaseFormSet, formset_factory
 from django.views.generic import ListView
 from hueb.apps.hueb20.models.document import Document, DocumentRelationship
+from django.db.models import F
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -105,10 +106,25 @@ class BaseSearchFormSet(BaseFormSet):
             return queryset
 
 
+class SortForm(forms.Form):
+    sort_attribute = forms.ChoiceField(
+        choices=Document.sortable_attributes, widget=SearchSelectWidget
+    )
+    sort_direction = forms.ChoiceField(
+        choices=(("asc", "Aufsteigend"), ("desc", "Absteigend")),
+        widget=SearchSelectWidget,
+    )
+
+    def get_order_by(self):
+        return self.cleaned_data["sort_direction"], self.cleaned_data["sort_attribute"]
+
+
 class Search(ListView):
     template_name = "hueb20/search/search.html"
     model = Document
     paginate_by = 20
+
+    sort_form = SortForm
 
     SearchFormset = formset_factory(
         SearchForm,
@@ -122,13 +138,41 @@ class Search(ListView):
 
     def get_queryset(self):
         formset = self.SearchFormset(data=self.request.GET)
+        sortform = self.sort_form(data=self.request.GET)
 
         if formset.is_valid():
             queryset = formset.get_query_object()
-            return queryset.all().order_by("id")
+            if sortform.is_valid():
+                orderBy = sortform.get_order_by()[1]
+                orderDir = sortform.get_order_by()[0]
+                if orderDir == "asc":
+                    return queryset.all().order_by(
+                        F("document_from__" + orderBy).asc(nulls_last=True)
+                    )
+                else:
+                    return queryset.all().order_by(
+                        F("document_from__" + orderBy).desc(nulls_last=True)
+                    )
+            else:
+                return queryset.all().order_by(
+                    F("document_from__id").asc(nulls_last=True)
+                )
         else:
-            results = BaseSearchFormSet.base_queryset.all().order_by("id")
-            return results
+            if sortform.is_valid():
+                orderBy = sortform.get_order_by()[1]
+                orderDir = sortform.get_order_by()[0]
+                if orderDir == "asc":
+                    return queryset.all().order_by(
+                        F("document_from__" + orderBy).asc(nulls_last=True)
+                    )
+                else:
+                    return queryset.all().order_by(
+                        F("document_from__" + orderBy).desc(nulls_last=True)
+                    )
+            else:
+                return BaseSearchFormSet.base_queryset.all().order_by(
+                    F("document_from__id").asc(nulls_last=True)
+                )
 
     def get_context_data(self, **kwargs):
         context = super(Search, self).get_context_data(**kwargs)
@@ -138,5 +182,10 @@ class Search(ListView):
             formset = self.SearchFormset()
 
         context["formset"] = formset
+
+        sortform = self.sort_form(data=self.request.GET)
+        if not sortform.is_valid():
+            sortform = self.sort_form()
+        context["sortform"] = sortform
 
         return context
