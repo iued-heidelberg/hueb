@@ -6,10 +6,15 @@ from django.db.models import Q
 from django.forms.formsets import BaseFormSet, formset_factory
 from django.views.generic import ListView
 from hueb.apps.hueb20.models.document import Document, DocumentRelationship
+from hueb.apps.hueb20.models.language import Language
 from django.db.models import F
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
+
+
+class TypeCheckboxWidget(forms.widgets.CheckboxSelectMultiple):
+    template_name = "hueb20/search/widgets/checkbox.html"
 
 
 class SearchSelectWidget(forms.widgets.Select):
@@ -36,6 +41,7 @@ class SearchForm(forms.Form):
         required=False,
         widget=forms.NumberInput(
             attrs={
+                "min": 0,
                 "class": "flex p-2 mx-2 my-2 font-medium placeholder-black placeholder-opacity-25 bg-transparent border-b-4 border-black rounded-none appearance-none lg:placeholder-opacity-25 lg:border-sand-bg lg:placeholder-sand-bg",
                 "placeholder": "von",
             }
@@ -45,6 +51,7 @@ class SearchForm(forms.Form):
         required=False,
         widget=forms.NumberInput(
             attrs={
+                "min": 0,
                 "class": "flex p-2 mx-2 my-2 font-medium placeholder-black placeholder-opacity-25 bg-transparent border-b-4 border-black rounded-none appearance-none lg:placeholder-opacity-25 lg:border-sand-bg lg:placeholder-sand-bg",
                 "placeholder": "bis",
             }
@@ -54,10 +61,23 @@ class SearchForm(forms.Form):
         required=False,
         widget=forms.NumberInput(
             attrs={
+                "min": 0,
+                "step": 10,
                 "class": "flex p-2 mx-2 my-2 font-medium placeholder-black placeholder-opacity-25 bg-transparent border-b-4 border-black rounded-none appearance-none lg:placeholder-opacity-25 lg:border-sand-bg lg:placeholder-sand-bg",
                 "placeholder": "DDC Nummer",
             }
         ),
+    )
+
+    search_language = forms.ChoiceField(
+        choices=tuple(
+            (language.language, language.language)
+            for language in Language.objects.filter()
+            .exclude(language="")
+            .all()
+            .order_by(F("language"))
+        ),
+        widget=SearchSelectWidget,
     )
 
 
@@ -71,7 +91,9 @@ class BaseSearchFormSet(BaseFormSet):
         .select_related("document_from__language")
     )
 
-    def get_query_object(self):
+    def get_query_object(
+        self, types=[Document.ORIGINAL, Document.TRANSLATION, Document.BRIDGE]
+    ):
         with beeline.tracer(name="building_search_query"):
 
             include_q_objects = Q()
@@ -83,7 +105,7 @@ class BaseSearchFormSet(BaseFormSet):
 
             for form in self:
 
-                q = DocumentRelationship.get_q_object(form.cleaned_data)
+                q = DocumentRelationship.get_q_object(form.cleaned_data, types)
                 operator = form.cleaned_data["operator"]
 
                 if operator == "and":
@@ -105,10 +127,23 @@ class BaseSearchFormSet(BaseFormSet):
             logger.debug(queryset.query)
             return queryset
 
+    def get_title_queries(self):
+        search_texts = []
+        for form in self:
+            data = form.cleaned_data
+            if data["attribute"] == "title":
+                if data["operator"] == "and" or data["operator"] == "or":
+                    search_texts.append(data["search_text"])
+        return search_texts
+
 
 class SortForm(forms.Form):
     sort_attribute = forms.ChoiceField(
         choices=Document.sortable_attributes, widget=SearchSelectWidget
+    )
+    sort_type = forms.ChoiceField(
+        choices=(("document_from", "Original"), ("document_to", "Übersetzung")),
+        widget=SearchSelectWidget,
     )
     sort_direction = forms.ChoiceField(
         choices=(("asc", "Aufsteigend"), ("desc", "Absteigend")),
@@ -116,7 +151,27 @@ class SortForm(forms.Form):
     )
 
     def get_order_by(self):
-        return self.cleaned_data["sort_direction"], self.cleaned_data["sort_attribute"]
+        return (
+            self.cleaned_data["sort_direction"],
+            self.cleaned_data["sort_type"],
+            self.cleaned_data["sort_attribute"],
+        )
+
+
+class TypeForm(forms.Form):
+
+    type = forms.MultipleChoiceField(
+        widget=TypeCheckboxWidget(
+            attrs={
+                "style": "width:20px; height:20px;",
+            }
+        ),
+        choices=(
+            (Document.ORIGINAL, "Originale"),
+            (Document.TRANSLATION, "Übersetzungen"),
+            (Document.BRIDGE, "Brückenübersetzungen"),
+        ),
+    )
 
 
 class Search(ListView):
@@ -125,6 +180,7 @@ class Search(ListView):
     paginate_by = 20
 
     sort_form = SortForm
+    type_form = TypeForm
 
     SearchFormset = formset_factory(
         SearchForm,
@@ -139,19 +195,21 @@ class Search(ListView):
     def get_queryset(self):
         formset = self.SearchFormset(data=self.request.GET)
         sortform = self.sort_form(data=self.request.GET)
+        typeform = self.type_form(data=self.request.GET)
 
-        if formset.is_valid():
-            queryset = formset.get_query_object()
+        if formset.is_valid() and typeform.is_valid():
+            types = typeform.cleaned_data["type"]
+            queryset = formset.get_query_object(types)
             if sortform.is_valid():
-                orderBy = sortform.get_order_by()[1]
-                orderDir = sortform.get_order_by()[0]
+                orderDir, documentType, orderBy = sortform.get_order_by()
+
                 if orderDir == "asc":
                     return queryset.all().order_by(
-                        F("document_from__" + orderBy).asc(nulls_last=True)
+                        F(documentType + "__" + orderBy).asc(nulls_last=True)
                     )
                 else:
                     return queryset.all().order_by(
-                        F("document_from__" + orderBy).desc(nulls_last=True)
+                        F(documentType + "__" + orderBy).desc(nulls_last=True)
                     )
             else:
                 return queryset.all().order_by(
@@ -159,15 +217,14 @@ class Search(ListView):
                 )
         else:
             if sortform.is_valid():
-                orderBy = sortform.get_order_by()[1]
-                orderDir = sortform.get_order_by()[0]
+                orderDir, documentType, orderBy = sortform.get_order_by()
                 if orderDir == "asc":
-                    return queryset.all().order_by(
-                        F("document_from__" + orderBy).asc(nulls_last=True)
+                    return BaseSearchFormSet.base_queryset.all().order_by(
+                        F(documentType + "__" + orderBy).asc(nulls_last=True)
                     )
                 else:
-                    return queryset.all().order_by(
-                        F("document_from__" + orderBy).desc(nulls_last=True)
+                    return BaseSearchFormSet.base_queryset.all().order_by(
+                        F(documentType + "__" + orderBy).desc(nulls_last=True)
                     )
             else:
                 return BaseSearchFormSet.base_queryset.all().order_by(
@@ -187,5 +244,16 @@ class Search(ListView):
         if not sortform.is_valid():
             sortform = self.sort_form()
         context["sortform"] = sortform
+
+        typeform = self.type_form(data=self.request.GET)
+        if not typeform.is_valid():
+            typeform = self.type_form()
+        context["typeform"] = typeform
+        context["types"] = typeform.cleaned_data["type"]
+
+        if formset.is_valid():
+            context["title_queries"] = formset.get_title_queries()
+        else:
+            context["title_queries"] = ""
 
         return context

@@ -1,0 +1,32 @@
+<!--style>
+  container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+input {
+  position: relative;
+  opacity: 100;
+  cursor: pointer;
+  height: 20px;
+  width: 20px;
+  background-color: #f4f1ea;
+}
+
+</style-->
+
+ {% for group_name, group_choices, group_index in widget.optgroups %}
+       <div class="font-semibold p-2 pr-2 break-words flex-wrap text-center bg-transparent appearance-none shadow-lg hover:shadow-xl" style="font-size: 1.05rem;">
+           {% for option in group_choices %}
+            {% include option.template_name with widget=option %}
+        {% endfor %}
+       </div>
+  {% endfor %}

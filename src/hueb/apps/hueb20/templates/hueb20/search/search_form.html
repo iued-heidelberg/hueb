@@ -27,13 +27,18 @@
         {{ form.search_ddc.errors }}
         {{ form.search_ddc }}
     </div>
+    
+    <div x-ref="search_language" x-cloak x-bind:hidden="!showLanguage()">
+        {{ form.search_language.errors }}
+        {{ form.search_language }}
+    </div>
 
     <script>
         function searchForm() {
             return {
 
                 showText(){
-                    return (this.attribute !== "year")&&(this.attribute !== "ddc")
+                    return (this.attribute !== "year")&&(this.attribute !== "ddc")&&(this.attribute !== "language")
                 },
                 showYear(){
                     return (this.attribute === "year")
@@ -41,10 +46,14 @@
                 showDDC(){
                     return (this.attribute === "ddc")
                 },
+                showLanguage(){
+                    return (this.attribute === "language")
+                },
                 update(){
                     this.showText();
                     this.showDDC();
                     this.showYear();
+                    this.showLanguage();
                 },
                 operator: null,
                 attribute: null,

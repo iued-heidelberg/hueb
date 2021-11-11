@@ -6,6 +6,10 @@
       {{ formset.management_form }}
     </div>
 
+    <div class="flex flex-no-wrap justify-center inline-block text-3xl font-bold align-middle lg:text-sm">
+      {{typeform.type}}
+    </div>
+    
     <div x-ref = "searchFormSet">
       {% for form in formset %}
           {% include "hueb20/search/search_form.html" %}
@@ -34,8 +38,9 @@
       </button>
     </div>
 
-    <div class="flex flex-no-wrap justify-center ">
+    <div class="flex flex-no-wrap justify-center inline-block text-3xl font-bold align-middle lg:text-sm shadow-lg hover:shadow-xl">
       {{sortform.sort_attribute}}
+      {{sortform.sort_type}}
       {{sortform.sort_direction}}
     </div>
 

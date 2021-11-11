@@ -45,6 +45,12 @@ class Person(Reviewable):
         link = '<a href="%s">Person: %s</a>' % (url, str(self))
         return link
 
+    def get_translations(self):
+        return self.documents.filter(translations__isnull=True).all()
+
+    def get_originals(self):
+        return self.documents.filter(originals__isnull=True).all()
+
     @property
     def is_alias(self):
         if self.alias is not None:

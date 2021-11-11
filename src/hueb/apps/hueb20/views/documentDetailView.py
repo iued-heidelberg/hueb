@@ -12,6 +12,7 @@ class DocumentDetailView(DetailView):
 
     def download_csv(request, pk):
         document = Document.objects.get(id=pk)
+
         model_fields = document._meta.fields + document._meta.many_to_many
         field_names = [field.name for field in model_fields]
 
@@ -19,22 +20,69 @@ class DocumentDetailView(DetailView):
         response["Content-Disposition"] = 'attachment; filename="export.csv"'
 
         # the csv writer
-        writer = csv.writer(response, delimiter=";", dialect="excel")
+        writer = csv.writer(
+            response, delimiter=";", dialect="excel", quoting=csv.QUOTE_ALL
+        )
         # Write a first row with header information
-        writer.writerow(field_names)
-        # Write data row
-        values = []
-        for field in field_names:
-            value = getattr(document, field)
-            if callable(value):
-                try:
-                    value = value() or ""
-                except:
-                    value = "Error retrieving value"
-            if value is None:
-                value = ""
-            values.append(value)
-        writer.writerow(values)
+        writer.writerow(
+            [
+                "Titel",
+                "Intertitel",
+                "Ausgabe",
+                "Jahr",
+                "Originalsprache",
+                "Sprache",
+                "Kulturkreis",
+                "Autor",
+                "Übersetzer",
+                "Verlag",
+                "Erscheinungsort",
+                "DDC",
+                "Standorte",
+                "Orginaltitel",
+            ]
+        )
+        writer.writerow(
+            [
+                document.title if document.title != "" else "-",
+                document.subtitle if document.subtitle != "" else "-",
+                document.edition if document.edition != "" else "-",
+                document.adapt_document_written_in_list_view()
+                if not document.adapt_document_written_in_list_view() is None
+                else "-",
+                document.get_language()
+                if document.get_language() != ""
+                else "-",  # ORIGINAL!
+                document.get_language() if document.get_language() != "" else "-",
+                document.cultural_circle if document.cultural_circle != "" else "-",
+                ", ".join(
+                    [
+                        author.person.name
+                        for author in document.get_original_attr("get_authors")
+                    ]
+                )
+                if document.get_original_attr("get_authors")
+                else "-",  # original authors repair!
+                ", ".join([authors.person.name for authors in document.get_authors()])
+                if document.get_authors().exists()
+                else "-",  # evtl Translators
+                ", ".join(
+                    [publishers.person.name for publishers in document.get_publishers()]
+                )
+                if document.get_publishers().exists()
+                else "-",
+                document.published_location
+                if document.published_location != ""
+                else "-",
+                document.ddc if document.ddc != "" else "-",
+                ", ".join([filing.archive.name for filing in document.get_filings()])
+                if document.get_filings().exists()
+                else "-",
+                ", ".join([title for title in document.get_original_attr("title")])
+                if document.get_original_attr("title")
+                else "-",
+            ]
+        )
 
         return response
 

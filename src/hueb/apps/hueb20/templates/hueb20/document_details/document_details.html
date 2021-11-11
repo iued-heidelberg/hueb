@@ -1,31 +1,47 @@
 <div class="flex flex-auto min-w-full m-10" xmlns:max-width="http://www.w3.org/1999/xhtml">
  <!-- <h1 class="h-full p-6 mr-6 text-2xl font-bold lg:text-lg">1.</h1> -->
+<style>
+  td { padding-bottom: 30px;
+       vertical-align: top;
+      }
+</style>
 
   <div class="flex-row min-w-full justify-between flex-auto w-2/5 p-6 px-20 bg-opacity-25 bg-sand-300 ">
     <table>
       <tr>
-        <td style="width:30%"><h2 class="text-xl font-thin lg:text-l">Titel: </h2></td>
-        <td><h2 class="text-xl font-semibold lg:text-l">{{object.title|default_if_none:"Titel unbekannt"}}</h2></td>
+        <td style="width:30%;"><h2 class="text-xl font-thin lg:text-l">Titel: </h2></td>
+        <td><h2 class="text-xl font-semibold lg:text-l">{{object.title|default_if_none:"-"}}
+        </h2></td>
       </tr>
       <tr>
         <td><h2 class="text-xl font-thin lg:text-l">Untertitel: </h2></td>
-        <td><p class="text-xl lg:text-l">{{object.subtitle}}</p></td>
+        <td><p class="text-xl lg:text-l">
+          {% if object.subtitle != "" %}
+          {{object.subtitle}}
+          {% else %}
+          {{"-"}}
+          {% endif %}
+        </p></td>
       </tr>
     <div class="flex-no-wrap flex-row">
       <tr class="py-2 pr-8">
-        <td><h2 class="text-xl font-thin lg:text-l">Edition: </h2></td>
-        <td><p class="text-xl lg:text-l">{{object.edition|default_if_none:" - "}}</p></td>
+        <td><h2 class="text-xl font-thin lg:text-l">Ausgabe: </h2></td>
+        <td><p class="text-xl lg:text-l">
+          {% if object.edition != "" %}
+          {{object.edition}}
+          {% else %}
+          {{"-"}}
+          {% endif %}
+        </p></td>
       </tr>
 
       <tr class="py-2 pr-8">
         <td><h2 class="text-xl font-thin lg:text-l">Erscheinungsjahr:</h2></td>
         <td><p class="text-xl lg:text-l">
 
-          {% if object.written_in.isempty%}
-            unbekannt
-          {% endif %}
-
-          {% if object.written_in.lower|add:"+1" == object.written_in.upper %}
+          {% if object.written_in.lower == None and object.written_in.upper == None %}
+             -
+          {% elif object.written_in.lower|add:"+1" == object.written_in.upper %}
             {{object.written_in.lower}}
           {% else %}
 
@@ -47,73 +63,161 @@
 
       <tr class="py-2 pr-8">
         <td><h2 class="text-xl font-thin lg:text-l">Originalsprache:</h2></td>
-        <td><p class="text-xl lg:text-l">{{object.language|default_if_none:"Sprache unbekannt"}}</p></td>
+        <td><p class="text-xl lg:text-l">
+              {{object.get_original_language|default_if_none:" - "}}
+        </td></p>
       </tr>
+
+      {% if object.originals.exists %}
+      <tr class="py-2 pr-8">
+        <td><h2 class="text-xl font-thin lg:text-l">Übersetzungsprache:</h2></td>
+        <td><p class="text-xl lg:text-l">{{object.language|default_if_none:" - "}}</p></td>
+      </tr>
+      {% endif %}
 
       <tr class="py-2 pr-8">
         <td><h2 class="text-xl font-thin lg:text-l">Kulturkreis:</h2></td>
-        <td><p class="text-xl lg:text-l">{{object.cultural_circle|default_if_none:"unbekannt"}}</p></td>
+        <td><p class="text-xl lg:text-l">{{object.cultural_circle|default_if_none:" - "}}</p></td>
       </tr>
 
       <tr class="py-2 pr-8">
-        <td><h2 class="text-xl font-thin lg:text-l">Autor:</h2></td>
-        <td><p class="text-xl break-words lg:text-l">
-          {% if object.get_authors.exists %}
-            {% for contribution in object.get_authors.all %}
-                {{contribution.person}}<br>
+        <td><h2 class="text-xl font-thin lg:text-l">Author:</h2></td>
+        <td><p class="text-xl break-words lg:text-l font-bold">
+          {% if object.get_original_authors %}
+            {% for author in object.get_original_authors %}
+              <a href="{% url "personDetailView" author.person.id %}">
+              {{author.person}}<br>
+              </a>
             {% endfor %}
           {% else %}
-            unbekannt
+             -
           {% endif %}
         </p></td>
       </tr>
+      {% if object.get_document_type is not object.ORIGINAL %}
       <tr class="py-2 pr-8">
-        <td><h2 class="text-xl font-thin lg:text-l">Verlag/Verleger:</h2></td>
+        <td><h2 class="text-xl font-thin lg:text-l">Übersetzer:</h2></td>
+        <td><p class="text-xl break-words lg:text-l font-bold">
+          {% if object.get_authors.exists %}
+            {% for contribution in object.get_authors.all %}
+                <a href="{% url "personDetailView" contribution.person.id %}">
+                {{contribution.person}}<br>
+                </a>
+            {% endfor %}
+          {% else %}
+             -
+          {% endif %}
+        </p></td>
+      </tr>
+      {% endif %}
+
+      <tr class="py-2 pr-8">
+        <td><h2 class="text-xl font-thin lg:text-l">Verlag:</h2></td>
         <td><p class="text-xl break-words lg:text-l">
           {% if object.get_publishers.exists %}
-            {% for contribution in original.get_publishers.all %}
+            {% for contribution in object.get_publishers.all %}
                 {{contribution.person}}<br>
             {% endfor %}
           {% else %}
-            unbekannt
+            -
           {% endif %}
         </p></td>
       </tr>
 
       <tr class="py-2 pr-8">
         <td><h2 class="text-xl font-thin lg:text-l">Erscheinungsort:</h2></td>
-        <td><p class="text-xl break-words lg:text-l">{{object.published_location|default_if_none:"Veröffentlichungsort unbekannt"}}</p></td>
+        <td><p class="text-xl break-words lg:text-l">{{object.published_location|default_if_none:" - "}}</p></td>
       </tr>
 
-      <tr class="py-2 pr-8">
+      <tr class="py-2 pr-10">
         <td><h2 class="text-xl font-thin lg:text-l">DDC:</h2></td>
-        <td><p class="text-xl break-words lg:text-l">{{object.ddc|default_if_none:"DDC unbekannt"}}</p></td>
+        <td><p class="text-xl break-words lg:text-l">{{object.ddc|default_if_none:" - "}}</p></td>
       </tr>
 
       <tr class="py-2 pr-8">
         <td><h2 class="text-xl font-thin lg:text-l">Standorte:</h2></td>
-        {% if object.located_in.exists %}
+        {% if object.get_filings.exists %}
           <td><p class="text-xl break-words lg:text-l">
-            {% for location in object.located_in.all %}
-              {{location.name}}
-              <br>
+            {% for filing in object.get_filings.all %} <!--lame implementation in model document.py wont work for linked douments -->
+              {% if filing.link is not None%}<!--a href = {{filing.link}}><p class="block text-5xl font-bold md:text-lg">{{filing.archive}}</p></a-->
+              {% else %}
+                <p class="text-xl break-words lg:text-l">
+                  {{filing.archive}}
+                   <br>
+                </p>
+              {% endif %}
             {% endfor %}
           </p></td>
         {% else %}
-          <td><p class="block text-5xl font-bold md:text-lg"> {{"Location unbekannt"}}</p>
+          <td><p class="block text-5xl font-bold md:text-lg"> {{" - "}}</p>
           </td>
         {% endif %}
       </tr>
 
+      {% if object.get_document_type is object.ORIGINAL %}
       <tr class="py-2 pr-8">
         <td><h2 class="text-xl font-thin lg:text-l">
-          {% if object.translations.exists %}
-          Übersetzung
-          {% else %}
-          Original
-          {% endif %}
+          Übersetzung:
         </h2></td>
-        {% if object.translations.exists %}
+         <td>
+            {% for linkedDoc in object.translations.all %}
+              {% if linkedDoc.get_document_type is object.BRIDGE %}
+                  {% for translation in linkedDoc.translations.all %}
+                    <a href="{% url "documentDetailView" translation.id %}">
+                    <p class="block text-5xl font-bold md:text-lg"> {{translation.title}}</p>
+                    </a><br>
+                  {% endfor %}
+              {% endif %}
+              <a href="{% url "documentDetailView" linkedDoc.id %}">
+              <p class="block text-5xl font-bold md:text-lg"> {{linkedDoc.title}}</p>
+              </a><br>
+            {% endfor %}
+          </td>
+      </tr>
+
+      {% else %}
+      <tr class="py-2 pr-8">
+        <td><h2 class="text-xl font-thin lg:text-l">
+          Original:
+        </h2></td>
+          <td>
+            {% for linkedDoc in object.originals.all %}
+            {% if linkedDoc.get_document_type is object.BRIDGE %}
+                  {% for orig in linkedDoc.originals.all %}
+                    <a href="{% url "documentDetailView" orig.id %}">
+                    <p class="block text-5xl font-bold md:text-lg"> {{orig.title}}</p>
+                    </a><br>
+                  {% endfor %}
+            {% elif linkedDoc.get_document_type is object.ORIGINAL %}
+              <a href="{% url "documentDetailView" linkedDoc.id %}">
+              <p class="block text-5xl font-bold md:text-lg"> {{linkedDoc.title}} </p>
+              </a><br>
+            {% endif %}
+            {% endfor %}
+          </td>
+      </tr>
+      {% endif %}
+      {% if object.get_document_type is object.TRANSLATION  %}
+        {% if object.originals.exists %}
+          {% if object.originals.first.get_document_type is object.BRIDGE %}
+              <td><h2 class="text-xl font-thin lg:text-l">
+              Brückenübersetzung:
+              </h2></td>
+              <td>
+              {% for bridge in object.originals.all %}
+              <a href="{% url "documentDetailView" bridge.id %}">
+              <p class="block text-5xl font-bold md:text-lg"> {{bridge.title}} </p>
+              </a><br>
+              {% endfor %}
+              </td>
+          {% endif %}
+        {% endif %}
+      {% endif %}
+      {% if object.get_document_type is object.BRIDGE  %}
+      <tr class="py-2 pr-8">
+        <td><h2 class="text-xl font-thin lg:text-l">
+          Übersetzung:
+        </h2></td>
           <td>
             {% for linkedDoc in object.translations.all %}
               <a href="{% url "documentDetailView" linkedDoc.id %}">
@@ -121,16 +225,8 @@
               </a><br>
             {% endfor %}
           </td>
-        {% else %}
-          <td>
-            {% for linkedDoc in object.originals.all %}
-              <a href="{% url "documentDetailView" linkedDoc.id %}">
-              <p class="block text-5xl font-bold md:text-lg"> {{linkedDoc.title}}</p>
-              </a><br>
-            {% endfor %}
-          </td>
-        {% endif %}
       </tr>
+      {% endif %}
 
       <tr class="py-2 pr-8">
         <td><h2 class="text-xl font-thin lg:text-l">Kommentare:</h2></td>
