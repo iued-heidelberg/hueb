@@ -252,8 +252,10 @@ class Search(ListView):
                     "type": [Document.ORIGINAL, Document.TRANSLATION, Document.BRIDGE]
                 }
             )
+            context["types"] = None
+        else:
+            context["types"] = typeform.cleaned_data["type"]
         context["typeform"] = typeform
-        context["types"] = typeform.cleaned_data["type"]
 
         if formset.is_valid():
             context["title_queries"] = formset.get_title_queries()

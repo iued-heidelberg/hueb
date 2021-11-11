@@ -44,7 +44,7 @@
       {% if object.get_originals.exists %}
       <tr class="py-2 pr-8" >
         <td><h2 class="text-xl font-thin lg:text-l">Dokumente:</h2></td>
-        
+
         <td>
             {% for linkedDoc in object.get_originals.all %}
               {% if linkedDoc.get_document_type is not Document.TRANSLATION %}
