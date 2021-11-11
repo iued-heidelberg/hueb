@@ -6,6 +6,8 @@ from hueb.apps.hueb20.views.authentication import Login, Logout
 from hueb.apps.hueb20.views.index import IndexView
 from hueb.apps.hueb20.views.search import Search
 from hueb.apps.hueb20.views.documentDetailView import DocumentDetailView
+from hueb.apps.hueb20.views.personDetailView import PersonDetailView
+
 
 urlpatterns = [
     # ex: /polls/
@@ -15,6 +17,7 @@ urlpatterns = [
     path("accounts/login", Login.as_view(), name="login"),
     path("accounts/logout", Logout.as_view(), name="logout"),
     path("document/<int:pk>/", DocumentDetailView.as_view(), name="documentDetailView"),
+    path("person/<int:pk>/", PersonDetailView.as_view(), name="personDetailView"),
     path(
         "document/<int:pk>/export_csv", DocumentDetailView.download_csv, name="docCsv"
     ),

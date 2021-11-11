@@ -88,6 +88,7 @@ class Document(Reviewable):
     def get_authors(self):
         return self.contribution_set.filter(contribution_type="WRITER")
 
+
     def get_original_authors(self):
         return self.get_original_attr("get_authors")
 
@@ -194,7 +195,7 @@ class Document(Reviewable):
 
     searchable_attributes = (
         ("title", "Titel"),
-        ("author", "Autor"),
+        ("author", "Person"),
         ("ddc", "DDC"),
         ("year", "Jahr"),
         ("language", "Sprache"),
@@ -280,7 +281,6 @@ class DocumentRelationship(Reviewable):
                 query["search_year_from"], query["search_year_to"], types
             )
         elif query["attribute"] == "language":
-            print(query["search_language"])
             return DocumentRelationship.q_object_by_language(
                 query["search_language"], types
             )
