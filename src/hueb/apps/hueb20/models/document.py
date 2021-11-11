@@ -88,7 +88,6 @@ class Document(Reviewable):
     def get_authors(self):
         return self.contribution_set.filter(contribution_type="WRITER")
 
-
     def get_original_authors(self):
         return self.get_original_attr("get_authors")
 
