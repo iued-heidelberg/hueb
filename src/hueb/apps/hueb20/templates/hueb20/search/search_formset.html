@@ -9,14 +9,14 @@
     <div class="flex flex-no-wrap justify-center inline-block text-3xl font-bold align-middle lg:text-sm">
       {{typeform.type}}
     </div>
-    
+
     <div x-ref = "searchFormSet">
       {% for form in formset %}
           {% include "hueb20/search/search_form.html" %}
       {% endfor %}
     </div>
 
-    <div class="flex justify-center " @click="canAddForm(); canRemoveForm()">
+    <div class="flex justify-center shadow-lg hover:shadow-xl" @click="canAddForm(); canRemoveForm();">
       <button type="button" @click="addFormToFormSet()" class="block px-4 py-2 m-4 align-middle border-b-4 border-black lg:border-sand-bg lg:hover:bg-sand-bg lg:hover:text-gray-bg-darker disabled:cursor-not-allowed disabled:opacity-50" x-bind:disabled="!addform">
 
         <p class="inline-block text-3xl font-bold align-middle lg:text-sm"> Filter hinzufügen </p>
@@ -56,6 +56,9 @@
       </button>
     </div>
   </form>
+
+
+
 
   <div class="hidden" x-ref="emptyForm">
     {% with form=formset.empty_form %}
@@ -142,5 +145,4 @@
 
 
 </div>
-
 

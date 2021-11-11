@@ -7,7 +7,7 @@
 <div class="flex flex-auto m-4 shadow-lg hover:shadow-xl">
  <!-- <h1 class="h-full p-6 mr-6 text-2xl font-bold lg:text-lg">1.</h1> -->
   <a href="{% url "documentDetailView" original.id %}">
-   <div class="flex flex-col justify-between flex-auto w-2/5 p-6 px-4 bg-opacity-25 bg-sand-300 ">
+    <div class="flex flex-col justify-between flex-auto w-2/5 p-6 px-4 bg-opacity-25 bg-sand-300 ">
     <div class="pb-2 ">
       <h3 class="lg:text-s font-thin">{{original.get_document_type}}</h3>
       {% if original.get_document_type in types %}
@@ -18,12 +18,12 @@
       <h2 class="font-normal text-1xl lg:text-base">{{original.subtitle}}</h2>
     </div>
 
-     <div class="flex flex-col flex-wrap lg:flex-row">
-       <div class="py-2 pr-8">
-         <h2 class="text-xl font-thin lg:text-xs">Veröffentlicht</h2>
-         <p class="text-xl lg:text-sm">
+    <div class="flex flex-col flex-wrap lg:flex-row">
+      <div class="py-2 pr-8">
+        <h2 class="text-xl font-thin lg:text-xs">Veröffentlicht</h2>
+        <p class="text-xl lg:text-sm">
 
-           {% if original.written_in.lower == None and original.written_in.upper == None %}
+          {% if original.written_in.lower == None and original.written_in.upper == None %}
             unbekannt
 
           {% elif original.written_in.lower|add:"+1" == original.written_in.upper %}
@@ -43,38 +43,38 @@
             {% endif %}
           {% endif %}
 
-         </p>
-       </div>
+        </p>
+      </div>
 
-       <div class="py-2 pr-8">
-         <h2 class="text-xl font-thin lg:text-xs">Sprache</h2>
-         <p class="text-xl lg:text-sm">{{original.language|default_if_none:"Sprache unbekannt"}}</p>
-       </div>
+      <div class="py-2 pr-8">
+        <h2 class="text-xl font-thin lg:text-xs">Sprache</h2>
+        <p class="text-xl lg:text-sm">{{original.language|default_if_none:"Sprache unbekannt"}}</p>
+      </div>
 
-       <div class="py-2 pr-8">
-         <h2 class="text-xl font-thin lg:text-xs">Autor</h2>
-         <p class="text-xl break-words lg:text-sm">
-           {% if original.get_authors.exists %}
-             {% for contribution in original.get_authors.all %}
-                 {{contribution.person}}<br>
-             {% endfor %}
-           {% else %}
-             unbekannt
-           {% endif %}
-         </p>
-       </div>
+      <div class="py-2 pr-8">
+        <h2 class="text-xl font-thin lg:text-xs">Autor</h2>
+        <p class="text-xl break-words lg:text-sm">
+          {% if original.get_authors.exists %}
+            {% for contribution in original.get_authors.all %}
+                {{contribution.person}}<br>
+            {% endfor %}
+          {% else %}
+            unbekannt
+          {% endif %}
+        </p>
+      </div>
 
-       <div class="py-2 pr-8">
-         <h2 class="text-xl font-thin lg:text-xs">Ort</h2>
-         <p class="text-xl break-words lg:text-sm">{{original.published_location|default_if_none:"Veröffentlichungsort unbekannt"}}</p>
-       </div>
+      <div class="py-2 pr-8">
+        <h2 class="text-xl font-thin lg:text-xs">Ort</h2>
+        <p class="text-xl break-words lg:text-sm">{{original.published_location|default_if_none:"Veröffentlichungsort unbekannt"}}</p>
+      </div>
 
-       <div class="py-2 pr-8">
-         <h2 class="text-xl font-thin lg:text-xs">DDC</h2>
-         <p class="text-xl break-words lg:text-sm">{{original.ddc|default_if_none:"DDC unbekannt"}}</p>
-       </div>
-     </div>
-   </a>
+      <div class="py-2 pr-8">
+        <h2 class="text-xl font-thin lg:text-xs">DDC</h2>
+        <p class="text-xl break-words lg:text-sm">{{original.ddc|default_if_none:"DDC unbekannt"}}</p>
+      </div>
+    </div>
+  </a>
   </div>
 
   <div class="flex items-center bg-opacity-50 bg-sand-300">
@@ -84,8 +84,8 @@
   </div>
 
   <a href="{% url "documentDetailView" translation.id %}">
-   <div class="flex flex-col justify-between flex-auto w-2/5 p-6 px-4 bg-sand-300">
-     <div class="pb-2">
+    <div class="flex flex-col justify-between flex-auto w-2/5 p-6 px-4 bg-sand-300">
+      <div class="pb-2">
         <h3 class="lg:text-s font-thin">{{translation.get_document_type}}</h3>
         {% if translation.get_document_type in types %}
          <h1 class="text-2xl font-semibold lg:text-lg">{{translation.title|default_if_none:"Titel unbekannt"|highlight_search:title_queries}}</h1>
@@ -95,12 +95,12 @@
         <h2 class="font-normal text-1xl lg:text-base">{{translation.subtitle}}</h2>
       </div>
 
-     <div class="flex flex-col flex-wrap lg:flex-row">
-       <div class="py-2 pr-8">
-         <h2 class="text-xl font-thin lg:text-xs">Veröffentlicht</h2>
-         <p class="text-xl lg:text-sm">
+    <div class="flex flex-col flex-wrap lg:flex-row">
+      <div class="py-2 pr-8">
+        <h2 class="text-xl font-thin lg:text-xs">Veröffentlicht</h2>
+        <p class="text-xl lg:text-sm">
 
-            {% if translation.written_in.lower == None and translation.written_in.upper == None %}
+          {% if translation.written_in.lower == None and translation.written_in.upper == None %}
             unbekannt
 
           {% elif translation.written_in.lower|add:"+1" == translation.written_in.upper %}
@@ -121,37 +121,37 @@
           
           {% endif %}
 
-         </p>
-       </div>
+        </p>
+      </div>
 
-       <div class="py-2 pr-8">
-         <h2 class="text-xl font-thin lg:text-xs">Sprache</h2>
-         <p class="text-xl break-words lg:text-sm">{{translation.language|default_if_none:"Sprache unbekannt"}}</p>
-       </div>
+      <div class="py-2 pr-8">
+        <h2 class="text-xl font-thin lg:text-xs">Sprache</h2>
+        <p class="text-xl break-words lg:text-sm">{{translation.language|default_if_none:"Sprache unbekannt"}}</p>
+      </div>
 
-       <div class="py-2 pr-8">
-         <h2 class="text-xl font-thin lg:text-xs">Übersetzer</h2>
-         <p class="text-xl break-words lg:text-sm">
-           {% if translation.get_authors.exists %}
-             {% for contribution in translation.get_authors.all %}
-                 {{contribution.person}}<br>
-             {% endfor %}
-           {% else %}
-             unbekannt
-           {% endif %}
-         </p>
-       </div>
+      <div class="py-2 pr-8">
+        <h2 class="text-xl font-thin lg:text-xs">Übersetzer</h2>
+        <p class="text-xl break-words lg:text-sm">
+          {% if translation.get_authors.exists %}
+            {% for contribution in translation.get_authors.all %}
+                {{contribution.person}}<br>
+            {% endfor %}
+          {% else %}
+            unbekannt
+          {% endif %}
+        </p>
+      </div>
 
-       <div class="py-2 pr-8">
-         <h2 class="text-xl font-thin lg:text-xs">Ort</h2>
-         <p class="text-xl break-words lg:text-sm">{{translation.published_location|default_if_none:"Veröffentlichungsort unbekannt"}}</p>
-       </div>
+      <div class="py-2 pr-8">
+        <h2 class="text-xl font-thin lg:text-xs">Ort</h2>
+        <p class="text-xl break-words lg:text-sm">{{translation.published_location|default_if_none:"Veröffentlichungsort unbekannt"}}</p>
+      </div>
 
-       <div class="py-2 pr-8 ">
-         <h2 class="text-xl font-thin lg:text-xs">DDC</h2>
-         <p class="text-xl break-words lg:text-sm">{{translation.ddc|default_if_none:"DDC unbekannt"}}</p>
-       </div>
-     </div>
-   </a>
+      <div class="py-2 pr-8 ">
+        <h2 class="text-xl font-thin lg:text-xs">DDC</h2>
+        <p class="text-xl break-words lg:text-sm">{{translation.ddc|default_if_none:"DDC unbekannt"}}</p>
+      </div>
+    </div>
+      </a>
   </div>
 </div>

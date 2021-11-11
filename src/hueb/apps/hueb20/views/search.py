@@ -28,6 +28,7 @@ class SearchForm(forms.Form):
     attribute = forms.ChoiceField(
         choices=Document.searchable_attributes, widget=SearchSelectWidget
     )
+
     search_text = forms.CharField(
         required=False,
         widget=forms.TextInput(
@@ -104,7 +105,6 @@ class BaseSearchFormSet(BaseFormSet):
             beeline.add_context_field("form_data", self.cleaned_data)
 
             for form in self:
-
                 q = DocumentRelationship.get_q_object(form.cleaned_data, types)
                 operator = form.cleaned_data["operator"]
 
@@ -247,7 +247,11 @@ class Search(ListView):
 
         typeform = self.type_form(data=self.request.GET)
         if not typeform.is_valid():
-            typeform = self.type_form()
+            typeform = self.type_form(
+                initial={
+                    "type": [Document.ORIGINAL, Document.TRANSLATION, Document.BRIDGE]
+                }
+            )
         context["typeform"] = typeform
         context["types"] = typeform.cleaned_data["type"]
 
