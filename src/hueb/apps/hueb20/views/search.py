@@ -202,33 +202,48 @@ class Search(ListView):
             queryset = formset.get_query_object(types)
             if sortform.is_valid():
                 orderDir, documentType, orderBy = sortform.get_order_by()
-
                 if orderDir == "asc":
-                    return queryset.all().order_by(
-                        F(documentType + "__" + orderBy).asc(nulls_last=True)
+                    return (
+                        queryset.all()
+                        .order_by(F(documentType + "__" + orderBy).asc(nulls_last=True))
+                        .distinct()
                     )
                 else:
-                    return queryset.all().order_by(
-                        F(documentType + "__" + orderBy).desc(nulls_last=True)
+                    return (
+                        queryset.all()
+                        .order_by(
+                            F(documentType + "__" + orderBy).desc(nulls_last=True)
+                        )
+                        .distinct()
                     )
             else:
-                return queryset.all().order_by(
-                    F("document_from__id").asc(nulls_last=True)
+                return (
+                    queryset.all()
+                    .order_by(F("document_from__id").asc(nulls_last=True))
+                    .distinct()
                 )
         else:
             if sortform.is_valid():
                 orderDir, documentType, orderBy = sortform.get_order_by()
                 if orderDir == "asc":
-                    return BaseSearchFormSet.base_queryset.all().order_by(
-                        F(documentType + "__" + orderBy).asc(nulls_last=True)
+                    return (
+                        BaseSearchFormSet.base_queryset.all()
+                        .order_by(F(documentType + "__" + orderBy).asc(nulls_last=True))
+                        .distinct()
                     )
                 else:
-                    return BaseSearchFormSet.base_queryset.all().order_by(
-                        F(documentType + "__" + orderBy).desc(nulls_last=True)
+                    return (
+                        BaseSearchFormSet.base_queryset.all()
+                        .order_by(
+                            F(documentType + "__" + orderBy).desc(nulls_last=True)
+                        )
+                        .distinct()
                     )
             else:
-                return BaseSearchFormSet.base_queryset.all().order_by(
-                    F("document_from__id").asc(nulls_last=True)
+                return (
+                    BaseSearchFormSet.base_queryset.all()
+                    .order_by(F("document_from__id").asc(nulls_last=True))
+                    .distinct()
                 )
 
     def get_context_data(self, **kwargs):
