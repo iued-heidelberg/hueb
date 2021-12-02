@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "import_export",
     "debug_toolbar",
-    # "rosetta",
+    "rosetta",
 ]
 
 MIDDLEWARE = [
