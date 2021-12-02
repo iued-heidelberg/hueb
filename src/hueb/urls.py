@@ -17,8 +17,16 @@ Including another URLconf
 
 import debug_toolbar
 from django.urls import include, path
+from django.conf.urls.i18n import i18n_patterns
+from django.conf.urls import url, include
+
 
 urlpatterns = [
-    path("", include("hueb.apps.hueb20.urls")),
-    path("__debug__/", include(debug_toolbar.urls)),
+    # path("", include("hueb.apps.hueb20.urls")),
+    url(r"^i18n/", include("django.conf.urls.i18n")),
 ]
+
+urlpatterns += i18n_patterns(
+    path("__debug__/", include(debug_toolbar.urls)),
+    path("", include("hueb.apps.hueb20.urls")),  # , name="Index"),
+)

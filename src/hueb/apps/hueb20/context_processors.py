@@ -1,14 +1,24 @@
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import get_language
+
+
 def menu(request):
     menu = []
 
-    menu.append({"name": "Projekt", "link": "/", "disabled": False})
+    menu.append({"name": _("Projekt"), "link": "/", "disabled": False})
 
     if request.user.is_authenticated:
-        menu.append({"name": "Suche", "link": "/search", "disabled": False})
+        menu.append(
+            {
+                "name": _("Suche"),
+                "link": "/" + get_language() + "/search",
+                "disabled": False,
+            }
+        )
     else:
-        menu.append({"name": "Suche", "link": "#", "disabled": True})
+        menu.append({"name": _("Suche"), "link": "#", "disabled": True})
 
-    menu.append({"name": "Katalog", "link": "#", "disabled": True})
+    menu.append({"name": _("Katalog"), "link": "#", "disabled": True})
 
     context = {}
     context["menu"] = menu

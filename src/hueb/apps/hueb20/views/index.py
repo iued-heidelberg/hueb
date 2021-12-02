@@ -1,5 +1,6 @@
 from django.contrib.auth.views import LoginView
-
+from django.shortcuts import render
+from django.utils.translation import gettext as _
 
 class IndexView(LoginView):
     template_name = "hueb20/index.html"

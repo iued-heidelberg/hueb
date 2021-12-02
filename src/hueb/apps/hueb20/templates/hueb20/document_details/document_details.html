@@ -1,3 +1,4 @@
+{% load i18n %}
 <div class="flex flex-auto min-w-full m-10" xmlns:max-width="http://www.w3.org/1999/xhtml">
  <!-- <h1 class="h-full p-6 mr-6 text-2xl font-bold lg:text-lg">1.</h1> -->
 <style>
@@ -6,15 +7,16 @@
       }
 </style>
 
+
   <div class="flex-row min-w-full justify-between flex-auto w-2/5 p-6 px-20 bg-opacity-25 bg-sand-300 ">
     <table>
       <tr>
-        <td style="width:30%;"><h2 class="text-xl font-thin lg:text-l">Titel: </h2></td>
+        <td style="width:30%;"><h2 class="text-xl font-thin lg:text-l">{% translate "Titel:" %}</h2></td>
         <td><h2 class="text-xl font-semibold lg:text-l">{{object.title|default_if_none:"-"}}
         </h2></td>
       </tr>
       <tr>
-        <td><h2 class="text-xl font-thin lg:text-l">Untertitel: </h2></td>
+        <td><h2 class="text-xl font-thin lg:text-l">{% translate "Untertitel:" %}</h2></td>
         <td><p class="text-xl lg:text-l">
           {% if object.subtitle != "" %}
           {{object.subtitle}}
@@ -25,7 +27,7 @@
       </tr>
     <div class="flex-no-wrap flex-row">
       <tr class="py-2 pr-8">
-        <td><h2 class="text-xl font-thin lg:text-l">Ausgabe: </h2></td>
+        <td><h2 class="text-xl font-thin lg:text-l">{% translate "Ausgabe:" %}</h2></td>
         <td><p class="text-xl lg:text-l">
           {% if object.edition != "" %}
           {{object.edition}}
@@ -36,7 +38,7 @@
       </tr>
 
       <tr class="py-2 pr-8">
-        <td><h2 class="text-xl font-thin lg:text-l">Erscheinungsjahr:</h2></td>
+        <td><h2 class="text-xl font-thin lg:text-l">{% translate "Erscheinungsjahr:" %}</h2></td>
         <td><p class="text-xl lg:text-l">
 
           {% if object.written_in.lower == None and object.written_in.upper == None %}
@@ -62,7 +64,7 @@
       </tr>
 
       <tr class="py-2 pr-8">
-        <td><h2 class="text-xl font-thin lg:text-l">Originalsprache:</h2></td>
+        <td><h2 class="text-xl font-thin lg:text-l">{% translate "Originalsprache:" %}</h2></td>
         <td><p class="text-xl lg:text-l">
               {{object.get_original_language|default_if_none:" - "}}
         </td></p>
@@ -70,18 +72,18 @@
 
       {% if object.originals.exists %}
       <tr class="py-2 pr-8">
-        <td><h2 class="text-xl font-thin lg:text-l">Übersetzungsprache:</h2></td>
+        <td><h2 class="text-xl font-thin lg:text-l">{% translate "Übersetzungsprache:" %}</h2></td>
         <td><p class="text-xl lg:text-l">{{object.language|default_if_none:" - "}}</p></td>
       </tr>
       {% endif %}
 
       <tr class="py-2 pr-8">
-        <td><h2 class="text-xl font-thin lg:text-l">Kulturkreis:</h2></td>
+        <td><h2 class="text-xl font-thin lg:text-l">{% translate "Kulturkreis:" %}</h2></td>
         <td><p class="text-xl lg:text-l">{{object.cultural_circle|default_if_none:" - "}}</p></td>
       </tr>
 
       <tr class="py-2 pr-8">
-        <td><h2 class="text-xl font-thin lg:text-l">Author:</h2></td>
+        <td><h2 class="text-xl font-thin lg:text-l">{% translate "Author:" %}</h2></td>
         <td><p class="text-xl break-words lg:text-l font-bold">
           {% if object.get_original_authors %}
             {% for author in object.get_original_authors %}
@@ -96,7 +98,7 @@
       </tr>
       {% if object.get_document_type is not object.ORIGINAL %}
       <tr class="py-2 pr-8">
-        <td><h2 class="text-xl font-thin lg:text-l">Übersetzer:</h2></td>
+        <td><h2 class="text-xl font-thin lg:text-l">{% translate "Übersetzer:" %}</h2></td>
         <td><p class="text-xl break-words lg:text-l font-bold">
           {% if object.get_authors.exists %}
             {% for contribution in object.get_authors.all %}
@@ -112,7 +114,7 @@
       {% endif %}
 
       <tr class="py-2 pr-8">
-        <td><h2 class="text-xl font-thin lg:text-l">Verlag:</h2></td>
+        <td><h2 class="text-xl font-thin lg:text-l">{% translate "Verlag:" %}</h2></td>
         <td><p class="text-xl break-words lg:text-l">
           {% if object.get_publishers.exists %}
             {% for contribution in object.get_publishers.all %}
@@ -125,17 +127,17 @@
       </tr>
 
       <tr class="py-2 pr-8">
-        <td><h2 class="text-xl font-thin lg:text-l">Erscheinungsort:</h2></td>
+        <td><h2 class="text-xl font-thin lg:text-l">{% translate "Erscheinungsort:" %}</h2></td>
         <td><p class="text-xl break-words lg:text-l">{{object.published_location|default_if_none:" - "}}</p></td>
       </tr>
 
       <tr class="py-2 pr-10">
-        <td><h2 class="text-xl font-thin lg:text-l">DDC:</h2></td>
+        <td><h2 class="text-xl font-thin lg:text-l">{% translate "DDC:" %}</h2></td>
         <td><p class="text-xl break-words lg:text-l">{{object.ddc|default_if_none:" - "}}</p></td>
       </tr>
 
       <tr class="py-2 pr-8">
-        <td><h2 class="text-xl font-thin lg:text-l">Standorte:</h2></td>
+        <td><h2 class="text-xl font-thin lg:text-l">{% translate "Standorte:" %}</h2></td>
         {% if object.get_filings.exists %}
           <td><p class="text-xl break-words lg:text-l">
             {% for filing in object.get_filings.all %} <!--lame implementation in model document.py wont work for linked douments -->
@@ -157,7 +159,7 @@
       {% if object.get_document_type is object.ORIGINAL %}
       <tr class="py-2 pr-8">
         <td><h2 class="text-xl font-thin lg:text-l">
-          Übersetzung:
+          {% translate "Übersetzung:" %}
         </h2></td>
          <td>
             {% for linkedDoc in object.translations.all %}
@@ -178,7 +180,7 @@
       {% else %}
       <tr class="py-2 pr-8">
         <td><h2 class="text-xl font-thin lg:text-l">
-          Original:
+          {% translate "Original:" %}
         </h2></td>
           <td>
             {% for linkedDoc in object.originals.all %}
@@ -201,7 +203,7 @@
         {% if object.originals.exists %}
           {% if object.originals.first.get_document_type is object.BRIDGE %}
               <td><h2 class="text-xl font-thin lg:text-l">
-              Brückenübersetzung:
+              {% translate "Brückenübersetzung:" %}
               </h2></td>
               <td>
               {% for bridge in object.originals.all %}
@@ -216,7 +218,7 @@
       {% if object.get_document_type is object.BRIDGE  %}
       <tr class="py-2 pr-8">
         <td><h2 class="text-xl font-thin lg:text-l">
-          Übersetzung:
+          {% translate "Übersetzung:" %}
         </h2></td>
           <td>
             {% for linkedDoc in object.translations.all %}
@@ -229,7 +231,7 @@
       {% endif %}
 
       <tr class="py-2 pr-8">
-        <td><h2 class="text-xl font-thin lg:text-l">Kommentare:</h2></td>
+        <td><h2 class="text-xl font-thin lg:text-l">{% translate "Kommentare:" %}</h2></td>
         {% if object.document_comment.exists %}
           <td><p class="text-xl break-words lg:text-l">
             {% for comment in object.document_comment.all %}

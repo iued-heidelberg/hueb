@@ -8,6 +8,9 @@ from django.views.generic import ListView
 from hueb.apps.hueb20.models.document import Document, DocumentRelationship
 from hueb.apps.hueb20.models.language import Language
 from django.db.models import F
+from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
+
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -22,7 +25,7 @@ class SearchSelectWidget(forms.widgets.Select):
 
 
 class SearchForm(forms.Form):
-    operator_choices = (("and", "And"), ("or", "Or"), ("not", "Not"))
+    operator_choices = (("and", _("Und")), ("or", _("Oder")), ("not", _("Nicht")))
 
     operator = forms.ChoiceField(choices=operator_choices, widget=SearchSelectWidget)
     attribute = forms.ChoiceField(
@@ -34,7 +37,7 @@ class SearchForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 "class": "flex p-2 mx-2 my-2 font-medium placeholder-black placeholder-opacity-25 bg-transparent border-b-4 border-black rounded-none appearance-none lg:placeholder-opacity-25 lg:border-sand-bg lg:placeholder-sand-bg",
-                "placeholder": "Suchbegriff",
+                "placeholder": _("Suchbegriff"),
             }
         ),
     )
@@ -44,7 +47,7 @@ class SearchForm(forms.Form):
             attrs={
                 "min": 0,
                 "class": "flex p-2 mx-2 my-2 font-medium placeholder-black placeholder-opacity-25 bg-transparent border-b-4 border-black rounded-none appearance-none lg:placeholder-opacity-25 lg:border-sand-bg lg:placeholder-sand-bg",
-                "placeholder": "von",
+                "placeholder": _("von"),
             }
         ),
     )
@@ -54,7 +57,7 @@ class SearchForm(forms.Form):
             attrs={
                 "min": 0,
                 "class": "flex p-2 mx-2 my-2 font-medium placeholder-black placeholder-opacity-25 bg-transparent border-b-4 border-black rounded-none appearance-none lg:placeholder-opacity-25 lg:border-sand-bg lg:placeholder-sand-bg",
-                "placeholder": "bis",
+                "placeholder": _("bis"),
             }
         ),
     )
@@ -62,10 +65,10 @@ class SearchForm(forms.Form):
         required=False,
         widget=forms.NumberInput(
             attrs={
-                "min": 0,
+                "min": 00,
                 "step": 10,
                 "class": "flex p-2 mx-2 my-2 font-medium placeholder-black placeholder-opacity-25 bg-transparent border-b-4 border-black rounded-none appearance-none lg:placeholder-opacity-25 lg:border-sand-bg lg:placeholder-sand-bg",
-                "placeholder": "DDC Nummer",
+                "placeholder": _("DDC Nummer"),
             }
         ),
     )
@@ -119,7 +122,8 @@ class BaseSearchFormSet(BaseFormSet):
             logger.debug(exclude_q_objects)
             beeline.add_context_field("include_q_objects", include_q_objects)
             beeline.add_context_field("exclude_q_objects", exclude_q_objects)
-
+            print("\nINCLUDE: ", include_q_objects)
+            print("\nEXCLUDE: ", exclude_q_objects)
             queryset = self.base_queryset.filter(include_q_objects).exclude(
                 exclude_q_objects
             )
@@ -142,11 +146,11 @@ class SortForm(forms.Form):
         choices=Document.sortable_attributes, widget=SearchSelectWidget
     )
     sort_type = forms.ChoiceField(
-        choices=(("document_from", "Original"), ("document_to", "Übersetzung")),
+        choices=(("document_from", _("Original")), ("document_to", _("Übersetzung"))),
         widget=SearchSelectWidget,
     )
     sort_direction = forms.ChoiceField(
-        choices=(("asc", "Aufsteigend"), ("desc", "Absteigend")),
+        choices=(("asc", _("Aufsteigend")), ("desc", _("Absteigend"))),
         widget=SearchSelectWidget,
     )
 
@@ -167,9 +171,9 @@ class TypeForm(forms.Form):
             }
         ),
         choices=(
-            (Document.ORIGINAL, "Originale"),
-            (Document.TRANSLATION, "Übersetzungen"),
-            (Document.BRIDGE, "Brückenübersetzungen"),
+            (Document.ORIGINAL, _("Originale")),
+            (Document.TRANSLATION, _("Übersetzungen")),
+            (Document.BRIDGE, _("Brückenübersetzungen")),
         ),
     )
 
@@ -200,6 +204,7 @@ class Search(ListView):
         if formset.is_valid() and typeform.is_valid():
             types = typeform.cleaned_data["type"]
             queryset = formset.get_query_object(types)
+
             if sortform.is_valid():
                 orderDir, documentType, orderBy = sortform.get_order_by()
                 if orderDir == "asc":

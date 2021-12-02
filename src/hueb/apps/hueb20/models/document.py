@@ -1,7 +1,9 @@
 import hueb.apps.hueb_legacy_latein.models as Legacy
 from django.contrib.postgres.fields import IntegerRangeField
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 from django import forms
+import re
 from django.db.models import Q
 from django.db.models.query import QuerySet
 from django.urls import reverse
@@ -20,9 +22,9 @@ from psycopg2.extras import NumericRange
 
 
 class Document(Reviewable):
-    ORIGINAL = "Original"
-    TRANSLATION = "Übersetzung"
-    BRIDGE = "Brückenübersetzung"
+    ORIGINAL = _("Original")
+    TRANSLATION = _("Übersetzung")
+    BRIDGE = _("Brückenübersetzung")
 
     id = models.BigAutoField(primary_key=True)
     title = models.TextField(blank=True, null=True)
@@ -193,18 +195,18 @@ class Document(Reviewable):
         return link
 
     searchable_attributes = (
-        ("title", "Titel"),
-        ("author", "Person"),
-        ("ddc", "DDC"),
-        ("year", "Jahr"),
-        ("language", "Sprache"),
+        ("title", _("Titel")),
+        ("author", _("Person")),
+        ("ddc", _("DDC")),
+        ("year", _("Jahr")),
+        ("language", _("Sprache")),
     )
 
     sortable_attributes = (
-        ("written_in", "Sortiert nach Jahr"),
-        ("title", "Sortiert nach Titel"),
-        ("written_by__name", "Sortiert nach Autor"),
-        ("ddc", "Sortiert nach DDC"),
+        ("written_in", _("Sortiert nach Jahr")),
+        ("title", _("Sortiert nach Titel")),
+        ("written_by__name", _("Sortiert nach Autor")),
+        ("ddc", _("Sortiert nach DDC")),
     )
 
     def adapt_document_written_in_list_view(self):
@@ -347,9 +349,21 @@ class DocumentRelationship(Reviewable):
 
     @classmethod
     def q_object_by_ddc(cls, value, types):
-        return Q(document_from__ddc__ddc_number__contains=value) & cls.get_types_q(
-            types, True
-        ) | Q(document_to__ddc__ddc_number__contains=value) & cls.get_types_q(
+        value = str(value)
+        if len(value) == 1:
+            value = "00"
+            value = value[:-1]
+        elif len(value) == 2:
+            value = "0" + value
+            value = value[:-1]
+        else:
+            value = value[:-1]
+
+        return Q(
+            document_from__ddc__ddc_number__iregex=r"(^|\s)%s" % value
+        ) & cls.get_types_q(types, True) | Q(
+            document_to__ddc__ddc_number__iregex=r"(^|\s)%s" % value
+        ) & cls.get_types_q(
             types, False
         )
 

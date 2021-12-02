@@ -1,5 +1,5 @@
 {% extends 'hueb20/__base.html' %}
-
+{% load i18n %}
 
 {% block content %}
   <div class="flex flex-col w-full lg:flex-row" style="width: 100%">
@@ -8,7 +8,7 @@
 
       <div class="flex flex-col pt-8">
         <h1 class="mx-8 mt-32 text-4xl font-thin lg:text-xl md:mt-0">
-          Details zum Dokument:
+		{% translate "Details zum Dokument:" %}
         </h1>
 
       <div class="min-w-full">

@@ -1,6 +1,6 @@
 {% extends 'hueb20/__base.html' %}
-
-
+{% load i18n %}
+<script src="{% url 'javascript-catalog' %}"></script>
 {% block content %}
   <div class="flex flex-col w-full lg:flex-row">
 
@@ -13,7 +13,7 @@
 
     <div class="flex flex-col pt-8">
       <h1 class="mx-8 mt-32 text-4xl font-light lg:text-2xl md:mt-0">
-        Ergebnisse
+        {% translate "Ergebnisse" %}
       </h1>
 
       <div>
@@ -33,4 +33,5 @@
 
   </div>
 {% endblock %}
+
 

@@ -1,3 +1,4 @@
+{% load i18n %}
  <div>
   <div class="flex flex-col items-center mt-16 text-5xl md:mt-4 lg:text-lg">
     <h1 class="pb-24 font-light leading-snug lg:pb-12 text-sand-bg lg:text-3xl">
@@ -18,7 +19,7 @@
       {% endif %}
 
 
-      <label for="{{ form.username.id_for_label }}" class="hidden"  >Benutzername:</label>
+      <label for="{{ form.username.id_for_label }}" class="hidden" >{% translate "Benutzername:" %}</label>
       <input
         type="text"
         id="{{ form.username.id_for_label }}"
@@ -28,7 +29,7 @@
         required
       >
 
-      <label for="password" class="hidden">Passwort:</label>
+      <label for="password" class="hidden">{% translate "Passwort:" %}</label>
       <input
         type="password"
         id="{{ form.password.id_for_label }}"

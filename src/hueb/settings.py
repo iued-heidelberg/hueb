@@ -15,6 +15,7 @@ import os
 import sentry_sdk
 from dotenv import load_dotenv
 from sentry_sdk.integrations.django import DjangoIntegration
+from django.utils.translation import gettext_lazy as _
 
 load_dotenv()
 
@@ -48,6 +49,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "import_export",
     "debug_toolbar",
+    # "rosetta",
 ]
 
 MIDDLEWARE = [
@@ -56,6 +58,7 @@ MIDDLEWARE = [
     "simple_history.middleware.HistoryRequestMiddleware",
     "beeline.middleware.django.HoneyMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -79,6 +82,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "hueb.apps.hueb20.context_processors.menu",
                 "hueb.apps.hueb20.context_processors.overlay",
+                "django.template.context_processors.i18n",
             ],
         },
     },
@@ -107,7 +111,9 @@ WSGI_APPLICATION = "hueb.wsgi.application"
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "de"
+
+# LANGUAGE_CODE = "de"
 
 TIME_ZONE = "UTC"
 
@@ -116,6 +122,12 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+LOCALE_PATHS = (os.path.join(BASE_DIR, "hueb/apps/hueb20/locale"),)
+LANGUAGES = (
+    ("de", _("German")),
+    ("en", _("English")),
+)
 
 
 INTERNAL_IPS = ["127.0.0.1"]
