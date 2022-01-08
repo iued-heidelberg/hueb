@@ -36,7 +36,7 @@ The current implementation progress (07.21) is the following:
 > PS: Please apologize for the bodies you may find in this project...
 
 
-### Setting up a development environment
+### Setting up a development environment 
 1. Install [python3.8](python.org), [PostgreSQL](https://www.postgresql.org/) and [nodejs](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) on your local maschine.
 2. Clone the repository
 ```

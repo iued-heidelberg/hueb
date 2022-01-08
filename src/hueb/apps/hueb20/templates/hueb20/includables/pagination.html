@@ -26,14 +26,14 @@
   <div class="{% if not page_obj.has_next %} invisible {% endif %}">
     {% if page_obj.has_next %}
       {% with page_number=page_obj.next_page_number%}
-        <a class="p-2 m-2 border-b-4 border-transparent hover:border-black" href="?{% param_replace page=page_number%}">vor</a>
+        <a class="p-2 m-2 border-b-4 border-transparent hover:border-black" href="?{% param_replace page=page_number%}">{% translate "vor" %}</a>
       {% endwith %}
     {% else %}
       {% with page_number=page_obj.current_page_number%}
-        <a class="p-2 m-2 border-b-4 border-transparent hover:border-black" href="?{% param_replace page=page_number%}">vor</a>
+        <a class="p-2 m-2 border-b-4 border-transparent hover:border-black" href="?{% param_replace page=page_number%}">{% translate "vor" %}</a>
       {% endwith %}
     {% endif %}
-    <a class="p-2 m-2 border-b-4 border-transparent hover:border-black" href="?{% param_replace page=page_obj.paginator.num_pages %}">letzte Seite &raquo;</a>
+    <a class="p-2 m-2 border-b-4 border-transparent hover:border-black" href="?{% param_replace page=page_obj.paginator.num_pages %}">{% translate "letzte Seite" %} &raquo;</a>
   </div>
 
 </div>
