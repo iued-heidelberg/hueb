@@ -14,16 +14,16 @@ class UserHistory(models.Model):
         if created:
             UserHistory.objects.create(user=instance)
 
-    @receiver(post_save, sender=User)
-    def save_user_history(sender, instance, **kwargs):
-        instance.userHistory.save()
-
-    def get_addition_count(self):
+    def addition_count(self):
         return len(
             LogEntry.objects.filter(user_id=self.user.id)
             .filter(action_flag=ADDITION)
             .all()
         )
+
+    class Meta:
+        verbose_name = "Entries per User"
+        verbose_name_plural = "Entries per User"
 
     """
     def get_additions(self):

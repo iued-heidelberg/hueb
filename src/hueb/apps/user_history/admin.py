@@ -18,12 +18,12 @@ class ReadonlyAdmin(ExportMixin, admin.ModelAdmin):
 class UserHistoryAdmin(ReadonlyAdmin):
     list_display = (
         "user",
-        "get_addition_count",
+        "addition_count",
     )
 
     search_fields = (
         "user",
-        "get_addition_count",
+        "addition_count",
     )
 
     fieldsets = (
@@ -36,7 +36,7 @@ class UserHistoryAdmin(ReadonlyAdmin):
         (
             "Activity",
             {
-                "fields": ("get_addition_count",),
+                "fields": ("addition_count",),
             },
         ),
     )
