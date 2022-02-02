@@ -6,18 +6,33 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='UserHistory',
+            name="UserHistory",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('user', models.OneToOneField(to="auth.User", on_delete=models.CASCADE, null=False, blank=False)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "user",
+                    models.OneToOneField(
+                        to="auth.User",
+                        on_delete=models.CASCADE,
+                        null=False,
+                        blank=False,
+                    ),
+                ),
             ],
             options={
-                'db_table': "user_history_userhistory",
+                "db_table": "user_history_userhistory",
             },
         ),
     ]

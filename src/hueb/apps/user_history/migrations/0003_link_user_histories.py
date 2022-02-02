@@ -11,6 +11,7 @@ def create_user_histories(apps, schema_editor):
         uh.user = u
         uh.save()
 
+
 def uncreate_user_histories(apps, schema_editor):
     UH = apps.get_model("user_history", "UserHistory")
     uh = UH.objects.all()
@@ -19,11 +20,8 @@ def uncreate_user_histories(apps, schema_editor):
 
 class Migration(migrations.Migration):
 
-
     dependencies = [
         ("user_history", "0002_alter_userhistory_options"),
     ]
 
     operations = [migrations.RunPython(create_user_histories, uncreate_user_histories)]
-
-

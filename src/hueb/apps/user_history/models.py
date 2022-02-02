@@ -5,6 +5,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.admin.models import LogEntry, ADDITION
 
+
 class UserHistory(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=False, blank=False)
 
@@ -18,7 +19,11 @@ class UserHistory(models.Model):
         instance.userHistory.save()
 
     def get_addition_count(self):
-        return len(LogEntry.objects.filter(user_id=self.user.id).filter(action_flag = ADDITION).all())
+        return len(
+            LogEntry.objects.filter(user_id=self.user.id)
+            .filter(action_flag=ADDITION)
+            .all()
+        )
 
     """
     def get_additions(self):
@@ -27,4 +32,3 @@ class UserHistory(models.Model):
         for log in logs:
             ReviewModelId = ContentType.objects.get(model='reviewable')
     """
-
