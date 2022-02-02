@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "hueb.apps.hueb_legacy_latein",
     "hueb.apps.hueb_legacy_lidos",
     "hueb.apps.hueb_legacy",
+    "hueb.apps.user_history",
     "django_extensions",
     "django.contrib.admin",
     "django.contrib.auth",
