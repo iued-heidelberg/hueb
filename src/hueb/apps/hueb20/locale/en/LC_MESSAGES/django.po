@@ -8,29 +8,32 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-24 16:26+0000\n"
-"PO-Revision-Date: 2021-11-21 12:16+0000\n"
-"Last-Translator:   <aniadymanus@gmail.com>\n"
+"POT-Creation-Date: 2021-12-30 14:36+0000\n"
+"PO-Revision-Date: 2021-12-17 16:38+0000\n"
+"Last-Translator: <anne.weber@iued.uni-heidelberg.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Translated-Using: django-rosetta 0.9.8\n"
+"X-Translated-Using: django-rosetta 0.9.7\n"
 
 #: hueb/apps/hueb20/context_processors.py:7
+#: hueb/apps/hueb20/tests/test_context_processors.py:38
 msgid "Projekt"
 msgstr "Project"
 
 #: hueb/apps/hueb20/context_processors.py:10
 #: hueb/apps/hueb20/context_processors.py:12
+#: hueb/apps/hueb20/tests/test_context_processors.py:42
 msgid "Suche"
 msgstr "Search"
 
 #: hueb/apps/hueb20/context_processors.py:14
+#: hueb/apps/hueb20/tests/test_context_processors.py:46
 msgid "Katalog"
-msgstr "Catalog"
+msgstr "Catalogue"
 
 #: hueb/apps/hueb20/models/document.py:24 hueb/apps/hueb20/views/search.py:149
 msgid "Original"
@@ -42,7 +45,7 @@ msgstr "Translation"
 
 #: hueb/apps/hueb20/models/document.py:26
 msgid "Brückenübersetzung"
-msgstr "Translation"
+msgstr "Intermediary Translation"
 
 #: hueb/apps/hueb20/models/document.py:211
 msgid "Titel"
@@ -102,15 +105,15 @@ msgstr "Edition:"
 
 #: hueb/apps/hueb20/templates/hueb20/document_details/document_details.html:40
 msgid "Erscheinungsjahr:"
-msgstr "Release Year:"
+msgstr "Year of Publication:"
 
 #: hueb/apps/hueb20/templates/hueb20/document_details/document_details.html:66
 msgid "Originalsprache:"
-msgstr "Language of the Original:"
+msgstr "Source Language:"
 
 #: hueb/apps/hueb20/templates/hueb20/document_details/document_details.html:74
 msgid "Übersetzungsprache:"
-msgstr "Language of the Translation:"
+msgstr "Target Language:"
 
 #: hueb/apps/hueb20/templates/hueb20/document_details/document_details.html:80
 msgid "Kulturkreis:"
@@ -130,7 +133,7 @@ msgstr "Publisher:"
 
 #: hueb/apps/hueb20/templates/hueb20/document_details/document_details.html:129
 msgid "Erscheinungsort:"
-msgstr "Publication Year:"
+msgstr "Place of Publication:"
 
 #: hueb/apps/hueb20/templates/hueb20/document_details/document_details.html:134
 msgid "DDC:"
@@ -138,7 +141,7 @@ msgstr "DDC:"
 
 #: hueb/apps/hueb20/templates/hueb20/document_details/document_details.html:139
 msgid "Standorte:"
-msgstr "Location:"
+msgstr "Locations:"
 
 #: hueb/apps/hueb20/templates/hueb20/document_details/document_details.html:161
 #: hueb/apps/hueb20/templates/hueb20/document_details/document_details.html:220
@@ -151,7 +154,7 @@ msgstr "Original:"
 
 #: hueb/apps/hueb20/templates/hueb20/document_details/document_details.html:205
 msgid "Brückenübersetzung:"
-msgstr "Translation:"
+msgstr "Intermediary Translation:"
 
 #: hueb/apps/hueb20/templates/hueb20/document_details/document_details.html:233
 msgid "Kommentare:"
@@ -159,7 +162,7 @@ msgstr "Comments:"
 
 #: hueb/apps/hueb20/templates/hueb20/includables/overlay_login.html:22
 msgid "Benutzername:"
-msgstr "Username:"
+msgstr "User Name:"
 
 #: hueb/apps/hueb20/templates/hueb20/includables/overlay_login.html:32
 msgid "Passwort:"
@@ -167,21 +170,34 @@ msgstr "Password:"
 
 #: hueb/apps/hueb20/templates/hueb20/includables/pagination.html:7
 msgid "erste Seite"
-msgstr "First Page"
+msgstr "first page"
 
 #: hueb/apps/hueb20/templates/hueb20/includables/pagination.html:11
 #: hueb/apps/hueb20/templates/hueb20/includables/pagination.html:15
 msgid "zurück"
-msgstr "back"
+msgstr "previous"
 
 #: hueb/apps/hueb20/templates/hueb20/includables/pagination.html:22
 msgid "Seite"
-msgstr "Page"
+msgstr "page"
 
 #: hueb/apps/hueb20/templates/hueb20/includables/pagination.html:22
 #: hueb/apps/hueb20/views/search.py:50
 msgid "von"
-msgstr "from"
+msgstr "of"
+
+#: hueb/apps/hueb20/templates/hueb20/includables/pagination.html:29
+#: hueb/apps/hueb20/templates/hueb20/includables/pagination.html:33
+#, fuzzy
+#| msgid "von"
+msgid "vor"
+msgstr "of"
+
+#: hueb/apps/hueb20/templates/hueb20/includables/pagination.html:36
+#, fuzzy
+#| msgid "erste Seite"
+msgid "letzte Seite"
+msgstr "first page"
 
 #: hueb/apps/hueb20/templates/hueb20/index/project_description.html:6
 msgid "Heidelberger"
@@ -189,7 +205,7 @@ msgstr "Heidelberg"
 
 #: hueb/apps/hueb20/templates/hueb20/index/project_description.html:6
 msgid "Übersetzungsbibliographie"
-msgstr "Translation Bibliography"
+msgstr "Bibliography of Translations of Nonfictional Texts"
 
 #: hueb/apps/hueb20/templates/hueb20/index/project_description.html:12
 msgid ""
@@ -197,9 +213,10 @@ msgid ""
 "Übersetzungsbibliographie eine Informationsinfrastruktur bereitstellen, die "
 "zwei Zwecken dienen soll:"
 msgstr ""
-"As part of the Digital Humanities, the DFG-funded Heidelberg Translation "
-"Library will provide an information infrastructure that will serve two "
-"purposes:"
+"This project is funded by the German Research Foundation and aims to provide "
+"an online bibliography of translations of nonfictional texts mainly from the "
+"early modern period, i.e. the collection of German translations of non-"
+"literary texts published between 1450 and 1850. "
 
 #: hueb/apps/hueb20/templates/hueb20/index/project_description.html:16
 msgid ""
@@ -207,9 +224,17 @@ msgid ""
 "frühneuzeitlichen Übersetzungen aus dem Englischen und Niederländischen ins "
 "Deutsche (Erscheinungszeitraum 1450–1850)."
 msgstr ""
-"The first task is to compile a bibliography of mainly early modern "
-"translations from English and Dutch into German (publication period "
-"1450-1850)."
+"Apart from developing a technical infrastructure our main task concerns the "
+"collection of data: we will compile bibliographical information on "
+"translations from English and Dutch into German. Even though belles-lettres "
+"will be excluded, the texts will cover a wide range of subject matters, from "
+"natural sciences, medicine and technology via historical documents and "
+"travel reports to theological essays. In addition, we will transfer data "
+"from two existing bibliographies of German translations in the early modern "
+"period (Romance-German “Saarbrücker Übersetzungsbibliographie”/“Saarbrücken "
+"Translation Bibliography” and Latin-German “Saarbrücker "
+"Übersetzungsbibliographie – Latein”/“Saarbrücken Translation Bibliography – "
+"Latin”), which were also funded by the DFG. "
 
 #: hueb/apps/hueb20/templates/hueb20/index/project_description.html:20
 msgid ""
@@ -219,11 +244,13 @@ msgid ""
 "um anderen Forschenden umfassende bibliographische Daten zur Übersetzung ins "
 "Deutsche in der frühen Neuzeit und darüber hinaus verfügbar zu machen."
 msgstr ""
-"This will then be integrated with two predecessor projects on Romance-German "
-"and Latin-German translation (Saarbrücken Translation Bibliography) to form "
-"an overall bibliography, making comprehensive bibliographic data on "
-"translation into German in the early modern period and beyond available to "
-"other researchers."
+"In the end, we will provide a comprehensive bibliography of translations of "
+"nonfictional texts from the early modern period, which will cover Latin, "
+"French, Italian, Spanish, Portuguese, English and Dutch as source and "
+"intermediary languages and which can serve as a basis for research in many "
+"different fields. Moreover, we will grant interested researchers access to "
+"our internal user interface to enable them to create their own specialised "
+"bibliographies. "
 
 #: hueb/apps/hueb20/templates/hueb20/index/project_description.html:24
 msgid ""
@@ -238,14 +265,11 @@ msgid ""
 "Kolleginnen und Kollegen für die   Erfassung eigener bibliographischer Daten "
 "zur Verfügung gestellt werden."
 msgstr ""
-"By merging the three databases (English/Dutch/German HÜB, Latin/German SÜB-"
-"L, Romance/German SÜB), a comprehensive translation bibliography of early "
-"modern non-fictional texts with Latin, French, Italian, Spanish, Portuguese, "
-"English, and Dutch as systematically recorded original and bridge languages "
-"will be created, which can provide researchers with a comprehensive database "
-"for studies of various orientations. In addition, the developed "
-"infrastructure will be made available to interested colleagues for the "
-"collection of their own bibliographic data."
+"On the whole, we consider our project to be a contribution to the field of "
+"Digital Humanities: on the one hand, a typical subject matter of the Arts "
+"and Humanities will be made accessible online and free of charge while, at "
+"the same time, interested researchers can use our IT infrastructure to "
+"collaboratively expand the overall database."
 
 #: hueb/apps/hueb20/templates/hueb20/index/project_description.html:31
 msgid ""
@@ -254,8 +278,8 @@ msgid ""
 "Landesbibliothek Sachsen-Anhalt"
 msgstr ""
 "Taken from \"Pluvinel, Antonium: Maneige royal ou l’on peut remarquer la "
-"defaut et la perfection du chevalier\"  with permission of the University "
-"and State Library of Saxony-Anhalt"
+"defaut et la perfection du chevalier\" by courtesy of the University and "
+"State Library Saxony-Anhalt."
 
 #: hueb/apps/hueb20/templates/hueb20/index/project_description.html:37
 msgid "Kontakt"
@@ -263,11 +287,11 @@ msgstr "Contact"
 
 #: hueb/apps/hueb20/templates/hueb20/index/project_description.html:41
 msgid "Projekt-Leitung:"
-msgstr "Project Management:"
+msgstr "Director:"
 
 #: hueb/apps/hueb20/templates/hueb20/index/project_description.html:48
 msgid "Projekt-Koordination:"
-msgstr "Project Coordination:"
+msgstr "Coordinators:"
 
 #: hueb/apps/hueb20/templates/hueb20/index/project_description.html:55
 msgid "und"
@@ -307,11 +331,11 @@ msgstr "Results:"
 
 #: hueb/apps/hueb20/templates/hueb20/search/search_formset.html:23
 msgid "Filter hinzufügen"
-msgstr "Add the filter"
+msgstr "Add filter"
 
 #: hueb/apps/hueb20/templates/hueb20/search/search_formset.html:33
 msgid "Filter entfernen"
-msgstr "Remove the filter"
+msgstr "Remove filter"
 
 #: hueb/apps/hueb20/templates/hueb20/search/search_formset.html:51
 msgid "Suchen"
@@ -335,7 +359,7 @@ msgstr "Author"
 #: hueb/apps/hueb20/templates/hueb20/search/single_result_document.html:69
 #: hueb/apps/hueb20/templates/hueb20/search/single_result_document.html:147
 msgid "Ort"
-msgstr "Location"
+msgstr "Place"
 
 #: hueb/apps/hueb20/templates/hueb20/search/single_result_document.html:134
 msgid "Übersetzer"
@@ -383,21 +407,21 @@ msgstr "Translations"
 
 #: hueb/apps/hueb20/views/search.py:176
 msgid "Brückenübersetzungen"
-msgstr "Translations"
+msgstr "Intermediary Translations"
 
 #: hueb/apps/hueb20/widgets/timerange.py:17
 msgid "Exakt"
-msgstr ""
+msgstr "Exact"
 
 #: hueb/apps/hueb20/widgets/timerange.py:18
 msgid "Bereich"
-msgstr ""
+msgstr "Range"
 
-#: hueb/settings.py:130
+#: hueb/settings.py:131
 msgid "German"
 msgstr "German"
 
-#: hueb/settings.py:131
+#: hueb/settings.py:132
 msgid "English"
 msgstr "English"
 

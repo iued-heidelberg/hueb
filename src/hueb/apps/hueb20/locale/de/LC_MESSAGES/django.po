@@ -8,26 +8,30 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-24 16:26+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2021-12-30 14:36+0000\n"
+"PO-Revision-Date: 2021-12-17 16:39+0000\n"
+"Last-Translator: <anne.weber@iued.uni-heidelberg.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Translated-Using: django-rosetta 0.9.7\n"
 
 #: hueb/apps/hueb20/context_processors.py:7
+#: hueb/apps/hueb20/tests/test_context_processors.py:38
 msgid "Projekt"
 msgstr ""
 
 #: hueb/apps/hueb20/context_processors.py:10
 #: hueb/apps/hueb20/context_processors.py:12
+#: hueb/apps/hueb20/tests/test_context_processors.py:42
 msgid "Suche"
 msgstr ""
 
 #: hueb/apps/hueb20/context_processors.py:14
+#: hueb/apps/hueb20/tests/test_context_processors.py:46
 msgid "Katalog"
 msgstr ""
 
@@ -105,11 +109,11 @@ msgstr ""
 
 #: hueb/apps/hueb20/templates/hueb20/document_details/document_details.html:66
 msgid "Originalsprache:"
-msgstr ""
+msgstr "Ausgangssprache: "
 
 #: hueb/apps/hueb20/templates/hueb20/document_details/document_details.html:74
 msgid "Übersetzungsprache:"
-msgstr ""
+msgstr "Zielsprache: "
 
 #: hueb/apps/hueb20/templates/hueb20/document_details/document_details.html:80
 msgid "Kulturkreis:"
@@ -117,7 +121,7 @@ msgstr ""
 
 #: hueb/apps/hueb20/templates/hueb20/document_details/document_details.html:85
 msgid "Author:"
-msgstr ""
+msgstr "Autor: "
 
 #: hueb/apps/hueb20/templates/hueb20/document_details/document_details.html:100
 msgid "Übersetzer:"
@@ -182,13 +186,22 @@ msgstr ""
 msgid "von"
 msgstr ""
 
+#: hueb/apps/hueb20/templates/hueb20/includables/pagination.html:29
+#: hueb/apps/hueb20/templates/hueb20/includables/pagination.html:33
+msgid "vor"
+msgstr ""
+
+#: hueb/apps/hueb20/templates/hueb20/includables/pagination.html:36
+msgid "letzte Seite"
+msgstr ""
+
 #: hueb/apps/hueb20/templates/hueb20/index/project_description.html:6
 msgid "Heidelberger"
 msgstr ""
 
 #: hueb/apps/hueb20/templates/hueb20/index/project_description.html:6
 msgid "Übersetzungsbibliographie"
-msgstr ""
+msgstr "Übersetzungsbibliographie nichtfiktionaler Texte (HÜB)"
 
 #: hueb/apps/hueb20/templates/hueb20/index/project_description.html:12
 msgid ""
@@ -196,6 +209,10 @@ msgid ""
 "Übersetzungsbibliographie eine Informationsinfrastruktur bereitstellen, die "
 "zwei Zwecken dienen soll:"
 msgstr ""
+"Das DFG-geförderte Projekt hat die Erstellung einer online zugänglichen "
+"Übersetzungsbibliographie frühneuzeitlicher nichtfiktionaler Texte zum Ziel, "
+"mit anderen Worten die Sammlung von ins Deutsche übersetzten Sachtexten im "
+"weitesten Sinne aus dem Zeitraum 1450–1850. "
 
 #: hueb/apps/hueb20/templates/hueb20/index/project_description.html:16
 msgid ""
@@ -203,6 +220,17 @@ msgid ""
 "frühneuzeitlichen Übersetzungen aus dem Englischen und Niederländischen ins "
 "Deutsche (Erscheinungszeitraum 1450–1850)."
 msgstr ""
+"Neben der Entwicklung einer entsprechenden technischen Infrastruktur geht es "
+"primär um die Zusammenstellung der Datensätze: Es soll eine Sammlung zu "
+"Übersetzungen aus dem Englischen sowie dem Niederländischen ins Deutsche "
+"erstellt werden. Die Thematik der zu erfassenden Texte reicht dabei – unter "
+"Ausschluss der schönen Literatur – von Naturwissenschaft, Medizin und "
+"Technik über historische Schriften und Reiseberichte bis hin zu "
+"theologischen Abhandlungen. Darüber hinaus werden die Daten aus zwei "
+"ebenfalls DFG-geförderten Vorgängerbibliographien zur romanisch-deutschen "
+"sowie zur lateinisch-deutschen Übersetzung in der Frühen Neuzeit übernommen "
+"(„Saarbrücker Übersetzungsbibliographie“ sowie „Saarbrücker "
+"Übersetzungsbibliographie – Latein“). "
 
 #: hueb/apps/hueb20/templates/hueb20/index/project_description.html:20
 msgid ""
@@ -212,6 +240,14 @@ msgid ""
 "um anderen Forschenden umfassende bibliographische Daten zur Übersetzung ins "
 "Deutsche in der frühen Neuzeit und darüber hinaus verfügbar zu machen."
 msgstr ""
+"Insgesamt entsteht so eine umfassende Übersetzungsbibliographie "
+"frühneuzeitlicher nichtfiktionaler Texte mit Lateinisch, Französisch, "
+"Italienisch, Spanisch, Portugiesisch, Englisch und Niederländisch als "
+"systematisch erfassten Original- und Brückensprachen, die Forschenden eine "
+"umfassende Datenbasis für Untersuchungen verschiedenster Ausrichtung liefern "
+"kann. Darüber hinaus soll die entwickelte Infrastruktur zugleich "
+"interessierten KollegInnen für das Anlegen eigener bibliographischer "
+"Teilprojekte zur Verfügung gestellt werden. "
 
 #: hueb/apps/hueb20/templates/hueb20/index/project_description.html:24
 msgid ""
@@ -226,6 +262,11 @@ msgid ""
 "Kolleginnen und Kollegen für die   Erfassung eigener bibliographischer Daten "
 "zur Verfügung gestellt werden."
 msgstr ""
+"In diesem Sinne versteht sich das Projekt als Beitrag zu den Digital "
+"Humanities, indem einerseits ein klassisch geisteswissenschaftlicher "
+"Gegenstand online allgemein zugänglich und darüber hinaus die IT-"
+"Infrastruktur für interessierte ForscherInnen zur kollaborativen Erweiterung "
+"nutzbar gemacht wird. "
 
 #: hueb/apps/hueb20/templates/hueb20/index/project_description.html:31
 msgid ""
@@ -233,6 +274,9 @@ msgid ""
 "defaut et la perfection du chevalier\" mit Genehmigung der Universitäts- und "
 "Landesbibliothek Sachsen-Anhalt"
 msgstr ""
+"Übernommen aus \"Pluvinel, Antonium: Maneige royal ou l’on peut remarquer la "
+"defaut et la perfection du chevalier\" mit freundlicher Genehmigung der "
+"Universitäts- und Landesbibliothek Sachsen-Anhalt."
 
 #: hueb/apps/hueb20/templates/hueb20/index/project_description.html:37
 msgid "Kontakt"
@@ -370,10 +414,10 @@ msgstr ""
 msgid "Bereich"
 msgstr ""
 
-#: hueb/settings.py:130
+#: hueb/settings.py:131
 msgid "German"
 msgstr ""
 
-#: hueb/settings.py:131
+#: hueb/settings.py:132
 msgid "English"
 msgstr ""
