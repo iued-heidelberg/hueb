@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import UserHistory
 from import_export.admin import ExportMixin
+from hueb.apps.hueb20.admin.review import TabularInlineReviewAdmin
 
 
 class ReadonlyAdmin(ExportMixin, admin.ModelAdmin):
@@ -18,13 +19,14 @@ class ReadonlyAdmin(ExportMixin, admin.ModelAdmin):
 class UserHistoryAdmin(ReadonlyAdmin):
     list_display = (
         "user",
-        "addition_count",
+        "total_addition_count",
+        "document_addition_count",
+        "recent_document_additions",
+        "person_addition_count",
+        "recent_person_additions",
     )
 
-    search_fields = (
-        "user",
-        "addition_count",
-    )
+    search_fields = ("user",)
 
     fieldsets = (
         (
@@ -36,7 +38,13 @@ class UserHistoryAdmin(ReadonlyAdmin):
         (
             "Activity",
             {
-                "fields": ("addition_count",),
+                "fields": (
+                    "total_addition_count",
+                    "document_addition_count",
+                    "recent_document_additions",
+                    "person_addition_count",
+                    "recent_person_additions",
+                ),
             },
         ),
     )
