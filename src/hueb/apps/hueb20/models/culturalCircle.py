@@ -1,3 +1,4 @@
+import hueb.apps.hueb_legacy_latein.models as Legacy
 from django.contrib.postgres.fields import IntegerRangeField
 from django.db import models
 from django.urls import reverse
@@ -12,6 +13,13 @@ class CulturalCircle(Reviewable):
     end = IntegerRangeField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
+    country_ref = models.OneToOneField(
+        Legacy.Country,
+        on_delete=models.DO_NOTHING,
+        null=True,
+        blank=True,
+        related_name="cultural_circle_ref",
+    )
 
     def __str__(self):
         if self.name is None:

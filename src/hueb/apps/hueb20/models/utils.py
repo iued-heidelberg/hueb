@@ -1,7 +1,7 @@
 from psycopg2.extras import NumericRange
 
 LATEIN = "LATEIN"
-LIDOS = "LIDOS "
+LIDOS = "LIDOS"
 LEGACY = "LEGACY"
 HUEB20 = "HUEB20"
 

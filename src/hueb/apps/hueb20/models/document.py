@@ -1,4 +1,6 @@
 import hueb.apps.hueb_legacy_latein.models as Legacy
+import hueb.apps.hueb_legacy.models as LegacyLegacy
+import hueb.apps.hueb_legacy_lidos.models as Lidos
 from django.contrib.postgres.fields import IntegerRangeField
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -78,6 +80,12 @@ class Document(Reviewable):
         null=True,
         blank=True,
     )
+    original_ref_lidos = models.OneToOneField(
+        Lidos.Original, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
+    translation_ref_lidos = models.OneToOneField(
+        Lidos.Translation, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
 
     def get_document_type(self):
         if self.translations.exists() and not self.originals.exists():
@@ -89,6 +97,20 @@ class Document(Reviewable):
 
     def get_authors(self):
         return self.contribution_set.filter(contribution_type="WRITER")
+
+    """
+    def get_original_author(self):
+        if self.get_document_type() == Document.ORIGINAL:
+            return self.get_authors()
+        else:
+            if self.originals.exists():
+                if self.originals.first().get_document_type() == Document.ORIGINAL:
+                    if self.originals.first().get_authors().exists():
+                        return self.originals.first().get_authors()
+                else:
+                    if self.originals.first().originals.first().get_authors().exists():
+                        return self.originals.first().originals.first().get_authors()
+    """
 
     def get_original_authors(self):
         return self.get_original_attr("get_authors")
@@ -200,6 +222,7 @@ class Document(Reviewable):
         ("ddc", _("DDC")),
         ("year", _("Jahr")),
         ("language", _("Sprache")),
+        ("app", _("Datenbank")),
     )
 
     sortable_attributes = (
@@ -228,6 +251,8 @@ class Document(Reviewable):
             )
         elif query["attribute"] == "language":
             return Document.q_object_by_type(query["search_language"])
+        elif query["attribute"] == "app":
+            return Document.q_object_by_app(query["search_database"])
         else:
             return Q()
 
@@ -248,6 +273,10 @@ class Document(Reviewable):
     @classmethod
     def q_object_by_written_in(cls, lower, upper):
         return Q(written_in__overlap=NumericRange(lower, upper))
+
+    @classmethod
+    def q_object_by_app(cls, value):
+        return Q(app__icontains=value)
 
 
 class DocumentRelationship(Reviewable):
@@ -285,6 +314,8 @@ class DocumentRelationship(Reviewable):
             return DocumentRelationship.q_object_by_language(
                 query["search_language"], types
             )
+        elif query["attribute"] == "app":
+            return DocumentRelationship.q_object_by_app(query["search_database"], types)
         else:
             return Q()
 
@@ -295,11 +326,11 @@ class DocumentRelationship(Reviewable):
                 return Q(document_from__originals__isnull=True) & Q(
                     document_from__translations__isnull=False
                 )
-            if type == Document.TRANSLATION:
+            elif type == Document.TRANSLATION:
                 return Q(document_from__originals__isnull=False) & Q(
                     document_from__translations__isnull=True
                 )
-            if type == Document.BRIDGE:
+            elif type == Document.BRIDGE:
                 return Q(document_from__originals__isnull=False) & Q(
                     document_from__translations__isnull=False
                 )
@@ -308,11 +339,11 @@ class DocumentRelationship(Reviewable):
                 return Q(document_to__originals__isnull=True) & Q(
                     document_to__translations__isnull=False
                 )
-            if type == Document.TRANSLATION:
+            elif type == Document.TRANSLATION:
                 return Q(document_to__originals__isnull=False) & Q(
                     document_to__translations__isnull=True
                 )
-            if type == Document.BRIDGE:
+            else:
                 return Q(document_to__originals__isnull=False) & Q(
                     document_to__translations__isnull=False
                 )
@@ -359,6 +390,8 @@ class DocumentRelationship(Reviewable):
         else:
             value = value[:-1]
 
+        # value = value + "*"
+
         return Q(
             document_from__ddc__ddc_number__iregex=r"(^|\s)%s" % value
         ) & cls.get_types_q(types, True) | Q(
@@ -384,6 +417,12 @@ class DocumentRelationship(Reviewable):
         ) | Q(document_to__language__language__icontains=value) & cls.get_types_q(
             types, False
         )
+
+    @classmethod
+    def q_object_by_app(cls, value, types):
+        return Q(document_from__app__icontains=value) & cls.get_types_q(
+            types, True
+        ) | Q(document_to__app__icontains=value) & cls.get_types_q(types, False)
 
     def __init__(self, *args, **kwargs):
         super(DocumentRelationship, self).__init__(*args, **kwargs)

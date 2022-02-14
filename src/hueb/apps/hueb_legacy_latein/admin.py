@@ -473,9 +473,10 @@ class OriginalNewAdmin(ReadonlyAdmin):
             .select_related("ddc")
             .select_related("user")
             .select_related("country")
-            .select_related("person")
+            # .select_related("person")
             .select_related("document")
             .select_related("documentrelationship")
+            # .select_related("author_new")
         )
         return qs
 
@@ -603,7 +604,7 @@ class TranslationNewAdmin(ReadonlyAdmin):
             .select_related("ddc")
             .select_related("user")
             .select_related("country")
-            .select_related("person")
+            # .select_related("person")
             .select_related("document")
             .select_related("documentrelationship")
         )

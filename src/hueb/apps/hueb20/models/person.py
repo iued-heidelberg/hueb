@@ -1,4 +1,6 @@
 import hueb.apps.hueb_legacy_latein.models as Legacy
+import hueb.apps.hueb_legacy_lidos.models as Lidos
+import hueb.apps.hueb_legacy.models as LegacyLegacy
 from django.contrib.postgres.fields import IntegerRangeField
 from django.db import models
 from django.template.defaultfilters import escape
@@ -19,17 +21,31 @@ class Person(Reviewable):
     lifetime_start = IntegerRangeField(null=True, blank=True)
     lifetime_end = IntegerRangeField(null=True, blank=True)
     app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
+    # references to LATEIN
     author_ref = models.OneToOneField(
         Legacy.AuthorNew, on_delete=models.DO_NOTHING, null=True, blank=True
     )
     translator_ref = models.OneToOneField(
         Legacy.TranslatorNew, on_delete=models.DO_NOTHING, null=True, blank=True
     )
-    publisherOriginal_ref = models.OneToOneField(
+    publisherOriginal_ref = models.ForeignKey(
         Legacy.OriginalNew, on_delete=models.DO_NOTHING, null=True, blank=True
     )
-    publisherTranslation_ref = models.OneToOneField(
+    publisherTranslation_ref = models.ForeignKey(
         Legacy.TranslationNew, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
+    # references to LIDOS
+    author_ref_lidos = models.OneToOneField(
+        Lidos.Author, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
+    translator_ref_lidos = models.OneToOneField(
+        Lidos.Translator, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
+    publisherOriginal_ref_lidos = models.OneToOneField(
+        Lidos.Original, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
+    publisherTranslation_ref_lidos = models.OneToOneField(
+        Lidos.Translation, on_delete=models.DO_NOTHING, null=True, blank=True
     )
 
     def __str__(self):

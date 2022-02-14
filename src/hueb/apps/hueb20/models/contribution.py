@@ -5,6 +5,8 @@ from hueb.apps.hueb20.models.document import Document
 from hueb.apps.hueb20.models.person import Person
 from hueb.apps.hueb20.models.reviewable import Reviewable
 from hueb.apps.hueb20.models.utils import HUEB20, HUEB_APPLICATIONS
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class Contribution(Reviewable):
@@ -20,6 +22,7 @@ class Contribution(Reviewable):
 
     id = models.BigAutoField(primary_key=True)
     person = models.ForeignKey(Person, on_delete=models.CASCADE, null=True, blank=True)
+
     document = models.ForeignKey(
         Document, on_delete=models.CASCADE, null=True, blank=True
     )
@@ -58,3 +61,4 @@ class Contribution(Reviewable):
         )
         link = '<a href="%s">Contribution: %s</a>' % (url, str(self))
         return link
+
