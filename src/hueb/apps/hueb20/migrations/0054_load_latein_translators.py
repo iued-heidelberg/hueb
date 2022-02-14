@@ -1,5 +1,3 @@
-
-
 from django.db import migrations
 from hueb.apps.hueb20.models import LATEIN
 import re
@@ -39,7 +37,7 @@ def load_latein_translators(apps, schema_editor):
                 continue
             new_translator.name = name
 
-            #lifetime is taken from the name in the old model. Cases with Century are ignored.
+            # lifetime is taken from the name in the old model. Cases with Century are ignored.
             if year is not None:
                 pattern = re.compile(r".*\d{4}-.*\d{4}")
                 if pattern.search(year) is not None:
@@ -65,7 +63,9 @@ def load_latein_translators(apps, schema_editor):
                         end = end[0]
 
                 if start is not None:
-                    new_translator.lifetime_start = NumericRange(int(start), int(start) + 1)
+                    new_translator.lifetime_start = NumericRange(
+                        int(start), int(start) + 1
+                    )
                 if end is not None:
                     new_translator.lifetime_end = NumericRange(int(end), int(end) + 1)
 
@@ -84,4 +84,6 @@ class Migration(migrations.Migration):
         ("hueb20", "0053_load_latein_authors"),
     ]
 
-    operations = [migrations.RunPython(load_latein_translators, unload_latein_translators)]
+    operations = [
+        migrations.RunPython(load_latein_translators, unload_latein_translators)
+    ]

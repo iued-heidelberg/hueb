@@ -61,4 +61,3 @@ class Contribution(Reviewable):
         )
         link = '<a href="%s">Contribution: %s</a>' % (url, str(self))
         return link
-

@@ -17,7 +17,7 @@ def load_latein_originals(apps, schema_editor):
 
     for latein_original in Latein_originals.objects.all():
         if latein_original is not None:
-            if Document.objects.filter(original_ref = latein_original).exists():
+            if Document.objects.filter(original_ref=latein_original).exists():
                 continue
             original = Document()
             # Set reference to old entries
@@ -29,46 +29,83 @@ def load_latein_originals(apps, schema_editor):
             if latein_original.subtitle is not None:
                 original.subtitle = latein_original.subtitle
             if latein_original.subtitle1 is not None:
-                original.subtitle += ("\n" + latein_original.subtitle1)
+                original.subtitle += "\n" + latein_original.subtitle1
             original.edition = latein_original.edition
-            if latein_original.published_location is not None and "unbekannt" not in latein_original.published_location.lower():
+            if (
+                latein_original.published_location is not None
+                and "unbekannt" not in latein_original.published_location.lower()
+            ):
                 original.published_location = latein_original.published_location
 
             if latein_original.real_year is not None:
                 if latein_original.real_year == 0:
-                    if latein_original.year is not None and(latein_original.year != "" and "unbekannt" not in latein_original.year.lower()):
+                    if latein_original.year is not None and (
+                        latein_original.year != ""
+                        and "unbekannt" not in latein_original.year.lower()
+                    ):
                         try:
-                            original.written_in = NumericRange(int(latein_original.year), int(latein_original.year) + 1)
+                            original.written_in = NumericRange(
+                                int(latein_original.year), int(latein_original.year) + 1
+                            )
                         except ValueError:
                             pass
                 elif latein_original.real_year != 0:
-                    original.written_in = NumericRange(latein_original.real_year, latein_original.real_year + 1)
+                    original.written_in = NumericRange(
+                        latein_original.real_year, latein_original.real_year + 1
+                    )
 
             if DDC.objects.filter(ddc_ref=latein_original.ddc).exists():
                 original.ddc = DDC.objects.get(ddc_ref=latein_original.ddc)
             elif DDC.objects.filter(ddc_number=latein_original.ddc.ddc_number).exists():
-                original.ddc = DDC.objects.get(ddc_number=latein_original.ddc.ddc_number)
+                original.ddc = DDC.objects.get(
+                    ddc_number=latein_original.ddc.ddc_number
+                )
             else:
-                raise Exception("There is no ddc assigned to " + latein_original.ddc.ddc_name)
+                raise Exception(
+                    "There is no ddc assigned to " + latein_original.ddc.ddc_name
+                )
 
             if Language.objects.filter(language_ref=latein_original.language).exists():
                 lang = Language.objects.get(language_ref=latein_original.language)
                 if lang.language != "" and lang.language is not None:
-                    original.language = Language.objects.get(language_ref=latein_original.language)
-            elif latein_original.language is not None and latein_original.language.language != "" and latein_original.language.language is not None:
-                raise Exception("There is no language assigned to " + latein_original.language.language)
+                    original.language = Language.objects.get(
+                        language_ref=latein_original.language
+                    )
+            elif (
+                latein_original.language is not None
+                and latein_original.language.language != ""
+                and latein_original.language.language is not None
+            ):
+                raise Exception(
+                    "There is no language assigned to "
+                    + latein_original.language.language
+                )
 
-            if CulturalCircle.objects.filter(country_ref=latein_original.country).exists():
-                if latein_original.country is not None and latein_original.country.country != "" and latein_original.country.country is not None:
-                    original.cultural_circle = CulturalCircle.objects.get(country_ref=latein_original.country)
-            elif latein_original.country is not None and latein_original.country.country != "" and latein_original.country.country is not None:
-                raise Exception("There is no country assigned to " + latein_original.country.country)
+            if CulturalCircle.objects.filter(
+                country_ref=latein_original.country
+            ).exists():
+                if (
+                    latein_original.country is not None
+                    and latein_original.country.country != ""
+                    and latein_original.country.country is not None
+                ):
+                    original.cultural_circle = CulturalCircle.objects.get(
+                        country_ref=latein_original.country
+                    )
+            elif (
+                latein_original.country is not None
+                and latein_original.country.country != ""
+                and latein_original.country.country is not None
+            ):
+                raise Exception(
+                    "There is no country assigned to " + latein_original.country.country
+                )
 
             # save new model
             original.save()
-            #create new Person for document's publisher and new contribution with contribution_type = PUBLISHER
+            # create new Person for document's publisher and new contribution with contribution_type = PUBLISHER
             if latein_original.publisher is not None:
-                publishers = latein_original.publisher.split(';')
+                publishers = latein_original.publisher.split(";")
                 for publi in publishers:
                     if not Person.objects.filter(name__iexact=publi).exists():
                         if "unbekannt" not in publi.lower():
@@ -83,10 +120,19 @@ def load_latein_originals(apps, schema_editor):
                         try:
                             publ_pers = Person.objects.get(name__iexact=publi)
                         except Exception:
-                            print([p.name for p in Person.objects.filter(name__iexact=publi).all()])
+                            print(
+                                [
+                                    p.name
+                                    for p in Person.objects.filter(
+                                        name__iexact=publi
+                                    ).all()
+                                ]
+                            )
                         contribution = Contribution()
                         contribution.person = publ_pers
-                        contribution.contribution_type = Contribution_Namespace.PUBLISHER
+                        contribution.contribution_type = (
+                            Contribution_Namespace.PUBLISHER
+                        )
                         contribution.app = LATEIN
                         contribution.document = original
                         contribution.save()
@@ -101,18 +147,18 @@ def load_latein_originals(apps, schema_editor):
 
 def unload_latein_originals(apps, schema_editor):
     LateinOriginal = apps.get_model("hueb20", "Document")
-    #LateinOriginal.objects.filter(app=LATEIN).delete()
+    # LateinOriginal.objects.filter(app=LATEIN).delete()
     PublisherPerson = apps.get_model("hueb20", "Person")
-    #PublisherPerson.objects.filter(app=LATEIN).filter(publisherOriginal_ref__isnull=False).delete()
+    # PublisherPerson.objects.filter(app=LATEIN).filter(publisherOriginal_ref__isnull=False).delete()
     ContributionPublisher = apps.get_model("hueb20", "Contribution")
-    #ContributionPublisher.objects.filter(app=LATEIN).filter(contribution_type=Contribution_Namespace.PUBLISHER).exclude(document__get_document_type=LateinTranslation.TRANSLATION).delete()
+    # ContributionPublisher.objects.filter(app=LATEIN).filter(contribution_type=Contribution_Namespace.PUBLISHER).exclude(document__get_document_type=LateinTranslation.TRANSLATION).delete()
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
         ("hueb20", "0054_load_latein_translators"),
-        #("hueb_legacy_latein", "0005_auto_20200709_2025"),
+        # ("hueb_legacy_latein", "0005_auto_20200709_2025"),
     ]
 
     operations = [migrations.RunPython(load_latein_originals, unload_latein_originals)]

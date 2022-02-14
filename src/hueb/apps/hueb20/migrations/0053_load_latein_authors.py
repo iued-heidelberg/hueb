@@ -38,7 +38,7 @@ def load_latein_authors(apps, schema_editor):
                 continue
             new_author.name = name
 
-            #lifetime is taken from the name in the old model. Cases with Century are ignored.
+            # lifetime is taken from the name in the old model. Cases with Century are ignored.
             if year is not None:
                 pattern = re.compile(r".*\d{4}-.*\d{4}")
                 if pattern.search(year) is not None:
@@ -65,9 +65,9 @@ def load_latein_authors(apps, schema_editor):
                         end = end[0]
 
                 if start is not None:
-                    new_author.lifetime_start = NumericRange(int(start), int(start)+1)
+                    new_author.lifetime_start = NumericRange(int(start), int(start) + 1)
                 if end is not None:
-                    new_author.lifetime_end = NumericRange(int(end), int(end)+1)
+                    new_author.lifetime_end = NumericRange(int(end), int(end) + 1)
 
             # save new model
             new_author.save()
@@ -82,7 +82,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ("hueb20", "00541_auto_20220214_1127"),
-        #("hueb_legacy_latein", "0005_auto_20200709_2025"),
+        # ("hueb_legacy_latein", "0005_auto_20200709_2025"),
     ]
 
     operations = [migrations.RunPython(load_latein_authors, unload_latein_authors)]

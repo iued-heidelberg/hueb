@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('hueb20', '0055_load_latein_originals'),
+        ("hueb20", "0055_load_latein_originals"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='historicallanguage',
-            name='language',
-            field=models.CharField(max_length=255, verbose_name='Language'),
+            model_name="historicallanguage",
+            name="language",
+            field=models.CharField(max_length=255, verbose_name="Language"),
         ),
         migrations.AlterField(
-            model_name='language',
-            name='language',
-            field=models.CharField(max_length=255, verbose_name='Language'),
+            model_name="language",
+            name="language",
+            field=models.CharField(max_length=255, verbose_name="Language"),
         ),
     ]

@@ -6,13 +6,17 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('hueb20', '0046_fill_written_by'),
+        ("hueb20", "0046_fill_written_by"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='document',
-            name='contributions',
-            field=models.ManyToManyField(related_name='documents', through='hueb20.Contribution', to='hueb20.Person'),
+            model_name="document",
+            name="contributions",
+            field=models.ManyToManyField(
+                related_name="documents",
+                through="hueb20.Contribution",
+                to="hueb20.Person",
+            ),
         ),
     ]

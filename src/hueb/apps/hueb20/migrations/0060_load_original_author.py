@@ -12,7 +12,9 @@ def load_original_author(apps, schema_editor):
     Document = apps.get_model("hueb20", "Document")
 
     for legacy_original_author in Legacy_OriginalAuthor.objects.all():
-        if Contribution.objects.filter(originalAuthor_ref=legacy_original_author).exists():
+        if Contribution.objects.filter(
+            originalAuthor_ref=legacy_original_author
+        ).exists():
             continue
         new_contribution = Contribution()
         # Set reference to old entries
@@ -22,23 +24,30 @@ def load_original_author(apps, schema_editor):
         # transfer information
 
         try:
-            new_contribution.person = Person.objects.get(author_ref=legacy_original_author.author)
+            new_contribution.person = Person.objects.get(
+                author_ref=legacy_original_author.author
+            )
         except Exception:
             try:
-                new_contribution.person = Person.objects.get(name__iexact=legacy_original_author.author.name)
+                new_contribution.person = Person.objects.get(
+                    name__iexact=legacy_original_author.author.name
+                )
             except Exception:
                 print("Could not find person " + legacy_original_author.author.name)
                 continue
-        new_contribution.document = Document.objects.get(original_ref=legacy_original_author.original)
+        new_contribution.document = Document.objects.get(
+            original_ref=legacy_original_author.original
+        )
         new_contribution.contribution_type = Contribution_Namespace.WRITER
 
         # save new model
         new_contribution.save()
 
+
 def unload_original_author(apps, schema_editor):
     Contribution = apps.get_model("hueb20", "Contribution")
     Document = apps.get_model("hueb20", "Document")
-    #Contribution.objects.filter(app=LATEIN).filter(document__get_document_type=Document_Namespace.ORIGINAL).filter(contribution_type=Contribution_Namespace.WRITER).delete()
+    # Contribution.objects.filter(app=LATEIN).filter(document__get_document_type=Document_Namespace.ORIGINAL).filter(contribution_type=Contribution_Namespace.WRITER).delete()
 
 
 class Migration(migrations.Migration):
