@@ -25,7 +25,7 @@ def un_update_cultural_circle_refs(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("hueb20", "0048_auto_20220214_1106"),
+        ("hueb20", "0063_historicalculturalcircle_country_ref"),
     ]
 
     operations = [
