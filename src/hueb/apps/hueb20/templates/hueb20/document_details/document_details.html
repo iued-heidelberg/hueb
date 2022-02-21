@@ -4,16 +4,35 @@
 <style>
   td { padding-bottom: 20px;
        vertical-align: top;
-       padding-top: 10px;
-       padding-left: 30px;
       }
-  table{
-    width: 80%;
+
+  /* Tooltip container */
+.tooltip {
+  position: relative;
+  display: inline-block;
 }
 
-     
-</style>
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: #171717;
+  color: #f4f1ea;
+  font-size: 0.875rem;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 5px;
 
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+</style>
 
   <div class="flex-row min-w-full justify-between flex-auto w-2/5 p-6 px-20 bg-opacity-25 bg-sand-300 ">
     <table>
@@ -91,12 +110,13 @@
 
       <tr class="py-2 pr-8">
         <td><h2 class="text-xl font-thin lg:text-l">{% translate "Author:" %}</h2></td>
-        <td><p class="text-xl break-words lg:text-l font-bold">
+        <td><p class="text-xl break-words lg:text-l font-bold tooltip">
           {% if object.get_original_authors %}
             {% for author in object.get_original_authors %}
               <a href="{% url "personDetailView" author.person.id %}">
               {{author.person}}<br>
               </a>
+              <span class="tooltiptext">{% translate "Click to see more" %}</span>
             {% endfor %}
           {% else %}
              -
@@ -106,12 +126,13 @@
       {% if object.get_document_type is not object.ORIGINAL %}
       <tr class="py-2 pr-8">
         <td><h2 class="text-xl font-thin lg:text-l">{% translate "Übersetzer:" %}</h2></td>
-        <td><p class="text-xl break-words lg:text-l font-bold">
+        <td><p class="text-xl break-words lg:text-l font-bold tooltip">
           {% if object.get_authors.exists %}
             {% for contribution in object.get_authors.all %}
                 <a href="{% url "personDetailView" contribution.person.id %}">
                 {{contribution.person}}<br>
                 </a>
+                <span class="tooltiptext">{% translate "Click to see more" %}</span>
             {% endfor %}
           {% else %}
              -
@@ -173,13 +194,15 @@
               {% if linkedDoc.get_document_type is object.BRIDGE %}
                   {% for translation in linkedDoc.translations.all %}
                     <a href="{% url "documentDetailView" translation.id %}">
-                    <p class="block text-5xl font-bold md:text-lg"> {{translation.title}}</p>
-                    </a><br>
+                    <p class="block text-5xl font-bold md:text-lg tooltip"> {{translation.title}}
+                    </a>
+                    <span class="tooltiptext">{% translate "Click to see more" %}</span>
+                    <br>
                   {% endfor %}
-              {% endif %}
+              {% endif %}</p>
               <a href="{% url "documentDetailView" linkedDoc.id %}">
-              <p class="block text-5xl font-bold md:text-lg"> {{linkedDoc.title}}</p>
-              </a><br>
+              <p class="block text-5xl font-bold md:text-lg"> {{linkedDoc.title}}
+              </a><br></p>
             {% endfor %}
           </td>
       </tr>
@@ -194,13 +217,13 @@
             {% if linkedDoc.get_document_type is object.BRIDGE %}
                   {% for orig in linkedDoc.originals.all %}
                     <a href="{% url "documentDetailView" orig.id %}">
-                    <p class="block text-5xl font-bold md:text-lg"> {{orig.title}}</p>
-                    </a><br>
+                    <p class="block text-5xl font-bold md:text-lg tooltip"> {{orig.title}}
+                    </a><span class="tooltiptext">{% translate "Click to see more" %}</span><br></p>
                   {% endfor %}
             {% elif linkedDoc.get_document_type is object.ORIGINAL %}
               <a href="{% url "documentDetailView" linkedDoc.id %}">
-              <p class="block text-5xl font-bold md:text-lg"> {{linkedDoc.title}} </p>
-              </a><br>
+              <p class="block text-5xl font-bold md:text-lg"> {{linkedDoc.title}}
+              </a><span class="tooltiptext">{% translate "Click to see more" %}</span><br></p>
             {% endif %}
             {% endfor %}
           </td>
@@ -215,8 +238,8 @@
               <td>
               {% for bridge in object.originals.all %}
               <a href="{% url "documentDetailView" bridge.id %}">
-              <p class="block text-5xl font-bold md:text-lg"> {{bridge.title}} </p>
-              </a><br>
+              <p class="block text-5xl font-bold md:text-lg tooltip"> {{bridge.title}}
+              </a><span class="tooltiptext">{% translate "Click to see more" %}</span><br></p>
               {% endfor %}
               </td>
           {% endif %}
@@ -230,8 +253,8 @@
           <td>
             {% for linkedDoc in object.translations.all %}
               <a href="{% url "documentDetailView" linkedDoc.id %}">
-              <p class="block text-5xl font-bold md:text-lg"> {{linkedDoc.title}} </p>
-              </a><br>
+              <p class="block text-5xl font-bold md:text-lg tooltip"> {{linkedDoc.title}}
+              </a><span class="tooltiptext">{% translate "Click to see more" %}</span><br></p>
             {% endfor %}
           </td>
       </tr>

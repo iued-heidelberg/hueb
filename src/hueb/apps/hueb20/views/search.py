@@ -84,6 +84,16 @@ class SearchForm(forms.Form):
         widget=SearchSelectWidget,
     )
 
+    search_database = forms.ChoiceField(
+        choices=(
+            ("HUEB20", _("HUEB20")),
+            ("LATEIN", _("HUEBLATEIN")),
+            ("LEGACY", _("HUEBLEGACY")),
+            ("LIDOS", _("HUEBLIDOS")),
+        ),
+        widget=SearchSelectWidget,
+    )
+
 
 class BaseSearchFormSet(BaseFormSet):
     base_queryset = (

@@ -4,22 +4,58 @@
   mark{
   background-color: #FA8072;
   }
+  /* Tooltip container */
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+.tooltip .tooltiptext {
+  top: -5px;
+  right: 105%;
+}
 </style>
 <div class="flex flex-auto m-4 shadow-lg hover:shadow-xl">
- <!-- <h1 class="h-full p-6 mr-6 text-2xl font-bold lg:text-lg">1.</h1> -->
   <a href="{% url "documentDetailView" original.id %}">
     <div class="flex flex-col justify-between flex-auto w-2/5 p-6 px-4 bg-opacity-25 bg-sand-300 ">
-    <div class="pb-2 ">
-      <h3 class="lg:text-s font-thin">{{original.get_document_type}}</h3>
-      {% if original.get_document_type in types %}
-        <h1 class="text-2xl font-semibold lg:text-lg">{{original.title|default_if_none:"Titel unbekannt"|highlight_search:title_queries}}</h1>
-      {% else %}
-        <h1 class="text-2xl font-semibold lg:text-lg">{{original.title|default_if_none:"Titel unbekannt"}}</h1>
-      {% endif %}
-      <h2 class="font-normal text-1xl lg:text-base">{{original.subtitle}}</h2>
-    </div>
+      <div class="pb-2 ">
+        <h3 class="lg:text-s font-thin">{{original.get_document_type}}</h3>
+        {% if original.get_document_type in types %}
+          <h1 class="text-2xl font-semibold lg:text-lg">{{original.title|default_if_none:"Titel unbekannt"|highlight_search:title_queries}}</h1>
+        {% else %}
+          <h1 class="text-2xl font-semibold lg:text-lg">{{original.title|default_if_none:"Titel unbekannt"}}</h1>
+        {% endif %}
+        <h2 class="font-normal text-1xl lg:text-base">{{original.subtitle}}</h2>
+      </div>
 
     <div class="flex flex-col flex-wrap lg:flex-row">
+      <div class="py-2 pr-8">
+        <h2 class="text-xl font-thin lg:text-xs">{% translate "Autor" %}</h2>
+        <p class="text-xl break-words lg:text-sm">
+          {% if original.get_authors.exists %}
+            {% for contribution in original.get_authors.all %}
+                {{contribution.person}}<br>
+            {% endfor %}
+          {% else %}
+            unbekannt
+          {% endif %}
+        </p>
+      </div>
       <div class="py-2 pr-8">
         <h2 class="text-xl font-thin lg:text-xs">{% translate "Veröffentlicht" %}</h2>
         <p class="text-xl lg:text-sm">
@@ -53,19 +89,6 @@
       </div>
 
       <div class="py-2 pr-8">
-        <h2 class="text-xl font-thin lg:text-xs">{% translate "Autor" %}</h2>
-        <p class="text-xl break-words lg:text-sm">
-          {% if original.get_authors.exists %}
-            {% for contribution in original.get_authors.all %}
-                {{contribution.person}}<br>
-            {% endfor %}
-          {% else %}
-            unbekannt
-          {% endif %}
-        </p>
-      </div>
-
-      <div class="py-2 pr-8">
         <h2 class="text-xl font-thin lg:text-xs">{% translate "Ort" %}</h2>
         <p class="text-xl break-words lg:text-sm">{{original.published_location|default_if_none:"Veröffentlichungsort unbekannt"}}</p>
       </div>
@@ -73,6 +96,11 @@
       <div class="py-2 pr-8">
         <h2 class="text-xl font-thin lg:text-xs">{% translate "DDC" %}</h2>
         <p class="text-xl break-words lg:text-sm">{{original.ddc|default_if_none:"DDC unbekannt"}}</p>
+      </div>
+
+      <div class="py-2 pr-8">
+        <h2 class="text-xl font-thin lg:text-xs">{% translate "Databank" %}</h2>
+        <p class="text-xl break-words lg:text-sm">{{original.app|default_if_none:" "}}</p>
       </div>
     </div>
   </a>
@@ -83,7 +111,6 @@
       <path stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
     </svg>
   </div>
-
   <a href="{% url "documentDetailView" translation.id %}">
     <div class="flex flex-col justify-between flex-auto w-2/5 p-6 px-4 bg-sand-300">
       <div class="pb-2">
@@ -97,6 +124,19 @@
       </div>
 
     <div class="flex flex-col flex-wrap lg:flex-row">
+      <div class="py-2 pr-8">
+        <h2 class="text-xl font-thin lg:text-xs">{% translate "Übersetzer" %}</h2>
+        <p class="text-xl break-words lg:text-sm">
+          {% if translation.get_authors.exists %}
+            {% for contribution in translation.get_authors.all %}
+                {{contribution.person}}<br>
+            {% endfor %}
+          {% else %}
+            {% translate "unbekannt" %}
+          {% endif %}
+        </p>
+      </div>
+
       <div class="py-2 pr-8">
         <h2 class="text-xl font-thin lg:text-xs">{% translate "Veröffentlicht" %}</h2>
         <p class="text-xl lg:text-sm">
@@ -131,19 +171,6 @@
       </div>
 
       <div class="py-2 pr-8">
-        <h2 class="text-xl font-thin lg:text-xs">{% translate "Übersetzer" %}</h2>
-        <p class="text-xl break-words lg:text-sm">
-          {% if translation.get_authors.exists %}
-            {% for contribution in translation.get_authors.all %}
-                {{contribution.person}}<br>
-            {% endfor %}
-          {% else %}
-            {% translate "unbekannt" %}
-          {% endif %}
-        </p>
-      </div>
-
-      <div class="py-2 pr-8">
         <h2 class="text-xl font-thin lg:text-xs">{% translate "Ort" %}</h2>
         <p class="text-xl break-words lg:text-sm">{{translation.published_location|default_if_none:"Veröffentlichungsort unbekannt"}}</p>
       </div>
@@ -152,8 +179,13 @@
         <h2 class="text-xl font-thin lg:text-xs">{% translate "DDC" %}</h2>
         <p class="text-xl break-words lg:text-sm">{{translation.ddc|default_if_none:"DDC unbekannt"}}</p>
       </div>
-    </div>
+
+
+      <div class="py-2 pr-8">
+        <h2 class="text-xl font-thin lg:text-xs">{% translate "Databank" %}</h2>
+        <p class="text-xl break-words lg:text-sm">{{translation.app|default_if_none:"unbekannt"}}</p>
+      </div>
+      </div>
       </a>
   </div>
 </div>
-

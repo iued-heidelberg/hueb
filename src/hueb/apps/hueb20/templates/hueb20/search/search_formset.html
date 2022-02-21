@@ -1,4 +1,38 @@
 {% load i18n %}
+<style>
+.collapsible {
+
+  text-color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+.active, .collapsible:hover {
+  background-color: #ccc;
+}
+.content {
+  padding: 0 18px;
+  background-color: #f4f1ea;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+.collapsible:after {
+  content: '\02795'; /* Unicode character for "plus" sign (+) */
+  font-size: 13px;
+  color: white;
+  float: right;
+  margin-left: 5px;
+}
+.active:after {
+  content: "\2796"; /* Unicode character for "minus" sign (-) */
+}
+
+</style>
+
 <div x-data="searchFormSet()" x-init="() => {init()}" class="sticky top-0 "> <!--overflow-y-scroll-->
 
   <form method="get"  action="{% url 'search' %}">
@@ -58,7 +92,13 @@
     </div>
   </form>
 
+  <button type="button" class="collapsible shadow-lg border-b-4 border-black lg:border-sand-bg lg:hover:bg-sand-bg lg:hover:text-gray-bg-darker ">
+    <p class="inline-block text-3xl font-bold align-middle lg:text-sm">{% translate "Suchanleitung" %}</p>
 
+  </button>
+  <div class="content" style="color:black">
+    <p>{% translate "How to search?" %}</p>
+  </div>
 
 
   <div class="hidden" x-ref="emptyForm">
@@ -138,7 +178,20 @@
             }
         }
     }
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+
+    for (i = 0; i < coll.length; i++) {
+      coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.maxHeight){
+          content.style.maxHeight = null;
+        } else {
+          content.style.maxHeight = content.scrollHeight + "px";
+        }
+      });
+    }
 </script>
 </div>
-
 

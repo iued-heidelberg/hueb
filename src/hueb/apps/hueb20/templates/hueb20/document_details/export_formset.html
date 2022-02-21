@@ -52,7 +52,7 @@
 
 </style>
 
-<div x-data="exportData()" x-init="() => {init()}" class="sticky top-0"> 
+<div x-data="exportData()" x-init="() => {init()}" class="sticky top-0"> <!--overflow-y-scroll"-->
 
   <form method="get"  >
 
@@ -63,26 +63,30 @@
   <div class="list-container">
     <div class="list justify-center">
       <button class="list-item block px-4 py-2 m-4 align-middle border-4 border-black lg:border-sand-bg lg:hover:bg-sand-bg lg:hover:text-gray-bg-darker" onclick="window.open('{% url "docBib" object.id %}')">
-        
+        <!--a href="{% url "docBib" object.id %}"-->
         <p class="inline-block px-4 text-5xl font-bold align-middle md:text-lg" style="text-align:left">Export .bib</p>
 
-       
+        <!--/a-->
       </button>
-   
+    <!--/div-->
+
+    <!--div class="flex justify-center"-->
       <button class="list-item block px-4 py-2 m-4 align-middle border-4 border-black lg:border-sand-bg lg:hover:bg-sand-bg lg:hover:text-gray-bg-darker" onclick="window.open('{% url "docCsv" object.id %}')" >
         <a href="{% url "docCsv" object.id %}">
         <p class="inline-block px-4 text-5xl font-bold align-middle md:text-lg" style="text-align:center"> Export .csv </p>
         </a>
       </button>
-    
+    <!--/div-->
     {% if object.filing_set.exists %}
-      {% for filing in object.filing_set.all %} 
+      {% for filing in object.filing_set.all %} <!--lame implementation in model document.py wont work for linked douments -->
         {% if filing.link is not None %}
-   
-            <button class="list-item flex px-4 py-2 m-4 align-middle border-4 border-black lg:border-sand-bg lg:hover:bg-sand-bg lg:hover:text-gray-bg-darker">
-              
+          <!--div class="flex justify-center"-->
+            <button class="list-item flex px-4 py-2 m-4 align-middle border-4 border-black tooltip lg:border-sand-bg lg:hover:bg-sand-bg lg:hover:text-gray-bg-darker">
+              <!--a-- onclick="window.open(this.href,'_blank');return false;" href="http://www.foracure.org.au">Some O</a-->
+              <!--a onclick="window.open(this.href, "_blank"); return false;" href= {{filing.link}} -->
               <a href = {{filing.link}} target="_blank" rel="noopener noreferrer">
                 <p class="inline-block px-4 text-5xl font-bold align-middle md:text-lg">Online-Version</p>
+                <span class="tooltiptext">{% translate "Click to see more" %}</span>
               </a>
             </button>
         {% endif %}

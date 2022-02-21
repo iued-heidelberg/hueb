@@ -1,6 +1,6 @@
 {% load i18n %}
 <div class=" flex-auto min-w-full m-10" xmlns:max-width="http://www.w3.org/1999/xhtml">
-
+ <!-- <h1 class="h-full p-6 mr-6 text-2xl font-bold lg:text-lg">1.</h1> -->
 <style>
   td { vertical-align: top;
   }
@@ -13,13 +13,15 @@
       </tr>
       <tr>
         <td><h2 class="text-xl font-thin lg:text-l">{% translate "Alias:" %}</h2></td>
-        <td><p class="text-xl lg:text-l">{{object.is_alias|default_if_none:" - "}}</p></td>
+        <td><p class="text-xl lg:text-l">
+          {% if object.is_alias == False%}
+          -
+          {% else %}
+            {{object.alias}}
+          {% endif%}
+          </p></td>
       </tr>
     <div class="flex-no-wrap flex-row">
-      <tr class="py-2 pr-8">
-        <td><h2 class="text-xl font-thin lg:text-l">{% translate "Organisation:" %} </h2></td>
-        <td><p class="text-xl lg:text-l">{{object.organisation|default_if_none:" - "}}</p></td>
-      </tr>
 
       <tr class="py-2 pr-8">
         <td><h2 class="text-xl font-thin lg:text-l">{% translate "Lebenszeit:" %}</h2></td>
@@ -44,7 +46,7 @@
 
       {% if object.get_originals.exists %}
       <tr class="py-2 pr-8" >
-        <td><h2 class="text-xl font-thin lg:text-l">{% translate "Dokumente:" %}</h2></td>
+        <td><h2 class="text-xl font-thin lg:text-l">{% translate "Originale:" %}</h2></td>
         <!--td>When 1 document has x number of Übersetzungen is shown x times!</td-->
         <td>
             {% for linkedDoc in object.get_originals.all %}

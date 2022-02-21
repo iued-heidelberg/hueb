@@ -43,7 +43,7 @@
           href="{% url 'logout' %}"> Logout
           {% endif %}
         </a>
-        <div class="container">
+        <div class="container flex">
            <div class="p-2 m-4 font-bold">
             <span class="caret"></span>
             <ul>
@@ -70,6 +70,9 @@
 
 
   {#Logos#}
+  <img class="flex object-contain h-24 py-2 lg:h-20 lg:mr-4" style="height:4.5rem;" src="{% static 'hueb20/img/dfg_logo_schriftzug_blau_foerderung_4c.gif' %}"
+      alt="DFG">
+
   <div class="flex flex-row flex-no-wrap items-center mx-8 lg:mx-12">
     <div class="pr-4 lg:py-2 lg:pr-6">
       <h1 class="text-xl font-light leading-snug lg:text-lg">
@@ -84,4 +87,3 @@
 
   </div>
 </nav>
-

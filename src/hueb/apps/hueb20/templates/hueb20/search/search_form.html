@@ -33,12 +33,17 @@
         {{ form.search_language }}
     </div>
 
+    <div x-ref="search_database" x-cloak x-bind:hidden="!showDatabase()">
+        {{ form.search_database.errors }}
+        {{ form.search_database }}
+    </div>
+
     <script>
         function searchForm() {
             return {
 
                 showText(){
-                    return (this.attribute !== "year")&&(this.attribute !== "ddc")&&(this.attribute !== "language")
+                    return (this.attribute !== "year")&&(this.attribute !== "ddc")&&(this.attribute !== "language")&&(this.attribute !== "app")
                 },
                 showYear(){
                     return (this.attribute === "year")
@@ -49,11 +54,15 @@
                 showLanguage(){
                     return (this.attribute === "language")
                 },
+                showDatabase(){
+                    return (this.attribute === "app")
+                },
                 update(){
                     this.showText();
                     this.showDDC();
                     this.showYear();
                     this.showLanguage();
+                    this.showDatabase();
                 },
                 operator: null,
                 attribute: null,
