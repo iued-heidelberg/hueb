@@ -86,6 +86,12 @@ class Document(Reviewable):
     translation_ref_lidos = models.OneToOneField(
         Lidos.Translation, on_delete=models.DO_NOTHING, null=True, blank=True
     )
+    original_ref_legacy = models.OneToOneField(
+        LegacyLegacy.Original, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
+    translation_ref_legacy = models.OneToOneField(
+        LegacyLegacy.Translation, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
 
     def get_document_type(self):
         if self.translations.exists() and not self.originals.exists():

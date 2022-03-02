@@ -35,17 +35,31 @@ class Person(Reviewable):
         Legacy.TranslationNew, on_delete=models.DO_NOTHING, null=True, blank=True
     )
     # references to LIDOS
-    author_ref_lidos = models.OneToOneField(
+    author_ref_lidos = models.ForeignKey(
         Lidos.Author, on_delete=models.DO_NOTHING, null=True, blank=True
     )
-    translator_ref_lidos = models.OneToOneField(
+    translator_ref_lidos = models.ForeignKey(
         Lidos.Translator, on_delete=models.DO_NOTHING, null=True, blank=True
     )
-    publisherOriginal_ref_lidos = models.OneToOneField(
+    publisherOriginal_ref_lidos = models.ForeignKey(
         Lidos.Original, on_delete=models.DO_NOTHING, null=True, blank=True
     )
-    publisherTranslation_ref_lidos = models.OneToOneField(
+    publisherTranslation_ref_lidos = models.ForeignKey(
         Lidos.Translation, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
+
+    # references to LEGACY
+    author_ref_legacy = models.ForeignKey(
+        LegacyLegacy.Author, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
+    translator_ref_legacy = models.ForeignKey(
+        LegacyLegacy.Translator, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
+    publisherOriginal_ref_legacy = models.ForeignKey(
+        LegacyLegacy.Original, on_delete=models.DO_NOTHING, null=True, blank=True
+    )
+    publisherTranslation_ref_legacy = models.ForeignKey(
+        LegacyLegacy.Translation, on_delete=models.DO_NOTHING, null=True, blank=True
     )
 
     def __str__(self):
