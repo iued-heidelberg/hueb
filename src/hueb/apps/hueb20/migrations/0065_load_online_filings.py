@@ -10,9 +10,10 @@ def load_online_filings(apps, schema_editor):
     Archive = apps.get_model("hueb20", "Archive")
     Latein_originals = apps.get_model("hueb_legacy_latein", "OriginalNew")
     Latein_translations = apps.get_model("hueb_legacy_latein", "TranslationNew")
-    online_arch = Archive.objects.get(name="Online-Version")
+    #online_arch = Archive.objects.get(name="Online-Version")
 
-    for fil in Filing.objects.filter(app=LATEIN).exclude(archive=online_arch).all():
+    #for fil in Filing.objects.filter(app=LATEIN).exclude(archive=online_arch).all():
+    for fil in Filing.objects.filter(app=LATEIN).exclude(archive__name="Online-Version").all():
         fil.link = None
         fil.save()
 
@@ -21,7 +22,7 @@ def load_online_filings(apps, schema_editor):
             new_filing = Filing()
             new_filing.app = LATEIN
 
-            new_filing.archive = online_arch
+            new_filing.archive = Archive.objects.get(name="Online-Version")
             new_filing.document = Document.objects.get(original_ref=org)
             new_filing.link = org.link
             new_filing.save()
@@ -31,11 +32,10 @@ def load_online_filings(apps, schema_editor):
             new_filing.app = LATEIN
             new_filing.ref = trans
 
-            new_filing.archive = online_arch
+            new_filing.archive = Archive.objects.get(name="Online-Version")
             new_filing.document = Document.objects.get(translation_ref=trans)
             new_filing.link = trans.link
             new_filing.save()
-
 
 def unload_online_filings(apps, schema_editor):
     Filing = apps.get_model("hueb20", "Filing")
