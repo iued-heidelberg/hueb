@@ -47,6 +47,14 @@ class Document(Reviewable):
     language = models.ForeignKey(
         Language, on_delete=models.DO_NOTHING, blank=True, null=True
     )
+    # This field is only necessary to identify language of the original when the original itself is not in the database
+    language_orig = models.ForeignKey(
+        Language,
+        on_delete=models.DO_NOTHING,
+        blank=True,
+        null=True,
+        related_name="temp_originals",
+    )
     cultural_circle = models.ForeignKey(
         CulturalCircle, blank=True, null=True, on_delete=models.DO_NOTHING
     )
@@ -101,6 +109,20 @@ class Document(Reviewable):
         if self.originals.exists() and self.translations.exists():
             return Document.BRIDGE
 
+        # In case of a translation without original or original without translation:
+        if (
+            DocumentRelationship.objects.filter(document_from=self)
+            .filter(document_to__isnull=True)
+            .exists()
+        ):
+            return Document.ORIGINAL
+        if (
+            DocumentRelationship.objects.filter(document_to=self)
+            .filter(document_from__isnull=True)
+            .exists()
+        ):
+            return Document.TRANSLATION
+
     def get_authors(self):
         return self.contribution_set.filter(contribution_type="WRITER")
 
@@ -117,6 +139,12 @@ class Document(Reviewable):
                     if self.originals.first().originals.first().get_authors().exists():
                         return self.originals.first().originals.first().get_authors()
     """
+
+    def get_translation(self):
+        return self.translations.all().order_by("title")
+
+    def get_originals(self):
+        return self.originals.all().order_by("title")
 
     def get_original_authors(self):
         return self.get_original_attr("get_authors")
@@ -183,6 +211,10 @@ class Document(Reviewable):
 
     def get_language(self):
         return self.language
+
+    # get language of the original if no original in database - necessary for LEGACY
+    def get_language_orig(self):
+        return self.language_orig
 
     def get_filings(self):
         return self.filing_set.all().order_by("archive__name")
@@ -289,10 +321,18 @@ class DocumentRelationship(Reviewable):
     id = models.BigAutoField(primary_key=True)
 
     document_from = models.ForeignKey(
-        "Document", on_delete=models.DO_NOTHING, related_name="to_original"
+        "Document",
+        on_delete=models.DO_NOTHING,
+        related_name="to_original",
+        null=True,
+        blank=True,
     )
     document_to = models.ForeignKey(
-        "Document", on_delete=models.DO_NOTHING, related_name="to_translation"
+        "Document",
+        on_delete=models.DO_NOTHING,
+        related_name="to_translation",
+        null=True,
+        blank=True,
     )
 
     original_ref = models.OneToOneField(
@@ -329,9 +369,10 @@ class DocumentRelationship(Reviewable):
     def get_type_q(cls, type, document_from):
         if document_from:
             if type == Document.ORIGINAL:
-                return Q(document_from__originals__isnull=True) & Q(
-                    document_from__translations__isnull=False
-                )
+                return (
+                    Q(document_from__originals__isnull=True)
+                    & Q(document_from__translations__isnull=False)
+                ) | Q(document_to__isnull=True)
             elif type == Document.TRANSLATION:
                 return Q(document_from__originals__isnull=False) & Q(
                     document_from__translations__isnull=True
@@ -346,9 +387,10 @@ class DocumentRelationship(Reviewable):
                     document_to__translations__isnull=False
                 )
             elif type == Document.TRANSLATION:
-                return Q(document_to__originals__isnull=False) & Q(
-                    document_to__translations__isnull=True
-                )
+                return (
+                    Q(document_to__originals__isnull=False)
+                    & Q(document_to__translations__isnull=True)
+                ) | Q(document_from__isnull=True)
             else:
                 return Q(document_to__originals__isnull=False) & Q(
                     document_to__translations__isnull=False

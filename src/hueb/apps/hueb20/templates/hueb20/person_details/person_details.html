@@ -1,31 +1,40 @@
 {% load i18n %}
-<div class=" flex-auto min-w-full m-10" xmlns:max-width="http://www.w3.org/1999/xhtml">
- <!-- <h1 class="h-full p-6 mr-6 text-2xl font-bold lg:text-lg">1.</h1> -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 <style>
-  td { vertical-align: top;
+  dt{
+    border-top: 3px solid white;
+    margin-left: 7%;
+    font-size: x-large;
+    underline: 3px solid black;
+  }
+  dd{
+    text-align:justify;
+    margin-left: 10%;
+    margin-right:20%;
+    margin-top: 1%;
+    margin-bottom: 1%;
   }
 </style>
-  <div class="flex-row min-w-full justify-between flex-auto w-2/5 p-6 px-20 bg-opacity-25 bg-sand-300 ">
-    <table>
-      <tr>
-        <td style="white-space: nowrap; width:30%;"><h2 class="text-xl font-thin lg:text-l">{% translate "Name:" %}</h2></td>
-        <td><h2 class="text-xl font-semibold lg:text-l">{{object.name|default_if_none:" - "}}</h2></td>
-      </tr>
-      <tr>
-        <td><h2 class="text-xl font-thin lg:text-l">{% translate "Alias:" %}</h2></td>
-        <td><p class="text-xl lg:text-l">
+
+
+<div class="flex flex-auto min-w-full m-10">
+  <div class="w3-container w3-wide min-w-full justify-between flex-auto w-2/5 p-6 px-20 bg-opacity-25 bg-sand-300 ">
+    <dl class="w3-content">
+        <dt><h2 class="text-xl font-thin lg:text-l">{% translate "Name:" %}</h2></dt>
+        <dd><h2 class="text-xl font-semibold lg:text-l">{{object.name|default_if_none:"-"}}</h2></dd>
+
+        <dt><h2 class="text-xl font-thin lg:text-l">{% translate "Alias:" %}</h2></dt>
+        <dd><p class="text-xl lg:text-l">
           {% if object.is_alias == False%}
           -
           {% else %}
             {{object.alias}}
           {% endif%}
-          </p></td>
-      </tr>
-    <div class="flex-no-wrap flex-row">
+        </p></dd>
 
-      <tr class="py-2 pr-8">
-        <td><h2 class="text-xl font-thin lg:text-l">{% translate "Lebenszeit:" %}</h2></td>
-        <td><p class="text-xl lg:text-l">
+        <dt><h2 class="text-xl font-thin lg:text-l">{% translate "Lebenszeit:" %}</h2></dt>
+        <dd><p class="text-xl lg:text-l">
           {% if object.lifetime_start == None and object.lifetime_end == None%}
           -
           {% else %}
@@ -41,44 +50,52 @@
               {{object.adapt_person_lifetime_end_list_view}}
             {% endif %}
           {% endif %}
-        </p></td>
-      </tr>
+        </p></dd>
 
       {% if object.get_originals.exists %}
-      <tr class="py-2 pr-8" >
-        <td><h2 class="text-xl font-thin lg:text-l">{% translate "Originale:" %}</h2></td>
-        <!--td>When 1 document has x number of Übersetzungen is shown x times!</td-->
-        <td>
-            {% for linkedDoc in object.get_originals.all %}
+        <dt><h2 class="text-xl font-thin lg:text-l">{% translate "Originale:" %}</h2></dt>
+        <dd><p class="text-xl break-words lg:text-l font-bold tooltip" style="width: 100%">
+              {% for linkedDoc in object.get_originals.all %}
               {% if linkedDoc.get_document_type is not Document.TRANSLATION %}
-              <a href="{% url "documentDetailView" linkedDoc.id %}">
-              <p class="block text-5xl font-bold md:text-lg"> {{linkedDoc.title}}</p>
-              </a>
-              <br>
+              <a href="{% url "documentDetailView" linkedDoc.id %}"><table>
+                <div style="float: left; width: 90%">
+                  <p class="block md:text-lg text-xl break-words lg:text-l font-bold tooltip">
+                    {{linkedDoc.title}}
+                  </p>
+                </div>
+                <div style="float: right; width: 10%">
+                    <i style="font-size:24px; float: right" class="fa">&#xf08e;</i>
+                </div>
+              </table></a><br>
               {% endif %}
             {% endfor %}
-          </td>
-      </tr>
+        </p></dd>
       {% endif %}
-      {% if object.get_translations.exists %}
-      <tr class="py-2 pr-8">
-        <td><h2 class="text-xl font-thin lg:text-l">
-         {% translate "Übersetzungen:" %}
-        </h2></td>
-          <td>
-            {% for linkedDoc in object.get_translations.all %}
-              {% if linkedDoc.get_document_type is not Document.ORIGINAL %}
-              <a href="{% url "documentDetailView" linkedDoc.id %}">
-              <p class="block text-5xl font-bold md:text-lg"> {{linkedDoc.title}} </p>
-              </a><br>
-              {% endif %}
-            {% endfor %}
-          </td>
-      </tr>
-      {% endif %}
-      </tr>
 
+      {% if object.get_translations.exists %}
+        <dt><h2 class="text-xl font-thin lg:text-l">{% translate "Übersetzungen:" %}</h2></dt>
+        <dd><p class="text-xl break-words lg:text-l font-bold tooltip" style="width: 100%">
+              {% for linkedDoc in object.get_translations.all %}
+              {% if linkedDoc.get_document_type is not Document.ORIGINAL %}
+              <a href="{% url "documentDetailView" linkedDoc.id %}"><table>
+                <div style="float: left; width: 90%">
+                  <p class="block md:text-lg text-xl break-words lg:text-l font-bold tooltip">
+                    {{linkedDoc.title}}
+                  </p>
+                </div>
+                <div style="float: right; width: 10%">
+                    <i style="font-size:24px; float: right" class="fa">&#xf08e;</i>
+                </div>
+              </table></a><br>
+              {% endif %}
+            {% endfor %}
+        </p></dd>
+      {% endif %}
+    </dl>
     </div>
-    </table>
   </div>
 </div>
+
+
+
+

@@ -1,10 +1,19 @@
 {% load i18n %}
-<div class="flex flex-auto min-w-full m-10" xmlns:max-width="http://www.w3.org/1999/xhtml">
- <!-- <h1 class="h-full p-6 mr-6 text-2xl font-bold lg:text-lg">1.</h1> -->
+
 <style>
-  td { padding-bottom: 20px;
-       vertical-align: top;
-      }
+  dt{
+    border-top: 3px solid white;
+    margin-left: 5%;
+    font-size: x-large;
+    underline: 3px solid black;
+  }
+  dd{
+    text-align:justify;
+    margin-left: 7%;
+    margin-right:10%;
+    margin-top: 1%;
+    margin-bottom: 1%;
+  }
 
   /* Tooltip container */
 .tooltip {
@@ -32,40 +41,43 @@
 .tooltip:hover .tooltiptext {
   visibility: visible;
 }
+
+.negative-indent{
+    margin-left: 40px;
+    text-indent: -40px;
+}
 </style>
 
-  <div class="flex-row min-w-full justify-between flex-auto w-2/5 p-6 px-20 bg-opacity-25 bg-sand-300 ">
-    <table>
-      <tr>
-        <td style="width:30%;"><h2 class="text-xl font-thin lg:text-l">{% translate "Titel:" %}</h2></td>
-        <td><h2 class="text-xl font-semibold lg:text-l">{{object.title|default_if_none:"-"}}
-        </h2></td>
-      </tr>
-      <tr>
-        <td><h2 class="text-xl font-thin lg:text-l">{% translate "Untertitel:" %}</h2></td>
-        <td><p class="text-xl lg:text-l">
+
+<div class="flex flex-auto min-w-full m-10" xmlns:max-width="http://www.w3.org/1999/xhtml">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+ <!-- <h1 class="h-full p-6 mr-6 text-2xl font-bold lg:text-lg">1.</h1> -->
+
+  <div class="w3-container w3-wide min-w-full justify-between flex-auto w-2/5 p-6 px-20 bg-opacity-25 bg-sand-300 ">
+    <dl class="w3-content">
+        <dt><h2 class="text-xl font-thin lg:text-l">{% translate "Titel:" %}</h2></dt>
+        <dd><h2 class="text-xl font-semibold lg:text-l">{{object.title|default_if_none:"-"}}</h2></dd>
+
+        <dt><h2 class="text-xl font-thin lg:text-l">{% translate "Untertitel:" %}</h2></dt>
+        <dd><p class="text-xl lg:text-l">
           {% if object.subtitle != "" %}
           {{object.subtitle}}
           {% else %}
           {{"-"}}
           {% endif %}
-        </p></td>
-      </tr>
-    <div class="flex-no-wrap flex-row">
-      <tr class="py-2 pr-8">
-        <td><h2 class="text-xl font-thin lg:text-l">{% translate "Ausgabe:" %}</h2></td>
-        <td><p class="text-xl lg:text-l">
-          {% if object.edition != "" %}
+        </p></dd>
+
+        <dt><h2 class="text-xl font-thin lg:text-l">{% translate "Ausgabe:" %}</h2></dt>
+        <dd><p class="text-xl lg:text-l">
+          {% if object.edition is not None and object.edition != "" %}
           {{object.edition}}
           {% else %}
           {{"-"}}
           {% endif %}
-        </p></td>
-      </tr>
+        </p></dd>
 
-      <tr class="py-2 pr-8">
-        <td><h2 class="text-xl font-thin lg:text-l">{% translate "Erscheinungsjahr:" %}</h2></td>
-        <td><p class="text-xl lg:text-l">
+        <dt><h2 class="text-xl font-thin lg:text-l">{% translate "Erscheinungsjahr:" %}</h2></dt>
+        <dd><p class="text-xl lg:text-l">
 
           {% if object.written_in.lower == None and object.written_in.upper == None %}
              -
@@ -86,64 +98,65 @@
             {% endif %}
           {% endif %}
 
-        </p></td>
-      </tr>
+        </p></dd>
 
-      <tr class="py-2 pr-8">
-        <td><h2 class="text-xl font-thin lg:text-l">{% translate "Originalsprache:" %}</h2></td>
-        <td><p class="text-xl lg:text-l">
-              {{object.get_original_language|default_if_none:" - "}}
-        </td></p>
-      </tr>
+        <dt><h2 class="text-xl font-thin lg:text-l">{% translate "Originalsprache:" %}</h2></dt>
+        <dd><p class="text-xl lg:text-l">
+            {% if object.language_orig is not None %}
+                {{ object.get_language_orig }}
+            {% else %}
+                {{object.get_original_language|default_if_none:" - "}}
+            {% endif %}
+        </p></dd>
 
-      {% if object.originals.exists %}
-      <tr class="py-2 pr-8">
-        <td><h2 class="text-xl font-thin lg:text-l">{% translate "Übersetzungsprache:" %}</h2></td>
-        <td><p class="text-xl lg:text-l">{{object.language|default_if_none:" - "}}</p></td>
-      </tr>
-      {% endif %}
+        {% if object.get_document_type == object.TRANSLATION %}
+          <dt><h2 class="text-xl font-thin lg:text-l">{% translate "Übersetzungsprache:" %}</h2></dt>
+          <dd><p class="text-xl lg:text-l">{{object.language|default_if_none:" - "}}</p></dd>
+        {% endif %}
 
-      <tr class="py-2 pr-8">
-        <td><h2 class="text-xl font-thin lg:text-l">{% translate "Kulturkreis:" %}</h2></td>
-        <td><p class="text-xl lg:text-l">{{object.cultural_circle|default_if_none:" - "}}</p></td>
-      </tr>
+        <dt><h2 class="text-xl font-thin lg:text-l">{% translate "Kulturkreis:" %}</h2></dt>
+        <dd><p class="text-xl lg:text-l">{{object.cultural_circle|default_if_none:" - "}}</p></dd>
 
-      <tr class="py-2 pr-8">
-        <td><h2 class="text-xl font-thin lg:text-l">{% translate "Author:" %}</h2></td>
-        <td><p class="text-xl break-words lg:text-l font-bold tooltip">
+        <dt><h2 class="text-xl font-thin lg:text-l">{% translate "Author:" %}</h2></dt>
+        <dd><p class="text-xl break-words lg:text-l font-bold tooltip" style="width: 100%">
           {% if object.get_original_authors %}
             {% for author in object.get_original_authors %}
               <a href="{% url "personDetailView" author.person.id %}">
-              {{author.person}}<br>
-              </a>
-              <span class="tooltiptext">{% translate "Click to see more" %}</span>
+              <span style="float: left;">
+              {{author.person}}
+              </span>
+              <span style="float: right;">
+              <i style="font-size:24px;" class="fa">&#xf08e;</i>
+              </span></a><br>
+              <span class="tooltiptext">{% translate "Mehr" %}</span>
             {% endfor %}
           {% else %}
              -
           {% endif %}
-        </p></td>
-      </tr>
-      {% if object.get_document_type is not object.ORIGINAL %}
-      <tr class="py-2 pr-8">
-        <td><h2 class="text-xl font-thin lg:text-l">{% translate "Übersetzer:" %}</h2></td>
-        <td><p class="text-xl break-words lg:text-l font-bold tooltip">
-          {% if object.get_authors.exists %}
-            {% for contribution in object.get_authors.all %}
-                <a href="{% url "personDetailView" contribution.person.id %}">
-                {{contribution.person}}<br>
-                </a>
-                <span class="tooltiptext">{% translate "Click to see more" %}</span>
-            {% endfor %}
-          {% else %}
-             -
-          {% endif %}
-        </p></td>
-      </tr>
-      {% endif %}
+        </p></dd>
 
-      <tr class="py-2 pr-8">
-        <td><h2 class="text-xl font-thin lg:text-l">{% translate "Verlag:" %}</h2></td>
-        <td><p class="text-xl break-words lg:text-l">
+        {% if object.get_document_type is not object.ORIGINAL %}
+          <dt><h2 class="text-xl font-thin lg:text-l">{% translate "Übersetzer:" %}</h2></dt>
+          <dd><p class="text-xl break-words lg:text-l font-bold tooltip" style="width: 100%">
+            {% if object.get_authors.exists %}
+              {% for contribution in object.get_authors.all %}
+                  <a href="{% url "personDetailView" contribution.person.id %}">
+                  <span style="float: left;">
+                    {{contribution.person}}
+                  </span>
+                  <span style="float: right;">
+                    <i style="font-size:24px;" class="fa">&#xf08e;</i>
+                  </span></a><br>
+                  <span class="tooltiptext">{% translate "Mehr" %}</span>
+              {% endfor %}
+            {% else %}
+               -
+            {% endif %}
+          </p></dd>
+        {% endif %}
+
+        <dt><h2 class="text-xl font-thin lg:text-l">{% translate "Verlag:" %}</h2></dt>
+        <dd><p class="text-xl break-words lg:text-l">
           {% if object.get_publishers.exists %}
             {% for contribution in object.get_publishers.all %}
                 {{contribution.person}}<br>
@@ -151,133 +164,169 @@
           {% else %}
             -
           {% endif %}
-        </p></td>
-      </tr>
+        </p></dd>
 
-      <tr class="py-2 pr-8">
-        <td><h2 class="text-xl font-thin lg:text-l">{% translate "Erscheinungsort:" %}</h2></td>
-        <td><p class="text-xl break-words lg:text-l">{{object.published_location|default_if_none:" - "}}</p></td>
-      </tr>
+        <dt><h2 class="text-xl font-thin lg:text-l">{% translate "Erscheinungsort:" %}</h2></dt>
+        <dd><p class="text-xl break-words lg:text-l">
+          {%if object.published_location is not None and object.published_location != "" %}
+            {{ object.published_location }}
+          {% else %}
+           -
+          {% endif %}
+        </p></dd>
 
-      <tr class="py-2 pr-10">
-        <td><h2 class="text-xl font-thin lg:text-l">{% translate "DDC:" %}</h2></td>
-        <td><p class="text-xl break-words lg:text-l">{{object.ddc|default_if_none:" - "}}</p></td>
-      </tr>
+        <dt><h2 class="text-xl font-thin lg:text-l">{% translate "DDC:" %}</h2></dt>
+        <dd><p class="text-xl break-words lg:text-l">{{object.ddc|default_if_none:" - "}}</p></dd>
 
-      <tr class="py-2 pr-8">
-        <td><h2 class="text-xl font-thin lg:text-l">{% translate "Standorte:" %}</h2></td>
+        <dt><h2 class="text-xl font-thin lg:text-l">{% translate "Standorte:" %}</h2></dt>
         {% if object.get_filings.exists %}
-          <td><p class="text-xl break-words lg:text-l">
+          <dd><p class="text-xl break-words lg:text-l">
             {% for filing in object.get_filings.all %} <!--lame implementation in model document.py wont work for linked douments -->
               {% if filing.link is not None%}<!--a href = {{filing.link}}><p class="block text-5xl font-bold md:text-lg">{{filing.archive}}</p></a-->
               {% else %}
-                <p class="text-xl break-words lg:text-l">
+                <p class="text-xl break-words lg:text-l" style="margin-bottom: 2%">
                   {{filing.archive}}
                    <br>
                 </p>
               {% endif %}
             {% endfor %}
-          </p></td>
+          </p></dd>
         {% else %}
-          <td><p class="block text-5xl font-bold md:text-lg"> {{" - "}}</p>
-          </td>
+          <dd><p class="block text-5xl font-bold md:text-lg"> {{" - "}}</p>
+          </dd>
         {% endif %}
-      </tr>
 
-      {% if object.get_document_type is object.ORIGINAL %}
-      <tr class="py-2 pr-8">
-        <td><h2 class="text-xl font-thin lg:text-l">
-          {% translate "Übersetzung:" %}
-        </h2></td>
-         <td>
-            {% for linkedDoc in object.translations.all %}
-              {% if linkedDoc.get_document_type is object.BRIDGE %}
-                  {% for translation in linkedDoc.translations.all %}
-                    <a href="{% url "documentDetailView" translation.id %}">
-                    <p class="block text-5xl font-bold md:text-lg tooltip"> {{translation.title}}
-                    </a>
-                    <span class="tooltiptext">{% translate "Click to see more" %}</span>
-                    <br>
-                  {% endfor %}
-              {% endif %}</p>
-              <a href="{% url "documentDetailView" linkedDoc.id %}">
-              <p class="block text-5xl font-bold md:text-lg"> {{linkedDoc.title}}
-              </a><br></p>
+        {% if object.get_document_type is object.ORIGINAL %}
+          <dt><h2 class="text-xl font-thin lg:text-l">
+            {% translate "Übersetzung:" %}
+          </h2></dt>
+           <dd><p class="text-xl break-words lg:text-l font-bold tooltip" style="width: 100%">
+              {% for linkedDoc in object.get_translation %}
+                {% if linkedDoc.get_document_type is object.BRIDGE %}
+                    {% for translation in linkedDoc.get_translations %}
+                      <a href="{% url "documentDetailView" translation.id %}"><table>
+                        <div style="float: left; width:90%">
+                          <p class="negative-indent block text-5xl font-bold md:text-lg tooltip">
+                            {{translation.title}}
+                          </p>
+                        </div>
+                        <div style="float: right; width:10%;">
+                          <i style="font-size:24px;float:right" class="fa">&#xf08e;</i>
+                        </div></table></a>
+                      <br>
+                    {% endfor %}
+                {% endif %}</p>
+              <a href="{% url "documentDetailView" linkedDoc.id %}"><table>
+                <div style="float: left; width:90%">
+                  <p class="negative-indent block text-5xl font-bold md:text-lg">
+                    {{linkedDoc.title}}
+                  </p>
+                </div>
+                <div style="float: right; width:10%">
+                  <i style="font-size:24px; float:right;" class="fa">&#xf08e;</i>
+                </div>
+              </table></a><br>
             {% endfor %}
-          </td>
-      </tr>
+          </p></dd>
 
-      {% else %}
-      <tr class="py-2 pr-8">
-        <td><h2 class="text-xl font-thin lg:text-l">
-          {% translate "Original:" %}
-        </h2></td>
-          <td>
-            {% for linkedDoc in object.originals.all %}
-            {% if linkedDoc.get_document_type is object.BRIDGE %}
-                  {% for orig in linkedDoc.originals.all %}
-                    <a href="{% url "documentDetailView" orig.id %}">
-                    <p class="block text-5xl font-bold md:text-lg tooltip"> {{orig.title}}
-                    </a><span class="tooltiptext">{% translate "Click to see more" %}</span><br></p>
+        {% else %}
+          <dt><h2 class="text-xl font-thin lg:text-l">
+            {% translate "Original:" %}
+          </h2></dt>
+          <dd>
+            <p class="text-xl break-words lg:text-l font-bold tooltip" style="width: 100%">
+                {% if not object.original.exists %}
+                -
+                {% else %}
+                  {% for linkedDoc in object.originals.all %}
+                  {% if linkedDoc.get_document_type is object.BRIDGE %}
+                        {% for orig in linkedDoc.originals.all %}
+                          <a href="{% url "documentDetailView" orig.id %}"><table>
+                            <div style="float:left; width:90%">
+                              <p class="negative-indent block md:text-lg text-xl break-words lg:text-l font-bold tooltip">
+                                {{orig.title}}
+                              </p>
+                            </div>
+                            <div style="float:right; width:10%">
+                              <i style="font-size:24px; float: right;" class="fa">&#xf08e;</i>
+                            </div>
+                          </table></a><br>
+                        {% endfor %}
+                  {% elif linkedDoc.get_document_type is object.ORIGINAL %}
+                    <a href="{% url "documentDetailView" linkedDoc.id %}"><table>
+                      <div style="float: left; width: 90%">
+                        <p class="negative-indent block md:text-lg text-xl break-words lg:text-l font-bold tooltip">
+                          {{linkedDoc.title}}
+                        </p>
+                      </div>
+                      <div style="float: right; width: 10%">
+                        <i style="font-size:24px; float: right" class="fa">&#xf08e;</i>
+                      </div>
+                    </table></a><br>
+                  {% endif %}
                   {% endfor %}
-            {% elif linkedDoc.get_document_type is object.ORIGINAL %}
-              <a href="{% url "documentDetailView" linkedDoc.id %}">
-              <p class="block text-5xl font-bold md:text-lg"> {{linkedDoc.title}}
-              </a><span class="tooltiptext">{% translate "Click to see more" %}</span><br></p>
+                {% endif %}
+            </p></dd>
+        {% endif %}
+        {% if object.get_document_type is object.TRANSLATION  %}
+          {% if object.originals.exists %}
+            {% if object.originals.first.get_document_type is object.BRIDGE %}
+                <dt><h2 class="text-xl font-thin lg:text-l">
+                {% translate "Brückenübersetzung:" %}
+                </h2></dt>
+                <dd><p class="text-xl break-words lg:text-l font-bold tooltip" style="width: 100%">
+                {% for bridge in object.originals.all %}
+                <a href="{% url "documentDetailView" bridge.id %}"><table>
+                  <div style="float: left; width: 90%">
+                    <p class="negative-indent block md:text-lg text-xl break-words lg:text-l font-bold tooltip">
+                      {{bridge.title}}
+                    </p>
+                  </div>
+                  <div style="float: right; width: 10%">
+                    <i style="font-size:24px; float: right" class="fa">&#xf08e;</i>
+                  </div>
+                </table></a><br>
+                {% endfor %}
+                </p></dd>
             {% endif %}
-            {% endfor %}
-          </td>
-      </tr>
-      {% endif %}
-      {% if object.get_document_type is object.TRANSLATION  %}
-        {% if object.originals.exists %}
-          {% if object.originals.first.get_document_type is object.BRIDGE %}
-              <td><h2 class="text-xl font-thin lg:text-l">
-              {% translate "Brückenübersetzung:" %}
-              </h2></td>
-              <td>
-              {% for bridge in object.originals.all %}
-              <a href="{% url "documentDetailView" bridge.id %}">
-              <p class="block text-5xl font-bold md:text-lg tooltip"> {{bridge.title}}
-              </a><span class="tooltiptext">{% translate "Click to see more" %}</span><br></p>
-              {% endfor %}
-              </td>
-          {% endif %}
+            {% endif %}
         {% endif %}
-      {% endif %}
-      {% if object.get_document_type is object.BRIDGE  %}
-      <tr class="py-2 pr-8">
-        <td><h2 class="text-xl font-thin lg:text-l">
-          {% translate "Übersetzung:" %}
-        </h2></td>
-          <td>
-            {% for linkedDoc in object.translations.all %}
-              <a href="{% url "documentDetailView" linkedDoc.id %}">
-              <p class="block text-5xl font-bold md:text-lg tooltip"> {{linkedDoc.title}}
-              </a><span class="tooltiptext">{% translate "Click to see more" %}</span><br></p>
-            {% endfor %}
-          </td>
-      </tr>
-      {% endif %}
+        {% if object.get_document_type is object.BRIDGE  %}
+          <dt><h2 class="negative-indent text-xl font-thin lg:text-l">
+            {% translate "Übersetzung:" %}
+          </h2></dt>
+          <dd>
+            <p class="text-xl break-words lg:text-l font-bold tooltip" style="width: 100%">
+              {% for linkedDoc in object.translations.all %}
+                <a href="{% url "documentDetailView" linkedDoc.id %}"><table>
+                  <div style="float: left; width: 90%">
+                    <p class="block md:text-lg text-xl break-words lg:text-l font-bold tooltip">
+                      &emsp;{{linkedDoc.title}}
+                    </p>
+                  </div>
+                  <div style="float: right; width: 10%">
+                    <i style="font-size:24px; float: right" class="fa">&#xf08e;</i>
+                  </div>
+                </table></a><br>
+              {% endfor %}
+            </p></dd>
+        {% endif %}
 
-      <tr class="py-2 pr-8">
-        <td><h2 class="text-xl font-thin lg:text-l">{% translate "Kommentare:" %}</h2></td>
+        <dt><h2 class="text-xl font-thin lg:text-l">{% translate "Kommentare:" %}</h2></dt>
         {% if object.document_comment.exists %}
-          <td><p class="text-xl break-words lg:text-l">
+          <dd><p class="text-xl break-words lg:text-l">
             {% for comment in object.document_comment.all %}
               {% if comment.external %}
-                {{comment.text}}
+                &emsp;{{comment.text}}
                 <br>
               {% endif %}
             {% endfor %}
-          </p></td>
+          </p></dd>
         {% else %}
-          <td><p class="block text-5xl font-bold md:text-lg"> {{"-"}}</p>
-          </td>
+          <dd><p class="block text-5xl md:text-lg">{{"-"}}</p>
+          </dd>
         {% endif %}
-      </tr>
-
+    </dl>
     </div>
-    </table>
   </div>
 </div>

@@ -30,9 +30,12 @@
   right: 105%;
 }
 </style>
+
 <div class="flex flex-auto m-4 shadow-lg hover:shadow-xl">
-  <a href="{% url "documentDetailView" original.id %}">
-    <div class="flex flex-col justify-between flex-auto w-2/5 p-6 px-4 bg-opacity-25 bg-sand-300 ">
+  <!--ORIGINAL LEFT SIDE-->
+  {% if original is not None %}
+  <div class="flex flex-col justify-between flex-auto w-2/5 p-6 px-4 bg-opacity-25 bg-sand-300 ">
+    <a href="{% url "documentDetailView" original.id %}">
       <div class="pb-2 ">
         <h3 class="lg:text-s font-thin">{{original.get_document_type}}</h3>
         {% if original.get_document_type in types %}
@@ -43,76 +46,145 @@
         <h2 class="font-normal text-1xl lg:text-base">{{original.subtitle}}</h2>
       </div>
 
-    <div class="flex flex-col flex-wrap lg:flex-row">
-      <div class="py-2 pr-8">
-        <h2 class="text-xl font-thin lg:text-xs">{% translate "Autor" %}</h2>
-        <p class="text-xl break-words lg:text-sm">
-          {% if original.get_authors.exists %}
-            {% for contribution in original.get_authors.all %}
-                {{contribution.person}}<br>
-            {% endfor %}
-          {% else %}
-            unbekannt
-          {% endif %}
-        </p>
-      </div>
-      <div class="py-2 pr-8">
-        <h2 class="text-xl font-thin lg:text-xs">{% translate "Veröffentlicht" %}</h2>
-        <p class="text-xl lg:text-sm">
-
-          {% if original.written_in.lower == None and original.written_in.upper == None %}
-            {% translate "unbekannt" %}
-
-          {% elif original.written_in.lower|add:"+1" == original.written_in.upper %}
-            {{original.written_in.lower}}
-          {% else %}
-
-            {% if original.written_in.lower == None %}
-              ...
+      <div class="flex flex-col flex-wrap lg:flex-row">
+        <div class="py-2 pr-8">
+          <h2 class="text-xl font-thin lg:text-xs">{% translate "Autor" %}</h2>
+          <p class="text-xl break-words lg:text-sm">
+            {% if original.get_authors.exists %}
+              {% for contribution in original.get_authors.all %}
+                  {{contribution.person}}<br>
+              {% endfor %}
             {% else %}
+              {%translate "unbekannt" %}
+            {% endif %}
+          </p>
+        </div>
+        <div class="py-2 pr-8">
+          <h2 class="text-xl font-thin lg:text-xs">{% translate "Veröffentlicht" %}</h2>
+          <p class="text-xl lg:text-sm">
+            {% if original.written_in.lower == None and original.written_in.upper == None %}
+              {% translate "unbekannt" %}
+
+            {% elif original.written_in.lower|add:"+1" == original.written_in.upper %}
               {{original.written_in.lower}}
-            {% endif %}
-
-            {% if original.written_in.upper == None %}
-
             {% else %}
-              - {{original.written_in.upper|add:"-1"}}
+
+              {% if original.written_in.lower == None %}
+                ...
+              {% else %}
+                {{original.written_in.lower}}
+              {% endif %}
+
+              {% if original.written_in.upper == None %}
+
+              {% else %}
+                - {{original.written_in.upper|add:"-1"}}
+              {% endif %}
             {% endif %}
-          {% endif %}
-
-        </p>
+          </p>
+        </div>
+        <div class="py-2 pr-8">
+          <h2 class="text-xl font-thin lg:text-xs">{% translate "Sprache" %}</h2>
+          <p class="text-xl lg:text-sm">
+            {% if original.language is not None and original.language.language != "" %}
+              {{original.language}}
+            {% else %}
+              {% translate "Sprache unbekannt" %}
+            {% endif %}
+          </p>
+        </div>
+        <div class="py-2 pr-8">
+          <h2 class="text-xl font-thin lg:text-xs">{% translate "Ort" %}</h2>
+          <p class="text-xl break-words lg:text-sm">
+            {% if original.published_location is not None and original.published_location != "" %}
+              {{original.published_location}}
+            {% else %}
+              {% translate "Veröffentlichungsort unbekannt" %}
+            {% endif %}
+          </p>
+        </div>
+        <div class="py-2 pr-8">
+          <h2 class="text-xl font-thin lg:text-xs">{% translate "DDC" %}</h2>
+          <p class="text-xl break-words lg:text-sm">
+            {% if original.ddc is not None and original.ddc != "" %}
+              {{original.ddc}}
+            {% else %}
+              {% translate "DDC unbekannt" %}
+            {% endif %}
+          </p>
+        </div>
+        <div class="py-2 pr-8">
+          <h2 class="text-xl font-thin lg:text-xs">{% translate "Databank" %}</h2>
+          <p class="text-xl break-words lg:text-sm">
+            {% if original.app is not None and original.app != "" %}
+              {{original.app}}
+            {% else %}
+              {% translate "unbekannt" %}
+            {% endif %}
+          </p>
+        </div>
+      </div>
+    </a>
+  </div>
+  {% else %}
+    <div class="flex flex-col justify-between flex-auto w-2/5 p-6 px-4 bg-opacity-25 bg-sand-300 ">
+      <div class="pb-2 ">
+        <h3 class="lg:text-s font-thin">{% translate "Original nicht gefunden" %}</h3>
+        <h1 class="text-2xl font-semibold lg:text-lg">
+          {% translate "Titel unbekannt" %}</h1>
       </div>
 
-      <div class="py-2 pr-8">
-        <h2 class="text-xl font-thin lg:text-xs">{% translate "Sprache" %}</h2>
-        <p class="text-xl lg:text-sm">{{original.language|default_if_none:"Sprache unbekannt"}}</p>
-      </div>
-
-      <div class="py-2 pr-8">
-        <h2 class="text-xl font-thin lg:text-xs">{% translate "Ort" %}</h2>
-        <p class="text-xl break-words lg:text-sm">{{original.published_location|default_if_none:"Veröffentlichungsort unbekannt"}}</p>
-      </div>
-
-      <div class="py-2 pr-8">
-        <h2 class="text-xl font-thin lg:text-xs">{% translate "DDC" %}</h2>
-        <p class="text-xl break-words lg:text-sm">{{original.ddc|default_if_none:"DDC unbekannt"}}</p>
-      </div>
-
-      <div class="py-2 pr-8">
-        <h2 class="text-xl font-thin lg:text-xs">{% translate "Databank" %}</h2>
-        <p class="text-xl break-words lg:text-sm">{{original.app|default_if_none:" "}}</p>
+      <div class="flex flex-col flex-wrap lg:flex-row">
+        <div class="py-2 pr-8">
+          <h2 class="text-xl font-thin lg:text-xs">{% translate "Autor" %}</h2>
+          <p class="text-xl break-words lg:text-sm">
+            {%translate "unbekannt" %}
+          </p>
+        </div>
+        <div class="py-2 pr-8">
+          <h2 class="text-xl font-thin lg:text-xs">{% translate "Veröffentlicht" %}</h2>
+          <p class="text-xl lg:text-sm">
+            {% translate "unbekannt" %}
+          </p>
+        </div>
+        <div class="py-2 pr-8">
+          <h2 class="text-xl font-thin lg:text-xs">{% translate "Sprache" %}</h2>
+          <p class="text-xl lg:text-sm">
+            {% if translation.language_orig is not None %}
+              {{ translation.language_orig }}
+            {% else %}
+              {% translate "Sprache unbekannt" %}
+            {% endif %}
+          </p>
+        </div>
+        <div class="py-2 pr-8">
+          <h2 class="text-xl font-thin lg:text-xs">{% translate "Ort" %}</h2>
+          <p class="text-xl break-words lg:text-sm">
+            {% translate "Veröffentlichungsort unbekannt" %}
+          </p>
+        </div>
+        <div class="py-2 pr-8">
+          <h2 class="text-xl font-thin lg:text-xs">{% translate "DDC" %}</h2>
+          <p class="text-xl break-words lg:text-sm">
+            {% translate "DDC unbekannt" %}
+          </p>
+        </div>
       </div>
     </div>
-  </a>
-  </div>
+  {% endif %}
 
+  <!--ARROW INBETWEEN-->
   <div class="flex items-center bg-opacity-50 bg-sand-300">
     <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 m-2 stroke-current lg:w-6 lg:h-6" fill="none" viewBox="0 0 24 24">
       <path stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
     </svg>
   </div>
-  <a href="{% url "documentDetailView" translation.id %}">
-    <div class="flex flex-col justify-between flex-auto w-2/5 p-6 px-4 bg-sand-300">
+
+  <!--TRANSLATION RIGHT SIDE-->
+  {% if translation is not None %}
+
+  <div class="flex flex-col justify-between flex-auto w-2/5 p-6 px-4 bg-sand-300">
+    <a href="{% url "documentDetailView" translation.id %}">
       <div class="pb-2">
         <h3 class="lg:text-s font-thin">{{translation.get_document_type}}</h3>
         {% if translation.get_document_type in types %}
@@ -123,69 +195,120 @@
         <h2 class="font-normal text-1xl lg:text-base">{{translation.subtitle}}</h2>
       </div>
 
-    <div class="flex flex-col flex-wrap lg:flex-row">
-      <div class="py-2 pr-8">
-        <h2 class="text-xl font-thin lg:text-xs">{% translate "Übersetzer" %}</h2>
-        <p class="text-xl break-words lg:text-sm">
-          {% if translation.get_authors.exists %}
-            {% for contribution in translation.get_authors.all %}
-                {{contribution.person}}<br>
-            {% endfor %}
-          {% else %}
-            {% translate "unbekannt" %}
-          {% endif %}
-        </p>
-      </div>
-
-      <div class="py-2 pr-8">
-        <h2 class="text-xl font-thin lg:text-xs">{% translate "Veröffentlicht" %}</h2>
-        <p class="text-xl lg:text-sm">
-
-          {% if translation.written_in.lower == None and translation.written_in.upper == None %}
-           {% translate "unbekannt" %}
-
-          {% elif translation.written_in.lower|add:"+1" == translation.written_in.upper %}
-            {{translation.written_in.lower}}
-          {% else %}
-
-            {% if translation.written_in.lower == None %}
-              ...
+      <div class="flex flex-col flex-wrap lg:flex-row">
+        <div class="py-2 pr-8">
+          <h2 class="text-xl font-thin lg:text-xs">{% translate "Übersetzer" %}</h2>
+          <p class="text-xl break-words lg:text-sm">
+            {% if translation.get_authors.exists %}
+              {% for contribution in translation.get_authors.all %}
+                  {{contribution.person}}<br>
+              {% endfor %}
             {% else %}
+              {% translate "unbekannt" %}
+            {% endif %}
+          </p>
+        </div>
+        <div class="py-2 pr-8">
+          <h2 class="text-xl font-thin lg:text-xs">{% translate "Veröffentlicht" %}</h2>
+          <p class="text-xl lg:text-sm">
+            {% if translation.written_in.lower == None and translation.written_in.upper == None %}
+             {% translate "unbekannt" %}
+
+            {% elif translation.written_in.lower|add:"+1" == translation.written_in.upper %}
               {{translation.written_in.lower}}
-            {% endif %}
-
-            {% if translation.written_in.upper == None %}
-
             {% else %}
-              - {{translation.written_in.upper|add:"-1"}}
+
+              {% if translation.written_in.lower == None %}
+                ...
+              {% else %}
+                {{translation.written_in.lower}}
+              {% endif %}
+
+              {% if translation.written_in.upper == None %}
+
+              {% else %}
+                - {{translation.written_in.upper|add:"-1"}}
+              {% endif %}
+
             {% endif %}
-          
-          {% endif %}
-
-        </p>
+          </p>
+        </div>
+        <div class="py-2 pr-8">
+          <h2 class="text-xl font-thin lg:text-xs">{% translate "Sprache" %}</h2>
+          <p class="text-xl break-words lg:text-sm">
+            {% if translation.language is not None and translation.language.language != "" %}
+              {{translation.language}}
+            {% else %}
+              {% translate "Sprache unbekannt" %}
+            {% endif %}
+          </p>
+        </div>
+        <div class="py-2 pr-8">
+          <h2 class="text-xl font-thin lg:text-xs">{% translate "Ort" %}</h2>
+          <p class="text-xl break-words lg:text-sm">
+            {% if translation.published_location is not None and translation.published_location != "" %}
+              {{translation.published_location}}
+            {% else %}
+              {% translate "Veröffentlichungsort unbekannt" %}
+            {% endif %}
+          </p>
+        </div>
+        <div class="py-2 pr-8 ">
+          <h2 class="text-xl font-thin lg:text-xs">{% translate "DDC" %}</h2>
+          <p class="text-xl break-words lg:text-sm">
+            {% if translation.ddc is not None and translation.ddc != "" %}
+              {{translation.ddc}}
+            {% else %}
+              {% translate "DDC unbekannt" %}
+            {% endif %}
+          </p>
+        </div>
+        <div class="py-2 pr-8">
+          <h2 class="text-xl font-thin lg:text-xs">{% translate "Databank" %}</h2>
+          <p class="text-xl break-words lg:text-sm">
+            {% if translation.app is not None and translation.app != "" %}
+              {{translation.app}}
+            {% else %}
+              {% translate "unbekannt" %}
+            {% endif %}
+          </p>
+        </div>
       </div>
-
-      <div class="py-2 pr-8">
-        <h2 class="text-xl font-thin lg:text-xs">{% translate "Sprache" %}</h2>
-        <p class="text-xl break-words lg:text-sm">{{translation.language|default_if_none:"Sprache unbekannt"}}</p>
-      </div>
-
-      <div class="py-2 pr-8">
-        <h2 class="text-xl font-thin lg:text-xs">{% translate "Ort" %}</h2>
-        <p class="text-xl break-words lg:text-sm">{{translation.published_location|default_if_none:"Veröffentlichungsort unbekannt"}}</p>
-      </div>
-
-      <div class="py-2 pr-8 ">
-        <h2 class="text-xl font-thin lg:text-xs">{% translate "DDC" %}</h2>
-        <p class="text-xl break-words lg:text-sm">{{translation.ddc|default_if_none:"DDC unbekannt"}}</p>
-      </div>
-
-
-      <div class="py-2 pr-8">
-        <h2 class="text-xl font-thin lg:text-xs">{% translate "Databank" %}</h2>
-        <p class="text-xl break-words lg:text-sm">{{translation.app|default_if_none:"unbekannt"}}</p>
-      </div>
-      </div>
-      </a>
+    </a>
   </div>
+  {% else %}
+    <div class="flex flex-col justify-between flex-auto w-2/5 p-6 px-4 bg-sand-300">
+      <div class="pb-2">
+        <h3 class="lg:text-s font-thin">{% translate "Übersetzung nicht gefunden" %}</h3>
+        <h1 class="text-2xl font-semibold lg:text-lg">{% translate "Titel unbekannt" %}</h1>
+      </div>
+
+      <div class="flex flex-col flex-wrap lg:flex-row">
+        <div class="py-2 pr-8">
+          <h2 class="text-xl font-thin lg:text-xs">{% translate "Übersetzer" %}</h2>
+          <p class="text-xl break-words lg:text-sm">{% translate "unbekannt" %}</p>
+        </div>
+        <div class="py-2 pr-8">
+          <h2 class="text-xl font-thin lg:text-xs">{% translate "Veröffentlicht" %}</h2>
+          <p class="text-xl lg:text-sm">{% translate "unbekannt" %}</p>
+        </div>
+        <div class="py-2 pr-8">
+          <h2 class="text-xl font-thin lg:text-xs">{% translate "Sprache" %}</h2>
+          <p class="text-xl break-words lg:text-sm">{% translate "Sprache unbekannt" %}</p>
+        </div>
+        <div class="py-2 pr-8">
+          <h2 class="text-xl font-thin lg:text-xs">{% translate "Ort" %}</h2>
+          <p class="text-xl break-words lg:text-sm">{% translate "Veröffentlichungsort unbekannt" %}</p>
+        </div>
+        <div class="py-2 pr-8 ">
+          <h2 class="text-xl font-thin lg:text-xs">{% translate "DDC" %}</h2>
+          <p class="text-xl break-words lg:text-sm">{% translate "DDC unbekannt" %}</p>
+        </div>
+        <div class="py-2 pr-8">
+          <h2 class="text-xl font-thin lg:text-xs">{% translate "Databank" %}</h2>
+          <p class="text-xl break-words lg:text-sm">{% translate "unbekannt" %}</p>
+        </div>
+      </div>
+    </div>
+  {% endif %}
 </div>

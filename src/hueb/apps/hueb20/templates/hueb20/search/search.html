@@ -13,7 +13,12 @@
 
     <div class="flex flex-col pt-8">
       <h1 class="mx-8 mt-32 text-4xl font-light lg:text-2xl md:mt-0">
-        {% translate "Ergebnisse" %}
+        {{ page_obj.paginator.count }}&nbsp;
+        {% if page_obj.paginator.count == 1 %}
+          {% translate "Ergebnis" %}
+        {% else %}
+          {% translate "Ergebnisse" %}
+        {% endif %}
       </h1>
 
       <div>
@@ -33,5 +38,4 @@
 
   </div>
 {% endblock %}
-
 
