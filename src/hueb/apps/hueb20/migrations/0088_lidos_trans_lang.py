@@ -5,7 +5,7 @@ from hueb.apps.hueb20.models import LIDOS
 def add_translation_language(apps, schema_editor):
     Document = apps.get_model("hueb20", "Document")
     Language = apps.get_model("hueb20", "Language")
-    lang = Language.objects.get(language__iexact="deutsch")
+    # lang = Language.objects.get(language__iexact="deutsch")
     # Filter translations
     for document in (
         Document.objects.filter(app=LIDOS)
@@ -15,7 +15,7 @@ def add_translation_language(apps, schema_editor):
         if (document.language is not None) and (document.language.language != ""):
             continue
         else:
-            document.language = lang
+            document.language = Language.objects.get(language__iexact="deutsch")
             document.save()
 
 

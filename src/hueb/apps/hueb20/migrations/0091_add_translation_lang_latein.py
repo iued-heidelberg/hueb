@@ -5,17 +5,17 @@ from hueb.apps.hueb20.models import LATEIN
 def add_translation_language(apps, schema_editor):
     Document = apps.get_model("hueb20", "Document")
     Language = apps.get_model("hueb20", "Language")
-    german = Language.objects.get(language__iexact="deutsch")
+    # german = Language.objects.get(language__iexact="deutsch")
 
     # Filter translations
     for document in (
         Document.objects.filter(app=LATEIN).filter(translation_ref__isnull=False).all()
     ):
         if (document.language is None) or (document.language.language == ""):
-            document.language = german
+            document.language = Language.objects.get(language__iexact="deutsch")
         else:
             document.language_orig = document.language
-            document.language = german
+            document.language = Language.objects.get(language__iexact="deutsch")
             document.save()
 
 
