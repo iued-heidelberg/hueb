@@ -196,6 +196,20 @@
           </dd>
         {% endif %}
 
+        <dt><h2 class="text-xl font-thin lg:text-l">{% translate "Kommentare:" %}</h2></dt>
+        {% if object.document_comment.exists %}
+          <dd><p class="text-xl break-words lg:text-l">
+            {% for comment in object.document_comment.all %}
+              {% if comment.external %}
+                &emsp;{{comment.text}}
+                <br>
+              {% endif %}
+            {% endfor %}
+          </p></dd>
+        {% else %}
+          <dd><p class="block text-5xl md:text-lg">{{"-"}}</p></dd>
+        {% endif %}
+
         {% if object.get_document_type is object.ORIGINAL %}
           <dt><h2 class="text-xl font-thin lg:text-l">
             {% translate "Übersetzung:" %}
@@ -312,20 +326,7 @@
             </p></dd>
         {% endif %}
 
-        <dt><h2 class="text-xl font-thin lg:text-l">{% translate "Kommentare:" %}</h2></dt>
-        {% if object.document_comment.exists %}
-          <dd><p class="text-xl break-words lg:text-l">
-            {% for comment in object.document_comment.all %}
-              {% if comment.external %}
-                &emsp;{{comment.text}}
-                <br>
-              {% endif %}
-            {% endfor %}
-          </p></dd>
-        {% else %}
-          <dd><p class="block text-5xl md:text-lg">{{"-"}}</p>
-          </dd>
-        {% endif %}
+
     </dl>
     </div>
   </div>
