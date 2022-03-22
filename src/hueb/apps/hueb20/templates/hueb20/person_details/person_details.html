@@ -17,10 +17,9 @@
   }
 </style>
 
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <div class="flex flex-auto min-w-full m-10">
-  <div class="w3-container w3-wide min-w-full justify-between flex-auto w-2/5 p-6 px-20 bg-opacity-25 bg-sand-300 ">
-    <dl class="w3-content">
+  <div class="min-w-full justify-between flex-auto w-2/5 p-6 px-20 bg-opacity-25 bg-sand-300 ">
+    <dl>
         <dt><h2 class="text-xl font-thin lg:text-l">{% translate "Name:" %}</h2></dt>
         <dd><h2 class="text-xl font-semibold lg:text-l">{{object.name|default_if_none:"-"}}</h2></dd>
 
@@ -64,7 +63,7 @@
                   </p>
                 </div>
                 <div style="float: right; width: 10%">
-                    <i style="font-size:24px; float: right" class="fa">&#xf08e;</i>
+                    {% include "hueb20/widgets/hyperlink.html" %}
                 </div>
               </table></a><br>
               {% endif %}
@@ -84,7 +83,7 @@
                   </p>
                 </div>
                 <div style="float: right; width: 10%">
-                    <i style="font-size:24px; float: right" class="fa">&#xf08e;</i>
+                    {% include "hueb20/widgets/hyperlink.html" %}
                 </div>
               </table></a><br>
               {% endif %}

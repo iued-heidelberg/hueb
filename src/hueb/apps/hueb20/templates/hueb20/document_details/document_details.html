@@ -49,13 +49,12 @@
 </style>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
 <div class="flex flex-auto min-w-full m-10" xmlns:max-width="http://www.w3.org/1999/xhtml">
 
  <!-- <h1 class="h-full p-6 mr-6 text-2xl font-bold lg:text-lg">1.</h1> -->
-  <div class="w3-container w3-wide min-w-full justify-between flex-auto w-2/5 p-6 px-20 bg-opacity-25 bg-sand-300 ">
-    <dl class="w3-content">
+  <div class="min-w-full justify-between flex-auto w-2/5 p-6 px-20 bg-opacity-25 bg-sand-300 ">
+    <dl>
         <dt><h2 class="text-xl font-thin lg:text-l">{% translate "Titel:" %}</h2></dt>
         <dd><h2 class="text-xl font-semibold lg:text-l">{{object.title|default_if_none:"-"}}</h2></dd>
 
@@ -127,7 +126,7 @@
               {{author.person}}
               </span>
               <span style="float: right;">
-              <i style="font-size:24px;" class="fa">&#xf08e;</i>
+              {% include "hueb20/widgets/hyperlink.html" %}
               </span></a><br>
               <span class="tooltiptext">{% translate "Mehr" %}</span>
             {% endfor %}
@@ -146,7 +145,7 @@
                     {{contribution.person}}
                   </span>
                   <span style="float: right;">
-                    <i style="font-size:24px;" class="fa">&#xf08e;</i>
+                    {% include "hueb20/widgets/hyperlink.html" %}
                   </span></a><br>
                   <span class="tooltiptext">{% translate "Mehr" %}</span>
               {% endfor %}
@@ -212,7 +211,7 @@
                           </p>
                         </div>
                         <div style="float: right; width:10%;">
-                          <i style="font-size:24px;float:right" class="fa">&#xf08e;</i>
+                          {% include "hueb20/widgets/hyperlink.html" %}
                         </div></table></a>
                       <br>
                     {% endfor %}
@@ -224,7 +223,7 @@
                   </p>
                 </div>
                 <div style="float: right; width:10%">
-                  <i style="font-size:24px; float:right;" class="fa">&#xf08e;</i>
+                    {% include "hueb20/widgets/hyperlink.html" %}
                 </div>
               </table></a><br>
             {% endfor %}
@@ -236,7 +235,7 @@
           </h2></dt>
           <dd>
             <p class="text-xl break-words lg:text-l font-bold tooltip" style="width: 100%">
-                {% if not object.original.exists %}
+                {% if not object.originals.exists %}
                 -
                 {% else %}
                   {% for linkedDoc in object.originals.all %}
@@ -249,7 +248,7 @@
                               </p>
                             </div>
                             <div style="float:right; width:10%">
-                              <i style="font-size:24px; float: right;" class="fa">&#xf08e;</i>
+                              {% include "hueb20/widgets/hyperlink.html" %}
                             </div>
                           </table></a><br>
                         {% endfor %}
@@ -261,7 +260,7 @@
                         </p>
                       </div>
                       <div style="float: right; width: 10%">
-                        <i style="font-size:24px; float: right" class="fa">&#xf08e;</i>
+                        {% include "hueb20/widgets/hyperlink.html" %}
                       </div>
                     </table></a><br>
                   {% endif %}
@@ -284,7 +283,7 @@
                     </p>
                   </div>
                   <div style="float: right; width: 10%">
-                    <i style="font-size:24px; float: right" class="fa">&#xf08e;</i>
+                    {% include "hueb20/widgets/hyperlink.html" %}
                   </div>
                 </table></a><br>
                 {% endfor %}
@@ -306,7 +305,7 @@
                     </p>
                   </div>
                   <div style="float: right; width: 10%">
-                    <i style="font-size:24px; float: right" class="fa">&#xf08e;</i>
+                    {% include "hueb20/widgets/hyperlink.html" %}
                   </div>
                 </table></a><br>
               {% endfor %}
