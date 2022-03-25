@@ -15,6 +15,33 @@
     margin-top: 1%;
     margin-bottom: 1%;
   }
+
+  /* Tooltip container */
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: #171717;
+  color: #f4f1ea;
+  font-size: 0.875rem;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 5px;
+
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
 </style>
 
 <div class="flex flex-auto min-w-full m-10">
@@ -56,16 +83,18 @@
         <dd><p class="text-xl break-words lg:text-l font-bold tooltip" style="width: 100%">
               {% for linkedDoc in object.get_originals.all %}
               {% if linkedDoc.get_document_type is not Document.TRANSLATION %}
-              <a href="{% url "documentDetailView" linkedDoc.id %}"><table>
-                <div style="float: left; width: 90%">
-                  <p class="block md:text-lg text-xl break-words lg:text-l font-bold tooltip">
+                <a href="{% url "documentDetailView" linkedDoc.id %}">
+                <table>
+                  <div style="float: left; width: 90%">
+                    <p class="negative-indent block md:text-lg text-xl break-words lg:text-l font-bold">
                     {{linkedDoc.title}}
-                  </p>
-                </div>
-                <div style="float: right; width: 10%">
+                    </p>
+                  </div>
+                  <div class = "tooltip" style="float: right; width:8%">
                     {% include "hueb20/widgets/hyperlink.html" %}
-                </div>
-              </table></a><br>
+                    <span style="float: right" class="tooltiptext">{% translate "Mehr" %}</span>
+                  </div>
+                </table></a><br>
               {% endif %}
             {% endfor %}
         </p></dd>
@@ -82,8 +111,9 @@
                     {{linkedDoc.title}}
                   </p>
                 </div>
-                <div style="float: right; width: 10%">
+                <div class = "tooltip" style="float: right; width:8%">
                     {% include "hueb20/widgets/hyperlink.html" %}
+                    <span style="float: right" class="tooltiptext">{% translate "Mehr" %}</span>
                 </div>
               </table></a><br>
               {% endif %}
