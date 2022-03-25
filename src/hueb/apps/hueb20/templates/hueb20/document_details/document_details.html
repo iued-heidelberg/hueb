@@ -123,15 +123,15 @@
             {% for author in object.get_original_authors %}
             <a href="{% url "personDetailView" author.person.id %}">
             <table>
-              <div style="float: left; width: 90%">
+              <col style="float: left; width: 90%">
                 <p class="negative-indent block md:text-lg text-xl break-words lg:text-l font-bold">
                   {{author.person}}
                 </p>
-              </div>
-              <div class = "tooltip" style="float: right; width:8%">
+              </col>
+              <col class = "tooltip" style="float: right; width:8%">
                 {% include "hueb20/widgets/hyperlink.html" %}
                 <span style="float: right" class="tooltiptext">{% translate "Mehr" %}</span>
-              </div>
+              </col>
             </table></a><br>
             {% endfor %}
           {% else %}
@@ -146,15 +146,15 @@
               {% for contribution in object.get_authors.all %}
                 <a href="{% url "personDetailView" contribution.person.id %}">
                 <table>
-                  <div style="float: left; width: 90%">
+                  <col style="float: left; width: 90%">
                     <p class="negative-indent block md:text-lg text-xl break-words lg:text-l font-bold">
                     {{contribution.person}}
                     </p>
-                  </div>
-                  <div class = "tooltip" style="float: right; width:8%">
+                  </col>
+                  <col class = "tooltip" style="float: right; width:8%">
                     {% include "hueb20/widgets/hyperlink.html" %}
                     <span style="float: right" class="tooltiptext">{% translate "Mehr" %}</span>
-                  </div>
+                  </col>
                 </table></a><br>
               {% endfor %}
             {% else %}
@@ -214,30 +214,30 @@
                     {% for translation in linkedDoc.get_translations %}
                       <a href="{% url "documentDetailView" translation.id %}">
                         <table>
-                        <div style="float: left; width:90%">
+                        <col style="float: left; width:90%">
                           <p class="negative-indent block text-5xl font-bold md:text-lg">
                             {{translation.title}}
                           </p>
-                        </div>
-                        <div class = "tooltip" style="float: right; width:8%">
+                        </col>
+                        <col class = "tooltip" style="float: right; width:8%">
                             {% include "hueb20/widgets/hyperlink.html" %}
                             <span style="float: right" class="tooltiptext">{% translate "Mehr" %}</span>
-                        </div>
+                        </col>
                         </table>
                       </a>
                       <br>
                     {% endfor %}
                 {% endif %}</p>
                 <a href="{% url "documentDetailView" linkedDoc.id %}"><table>
-                   <div style="float: left; width:90%">
+                   <col style="float: left; width:90%">
                         <p class="negative-indent block text-5xl font-bold md:text-lg">
                             {{linkedDoc.title}}
                         </p>
-                    </div>
-                    <div class = "tooltip" style="float: right; width:8%">
+                    </col>
+                    <col class = "tooltip" style="float: right; width:8%">
                         {% include "hueb20/widgets/hyperlink.html" %}
                         <span style="float: right" class="tooltiptext">{% translate "Mehr" %}</span>
-                    </div>
+                    </col>
                </table></a><br>
             {% endfor %}
           </p></dd>
@@ -255,28 +255,28 @@
                   {% if linkedDoc.get_document_type is object.BRIDGE %}
                         {% for orig in linkedDoc.originals.all %}
                           <a href="{% url "documentDetailView" orig.id %}"><table>
-                            <div style="float:left; width:90%">
+                            <col style="float:left; width:90%">
                               <p class="negative-indent block md:text-lg text-xl break-words lg:text-l font-bold">
                                 {{orig.title}}
                               </p>
-                            </div>
-                            <div class = "tooltip" style="float: right; width:8%">
+                            </col>
+                            <col class = "tooltip" style="float: right; width:8%">
                                 {% include "hueb20/widgets/hyperlink.html" %}
                                 <span style="float: right" class="tooltiptext">{% translate "Mehr" %}</span>
-                            </div>
+                            </col>
                           </table></a><br>
                         {% endfor %}
                   {% elif linkedDoc.get_document_type is object.ORIGINAL %}
                     <a href="{% url "documentDetailView" linkedDoc.id %}"><table>
-                      <div style="float: left; width: 90%">
+                      <col style="float: left; width: 90%">
                         <p class="negative-indent block md:text-lg text-xl break-words lg:text-l font-bold">
                           {{linkedDoc.title}}
                         </p>
-                      </div>
-                      <div class = "tooltip" style="float: right; width:8%">
+                      </col>
+                      <col class = "tooltip" style="float: right; width:8%">
                         {% include "hueb20/widgets/hyperlink.html" %}
                         <span style="float: right" class="tooltiptext">{% translate "Mehr" %}</span>
-                      </div>
+                      </col>
                     </table></a><br>
                   {% endif %}
                   {% endfor %}
@@ -292,15 +292,15 @@
                 <dd><p class="text-xl break-words lg:text-l font-bold" style="width: 100%">
                 {% for bridge in object.originals.all %}
                 <a href="{% url "documentDetailView" bridge.id %}"><table>
-                  <div style="float: left; width: 90%">
+                  <col style="float: left; width: 90%">
                     <p class="negative-indent block md:text-lg text-xl break-words lg:text-l font-bold">
                       {{bridge.title}}
                     </p>
-                  </div>
-                  <div class = "tooltip" style="float: right; width:8%">
+                  </col>
+                  <col class = "tooltip" style="float: right; width:8%">
                       {% include "hueb20/widgets/hyperlink.html" %}
                       <span style="float: right" class="tooltiptext">{% translate "Mehr" %}</span>
-                  </div>
+                  </col>
                 </table></a><br>
                 {% endfor %}
                 </p></dd>
@@ -315,20 +315,20 @@
             <p class="text-xl break-words lg:text-l font-bold" style="width: 100%">
               {% for linkedDoc in object.translations.all %}
                 <a href="{% url "documentDetailView" linkedDoc.id %}"><table>
-                  <div style="float: left; width: 90%">
+                  <col style="float: left; width: 90%">
                     <p class="block md:text-lg text-xl break-words lg:text-l font-bold">
                       &emsp;{{linkedDoc.title}}
                     </p>
-                  </div>
-                  <div class = "tooltip" style="float: right; width:8%">
+                  </col>
+                  <col class = "tooltip" style="float: right; width:8%">
                       {% include "hueb20/widgets/hyperlink.html" %}
                       <span style="float: right" class="tooltiptext">{% translate "Mehr" %}</span>
-                  </div>
+                  </col>
                 </table></a><br>
               {% endfor %}
             </p></dd>
         {% endif %}
-        <br>
+
         <dt><h2 class="text-xl font-thin lg:text-l">{% translate "Kommentare:" %}</h2></dt>
         {% if object.document_comment.exists %}
           <dd><p class="text-xl break-words lg:text-l">

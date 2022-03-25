@@ -85,15 +85,15 @@
               {% if linkedDoc.get_document_type is not Document.TRANSLATION %}
                 <a href="{% url "documentDetailView" linkedDoc.id %}">
                 <table>
-                  <div style="float: left; width: 90%">
+                  <col style="float: left; width: 90%">
                     <p class="negative-indent block md:text-lg text-xl break-words lg:text-l font-bold">
                     {{linkedDoc.title}}
                     </p>
-                  </div>
-                  <div class = "tooltip" style="float: right; width:8%">
+                  </col>
+                  <col class = "tooltip" style="float: right; width:8%">
                     {% include "hueb20/widgets/hyperlink.html" %}
                     <span style="float: right" class="tooltiptext">{% translate "Mehr" %}</span>
-                  </div>
+                  </col>
                 </table></a><br>
               {% endif %}
             {% endfor %}
@@ -106,15 +106,15 @@
               {% for linkedDoc in object.get_translations.all %}
               {% if linkedDoc.get_document_type is not Document.ORIGINAL %}
               <a href="{% url "documentDetailView" linkedDoc.id %}"><table>
-                <div style="float: left; width: 90%">
+                <col style="float: left; width: 90%">
                   <p class="block md:text-lg text-xl break-words lg:text-l font-bold tooltip">
                     {{linkedDoc.title}}
                   </p>
-                </div>
-                <div class = "tooltip" style="float: right; width:8%">
+                </col>
+                <col class = "tooltip" style="float: right; width:8%">
                     {% include "hueb20/widgets/hyperlink.html" %}
                     <span style="float: right" class="tooltiptext">{% translate "Mehr" %}</span>
-                </div>
+                </col>
               </table></a><br>
               {% endif %}
             {% endfor %}
