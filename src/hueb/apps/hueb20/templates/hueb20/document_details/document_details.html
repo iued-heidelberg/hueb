@@ -121,18 +121,22 @@
         <dd><p class="text-xl break-words lg:text-l font-bold" style="width: 100%">
           {% if object.get_original_authors %}
             {% for author in object.get_original_authors %}
-            <a href="{% url "personDetailView" author.person.id %}">
-            <table>
-              <col style="float: left; width: 90%">
-                <p class="negative-indent block md:text-lg text-xl break-words lg:text-l font-bold">
-                  {{author.person}}
-                </p>
-              </col>
-              <col class = "tooltip" style="float: right; width:8%">
-                {% include "hueb20/widgets/hyperlink.html" %}
+
+            <table style="width:100%">
+                <tr>
+                <th style="float: left; width: 80%" class="tooltip negative-indent block md:text-lg text-xl break-words lg:text-l font-bold">
+                  <a href="{% url "personDetailView" author.person.id %}">
+                    {{author.person}}
+                    </a>
+                </th>
+                <th class = "tooltip" style="margin-left: 5%">
+                    <a href="{% url "personDetailView" author.person.id %}">
+                    {% include "hueb20/widgets/hyperlink.html" %}
                 <span style="float: right" class="tooltiptext">{% translate "Mehr" %}</span>
-              </col>
-            </table></a><br>
+                    </a>
+                </th>
+            </tr>
+            </table>
             {% endfor %}
           {% else %}
              -
@@ -144,18 +148,19 @@
           <dd><p class="text-xl break-words lg:text-l font-bold" style="width: 100%">
             {% if object.get_authors.exists %}
               {% for contribution in object.get_authors.all %}
-                <a href="{% url "personDetailView" contribution.person.id %}">
-                <table>
-                  <col style="float: left; width: 90%">
-                    <p class="negative-indent block md:text-lg text-xl break-words lg:text-l font-bold">
+                <table style="width: 100%"><tr>
+                <th style="float: left; width: 80%" class="tooltip negative-indent block md:text-lg text-xl break-words lg:text-l font-bold">
+                    <a href="{% url "personDetailView" contribution.person.id %}">
                     {{contribution.person}}
-                    </p>
-                  </col>
-                  <col class = "tooltip" style="float: right; width:8%">
+                    </a>
+                </th>
+                <th class = "tooltip" style="margin-left: 5%">
+                    <a href="{% url "personDetailView" contribution.person.id %}">
                     {% include "hueb20/widgets/hyperlink.html" %}
                     <span style="float: right" class="tooltiptext">{% translate "Mehr" %}</span>
-                  </col>
-                </table></a><br>
+                    </a>
+                </th>
+                </tr></table><br>
               {% endfor %}
             {% else %}
                -
@@ -212,23 +217,43 @@
               {% for linkedDoc in object.get_translation %}
                 {% if linkedDoc.get_document_type is object.BRIDGE %}
                     {% for translation in linkedDoc.get_translations %}
-                      <a href="{% url "documentDetailView" translation.id %}">
-                        <table>
-                        <col style="float: left; width:90%">
-                          <p class="negative-indent block text-5xl font-bold md:text-lg">
+                    <table style="width:100%">
+                        <tr>
+                        <th style="float: left; width: 80%" class="tooltip negative-indent block md:text-lg text-xl break-words lg:text-l font-bold">
+                          <a href="{% url "documentDetailView" translation.id %}">
                             {{translation.title}}
-                          </p>
-                        </col>
-                        <col class = "tooltip" style="float: right; width:8%">
+                          </a>
+                        </th>
+                        <th class = "tooltip" style="margin-left: 5%">
+                            <a href="{% url "documentDetailView" translation.id %}">
                             {% include "hueb20/widgets/hyperlink.html" %}
                             <span style="float: right" class="tooltiptext">{% translate "Mehr" %}</span>
-                        </col>
-                        </table>
+                            </a>
+                        </th>
+                        </tr>
+                    </table>
                       </a>
                       <br>
                     {% endfor %}
-                {% endif %}</p>
-                <a href="{% url "documentDetailView" linkedDoc.id %}"><table>
+                {% endif %}
+
+                <table style="width:100%">
+                <tr>
+                    <th style="float: left; width: 80%" class="tooltip negative-indent block md:text-lg text-xl break-words lg:text-l font-bold">
+                        <a href="{% url "documentDetailView" linkedDoc.id %}">
+                        {{linkedDoc.title}}
+                        </a>
+                    </th>
+                    <th class = "tooltip" style="margin-left: 5%">
+                        <a href="{% url "documentDetailView" linkedDoc.id %}">
+                        {% include "hueb20/widgets/hyperlink.html" %}
+                    <span style="float: right" class="tooltiptext">{% translate "Mehr" %}</span>
+                        </a>
+                    </th>
+                </tr>
+                </table>
+
+               <!--table>
                    <col style="float: left; width:90%">
                         <p class="negative-indent block text-5xl font-bold md:text-lg">
                             {{linkedDoc.title}}
@@ -238,7 +263,7 @@
                         {% include "hueb20/widgets/hyperlink.html" %}
                         <span style="float: right" class="tooltiptext">{% translate "Mehr" %}</span>
                     </col>
-               </table></a><br>
+               </table></a--><br>
             {% endfor %}
           </p></dd>
 
@@ -254,30 +279,36 @@
                   {% for linkedDoc in object.originals.all %}
                   {% if linkedDoc.get_document_type is object.BRIDGE %}
                         {% for orig in linkedDoc.originals.all %}
-                          <a href="{% url "documentDetailView" orig.id %}"><table>
-                            <col style="float:left; width:90%">
-                              <p class="negative-indent block md:text-lg text-xl break-words lg:text-l font-bold">
+                            <table style="width:100%">
+                            <tr>
+                            <th style="float: left; width: 80%" class="tooltip negative-indent block md:text-lg text-xl break-words lg:text-l font-bold">
+                              <a href="{% url "documentDetailView" orig.id %}">
                                 {{orig.title}}
-                              </p>
-                            </col>
-                            <col class = "tooltip" style="float: right; width:8%">
-                                {% include "hueb20/widgets/hyperlink.html" %}
-                                <span style="float: right" class="tooltiptext">{% translate "Mehr" %}</span>
-                            </col>
-                          </table></a><br>
+                              </a>
+                            </th>
+                            <th class = "tooltip" style="margin-left: 5%">
+                                <a href="{% url "documentDetailView" orig.id %}">
+                                    {% include "hueb20/widgets/hyperlink.html" %}
+                                    <span style="float: right" class="tooltiptext">{% translate "Mehr" %}</span>
+                                </a>
+                            </th>
+                          </tr></table><br>
                         {% endfor %}
                   {% elif linkedDoc.get_document_type is object.ORIGINAL %}
-                    <a href="{% url "documentDetailView" linkedDoc.id %}"><table>
-                      <col style="float: left; width: 90%">
-                        <p class="negative-indent block md:text-lg text-xl break-words lg:text-l font-bold">
+                    <table style="width:100%">
+                        <tr>
+                        <th style="float: left; width: 80%" class="tooltip negative-indent block md:text-lg text-xl break-words lg:text-l font-bold">
+                        <a href="{% url "documentDetailView" linkedDoc.id %}">
                           {{linkedDoc.title}}
-                        </p>
-                      </col>
-                      <col class = "tooltip" style="float: right; width:8%">
-                        {% include "hueb20/widgets/hyperlink.html" %}
-                        <span style="float: right" class="tooltiptext">{% translate "Mehr" %}</span>
-                      </col>
-                    </table></a><br>
+                        </a>
+                      </th>
+                      <th class = "tooltip" style="margin-left: 5%">
+                            <a href="{% url "documentDetailView" linkedDoc.id %}">
+                                {% include "hueb20/widgets/hyperlink.html" %}
+                                <span style="float: right" class="tooltiptext">{% translate "Mehr" %}</span>
+                            </a>
+                      </th>
+                    </tr></table><br>
                   {% endif %}
                   {% endfor %}
                 {% endif %}
@@ -291,17 +322,19 @@
                 </h2></dt>
                 <dd><p class="text-xl break-words lg:text-l font-bold" style="width: 100%">
                 {% for bridge in object.originals.all %}
-                <a href="{% url "documentDetailView" bridge.id %}"><table>
-                  <col style="float: left; width: 90%">
-                    <p class="negative-indent block md:text-lg text-xl break-words lg:text-l font-bold">
-                      {{bridge.title}}
-                    </p>
-                  </col>
-                  <col class = "tooltip" style="float: right; width:8%">
+                <table style="width:100%"><tr>
+                    <th style="float: left; width: 80%" class="tooltip negative-indent block md:text-lg text-xl break-words lg:text-l font-bold">
+                        <a href="{% url "documentDetailView" bridge.id %}">
+                          {{bridge.title}}
+                        </a>
+                    </th>
+                    <th class = "tooltip" style="margin-left: 5%">
+                    <a href="{% url "documentDetailView" bridge.id %}">
                       {% include "hueb20/widgets/hyperlink.html" %}
                       <span style="float: right" class="tooltiptext">{% translate "Mehr" %}</span>
-                  </col>
-                </table></a><br>
+                    </a>
+                  </th>
+                </tr></table><br>
                 {% endfor %}
                 </p></dd>
             {% endif %}
@@ -314,17 +347,19 @@
           <dd>
             <p class="text-xl break-words lg:text-l font-bold" style="width: 100%">
               {% for linkedDoc in object.translations.all %}
-                <a href="{% url "documentDetailView" linkedDoc.id %}"><table>
-                  <col style="float: left; width: 90%">
-                    <p class="block md:text-lg text-xl break-words lg:text-l font-bold">
+                <table style="width:100%"><tr>
+                    <th style="float: left; width: 80%" class="tooltip negative-indent block md:text-lg text-xl break-words lg:text-l font-bold">
+                    <a href="{% url "documentDetailView" linkedDoc.id %}">
                       &emsp;{{linkedDoc.title}}
-                    </p>
-                  </col>
-                  <col class = "tooltip" style="float: right; width:8%">
+                    </a>
+                    </th>
+                    <th class = "tooltip" style="margin-left: 5%">
+                    <a href="{% url "documentDetailView" linkedDoc.id %}">
                       {% include "hueb20/widgets/hyperlink.html" %}
                       <span style="float: right" class="tooltiptext">{% translate "Mehr" %}</span>
-                  </col>
-                </table></a><br>
+                    </a>
+                    </th>
+                </tr></table><br>
               {% endfor %}
             </p></dd>
         {% endif %}
