@@ -72,18 +72,20 @@ class SearchForm(forms.Form):
             }
         ),
     )
-
+'''
     search_language = forms.ChoiceField(
         choices=tuple(
-            (language.language, language.language)
+            (language, language)
             for language in Language.objects.filter()
-            .exclude(language="")
+            .exclude(language_de="") #manual coding, but couldnt find another way
+            .exclude(language_en="")
             .all()
-            .order_by(F("language"))
+            #.order_by(F("language"))
         ),
         widget=SearchSelectWidget,
     )
-
+'''
+   
     search_database = forms.ChoiceField(
         choices=(
             ("HUEB20", _("HUEB20")),

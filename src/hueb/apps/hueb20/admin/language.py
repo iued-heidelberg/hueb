@@ -3,18 +3,20 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 from hueb.apps.hueb20.admin.review import ReviewAdmin
 from hueb.apps.hueb20.models import Language
+from translated_fields import TranslatedFieldAdmin, to_attribute
 
 
-@admin.register(Language)
-class LanguageAdmin(ReviewAdmin):
+# @admin.register(Language)
+class LanguageAdmin(TranslatedFieldAdmin, ReviewAdmin):
     readonly_fields = ("app", "language_link", "id")
     list_display = (
         "id",
         "language",
         "state",
     )
+    # inlines = [TranslationInline,]
     list_filter = ("state", "app")
-    search_fields = ("language", "id")
+    search_fields = (*Language.language.fields, "id")
 
     fieldsets = (
         (
@@ -23,7 +25,7 @@ class LanguageAdmin(ReviewAdmin):
                 "description": (" "),
                 "fields": (
                     "id",
-                    "language",
+                    *Language.language.fields
                 ),
             },
         ),
@@ -52,3 +54,7 @@ class LanguageAdmin(ReviewAdmin):
         return mark_safe(link)
 
     language_link.short_description = "Language"
+    pass
+
+
+admin.site.register(Language, LanguageAdmin)

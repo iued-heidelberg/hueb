@@ -3,13 +3,12 @@ from django.db import models
 from django.urls import reverse
 from hueb.apps.hueb20.models.reviewable import Reviewable
 from hueb.apps.hueb20.models.utils import HUEB20, HUEB_APPLICATIONS
+from translated_fields import TranslatedField
 
-# from translations.models import Translatable
-
-
-class Language(Reviewable):  # , Translatable):
+class Language(Reviewable):
     id = models.BigAutoField(primary_key=True)
-    language = models.CharField(max_length=255)
+    language = TranslatedField(models.CharField(max_length=255, null=True))
+    language_temp = models.CharField(max_length=255, null=True)
     app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
     language_ref = models.OneToOneField(
         Legacy.Language,
@@ -18,9 +17,6 @@ class Language(Reviewable):  # , Translatable):
         blank=True,
         related_name="language_ref",
     )
-
-    # class TranslatableMeta:
-    #    fields = ['language',]
 
     def __str__(self):
         if self.language is None:

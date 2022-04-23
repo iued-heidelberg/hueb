@@ -3,19 +3,20 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 from hueb.apps.hueb20.admin.review import ReviewAdmin
 from hueb.apps.hueb20.models import DdcGerman
+from translated_fields import TranslatedFieldAdmin, to_attribute
 
 
 @admin.register(DdcGerman)
-class DdcGermanAdmin(ReviewAdmin):
+class DdcGermanAdmin(TranslatedFieldAdmin, ReviewAdmin):
     readonly_fields = ("app", "ddc_link", "id")
     list_display = ("id", "ddc_number", "ddc_name", "state")
     list_filter = ("state", "app")
-    search_fields = ("ddc_number", "ddc_name")
+    search_fields = ("ddc_number", *DdcGerman.ddc_name.fields)
 
     fieldsets = (
         (
             "DDC Information",
-            {"description": (" "), "fields": ("id", "ddc_number", "ddc_name")},
+            {"description": (" "), "fields": ("id", "ddc_number", *DdcGerman.ddc_name.fields)},
         ),
         (
             "Review",

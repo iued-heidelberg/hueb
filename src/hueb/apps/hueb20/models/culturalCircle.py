@@ -4,11 +4,12 @@ from django.db import models
 from django.urls import reverse
 from hueb.apps.hueb20.models.reviewable import Reviewable
 from hueb.apps.hueb20.models.utils import HUEB20, HUEB_APPLICATIONS
-
+from translated_fields import TranslatedField
 
 class CulturalCircle(Reviewable):
     id = models.BigAutoField(primary_key=True)
-    name = models.CharField(max_length=255, help_text="Name of the cultural circle")
+    name = TranslatedField(models.CharField(max_length=255, help_text="Name of the cultural circle", null=True))
+    name_temp = models.CharField(max_length=255, help_text="Name of the cultural circle", null=True)
     start = IntegerRangeField(null=True, blank=True)
     end = IntegerRangeField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
