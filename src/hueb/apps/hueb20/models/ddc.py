@@ -22,7 +22,7 @@ class DdcGerman(Reviewable):
         verbose_name_plural = verbose_name + "s"
 
     def __str__(self):
-        return self.ddc_number + " " + self.ddc_name
+        return self.ddc_number + " " + str(self.ddc_name or "")
 
     def linked_name(self):
         url = reverse(
