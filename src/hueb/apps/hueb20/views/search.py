@@ -72,7 +72,7 @@ class SearchForm(forms.Form):
             }
         ),
     )
-'''
+    """
     search_language = forms.ChoiceField(
         choices=tuple(
             (language, language)
@@ -84,8 +84,8 @@ class SearchForm(forms.Form):
         ),
         widget=SearchSelectWidget,
     )
-'''
-   
+    """
+
     search_database = forms.ChoiceField(
         choices=(
             ("HUEB20", _("HUEB20")),
