@@ -1,5 +1,6 @@
 from django.db import migrations, DataError
 
+
 def fill_transl_name(apps, schema_editor):
     CulturalCircle = apps.get_model("hueb20", "CulturalCircle")
 
@@ -7,6 +8,7 @@ def fill_transl_name(apps, schema_editor):
         circle.name_de = circle.name_temp
         circle.name_en = circle.name_temp
         circle.save()
+
 
 def empty_transl_name(apps, schema_editor):
     CulturalCircle = apps.get_model("hueb20", "CulturalCircle")
@@ -16,12 +18,11 @@ def empty_transl_name(apps, schema_editor):
         circle.name_en = None
         circle.save()
 
+
 class Migration(migrations.Migration):
 
     dependencies = [
         ("hueb20", "0094_auto_20220413_1254"),
     ]
 
-    operations = [
-        migrations.RunPython(fill_transl_name, empty_transl_name)
-    ]
+    operations = [migrations.RunPython(fill_transl_name, empty_transl_name)]

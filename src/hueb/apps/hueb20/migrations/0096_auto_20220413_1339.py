@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('hueb20', '0095_fill_translated_cc_name'),
+        ("hueb20", "0095_fill_translated_cc_name"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='ddcgerman',
-            name='ddc_name_temp',
+            model_name="ddcgerman",
+            name="ddc_name_temp",
             field=models.CharField(max_length=255, null=True),
         ),
         migrations.AddField(
-            model_name='historicalddcgerman',
-            name='ddc_name_temp',
+            model_name="historicalddcgerman",
+            name="ddc_name_temp",
             field=models.CharField(max_length=255, null=True),
         ),
     ]

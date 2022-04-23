@@ -6,36 +6,56 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('hueb20', '0093_fill_cc_tempname'),
+        ("hueb20", "0093_fill_cc_tempname"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='culturalcircle',
-            name='name',
+            model_name="culturalcircle",
+            name="name",
         ),
         migrations.RemoveField(
-            model_name='historicalculturalcircle',
-            name='name',
+            model_name="historicalculturalcircle",
+            name="name",
         ),
         migrations.AddField(
-            model_name='culturalcircle',
-            name='name_de',
-            field=models.CharField(help_text='Name of the cultural circle', max_length=255, null=True, verbose_name='name'),
+            model_name="culturalcircle",
+            name="name_de",
+            field=models.CharField(
+                help_text="Name of the cultural circle",
+                max_length=255,
+                null=True,
+                verbose_name="name",
+            ),
         ),
         migrations.AddField(
-            model_name='culturalcircle',
-            name='name_en',
-            field=models.CharField(help_text='Name of the cultural circle', max_length=255, null=True, verbose_name='name'),
+            model_name="culturalcircle",
+            name="name_en",
+            field=models.CharField(
+                help_text="Name of the cultural circle",
+                max_length=255,
+                null=True,
+                verbose_name="name",
+            ),
         ),
         migrations.AddField(
-            model_name='historicalculturalcircle',
-            name='name_de',
-            field=models.CharField(help_text='Name of the cultural circle', max_length=255, null=True, verbose_name='name'),
+            model_name="historicalculturalcircle",
+            name="name_de",
+            field=models.CharField(
+                help_text="Name of the cultural circle",
+                max_length=255,
+                null=True,
+                verbose_name="name",
+            ),
         ),
         migrations.AddField(
-            model_name='historicalculturalcircle',
-            name='name_en',
-            field=models.CharField(help_text='Name of the cultural circle', max_length=255, null=True, verbose_name='name'),
+            model_name="historicalculturalcircle",
+            name="name_en",
+            field=models.CharField(
+                help_text="Name of the cultural circle",
+                max_length=255,
+                null=True,
+                verbose_name="name",
+            ),
         ),
     ]

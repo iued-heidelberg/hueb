@@ -16,7 +16,10 @@ class DdcGermanAdmin(TranslatedFieldAdmin, ReviewAdmin):
     fieldsets = (
         (
             "DDC Information",
-            {"description": (" "), "fields": ("id", "ddc_number", *DdcGerman.ddc_name.fields)},
+            {
+                "description": (" "),
+                "fields": ("id", "ddc_number", *DdcGerman.ddc_name.fields),
+            },
         ),
         (
             "Review",

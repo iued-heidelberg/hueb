@@ -20,7 +20,13 @@ class CulturalCircleAdmin(TranslatedFieldAdmin, ReviewAdmin):
             "Country Information",
             {
                 "description": ("Information stored about the cultural circle"),
-                "fields": ("id", *CulturalCircle.name.fields, "description", "start", "end"),
+                "fields": (
+                    "id",
+                    *CulturalCircle.name.fields,
+                    "description",
+                    "start",
+                    "end",
+                ),
             },
         ),
         (

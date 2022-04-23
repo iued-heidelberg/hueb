@@ -23,10 +23,7 @@ class LanguageAdmin(TranslatedFieldAdmin, ReviewAdmin):
             "Language Information",
             {
                 "description": (" "),
-                "fields": (
-                    "id",
-                    *Language.language.fields
-                ),
+                "fields": ("id", *Language.language.fields),
             },
         ),
         (

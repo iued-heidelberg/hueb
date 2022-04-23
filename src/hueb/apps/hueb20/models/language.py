@@ -5,6 +5,7 @@ from hueb.apps.hueb20.models.reviewable import Reviewable
 from hueb.apps.hueb20.models.utils import HUEB20, HUEB_APPLICATIONS
 from translated_fields import TranslatedField
 
+
 class Language(Reviewable):
     id = models.BigAutoField(primary_key=True)
     language = TranslatedField(models.CharField(max_length=255, null=True))

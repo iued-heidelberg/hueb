@@ -6,36 +6,36 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('hueb20', '0097_fill_ddc_temp'),
+        ("hueb20", "0097_fill_ddc_temp"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='ddcgerman',
-            name='ddc_name',
+            model_name="ddcgerman",
+            name="ddc_name",
         ),
         migrations.RemoveField(
-            model_name='historicalddcgerman',
-            name='ddc_name',
+            model_name="historicalddcgerman",
+            name="ddc_name",
         ),
         migrations.AddField(
-            model_name='ddcgerman',
-            name='ddc_name_de',
-            field=models.CharField(max_length=255, null=True, verbose_name='ddc_name'),
+            model_name="ddcgerman",
+            name="ddc_name_de",
+            field=models.CharField(max_length=255, null=True, verbose_name="ddc_name"),
         ),
         migrations.AddField(
-            model_name='ddcgerman',
-            name='ddc_name_en',
-            field=models.CharField(max_length=255, null=True, verbose_name='ddc_name'),
+            model_name="ddcgerman",
+            name="ddc_name_en",
+            field=models.CharField(max_length=255, null=True, verbose_name="ddc_name"),
         ),
         migrations.AddField(
-            model_name='historicalddcgerman',
-            name='ddc_name_de',
-            field=models.CharField(max_length=255, null=True, verbose_name='ddc_name'),
+            model_name="historicalddcgerman",
+            name="ddc_name_de",
+            field=models.CharField(max_length=255, null=True, verbose_name="ddc_name"),
         ),
         migrations.AddField(
-            model_name='historicalddcgerman',
-            name='ddc_name_en',
-            field=models.CharField(max_length=255, null=True, verbose_name='ddc_name'),
+            model_name="historicalddcgerman",
+            name="ddc_name_en",
+            field=models.CharField(max_length=255, null=True, verbose_name="ddc_name"),
         ),
     ]
