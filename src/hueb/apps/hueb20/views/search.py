@@ -8,7 +8,9 @@ from django.views.generic import ListView
 from hueb.apps.hueb20.models.document import Document, DocumentRelationship
 from hueb.apps.hueb20.models.language import Language
 from django.db.models import F
-from django.utils.translation import gettext as _
+from django.utils import translation
+from django.utils.translation import get_language
+from django.db.models import Case, When
 from django.utils.translation import gettext_lazy as _
 
 
@@ -72,19 +74,17 @@ class SearchForm(forms.Form):
             }
         ),
     )
-    """
     search_language = forms.ChoiceField(
         choices=tuple(
             (language, language)
             for language in Language.objects.filter()
-            .exclude(language_de="") #manual coding, but couldnt find another way
+            .exclude(language_de="")  # manual coding, but couldnt find another way
             .exclude(language_en="")
             .all()
-            #.order_by(F("language"))
+            .order_by("language_de")
         ),
         widget=SearchSelectWidget,
     )
-    """
 
     search_database = forms.ChoiceField(
         choices=(
