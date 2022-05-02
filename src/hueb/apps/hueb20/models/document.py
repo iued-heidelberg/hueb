@@ -460,9 +460,13 @@ class DocumentRelationship(Reviewable):
 
     @classmethod
     def q_object_by_language(cls, value, types):
-        return Q(document_from__language__language__icontains=value) & cls.get_types_q(
-            types, True
-        ) | Q(document_to__language__language__icontains=value) & cls.get_types_q(
+        return (
+            Q(document_from__language__language_en__icontains=value)
+            | Q(document_from__language__language_de__icontains=value)
+        ) & cls.get_types_q(types, True) | (
+            Q(document_to__language__language_en__icontains=value)
+            | Q(document_to__language__language_de__icontains=value)
+        ) & cls.get_types_q(
             types, False
         )
 
