@@ -6,12 +6,15 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('user_history', '0005_alter_userhistory_options'),
+        ("user_history", "0005_alter_userhistory_options"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='userhistory',
-            options={'verbose_name': 'Entries per User', 'verbose_name_plural': 'Entries per User'},
+            name="userhistory",
+            options={
+                "verbose_name": "Entries per User",
+                "verbose_name_plural": "Entries per User",
+            },
         ),
     ]
