@@ -81,13 +81,13 @@
 
 
       <div class="slideshow-container flex-col justify-between w-2/5 p-6 px-4 bg-sand-300 bg-opacity-25" style="margin-right: 0; margin-left: auto">
-          <div class="mySlides" style="margin-left:10%; margin-top: auto; margin-bottom:auto;">
+          <div class="mySlides text-2xl" style="margin-left:10%; margin-top: auto; margin-bottom:auto;">
             {% for result in object_list%}
               <a  href="{{result.file.url}}"><div class="pdfLinks">{{result.name}}</div></a>
             {% endfor %}
           </div>
-          <div>
-            {% include "hueb20/includables/pagination.html" %}
+          <div style="margin-left:0%; margin-bottom:0% margin-top: auto; margin-bottom:auto;">
+            {% include "hueb20/includables/pages.html" %}
           </div>
 
           <!--div class="mySlides" style="margin-left:10%; margin-top: auto; margin-bottom:auto;">
