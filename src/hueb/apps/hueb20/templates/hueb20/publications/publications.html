@@ -1,0 +1,162 @@
+{% extends 'hueb20/__base.html' %}
+{% load i18n %}
+
+
+{% block content %}
+<style>
+    .pdfLinks{
+        margin-bottom:7%;
+        margin-top:3%;
+    }
+
+    .slideshow-container{
+        margin-right:5%;
+        position: relative;
+    }
+
+    .prev{
+        cursor: pointer;
+        top: 50%;
+        margin-top: -30px;
+        position:absolute;
+        border-radius: 0 3px 3px 0;
+        left:0;
+    }
+    .next{
+        cursor: pointer;
+        top: 50%;
+        margin-top: -30px;
+        right:0;
+        border-radius: 3px 0 0 3px;
+        position:absolute;
+    }
+    input[type=submit] {
+      background-color: #AF0000;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    input[type=text], input[type=submit] {
+      width: 90%;
+      padding: 12px;
+      margin:8px 0;
+      margin-left: 5%;
+      display: inline-block;
+      box-sizing: border-box;
+    }
+
+    input[type=text]{
+    color: black;
+    }
+
+    input::placeholder{
+    color: #909090;
+    font-weight: bold;
+    }
+    form {
+      border: 3px solid #f1f1f1;
+      font-family: Arial;
+    }
+    input[type=submit]:hover {
+      opacity: 0.8;
+    }
+
+
+</style>
+  <div style="width: 70%; margin:0 auto;">
+    <div class="fw-full lg:flex-no-wrap lg:flex-none bg-sand-bg" style="margin-left:2.5%">
+        <p class="mx-8 mt-16 text-l font-bald lg:text-x">
+          <b>H</b>eidelberger <b>Ü</b>bersetzungs <b>B</b>ibliographie
+        </p>
+        <h1 class="mx-8  text-5xl font-bald lg:text-x">
+          {% translate "PUBLIKATIONEN " %}
+        </h1>
+    </div>
+
+    <div class="flex flex-auto shadow-lg hover:shadow-xl"  style="margin-bottom: 1rem;">
+
+      <div class="flex flex-col justify-between w-3/5 flex-auto p-6 px-4 bg-sand-300" style="margin-left: 0">
+
+      </div>
+
+
+      <div class="slideshow-container flex-col justify-between w-2/5 p-6 px-4 bg-sand-300 bg-opacity-25" style="margin-right: 0; margin-left: auto">
+          <div class="mySlides" style="margin-left:10%; margin-top: auto; margin-bottom:auto;">
+            {% for result in object_list%}
+              <a  href="{{result.file.url}}"><div class="pdfLinks">{{result.name}}</div></a>
+            {% endfor %}
+          </div>
+          <div>
+            {% include "hueb20/includables/pagination.html" %}
+          </div>
+
+          <!--div class="mySlides" style="margin-left:10%; margin-top: auto; margin-bottom:auto;">
+              <div class="pdfLinks">TEST TEST TEST</div>
+              <div class="pdfLinks">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy</div>
+              <div class="pdfLinks">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy</div>
+          </div>
+          <div class="mySlides" style="margin-left:7%; ">
+              <div class="pdfLinks">1Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy</div>
+              <div class="pdfLinks">1Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy</div>
+              <div class="pdfLinks">1Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy</div>
+          </div>
+         <div class="mySlides" style="margin-left:7%;  ">
+              <div class="pdfLinks">2Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy</div>
+              <div class="pdfLinks">2Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy</div>
+              <div class="pdfLinks">2Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy</div>
+          </div>
+
+          <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+          <a class="next" onclick="plusSlides(1)">&#10095;</a-->
+      </div>
+
+    </div>
+
+
+    <!--Subscribe the newsletter button-->
+      <div class="shadow-lg hover:shadow-xl lg:text-sand-bg lg:text-base lg:bg-gray-bg" >
+          <form action="/action_page.php">
+            <div class="font-bald lg:text-x">
+                <h2 class="text-3xl" style="text-align: center">SUBSCRIBE TO THE NEWSLETTER</h2>
+                <div style="text-align: center">Soon you will be able to subscribe our newsletter</div>
+            </div>
+            <div>
+                <input type="text" placeholder="E-mail" name="mail" required>
+            </div>
+
+            <div>
+                <input type="submit" value="Subscribe">
+            </div>
+          </form>
+      </div>
+
+
+
+  </div>
+
+<script>
+    var slideIndex = 1;
+    showSlides(slideIndex);
+
+    function plusSlides(n) {
+      showSlides(slideIndex += n);
+    }
+
+    function currentSlide(n) {
+      showSlides(slideIndex = n);
+    }
+
+    function showSlides(n) {
+      var i;
+      var slides = document.getElementsByClassName("mySlides");
+      if (n > slides.length) {slideIndex = 1}
+        if (n < 1) {slideIndex = slides.length}
+        for (i = 0; i < slides.length; i++) {
+          slides[i].style.display = "none";
+        }
+
+      slides[slideIndex-1].style.display = "block";
+    }
+</script>
+{% endblock %}
+

@@ -20,7 +20,6 @@ from django.urls import include, path
 from django.conf.urls.i18n import i18n_patterns
 from django.conf.urls import url, include
 
-
 urlpatterns = [
     # path("", include("hueb.apps.hueb20.urls")),
     url(r"^i18n/", include("django.conf.urls.i18n")),

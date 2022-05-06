@@ -23,7 +23,6 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "hueb.settings")
 
 LOGIN_REDIRECT_URL = "/admin"
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -41,7 +40,9 @@ INSTALLED_APPS = [
     "hueb.apps.hueb_legacy_lidos",
     "hueb.apps.hueb_legacy",
     "hueb.apps.user_history",
+    "hueb.apps.publications",
     "django_extensions",
+    # translations",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -125,12 +126,27 @@ USE_L10N = True
 USE_TZ = True
 
 LOCALE_PATHS = (os.path.join(BASE_DIR, "hueb/apps/hueb20/locale"),)
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
+gettext = lambda s: s
 LANGUAGES = (
     ("de", _("German")),
     ("en", _("English")),
 )
+MODELTRANSLATION_LANGUAGES = ("de", "en")
 
+IS_MONOLINGUAL = False
 
+# TRANSLATABLE_MODEL_MODULES = ["hueb.apps.hueb20.models.language"]
+
+# MODELTRANSLATION_AUTO_POPULATE = True
+# MODELTRANSLATION_DEBUG = False
+# MODELTRANSLATION_ENABLE_FALLBACKS = True
+# MODELTRANSLATION_FALLBACK_LANGUAGES =('de', 'en')
+# MODELTRANSLATION_PREPOPULATE_LANGUAGE = 'de'
+
+# MODELTRANSLATION_TRANSLATION_FILES = (
+#    "hueb.src.hueb.apps.hueb20.translation",
+# )
 INTERNAL_IPS = ["127.0.0.1"]
 
 # Database
@@ -215,3 +231,9 @@ if os.getenv("STATIC_DIR") is not None:
     STATIC_ROOT = os.getenv("STATIC_DIR")
 else:
     STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+MEDIA_URL = "/media/"
+if os.getenv("MEDIA_DIR") is not None:
+    MEDIA_ROOT = os.getenv("MEDIA_DIR")
+else:
+    MEDIA_ROOT = os.path.join(BASE_DIR, "media")
