@@ -20,7 +20,7 @@ def test_menu_unauthenticated_user(rf):
     assert context["menu"][1]["link"] == "#"
     assert context["menu"][1]["disabled"] == True
 
-    assert context["menu"][2]["name"] == "Katalog"
+    assert context["menu"][2]["name"] == "Publikationen"
     assert context["menu"][2]["link"] == "#"
     assert context["menu"][2]["disabled"] == True
 
@@ -43,9 +43,9 @@ def test_menu_authenticated_user(rf, django_user_model):
     assert context["menu"][1]["link"] == "/" + get_language() + "/search"
     assert context["menu"][1]["disabled"] == False
 
-    assert context["menu"][2]["name"] == _("Katalog")
+    assert context["menu"][2]["name"] == _("Publikationen")
     assert context["menu"][2]["link"] == "#"
-    assert context["menu"][2]["disabled"] == True
+    assert context["menu"][2]["disabled"] == False
 
 
 def test_overlay(rf):
