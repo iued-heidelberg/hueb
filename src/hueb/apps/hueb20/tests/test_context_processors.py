@@ -44,7 +44,7 @@ def test_menu_authenticated_user(rf, django_user_model):
     assert context["menu"][1]["disabled"] == False
 
     assert context["menu"][2]["name"] == _("Publikationen")
-    assert context["menu"][2]["link"] == "#"
+    assert context["menu"][2]["link"] == "/" + get_language() + "/publications"
     assert context["menu"][2]["disabled"] == False
 
 
