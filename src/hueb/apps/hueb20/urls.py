@@ -9,6 +9,7 @@ from hueb import settings
 from hueb.apps.hueb20.views.authentication import Login, Logout
 from hueb.apps.hueb20.views.index import IndexView
 from hueb.apps.hueb20.views.search import Search
+from hueb.apps.hueb20.views.publications import Publications
 from hueb.apps.hueb20.views.documentDetailView import DocumentDetailView
 from hueb.apps.hueb20.views.personDetailView import PersonDetailView
 from django.views.i18n import JavaScriptCatalog
@@ -19,6 +20,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", IndexView.as_view(), name="Index"),
     path("search", Search.as_view(), name="search"),
+    path("publications", Publications.as_view(), name="publications"),
     path("accounts/login", Login.as_view(), name="login"),
     path("accounts/logout", Logout.as_view(), name="logout"),
     path("document/<int:pk>/", DocumentDetailView.as_view(), name="documentDetailView"),
@@ -33,6 +35,13 @@ urlpatterns = [
     url(r"^i18n/", include("django.conf.urls.i18n")),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# urlpatterns += i18n_patterns(
+#'',
+# (_(r'^dual-lang/'), include('duallang.urls')),
+# (r'^', include('home.urls')),
+# )
 
 if "rosetta" in settings.INSTALLED_APPS:
     urlpatterns += [re_path(r"^rosetta/", include("rosetta.urls"))]
