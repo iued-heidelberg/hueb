@@ -15,10 +15,19 @@ def menu(request):
                 "disabled": False,
             }
         )
+
     else:
         menu.append({"name": _("Suche"), "link": "#", "disabled": True})
-
-    menu.append({"name": _("Katalog"), "link": "#", "disabled": True})
+    if request.user.is_authenticated:
+        menu.append(
+            {
+                "name": _("Publikationen"),
+                "link": "/" + get_language() + "/publications",
+                "disabled": False,
+            }
+        )
+    else:
+        menu.append({"name": _("Publikationen"), "link": "#", "disabled": True})
 
     context = {}
     context["menu"] = menu
