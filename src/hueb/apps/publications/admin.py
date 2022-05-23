@@ -18,6 +18,7 @@ class PublicationAdmin(admin.ModelAdmin):
             {
                 "fields": (
                     "name",
+                    "preview",
                     "file",
                     "download_link",
                     "description",

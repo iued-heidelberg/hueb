@@ -1,19 +1,107 @@
 {% extends 'hueb20/__base.html' %}
 {% load i18n %}
-
-
 {% block content %}
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <style>
-    .pdfLinks{
-        margin-bottom:7%;
-        margin-top:3%;
+    .alert{margin: auto; width: 90%; align: center; border:1px solid transparent;border-radius:4px; opacity: 1; transition: opacity 0.6s; /* 600ms to fade out */}
+    .alert-danger{color:#a94442;background-color:#f2dede;border-color:#ebccd1}
+    .closebtn {
+      margin-left: 15px;
+      color: #a94442;
+      font-weight: bold;
+      float: right;
+      font-size: 22px;
+      line-height: 20px;
+      cursor: pointer;
+      transition: 0.3s;
     }
-
+    /* When moving the mouse over the close button */
+    .closebtn:hover {
+      color: black;
+    }
+    /*--thank you pop starts here--*/
+    .modal-confirm {
+	color: #636363;
+	width: 325px;
+	font-size: 14px;
+    }
+    .modal-confirm .modal-content {
+        padding: 20px;
+        border-radius: 5px;
+        border: none;
+    }
+    .modal-confirm .modal-header {
+        border-bottom: none;
+        position: relative;
+    }
+    .modal-confirm h4 {
+        text-align: center;
+        font-size: 26px;
+        margin: 30px 0 -15px;
+    }
+    .modal-confirm .form-control, .modal-confirm .btn {
+        min-height: 40px;
+        border-radius: 3px;
+    }
+    .modal-confirm .close {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+    }
+    .modal-confirm .modal-footer {
+        border: none;
+        text-align: center;
+        border-radius: 5px;
+        font-size: 13px;
+    }
+    .modal-confirm .icon-box {
+        color: #fff;
+        position: absolute;
+        margin: 0 auto;
+        left: 0;
+        right: 0;
+        top: -70px;
+        width: 95px;
+        height: 95px;
+        border-radius: 50%;
+        z-index: 9;
+        background: #82ce34;
+        padding: 15px;
+        text-align: center;
+        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
+    }
+    .modal-confirm .icon-box i {
+        font-size: 58px;
+        position: relative;
+        top: 3px;
+    }
+    .modal-confirm.modal-dialog {
+        margin-top: 80px;
+    }
+    .modal-confirm .btn {
+        color: #fff;
+        border-radius: 4px;
+        background: #82ce34;
+        text-decoration: none;
+        transition: all 0.4s;
+        line-height: normal;
+        border: none;
+    }
+    .modal-confirm .btn:hover, .modal-confirm .btn:focus {
+        background: #6fb32b;
+        outline: none;
+    }
+    .trigger-btn {
+        display: inline-block;
+        margin: 100px auto;
+    }
+    /*--thank you pop ends here--*/
     .slideshow-container{
         margin-right:5%;
         position: relative;
     }
-
     .prev{
         cursor: pointer;
         top: 50%;
@@ -31,7 +119,6 @@
         position:absolute;
     }
     input[type=submit] {
-      background-color: #AF0000;
       color: white;
       border: none;
       cursor: pointer;
@@ -44,26 +131,49 @@
       display: inline-block;
       box-sizing: border-box;
     }
-
     input[type=text]{
-    color: black;
+      color: black;
     }
-
     input::placeholder{
-    color: #909090;
-    font-weight: bold;
+      color: #909090;
+      font-weight: bold;
     }
     form {
-      border: 3px solid #f1f1f1;
       font-family: Arial;
     }
     input[type=submit]:hover {
       opacity: 0.8;
     }
-
-
+     .button {
+        background-color: #383838;
+        border: none;
+        color: white;
+        padding: 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        border-radius: 8px;
+      }
+    .vertical-center {
+      margin: 0;
+      position: absolute;
+      top: 50%;
+      -ms-transform: translateY(-50%);
+      transform: translateY(-50%);
+    }
+    .tr_right{
+        border-radius: 12px;
+        background-color: #e6dfd0;
+        border-color: #e6dfd0;
+        border-width: 10px;
+        border-style: solid;
+        overflow: hidden;
+        margin-bottom:10px;
+    }
 </style>
-  <div style="width: 70%; margin:0 auto;">
+  <div style="width: 75%; margin:0 auto;">
     <div class="fw-full lg:flex-no-wrap lg:flex-none bg-sand-bg" style="margin-left:2.5%">
         <p class="mx-8 mt-16 text-l font-bald lg:text-x">
           <b>H</b>eidelberger <b>Ü</b>bersetzungs <b>B</b>ibliographie
@@ -72,91 +182,157 @@
           {% translate "PUBLIKATIONEN " %}
         </h1>
     </div>
-
     <div class="flex flex-auto shadow-lg hover:shadow-xl"  style="margin-bottom: 1rem;">
-
-      <div class="flex flex-col justify-between w-3/5 flex-auto p-6 px-4 bg-sand-300" style="margin-left: 0">
-
-      </div>
-
-
-      <div class="slideshow-container flex-col justify-between w-2/5 p-6 px-4 bg-sand-300 bg-opacity-25" style="margin-right: 0; margin-left: auto">
-          <div class="mySlides text-2xl" style="margin-left:10%; margin-top: auto; margin-bottom:auto;">
-            {% for result in object_list%}
-              <a  href="{{result.file.url}}"><div class="pdfLinks">{{result.name}}</div></a>
-            {% endfor %}
+      <div class="flex flex-col justify-between w-3/5 flex-auto p-6 px-4 bg-sand-300 bg-opacity-25" style="margin-left: 0">
+          <div class="tr_right">
+              <table style="width: 100%">
+                <colgroup>
+                   <col span="1" style="width: 60%;">
+                   <col span="1" style="width: 40%;">
+                </colgroup>
+                  <tr>
+                    <td style="width: 60%">
+                      <h3 style="margin-bottom: 0%">{{recent.name}}</h3></br>
+                      <p style="margin-bottom: 0%">{{recent.description }}</p>
+                    </td>
+                    <td style="width: 40%">
+                        <button class="button">
+                            <a href={{recent.file.url}}>
+                                {% translate "DOWNLOAD" %}
+                            </a>
+                        </button>
+                    </td>
+                  </tr>
+              </table>
+              <a href={{ recent.file.url }}><img style="margin-left:1.5%; margin-right:1.5%;" src="{{ recent.preview.url }}"></a>
           </div>
-          <div style="margin-left:0%; margin-bottom:0% margin-top: auto; margin-bottom:auto;">
+      </div>
+      <div class="slideshow-container flex-col justify-between w-2/5 p-6 px-4 bg-sand-300 bg-opacity-25" style="margin-right: 0; margin-left: auto">
+          {% for result in object_list %}
+            {% if result is not None %}
+                <div class="tr_right" style="height: 30%">
+                    <table style="width: 100%;">
+                        <colgroup>
+                           <col span="1" style="width: 60%;">
+                           <col span="1" style="width: 40%;">
+                        </colgroup>
+                        <tr>
+                            <td style="width: 60%">
+                              <h3 style="margin-bottom: 5%">{{result.name}}</h3></br>
+                              <p style="margin-bottom: 25%">{{result.description}}</p>
+                            </td>
+                            <td style="width: 40%">
+                              <button class="button">
+                                  <a href={{result.file.url}}>
+                                      {% translate "DOWNLOAD" %}
+                                  </a>
+                              </button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            {% endif %}
+          {% endfor %}
+          <div style="margin-left:0%; margin-bottom:0% margin-top: auto;">
             {% include "hueb20/includables/pages.html" %}
           </div>
-
-          <!--div class="mySlides" style="margin-left:10%; margin-top: auto; margin-bottom:auto;">
-              <div class="pdfLinks">TEST TEST TEST</div>
-              <div class="pdfLinks">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy</div>
-              <div class="pdfLinks">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy</div>
-          </div>
-          <div class="mySlides" style="margin-left:7%; ">
-              <div class="pdfLinks">1Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy</div>
-              <div class="pdfLinks">1Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy</div>
-              <div class="pdfLinks">1Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy</div>
-          </div>
-         <div class="mySlides" style="margin-left:7%;  ">
-              <div class="pdfLinks">2Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy</div>
-              <div class="pdfLinks">2Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy</div>
-              <div class="pdfLinks">2Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy</div>
-          </div>
-
-          <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-          <a class="next" onclick="plusSlides(1)">&#10095;</a-->
       </div>
-
     </div>
-
-
-    <!--Subscribe the newsletter button-->
-      <div class="shadow-lg hover:shadow-xl lg:text-sand-bg lg:text-base lg:bg-gray-bg" >
-          <form action="/action_page.php">
+    <div class="shadow-lg hover:shadow-xl lg:text-sand-bg lg:text-base lg:bg-gray-bg" style="margin-bottom: 2%">
+        <form method="POST">{% csrf_token %}
             <div class="font-bald lg:text-x">
-                <h2 class="text-3xl" style="text-align: center">SUBSCRIBE TO THE NEWSLETTER</h2>
-                <div style="text-align: center">Soon you will be able to subscribe our newsletter</div>
+                <h2 class="text-3xl" style="text-align: center">{% translate "SUBSCRIBE TO THE NEWSLETTER" %}</h2>
+                <div class="text-xl" style="text-align: center">{% translate "Leave name field empty for anonymous subscription" %}</div>
             </div>
             <div>
-                <input type="text" placeholder="E-mail" name="mail" required>
+                <input type="text" placeholder="First Name and Last Name" name="name">
+                {% if subscribe_form.name.errors %}
+                <div class="alert alert-danger alert-dismissible text-l" style="padding: 10px; text-align: center;">
+                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                    <strong>{% translate "Warning!" %}</strong>{{subscribe_form.name.errors}}</div>
+                {% endif %}
             </div>
-
             <div>
-                <input type="submit" value="Subscribe">
+                <input type="text" placeholder="E-mail" name="email">
+                {% if subscribe_form.email.errors %}
+                <div class="alert alert-danger alert-dismissible text-l" style="padding: 10px; text-align: center;">
+                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                    <strong>Warning!</strong> {{ subscribe_form.email.errors }}</div>
+                {% endif %}
             </div>
-          </form>
+            <div style="overflow:hidden;">
+                <div style="float:left; width:45%; margin-left: 2.5%">
+                    <input style="background-color: #AF0000; border-radius: 8px; font:lg" type="submit" name="unsub" value="Unsubscribe">
+                </div>
+                <div style="float:right; width:45%; margin-right: 2.5%">
+                    <input style="background-color: #6CBB3C; border-radius: 8px;" type="submit" name="sub" value="Subscribe">
+                </div>
+            </div>
+        </form>
+    </div>
+    <div id="subPop" class="w3-modal">
+      <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="padding:32px; max-width:600px">
+        <div class="w3-container w3-white w3-center">
+            <h1 class="w3-wide">{% translate "Thank you!" %}</h1>
+            <h4 class="w3-wide">{% translate "Please check your E-Mail to confirm your subscription." %}</h4>
+            <form action="publications">
+                <button style="background-color: #6CBB3C; border-radius: 8px;" type="submit" class="w3-button">OK</button>
+            </form>
+        </div>
       </div>
-
-
-
+    </div>
+    <div id="unsubPop" class="w3-modal">
+      <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="padding:32px; max-width:600px">
+        <div class="w3-container w3-white w3-center">
+            <h1 class="w3-wide">{% translate "We will miss you!" %}</h1>
+            <h4 class="w3-wide">{% translate "Please check your E-Mail to confirm your unsubscription." %}</h4>
+            <div>
+                <button style="background-color: #6CBB3C; border-radius: 8px;" onclick=hidePop() class="w3-button">OK</button>
+            </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-<script>
-    var slideIndex = 1;
-    showSlides(slideIndex);
+<script type="text/javascript">
+function showSubPop(){
+    document.getElementById("subPop").style.display="block";
+    document.getElementById("unsubPop").style.display="none";
+}
+function showUnsubPop(){
+    document.getElementById("subPop").style.display="none";
+    document.getElementById("unsubPop").style.display="block";
+}
+function hidePop(){
+    document.getElementById("subPop").style.display="none";
+    document.getElementById("unsubPop").style.display="none";
+}
 
-    function plusSlides(n) {
-      showSlides(slideIndex += n);
-    }
+{% if successful_subscribed %}
+    window.onload = showSubPop;
+{% elif successful_unsubscribed %}
+    window.onload = showUnsubPop;
+{% endif %}
 
-    function currentSlide(n) {
-      showSlides(slideIndex = n);
-    }
+// Get all elements with class="closebtn"
+var close = document.getElementsByClassName("closebtn");
+var i;
 
-    function showSlides(n) {
-      var i;
-      var slides = document.getElementsByClassName("mySlides");
-      if (n > slides.length) {slideIndex = 1}
-        if (n < 1) {slideIndex = slides.length}
-        for (i = 0; i < slides.length; i++) {
-          slides[i].style.display = "none";
-        }
+// Loop through all close buttons
+for (i = 0; i < close.length; i++) {
+  // When someone clicks on a close button
+  close[i].onclick = function(){
 
-      slides[slideIndex-1].style.display = "block";
-    }
+    // Get the parent of <span class="closebtn"> (<div class="alert">)
+    var div = this.parentElement;
+
+    // Set the opacity of div to 0 (transparent)
+    div.style.opacity = "0";
+
+    // Hide the div after 600ms (the same amount of milliseconds it takes to fade out)
+    setTimeout(function(){ div.style.display = "none"; }, 600);
+  }
+}
 </script>
 {% endblock %}
 
