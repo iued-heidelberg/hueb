@@ -13,7 +13,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 
 
-class FormListView(ListView, FormMixin):
+class FormListView(ListView, FormView):
     def get(self, request, *args, **kwargs):
         # From ProcessFormMixin
         form_class = self.get_form_class()
@@ -32,7 +32,12 @@ class FormListView(ListView, FormMixin):
         return self.render_to_response(context)
 
     def post(self, request, *args, **kwargs):
-        return self.get(request, *args, **kwargs)
+        form = self.get_form()
+        object_list = self.get_queryset()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.get(request, *args, **kwargs)
 
 
 class SubscribeForm(forms.Form):
@@ -57,7 +62,7 @@ class Publications(FormListView):
     model = Publication
     paginate_by = 3
     form_class = SubscribeForm
-    success_url = reverse_lazy("publications")
+    # success_url = reverse_lazy("publications")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -81,7 +86,10 @@ class Publications(FormListView):
         url = "https://listserv.uni-heidelberg.de/cgi-bin/wa"
         if name == "":
             name = "Anonymous"
+        print("is in form valid")
+        print(self.request.POST)
         if "sub" in self.request.POST:
+
             r = requests.get(
                 "https://listserv.uni-heidelberg.de/cgi-bin/wa",
                 params={
@@ -94,9 +102,11 @@ class Publications(FormListView):
                     "_charset_": "UTF-8",
                 },
             )
+
             url = reverse("publicationsSub", kwargs={"sub": "sub"})
             return HttpResponseRedirect(url)
         elif "unsub" in self.request.POST:
+
             r = requests.get(
                 "https://listserv.uni-heidelberg.de/cgi-bin/wa",
                 params={
@@ -111,6 +121,7 @@ class Publications(FormListView):
                     "_charset_": "UTF-8",
                 },
             )
+
             url = reverse("publicationsSub", kwargs={"sub": "unsub"})
             return HttpResponseRedirect(url)
         return super().form_valid(form)
