@@ -21,10 +21,12 @@ urlpatterns = [
     path("", IndexView.as_view(), name="Index"),
     path("search", Search.as_view(), name="search"),
     path("publications", Publications.as_view(), name="publications"),
+    path("publications<sub>", Publications.as_view(), name="publicationsSub"),
     path("accounts/login", Login.as_view(), name="login"),
     path("accounts/logout", Logout.as_view(), name="logout"),
     path("document/<int:pk>/", DocumentDetailView.as_view(), name="documentDetailView"),
     path("person/<int:pk>/", PersonDetailView.as_view(), name="personDetailView"),
+    # path("subscribe", Publications.set_subscription, name="sub"),
     path(
         "document/<int:pk>/export_csv", DocumentDetailView.download_csv, name="docCsv"
     ),
