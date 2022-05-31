@@ -2,8 +2,6 @@
 {% load i18n %}
 {% block content %}
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <style>
     .alert{margin: auto; width: 90%; align: center; border:1px solid transparent;border-radius:4px; opacity: 1; transition: opacity 0.6s; /* 600ms to fade out */}
     .alert-danger{color:#a94442;background-color:#f2dede;border-color:#ebccd1}
@@ -270,6 +268,7 @@
             </div>
         </form>
     </div>
+    </div>
     <div id="subPop" class="w3-modal">
       <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="padding:32px; max-width:600px">
         <div class="w3-container w3-white w3-center">
@@ -286,9 +285,9 @@
         <div class="w3-container w3-white w3-center">
             <h1 class="w3-wide">{% translate "We will miss you!" %}</h1>
             <h4 class="w3-wide">{% translate "Please check your E-Mail to confirm your unsubscription." %}</h4>
-            <div>
-                <button style="background-color: #6CBB3C; border-radius: 8px;" onclick=hidePop() class="w3-button">OK</button>
-            </div>
+            <form action="publications">
+                <button style="background-color: #6CBB3C; border-radius: 8px;" type="submit" class="w3-button">OK</button>
+            </form>
         </div>
       </div>
     </div>
@@ -312,27 +311,10 @@ function hidePop(){
     window.onload = showSubPop;
 {% elif successful_unsubscribed %}
     window.onload = showUnsubPop;
+{% else %}
+    window.onload = hidePop;
 {% endif %}
 
-// Get all elements with class="closebtn"
-var close = document.getElementsByClassName("closebtn");
-var i;
-
-// Loop through all close buttons
-for (i = 0; i < close.length; i++) {
-  // When someone clicks on a close button
-  close[i].onclick = function(){
-
-    // Get the parent of <span class="closebtn"> (<div class="alert">)
-    var div = this.parentElement;
-
-    // Set the opacity of div to 0 (transparent)
-    div.style.opacity = "0";
-
-    // Hide the div after 600ms (the same amount of milliseconds it takes to fade out)
-    setTimeout(function(){ div.style.display = "none"; }, 600);
-  }
-}
 </script>
 {% endblock %}
 
