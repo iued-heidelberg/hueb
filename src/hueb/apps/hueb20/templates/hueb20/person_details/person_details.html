@@ -1,5 +1,4 @@
 {% load i18n %}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <style>
   dt{
@@ -43,7 +42,6 @@
   visibility: visible;
 }
 </style>
-
 <div class="flex flex-auto min-w-full m-10">
   <div class="min-w-full justify-between flex-auto w-2/5 p-6 px-20 bg-opacity-25 bg-sand-300 ">
     <dl>
@@ -83,18 +81,21 @@
         <dd><p class="text-xl break-words lg:text-l font-bold tooltip" style="width: 100%">
               {% for linkedDoc in object.get_originals.all %}
               {% if linkedDoc.get_document_type is not Document.TRANSLATION %}
-                <a href="{% url "documentDetailView" linkedDoc.id %}">
-                <table>
-                  <col style="float: left; width: 90%">
-                    <p class="negative-indent block md:text-lg text-xl break-words lg:text-l font-bold">
-                    {{linkedDoc.title}}
-                    </p>
-                  </col>
-                  <col class = "tooltip" style="float: right; width:8%">
-                    {% include "hueb20/widgets/hyperlink.html" %}
-                    <span style="float: right" class="tooltiptext">{% translate "Mehr" %}</span>
-                  </col>
-                </table></a><br>
+                <table style="width: 100%">
+                  <tr>
+                      <th style="float: left; width: 80%" class="tooltip negative-indent block md:text-lg text-xl break-words lg:text-l font-bold">
+                          <a href="{% url "documentDetailView" linkedDoc.id %}">
+                            {{linkedDoc.title}}
+                          </a>
+                        </th>
+                        <th class = "tooltip" style="margin-left: 5%">
+                            <a href="{% url "documentDetailView" linkedDoc.id %}">
+                            {% include "hueb20/widgets/hyperlink.html" %}
+                                <span style="float: right" class="tooltiptext">{% translate "Mehr" %}</span>
+                            </a>
+                      </th>
+                </tr>
+                </table><br>
               {% endif %}
             {% endfor %}
         </p></dd>
