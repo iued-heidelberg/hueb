@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include, url
 from django.urls import include, re_path
+from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
 from django.utils.translation import gettext_lazy as _
 from hueb import settings
@@ -18,6 +19,7 @@ from django.utils import translation
 urlpatterns = [
     # ex: /polls/
     path("admin/", admin.site.urls),
+    path("", include("publications.urls")),
     path("", IndexView.as_view(), name="Index"),
     path("search", Search.as_view(), name="search"),
     path("publications", Publications.as_view(), name="publications"),
@@ -37,7 +39,7 @@ urlpatterns = [
     url(r"^i18n/", include("django.conf.urls.i18n")),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
-# urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # urlpatterns += i18n_patterns(
 #'',
