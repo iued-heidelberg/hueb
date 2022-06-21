@@ -12,6 +12,7 @@ services:
       - ENV=${ENV}
       - DEBUG=${DEBUG}
       - STATIC_DIR=${STATIC_DIR}
+      - MEDIA_DIR=${MEDIA_DIR}
       - ALLOWED_HOSTS=${ALLOWED_HOSTS}
 
       - HONEYCOMB_API_KEY=${HONEYCOMB_API_KEY}
