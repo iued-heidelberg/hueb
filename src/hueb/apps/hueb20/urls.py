@@ -19,7 +19,6 @@ from django.utils import translation
 urlpatterns = [
     # ex: /polls/
     path("admin/", admin.site.urls),
-    path("", include("publications.urls")),
     path("", IndexView.as_view(), name="Index"),
     path("search", Search.as_view(), name="search"),
     path("publications", Publications.as_view(), name="publications"),
