@@ -34,6 +34,7 @@ services:
     volumes:
       - ${NGINX_CONF}:/etc/nginx/nginx.conf
       - /etc/letsencrypt/:/etc/letsencrypt/
+      - data_directory:/data
     ports:
       - 80:80
       - 443:443
