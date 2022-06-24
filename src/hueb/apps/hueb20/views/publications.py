@@ -1,4 +1,6 @@
 import re
+import os
+from hueb import settings
 from django.views.generic import ListView
 from django.views.generic.edit import FormMixin, FormView
 from hueb.apps.publications.models import Publication
@@ -33,7 +35,6 @@ class FormListView(ListView, FormView):
 
     def post(self, request, *args, **kwargs):
         form = self.get_form()
-        object_list = self.get_queryset()
         if form.is_valid():
             return self.form_valid(form)
         else:
@@ -63,6 +64,16 @@ class Publications(FormListView):
     paginate_by = 3
     form_class = SubscribeForm
     # success_url = reverse_lazy("publications")
+
+    def download_pdf(request, pk):
+        pub = Publication.objects.get(id=pk)
+        with open(os.path.join(settings.MEDIA_ROOT, pub.file.path), "rb") as fh:
+            response = HttpResponse(fh.read(), content_type="application/pdf")
+            response["Content-Disposition"] = "attachment; filename=invoice.pdf"
+            return response
+        # response = requests.get(pub.file.url)
+        # response = HttpResponse(response.content, content_type='application/pdf')
+        # return response
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
