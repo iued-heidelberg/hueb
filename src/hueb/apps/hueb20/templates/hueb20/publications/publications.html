@@ -1,7 +1,6 @@
 {% extends 'hueb20/__base.html' %}
 {% load i18n %}
 {% block content %}
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <style>
     .alert{margin: auto; width: 90%; align: center; border:1px solid transparent;border-radius:4px; opacity: 1; transition: opacity 0.6s; /* 600ms to fade out */}
     .alert-danger{color:#a94442;background-color:#f2dede;border-color:#ebccd1}
@@ -19,82 +18,7 @@
     .closebtn:hover {
       color: black;
     }
-    /*--thank you pop starts here--*/
-    .modal-confirm {
-	color: #636363;
-	width: 325px;
-	font-size: 14px;
-    }
-    .modal-confirm .modal-content {
-        padding: 20px;
-        border-radius: 5px;
-        border: none;
-    }
-    .modal-confirm .modal-header {
-        border-bottom: none;
-        position: relative;
-    }
-    .modal-confirm h4 {
-        text-align: center;
-        font-size: 26px;
-        margin: 30px 0 -15px;
-    }
-    .modal-confirm .form-control, .modal-confirm .btn {
-        min-height: 40px;
-        border-radius: 3px;
-    }
-    .modal-confirm .close {
-        position: absolute;
-        top: -5px;
-        right: -5px;
-    }
-    .modal-confirm .modal-footer {
-        border: none;
-        text-align: center;
-        border-radius: 5px;
-        font-size: 13px;
-    }
-    .modal-confirm .icon-box {
-        color: #fff;
-        position: absolute;
-        margin: 0 auto;
-        left: 0;
-        right: 0;
-        top: -70px;
-        width: 95px;
-        height: 95px;
-        border-radius: 50%;
-        z-index: 9;
-        background: #82ce34;
-        padding: 15px;
-        text-align: center;
-        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
-    }
-    .modal-confirm .icon-box i {
-        font-size: 58px;
-        position: relative;
-        top: 3px;
-    }
-    .modal-confirm.modal-dialog {
-        margin-top: 80px;
-    }
-    .modal-confirm .btn {
-        color: #fff;
-        border-radius: 4px;
-        background: #82ce34;
-        text-decoration: none;
-        transition: all 0.4s;
-        line-height: normal;
-        border: none;
-    }
-    .modal-confirm .btn:hover, .modal-confirm .btn:focus {
-        background: #6fb32b;
-        outline: none;
-    }
-    .trigger-btn {
-        display: inline-block;
-        margin: 100px auto;
-    }
+
     /*--thank you pop ends here--*/
     .slideshow-container{
         margin-right:5%;
@@ -170,6 +94,15 @@
         overflow: hidden;
         margin-bottom:10px;
     }
+    .modal{z-index:3;display:none;padding-top:100px;position:fixed;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:rgb(0,0,0);background-color:rgba(0,0,0,0.4)}
+    .modal-content{margin:auto;background-color:#fff;position:relative;padding:0;outline:0;width:600px}
+    .modal-container{padding:0.01em 16px}
+    .animate-zoom{animation:animatezoom 0.6s}@keyframes animatezoom{from{transform:scale(0)} to{transform:scale(1)}}
+    .modal-center{display:inline-block;width:auto}
+    .wide{letter-spacing:4px}
+    .modal-button{border:none;display:inline-block;padding:8px 16px;vertical-align:middle;overflow:hidden;text-decoration:none;color:inherit;background-color:inherit;text-align:center;cursor:pointer;white-space:nowrap}
+    .modal-white{color:#000!important;background-color:#fff!important}
+    .card{box-shadow:0 4px 10px 0 rgba(0,0,0,0.2),0 4px 20px 0 rgba(0,0,0,0.19)}
 </style>
   <div style="width: 75%; margin:0 auto;">
     <div class="fw-full lg:flex-no-wrap lg:flex-none bg-sand-bg" style="margin-left:2.5%">
@@ -195,7 +128,8 @@
                     </td>
                     <td style="width: 40%">
                         <button class="button">
-                            <a href={{recent.file.url}}>
+                            <a href="{% url "pubPdf" recent.id %}">
+                            <!--a href={{recent.file.url}}-->
                                 {% translate "DOWNLOAD" %}
                             </a>
                         </button>
@@ -221,7 +155,8 @@
                             </td>
                             <td style="width: 40%">
                               <button class="button">
-                                  <a href={{result.file.url}}>
+                                  <a href="{% url "pubPdf" result.id %}">
+                                  <!--a href={{result.file.url}}-->
                                       {% translate "DOWNLOAD" %}
                                   </a>
                               </button>
@@ -269,24 +204,24 @@
         </form>
     </div>
     </div>
-    <div id="subPop" class="w3-modal">
-      <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="padding:32px; max-width:600px">
-        <div class="w3-container w3-white w3-center">
-            <h1 class="w3-wide">{% translate "Thank you!" %}</h1>
-            <h4 class="w3-wide">{% translate "Please check your E-Mail to confirm your subscription." %}</h4>
+    <div id="subPop" class="modal">
+      <div class="modal-content card animate-zoom" style="padding:32px; max-width:600px">
+        <div class="modal-white modal-container modal-center">
+            <h1 class="wide">{% translate "Thank you!" %}</h1>
+            <h4 class="wide">{% translate "Please check your E-Mail to confirm your subscription." %}</h4>
             <form action="publications">
-                <button style="background-color: #6CBB3C; border-radius: 8px;" type="submit" class="w3-button">OK</button>
+                <button style="background-color: #6CBB3C; border-radius: 8px;" type="submit" class="modal-button">OK</button>
             </form>
         </div>
       </div>
     </div>
-    <div id="unsubPop" class="w3-modal">
-      <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="padding:32px; max-width:600px">
-        <div class="w3-container w3-white w3-center">
-            <h1 class="w3-wide">{% translate "We will miss you!" %}</h1>
-            <h4 class="w3-wide">{% translate "Please check your E-Mail to confirm your unsubscription." %}</h4>
+    <div id="unsubPop" class="modal">
+      <div class="modal-content card animate-zoom" style="padding:32px; max-width:600px">
+        <div class="modal-white modal-container modal-center">
+            <h1 class="wide">{% translate "We will miss you!" %}</h1>
+            <h4 class="wide">{% translate "Please check your E-Mail to confirm your unsubscription." %}</h4>
             <form action="publications">
-                <button style="background-color: #6CBB3C; border-radius: 8px;" type="submit" class="w3-button">OK</button>
+                <button style="background-color: #6CBB3C; border-radius: 8px;" type="submit" class="modal-button">OK</button>
             </form>
         </div>
       </div>

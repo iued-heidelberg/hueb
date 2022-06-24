@@ -19,6 +19,7 @@ from django.utils import translation
 urlpatterns = [
     # ex: /polls/
     path("admin/", admin.site.urls),
+    # path("padmin/", include("publication.urls")),#conflict change the path
     path("", IndexView.as_view(), name="Index"),
     path("search", Search.as_view(), name="search"),
     path("publications", Publications.as_view(), name="publications"),
@@ -34,12 +35,16 @@ urlpatterns = [
     path(
         "document/<int:pk>/export_bib", DocumentDetailView.download_bib, name="docBib"
     ),
+    path("publications/<int:pk>/", Publications.download_pdf, name="pubPdf"),
     path("jsi18n/", JavaScriptCatalog.as_view(), name="javascript-catalog"),
     url(r"^i18n/", include("django.conf.urls.i18n")),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
+
+print("urls.py MEDIA_URL: %s" % (settings.MEDIA_URL))
+print("urls.py MEDIA_ROOT: %s" % (settings.MEDIA_ROOT))
 # urlpatterns += i18n_patterns(
 #'',
 # (_(r'^dual-lang/'), include('duallang.urls')),

@@ -17,5 +17,3 @@ class Publication(models.Model):
             return mark_safe(f"<a href='{self.file.url}'>Download File</a>")
         else:
             return "No attachment"
-
-    # download_link.allow_tags = True
