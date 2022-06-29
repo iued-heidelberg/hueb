@@ -2,6 +2,7 @@
 {% load i18n %}
 
 {% block content %}
+{% if user.is_authenticated %}
   <div class="flex-col w-full lg:flex-row" style="width: 100%">
     <div class="flex-col w-full lg:flex-row">
 
@@ -20,5 +21,15 @@
         {% include "hueb20/document_details/export_formset.html" %}
     </div>
   </div>
+{% else %}
+<div class="fw-full lg:flex-no-wrap lg:flex-none bg-sand-bg" style="margin-left:30%">
+        <p class="mx-8 mt-16 text-xl font-bald lg:text-x">
+          {% translate "You need to be logged in to access this page. " %}
+        </p>
+  <a style= "text-align: center;" class="block px-4 py-2 mt-16 align-middle border-4 border-black lg:hover:bg-sand-bg lg:hover:text-gray-bg-darker font-bold border-black hover:border-black"
+     @click="overlayOpen = true"> Log in </a>
+  </a>
+</div>
+{% endif %}
 {% endblock %}
 
