@@ -111,7 +111,7 @@
           <b>H</b>eidelberger <b>Ü</b>bersetzungs <b>B</b>ibliographie
         </p>
         <h1 class="mx-8  text-5xl font-bald lg:text-x">
-          {% translate "PUBLIKATIONEN " %}
+          {% translate "PUBLIKATIONEN" %}
         </h1>
     </div>
     <div class="flex flex-auto shadow-lg hover:shadow-xl"  style="margin-bottom: 1rem;">
@@ -137,7 +137,7 @@
                     </td>
                   </tr>
               </table>
-              <a href={{ recent.file.url }}><img style="margin-left:1.5%; margin-right:1.5%;" src="{{ recent.preview.url }}"></a>
+              <img style="margin-left:1.5%; margin-right:1.5%;" src="{{ recent.preview.url }}">
           </div>
       </div>
       <div class="slideshow-container flex-col justify-between w-2/5 p-6 px-4 bg-sand-300 bg-opacity-25" style="margin-right: 0; margin-left: auto">
@@ -179,7 +179,7 @@
                 <div class="text-xl" style="text-align: center">{% translate "Leave name field empty for anonymous subscription" %}</div>
             </div>
             <div>
-                <input type="text" placeholder="First Name and Last Name" name="name">
+                <input type="text" placeholder='{% translate "First Name and Last Name" %}' name="name">
                 {% if subscribe_form.name.errors %}
                 <div class="alert alert-danger alert-dismissible text-l" style="padding: 10px; text-align: center;">
                     <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
@@ -191,7 +191,7 @@
                 {% if subscribe_form.email.errors %}
                 <div class="alert alert-danger alert-dismissible text-l" style="padding: 10px; text-align: center;">
                     <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-                    <strong>Warning!</strong> {{ subscribe_form.email.errors }}</div>
+                    <strong>{% translate "Warning! " %}</strong> {{ subscribe_form.email.errors }}</div>
                 {% endif %}
             </div>
             <div style="overflow:hidden;">
