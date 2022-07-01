@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-01 12:20+0200\n"
+"POT-Creation-Date: 2022-07-01 13:33+0200\n"
 "PO-Revision-Date: 2022-07-01 10:37+0000\n"
 "Last-Translator:   <aniadymanus@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -226,7 +226,6 @@ msgstr "of"
 #: templates/hueb20/includables/pages.html:32
 #: templates/hueb20/includables/pagination.html:29
 #: templates/hueb20/includables/pagination.html:33
-#| msgid "von"
 msgid "vor"
 msgstr "before"
 
@@ -235,7 +234,6 @@ msgid "erste Seite"
 msgstr "first page"
 
 #: templates/hueb20/includables/pagination.html:36
-#| msgid "erste Seite"
 msgid "letzte Seite"
 msgstr "last page"
 
@@ -256,9 +254,9 @@ msgid ""
 "Übersetzungsbibliographie eine Informationsinfrastruktur bereitstellen, die "
 "zwei Zwecken dienen soll:"
 msgstr ""
-"This project is funded by the German Research Foundation and aims to provide"
-" an online bibliography of translations of nonfictional texts mainly from "
-"the early modern period, i.e. the collection of German translations of non-"
+"This project is funded by the German Research Foundation and aims to provide "
+"an online bibliography of translations of nonfictional texts mainly from the "
+"early modern period, i.e. the collection of German translations of non-"
 "literary texts published between 1450 and 1850. "
 
 #: templates/hueb20/index/old/project_description.html:16
@@ -271,8 +269,8 @@ msgstr ""
 "Apart from developing a technical infrastructure our main task concerns the "
 "collection of data: we will compile bibliographical information on "
 "translations from English and Dutch into German. Even though belles-lettres "
-"will be excluded, the texts will cover a wide range of subject matters, from"
-" natural sciences, medicine and technology via historical documents and "
+"will be excluded, the texts will cover a wide range of subject matters, from "
+"natural sciences, medicine and technology via historical documents and "
 "travel reports to theological essays. In addition, we will transfer data "
 "from two existing bibliographies of German translations in the early modern "
 "period (Romance-German “Saarbrücker Übersetzungsbibliographie”/“Saarbrücken "
@@ -286,8 +284,8 @@ msgid ""
 "Diese soll dann gemeinsam mit zwei Vorgängerprojekten zur romanisch-"
 "deutschen und lateinisch-deutschen Übersetzung (Saarbrücker "
 "Übersetzungsbibliographie) zu einer Gesamtbibliographie integriert werden, "
-"um anderen Forschenden umfassende bibliographische Daten zur Übersetzung ins"
-" Deutsche in der frühen Neuzeit und darüber hinaus verfügbar zu machen."
+"um anderen Forschenden umfassende bibliographische Daten zur Übersetzung ins "
+"Deutsche in der frühen Neuzeit und darüber hinaus verfügbar zu machen."
 msgstr ""
 "In the end, we will provide a comprehensive bibliography of translations of "
 "nonfictional texts from the early modern period, which will cover Latin, "
@@ -300,16 +298,16 @@ msgstr ""
 #: templates/hueb20/index/old/project_description.html:24
 #: templates/hueb20/index/project_description.html:24
 msgid ""
-"Durch die Zusammenführung der dann insgesamt drei Datenbanken "
-"(englisch/niederländisch-deutsche HÜB, lateinisch-deutsche SÜB-L, romanisch-"
-"deutsche SÜB) wird eine umfassende Übersetzungsbibliographie "
-"frühneuzeitlicher nichtfiktionaler Texte mit Lateinisch, Französisch, "
-"Italienisch, Spanisch, Portugiesisch, Englisch und Niederländisch als "
-"systematisch erfassten Original- und Brückensprachen entstehen, die "
-"Forschenden eine umfassende Datenbasis für Untersuchungen verschiedenster "
-"Ausrichtung liefern kann. Darüber hinaus soll die entwickelte Infrastruktur "
-"zugleich interessierten Kolleginnen und Kollegen für die   Erfassung eigener"
-" bibliographischer Daten zur Verfügung gestellt werden."
+"Durch die Zusammenführung der dann insgesamt drei Datenbanken (englisch/"
+"niederländisch-deutsche HÜB, lateinisch-deutsche SÜB-L, romanisch-deutsche "
+"SÜB) wird eine umfassende Übersetzungsbibliographie frühneuzeitlicher "
+"nichtfiktionaler Texte mit Lateinisch, Französisch, Italienisch, Spanisch, "
+"Portugiesisch, Englisch und Niederländisch als systematisch erfassten "
+"Original- und Brückensprachen entstehen, die Forschenden eine umfassende "
+"Datenbasis für Untersuchungen verschiedenster Ausrichtung liefern kann. "
+"Darüber hinaus soll die entwickelte Infrastruktur zugleich interessierten "
+"Kolleginnen und Kollegen für die   Erfassung eigener bibliographischer Daten "
+"zur Verfügung gestellt werden."
 msgstr ""
 "On the whole, we consider our project to be a contribution to the field of "
 "Digital Humanities: on the one hand, a typical subject matter of the Arts "
@@ -320,9 +318,9 @@ msgstr ""
 #: templates/hueb20/index/old/project_description.html:31
 #: templates/hueb20/index/project_description.html:31
 msgid ""
-"Übernommen aus \"Pluvinel, Antonium: Maneige royal ou l’on peut remarquer la"
-" defaut et la perfection du chevalier\" mit Genehmigung der Universitäts- "
-"und Landesbibliothek Sachsen-Anhalt"
+"Übernommen aus \"Pluvinel, Antonium: Maneige royal ou l’on peut remarquer la "
+"defaut et la perfection du chevalier\" mit Genehmigung der Universitäts- und "
+"Landesbibliothek Sachsen-Anhalt"
 msgstr ""
 "Taken from \"Pluvinel, Antonium: Maneige royal ou l’on peut remarquer la "
 "defaut et la perfection du chevalier\" by courtesy of the University and "
@@ -385,7 +383,6 @@ msgid "DETAILS ZUR PERSON:"
 msgstr "PERSON DETAILS:"
 
 #: templates/hueb20/person_details/person_details.html:80
-#| msgid "Originale"
 msgid "Originale:"
 msgstr "Originals:"
 
@@ -411,8 +408,11 @@ msgid "First Name and Last Name"
 msgstr ""
 
 #: templates/hueb20/publications/publications.html:186
-#: templates/hueb20/publications/publications.html:194
 msgid "Warning!"
+msgstr ""
+
+#: templates/hueb20/publications/publications.html:194
+msgid "Warning! "
 msgstr ""
 
 #: templates/hueb20/publications/publications.html:211
@@ -453,7 +453,6 @@ msgstr "Search"
 
 #: templates/hueb20/search/old/search_formset.html:96
 #: templates/hueb20/search/search_formset.html:96
-#| msgid "Suchen"
 msgid "Suchanleitung"
 msgstr "Search Guide"
 
@@ -517,7 +516,6 @@ msgid "Übersetzer"
 msgstr "Translator"
 
 #: templates/hueb20/search/search.html:19
-#| msgid "Ergebnisse"
 msgid "Ergebnis"
 msgstr "Result"
 
@@ -571,7 +569,6 @@ msgstr "DOWNLOAD DATA: "
 #: templates/hueb20/search/single_result_document.html:156
 #: templates/hueb20/search/single_result_document.html:242
 #: templates/hueb20/search/single_result_document.html:297
-#| msgid "unbekannt"
 msgid "Sprache unbekannt"
 msgstr "unknown language"
 
@@ -579,7 +576,6 @@ msgstr "unknown language"
 #: templates/hueb20/search/single_result_document.html:163
 #: templates/hueb20/search/single_result_document.html:252
 #: templates/hueb20/search/single_result_document.html:301
-#| msgid "Veröffentlicht"
 msgid "Veröffentlichungsort unbekannt"
 msgstr "unknown place of publication "
 
@@ -587,7 +583,6 @@ msgstr "unknown place of publication "
 #: templates/hueb20/search/single_result_document.html:169
 #: templates/hueb20/search/single_result_document.html:262
 #: templates/hueb20/search/single_result_document.html:305
-#| msgid "unbekannt"
 msgid "DDC unbekannt"
 msgstr "unknown DDC"
 
@@ -597,12 +592,10 @@ msgstr "Original not found"
 
 #: templates/hueb20/search/single_result_document.html:134
 #: templates/hueb20/search/single_result_document.html:283
-#| msgid "unbekannt"
 msgid "Titel unbekannt"
 msgstr "unknown title"
 
 #: templates/hueb20/search/single_result_document.html:282
-#| msgid "Übersetzungen"
 msgid "Übersetzung nicht gefunden"
 msgstr "Translation not found"
 
