@@ -8,206 +8,247 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-30 14:36+0000\n"
-"PO-Revision-Date: 2021-12-17 16:38+0000\n"
-"Last-Translator: <anne.weber@iued.uni-heidelberg.de>\n"
+"POT-Creation-Date: 2022-06-30 14:57+0200\n"
+"PO-Revision-Date: 2022-06-30 12:38+0000\n"
+"Last-Translator:   <aniadymanus@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Translated-Using: django-rosetta 0.9.7\n"
+"X-Translated-Using: django-rosetta 0.9.8\n"
 
-#: hueb/apps/hueb20/context_processors.py:7
-#: hueb/apps/hueb20/tests/test_context_processors.py:38
+#: context_processors.py:8 tests/test_context_processors.py:38
 msgid "Projekt"
 msgstr "Project"
 
-#: hueb/apps/hueb20/context_processors.py:10
-#: hueb/apps/hueb20/context_processors.py:12
-#: hueb/apps/hueb20/tests/test_context_processors.py:42
+#: context_processors.py:13 context_processors.py:20
+#: tests/test_context_processors.py:42
 msgid "Suche"
 msgstr "Search"
 
-#: hueb/apps/hueb20/context_processors.py:14
-#: hueb/apps/hueb20/tests/test_context_processors.py:46
-msgid "Katalog"
-msgstr "Catalogue"
+#: context_processors.py:24 context_processors.py:28
+#: tests/test_context_processors.py:46
+msgid "Publikationen"
+msgstr "Publications"
 
-#: hueb/apps/hueb20/models/document.py:24 hueb/apps/hueb20/views/search.py:149
+#: models/document.py:27 views/search.py:162
 msgid "Original"
 msgstr "Original"
 
-#: hueb/apps/hueb20/models/document.py:25 hueb/apps/hueb20/views/search.py:149
+#: models/document.py:28 views/search.py:162
 msgid "Übersetzung"
 msgstr "Translation"
 
-#: hueb/apps/hueb20/models/document.py:26
+#: models/document.py:29
 msgid "Brückenübersetzung"
 msgstr "Intermediary Translation"
 
-#: hueb/apps/hueb20/models/document.py:211
+#: models/document.py:258
 msgid "Titel"
 msgstr "Title"
 
-#: hueb/apps/hueb20/models/document.py:212
+#: models/document.py:259
 msgid "Person"
 msgstr "Person"
 
-#: hueb/apps/hueb20/models/document.py:213
-#: hueb/apps/hueb20/templates/hueb20/search/single_result_document.html:74
-#: hueb/apps/hueb20/templates/hueb20/search/single_result_document.html:152
+#: models/document.py:260
+#: templates/hueb20/search/old/single_result_document.html:97
+#: templates/hueb20/search/old/single_result_document.html:179
+#: templates/hueb20/search/single_result_document.html:107
+#: templates/hueb20/search/single_result_document.html:167
+#: templates/hueb20/search/single_result_document.html:257
+#: templates/hueb20/search/single_result_document.html:304
 msgid "DDC"
 msgstr "DDC"
 
-#: hueb/apps/hueb20/models/document.py:214
+#: models/document.py:261
 msgid "Jahr"
 msgstr "Year"
 
-#: hueb/apps/hueb20/models/document.py:215
-#: hueb/apps/hueb20/templates/hueb20/search/single_result_document.html:51
-#: hueb/apps/hueb20/templates/hueb20/search/single_result_document.html:129
+#: models/document.py:262
+#: templates/hueb20/search/old/single_result_document.html:87
+#: templates/hueb20/search/old/single_result_document.html:169
+#: templates/hueb20/search/single_result_document.html:87
+#: templates/hueb20/search/single_result_document.html:151
+#: templates/hueb20/search/single_result_document.html:237
+#: templates/hueb20/search/single_result_document.html:296
 msgid "Sprache"
 msgstr "Language"
 
-#: hueb/apps/hueb20/models/document.py:219
+#: models/document.py:263
+msgid "Datenbank"
+msgstr "Database"
+
+#: models/document.py:267
 msgid "Sortiert nach Jahr"
 msgstr "Sort by Year"
 
-#: hueb/apps/hueb20/models/document.py:220
+#: models/document.py:268
 msgid "Sortiert nach Titel"
 msgstr "Sort by Title"
 
-#: hueb/apps/hueb20/models/document.py:221
+#: models/document.py:269
 msgid "Sortiert nach Autor"
 msgstr "Sort by Author"
 
-#: hueb/apps/hueb20/models/document.py:222
+#: models/document.py:270
 msgid "Sortiert nach DDC"
 msgstr "Sort by DDC"
 
-#: hueb/apps/hueb20/templates/hueb20/document_details/detail_view.html:11
-msgid "Details zum Dokument:"
-msgstr "Document Details:"
+#: templates/hueb20/document_details/detail_view.html:11
+msgid "DETAILS ZUM DOKUMENT:"
+msgstr "DOCUMENT DETAILS:"
 
-#: hueb/apps/hueb20/templates/hueb20/document_details/document_details.html:13
+#: templates/hueb20/document_details/detail_view.html:27
+#: templates/hueb20/person_details/person_detail_view.html:23
+#: templates/hueb20/publications/publications.html:258
+msgid "You need to be logged in to access this page. "
+msgstr ""
+
+#: templates/hueb20/document_details/document_details.html:55
 msgid "Titel:"
 msgstr "Title:"
 
-#: hueb/apps/hueb20/templates/hueb20/document_details/document_details.html:18
+#: templates/hueb20/document_details/document_details.html:58
 msgid "Untertitel:"
 msgstr "Subtitle:"
 
-#: hueb/apps/hueb20/templates/hueb20/document_details/document_details.html:29
+#: templates/hueb20/document_details/document_details.html:67
 msgid "Ausgabe:"
 msgstr "Edition:"
 
-#: hueb/apps/hueb20/templates/hueb20/document_details/document_details.html:40
+#: templates/hueb20/document_details/document_details.html:76
 msgid "Erscheinungsjahr:"
 msgstr "Year of Publication:"
 
-#: hueb/apps/hueb20/templates/hueb20/document_details/document_details.html:66
+#: templates/hueb20/document_details/document_details.html:100
 msgid "Originalsprache:"
 msgstr "Source Language:"
 
-#: hueb/apps/hueb20/templates/hueb20/document_details/document_details.html:74
+#: templates/hueb20/document_details/document_details.html:110
 msgid "Übersetzungsprache:"
 msgstr "Target Language:"
 
-#: hueb/apps/hueb20/templates/hueb20/document_details/document_details.html:80
+#: templates/hueb20/document_details/document_details.html:114
 msgid "Kulturkreis:"
 msgstr "Cultural Circle:"
 
-#: hueb/apps/hueb20/templates/hueb20/document_details/document_details.html:85
+#: templates/hueb20/document_details/document_details.html:117
 msgid "Author:"
 msgstr "Author:"
 
-#: hueb/apps/hueb20/templates/hueb20/document_details/document_details.html:100
+#: templates/hueb20/document_details/document_details.html:132
+#: templates/hueb20/document_details/document_details.html:157
+#: templates/hueb20/document_details/document_details.html:227
+#: templates/hueb20/document_details/document_details.html:247
+#: templates/hueb20/document_details/document_details.html:277
+#: templates/hueb20/document_details/document_details.html:293
+#: templates/hueb20/document_details/document_details.html:319
+#: templates/hueb20/document_details/document_details.html:344
+#: templates/hueb20/person_details/person_details.html:94
+#: templates/hueb20/person_details/person_details.html:117
+msgid "Mehr"
+msgstr "More"
+
+#: templates/hueb20/document_details/document_details.html:144
 msgid "Übersetzer:"
 msgstr "Translator:"
 
-#: hueb/apps/hueb20/templates/hueb20/document_details/document_details.html:116
+#: templates/hueb20/document_details/document_details.html:168
 msgid "Verlag:"
 msgstr "Publisher:"
 
-#: hueb/apps/hueb20/templates/hueb20/document_details/document_details.html:129
+#: templates/hueb20/document_details/document_details.html:179
 msgid "Erscheinungsort:"
 msgstr "Place of Publication:"
 
-#: hueb/apps/hueb20/templates/hueb20/document_details/document_details.html:134
+#: templates/hueb20/document_details/document_details.html:188
 msgid "DDC:"
 msgstr "DDC:"
 
-#: hueb/apps/hueb20/templates/hueb20/document_details/document_details.html:139
+#: templates/hueb20/document_details/document_details.html:191
 msgid "Standorte:"
 msgstr "Locations:"
 
-#: hueb/apps/hueb20/templates/hueb20/document_details/document_details.html:161
-#: hueb/apps/hueb20/templates/hueb20/document_details/document_details.html:220
+#: templates/hueb20/document_details/document_details.html:211
+#: templates/hueb20/document_details/document_details.html:330
 msgid "Übersetzung:"
 msgstr "Translation:"
 
-#: hueb/apps/hueb20/templates/hueb20/document_details/document_details.html:182
+#: templates/hueb20/document_details/document_details.html:257
 msgid "Original:"
 msgstr "Original:"
 
-#: hueb/apps/hueb20/templates/hueb20/document_details/document_details.html:205
+#: templates/hueb20/document_details/document_details.html:306
 msgid "Brückenübersetzung:"
 msgstr "Intermediary Translation:"
 
-#: hueb/apps/hueb20/templates/hueb20/document_details/document_details.html:233
+#: templates/hueb20/document_details/document_details.html:352
 msgid "Kommentare:"
 msgstr "Comments:"
 
-#: hueb/apps/hueb20/templates/hueb20/includables/overlay_login.html:22
+#: templates/hueb20/document_details/export_formset.html:95
+msgid "Help"
+msgstr ""
+
+#: templates/hueb20/document_details/export_formset.html:98
+msgid "help text"
+msgstr ""
+
+#: templates/hueb20/includables/overlay_login.html:22
 msgid "Benutzername:"
 msgstr "User Name:"
 
-#: hueb/apps/hueb20/templates/hueb20/includables/overlay_login.html:32
+#: templates/hueb20/includables/overlay_login.html:32
 msgid "Passwort:"
 msgstr "Password:"
 
-#: hueb/apps/hueb20/templates/hueb20/includables/pagination.html:7
-msgid "erste Seite"
-msgstr "first page"
-
-#: hueb/apps/hueb20/templates/hueb20/includables/pagination.html:11
-#: hueb/apps/hueb20/templates/hueb20/includables/pagination.html:15
+#: templates/hueb20/includables/pages.html:10
+#: templates/hueb20/includables/pages.html:14
+#: templates/hueb20/includables/pagination.html:11
+#: templates/hueb20/includables/pagination.html:15
 msgid "zurück"
 msgstr "previous"
 
-#: hueb/apps/hueb20/templates/hueb20/includables/pagination.html:22
+#: templates/hueb20/includables/pages.html:21
+#: templates/hueb20/includables/pagination.html:22
 msgid "Seite"
 msgstr "page"
 
-#: hueb/apps/hueb20/templates/hueb20/includables/pagination.html:22
-#: hueb/apps/hueb20/views/search.py:50
+#: templates/hueb20/includables/pages.html:21
+#: templates/hueb20/includables/pagination.html:22 views/search.py:50
 msgid "von"
 msgstr "of"
 
-#: hueb/apps/hueb20/templates/hueb20/includables/pagination.html:29
-#: hueb/apps/hueb20/templates/hueb20/includables/pagination.html:33
-#, fuzzy
-#| msgid "von"
+#: templates/hueb20/includables/pages.html:28
+#: templates/hueb20/includables/pages.html:32
+#: templates/hueb20/includables/pagination.html:29
+#: templates/hueb20/includables/pagination.html:33
 msgid "vor"
-msgstr "of"
+msgstr "before"
 
-#: hueb/apps/hueb20/templates/hueb20/includables/pagination.html:36
-#, fuzzy
-#| msgid "erste Seite"
-msgid "letzte Seite"
+#: templates/hueb20/includables/pagination.html:7
+msgid "erste Seite"
 msgstr "first page"
 
-#: hueb/apps/hueb20/templates/hueb20/index/project_description.html:6
+#: templates/hueb20/includables/pagination.html:36
+msgid "letzte Seite"
+msgstr "last page"
+
+#: templates/hueb20/index/old/project_description.html:6
+#: templates/hueb20/index/project_description.html:6
 msgid "Heidelberger"
 msgstr "Heidelberg"
 
-#: hueb/apps/hueb20/templates/hueb20/index/project_description.html:6
+#: templates/hueb20/index/old/project_description.html:6
+#: templates/hueb20/index/project_description.html:6
 msgid "Übersetzungsbibliographie"
 msgstr "Bibliography of Translations of Nonfictional Texts"
 
-#: hueb/apps/hueb20/templates/hueb20/index/project_description.html:12
+#: templates/hueb20/index/old/project_description.html:12
+#: templates/hueb20/index/project_description.html:12
 msgid ""
 "Im Rahmen der Digital Humanities wird die DFG-geförderte Heidelberger "
 "Übersetzungsbibliographie eine Informationsinfrastruktur bereitstellen, die "
@@ -218,7 +259,8 @@ msgstr ""
 "early modern period, i.e. the collection of German translations of non-"
 "literary texts published between 1450 and 1850. "
 
-#: hueb/apps/hueb20/templates/hueb20/index/project_description.html:16
+#: templates/hueb20/index/old/project_description.html:16
+#: templates/hueb20/index/project_description.html:16
 msgid ""
 "Zunächst geht es um die Zusammenstellung einer Bibliographie von vorwiegend "
 "frühneuzeitlichen Übersetzungen aus dem Englischen und Niederländischen ins "
@@ -236,7 +278,8 @@ msgstr ""
 "Übersetzungsbibliographie – Latein”/“Saarbrücken Translation Bibliography – "
 "Latin”), which were also funded by the DFG. "
 
-#: hueb/apps/hueb20/templates/hueb20/index/project_description.html:20
+#: templates/hueb20/index/old/project_description.html:20
+#: templates/hueb20/index/project_description.html:20
 msgid ""
 "Diese soll dann gemeinsam mit zwei Vorgängerprojekten zur romanisch-"
 "deutschen und lateinisch-deutschen Übersetzung (Saarbrücker "
@@ -252,7 +295,8 @@ msgstr ""
 "our internal user interface to enable them to create their own specialised "
 "bibliographies. "
 
-#: hueb/apps/hueb20/templates/hueb20/index/project_description.html:24
+#: templates/hueb20/index/old/project_description.html:24
+#: templates/hueb20/index/project_description.html:24
 msgid ""
 "Durch die Zusammenführung der dann insgesamt drei Datenbanken (englisch/"
 "niederländisch-deutsche HÜB, lateinisch-deutsche SÜB-L, romanisch-deutsche "
@@ -271,7 +315,8 @@ msgstr ""
 "the same time, interested researchers can use our IT infrastructure to "
 "collaboratively expand the overall database."
 
-#: hueb/apps/hueb20/templates/hueb20/index/project_description.html:31
+#: templates/hueb20/index/old/project_description.html:31
+#: templates/hueb20/index/project_description.html:31
 msgid ""
 "Übernommen aus \"Pluvinel, Antonium: Maneige royal ou l’on peut remarquer la "
 "defaut et la perfection du chevalier\" mit Genehmigung der Universitäts- und "
@@ -281,149 +326,378 @@ msgstr ""
 "defaut et la perfection du chevalier\" by courtesy of the University and "
 "State Library Saxony-Anhalt."
 
-#: hueb/apps/hueb20/templates/hueb20/index/project_description.html:37
+#: templates/hueb20/index/old/project_description.html:37
+#: templates/hueb20/index/project_description.html:37
 msgid "Kontakt"
 msgstr "Contact"
 
-#: hueb/apps/hueb20/templates/hueb20/index/project_description.html:41
+#: templates/hueb20/index/old/project_description.html:41
+#: templates/hueb20/index/project_description.html:41
 msgid "Projekt-Leitung:"
 msgstr "Director:"
 
-#: hueb/apps/hueb20/templates/hueb20/index/project_description.html:48
+#: templates/hueb20/index/old/project_description.html:48
+#: templates/hueb20/index/project_description.html:48
 msgid "Projekt-Koordination:"
 msgstr "Coordinators:"
 
-#: hueb/apps/hueb20/templates/hueb20/index/project_description.html:55
+#: templates/hueb20/index/old/project_description.html:55
+#: templates/hueb20/index/project_description.html:55
 msgid "und"
 msgstr "and"
 
-#: hueb/apps/hueb20/templates/hueb20/person_details/person_detail_view.html:11
+#: templates/hueb20/person_details/old/person_detail_view.html:11
 msgid "Details zur Person:"
 msgstr "Person Details:"
 
-#: hueb/apps/hueb20/templates/hueb20/person_details/person_details.html:11
+#: templates/hueb20/person_details/old/person_details.html:11
+#: templates/hueb20/person_details/person_details.html:48
 msgid "Name:"
 msgstr "Name:"
 
-#: hueb/apps/hueb20/templates/hueb20/person_details/person_details.html:15
+#: templates/hueb20/person_details/old/person_details.html:15
+#: templates/hueb20/person_details/person_details.html:51
 msgid "Alias:"
 msgstr "Alias:"
 
-#: hueb/apps/hueb20/templates/hueb20/person_details/person_details.html:20
+#: templates/hueb20/person_details/old/person_details.html:20
 msgid "Organisation:"
 msgstr "Organisation:"
 
-#: hueb/apps/hueb20/templates/hueb20/person_details/person_details.html:25
+#: templates/hueb20/person_details/old/person_details.html:25
+#: templates/hueb20/person_details/person_details.html:60
 msgid "Lebenszeit:"
 msgstr "Lifetime:"
 
-#: hueb/apps/hueb20/templates/hueb20/person_details/person_details.html:47
+#: templates/hueb20/person_details/old/person_details.html:47
 msgid "Dokumente:"
 msgstr "Documents:"
 
-#: hueb/apps/hueb20/templates/hueb20/person_details/person_details.html:64
+#: templates/hueb20/person_details/old/person_details.html:64
+#: templates/hueb20/person_details/person_details.html:105
 msgid "Übersetzungen:"
 msgstr "Translations:"
 
-#: hueb/apps/hueb20/templates/hueb20/search/search.html:16
+#: templates/hueb20/person_details/person_detail_view.html:11
+msgid "DETAILS ZUR PERSON:"
+msgstr "PERSON DETAILS:"
+
+#: templates/hueb20/person_details/person_details.html:80
+msgid "Originale:"
+msgstr "Originals:"
+
+#: templates/hueb20/publications/publications.html:114
+msgid "PUBLIKATIONEN"
+msgstr "PUBLICATIONS"
+
+#: templates/hueb20/publications/publications.html:134
+#: templates/hueb20/publications/publications.html:161
+msgid "DOWNLOAD"
+msgstr ""
+
+#: templates/hueb20/publications/publications.html:178
+msgid "SUBSCRIBE TO THE NEWSLETTER"
+msgstr ""
+
+#: templates/hueb20/publications/publications.html:179
+msgid "Leave name field empty for anonymous subscription"
+msgstr ""
+
+#: templates/hueb20/publications/publications.html:182
+msgid "First Name and Last Name"
+msgstr ""
+
+#: templates/hueb20/publications/publications.html:186
+#: templates/hueb20/publications/publications.html:194
+msgid "Warning!"
+msgstr ""
+
+#: templates/hueb20/publications/publications.html:211
+msgid "Thank you!"
+msgstr ""
+
+#: templates/hueb20/publications/publications.html:212
+msgid "Please check your E-Mail to confirm your subscription."
+msgstr ""
+
+#: templates/hueb20/publications/publications.html:222
+msgid "We will miss you!"
+msgstr ""
+
+#: templates/hueb20/publications/publications.html:223
+msgid "Please check your E-Mail to confirm your unsubscription."
+msgstr ""
+
+#: templates/hueb20/search/old/search.html:16
+#: templates/hueb20/search/search.html:21
 msgid "Ergebnisse"
 msgstr "Results:"
 
-#: hueb/apps/hueb20/templates/hueb20/search/search_formset.html:23
+#: templates/hueb20/search/old/search_formset.html:57
+#: templates/hueb20/search/search_formset.html:57
 msgid "Filter hinzufügen"
 msgstr "Add filter"
 
-#: hueb/apps/hueb20/templates/hueb20/search/search_formset.html:33
+#: templates/hueb20/search/old/search_formset.html:67
+#: templates/hueb20/search/search_formset.html:67
 msgid "Filter entfernen"
 msgstr "Remove filter"
 
-#: hueb/apps/hueb20/templates/hueb20/search/search_formset.html:51
+#: templates/hueb20/search/old/search_formset.html:85
+#: templates/hueb20/search/search_formset.html:85
 msgid "Suchen"
 msgstr "Search"
 
-#: hueb/apps/hueb20/templates/hueb20/search/single_result_document.html:24
-#: hueb/apps/hueb20/templates/hueb20/search/single_result_document.html:101
-msgid "Veröffentlicht"
-msgstr "Published"
+#: templates/hueb20/search/old/search_formset.html:96
+#: templates/hueb20/search/search_formset.html:96
+msgid "Suchanleitung"
+msgstr "Search Guide"
 
-#: hueb/apps/hueb20/templates/hueb20/search/single_result_document.html:28
-#: hueb/apps/hueb20/templates/hueb20/search/single_result_document.html:105
-#: hueb/apps/hueb20/templates/hueb20/search/single_result_document.html:141
-msgid "unbekannt"
-msgstr "unknown"
+#: templates/hueb20/search/old/search_formset.html:100
+msgid "How to search?"
+msgstr ""
 
-#: hueb/apps/hueb20/templates/hueb20/search/single_result_document.html:56
+#: templates/hueb20/search/old/single_result_document.html:48
+#: templates/hueb20/search/single_result_document.html:51
+#: templates/hueb20/search/single_result_document.html:139
 msgid "Autor"
 msgstr "Author"
 
-#: hueb/apps/hueb20/templates/hueb20/search/single_result_document.html:69
-#: hueb/apps/hueb20/templates/hueb20/search/single_result_document.html:147
+#: templates/hueb20/search/old/single_result_document.html:60
+#: templates/hueb20/search/old/single_result_document.html:141
+#: templates/hueb20/search/single_result_document.html:63
+#: templates/hueb20/search/single_result_document.html:145
+#: templates/hueb20/search/single_result_document.html:212
+#: templates/hueb20/search/single_result_document.html:292
+msgid "Veröffentlicht"
+msgstr "Published"
+
+#: templates/hueb20/search/old/single_result_document.html:64
+#: templates/hueb20/search/old/single_result_document.html:135
+#: templates/hueb20/search/old/single_result_document.html:145
+#: templates/hueb20/search/single_result_document.html:58
+#: templates/hueb20/search/single_result_document.html:66
+#: templates/hueb20/search/single_result_document.html:122
+#: templates/hueb20/search/single_result_document.html:141
+#: templates/hueb20/search/single_result_document.html:147
+#: templates/hueb20/search/single_result_document.html:207
+#: templates/hueb20/search/single_result_document.html:215
+#: templates/hueb20/search/single_result_document.html:272
+#: templates/hueb20/search/single_result_document.html:289
+#: templates/hueb20/search/single_result_document.html:293
+#: templates/hueb20/search/single_result_document.html:309
+msgid "unbekannt"
+msgstr "unknown"
+
+#: templates/hueb20/search/old/single_result_document.html:92
+#: templates/hueb20/search/old/single_result_document.html:174
+#: templates/hueb20/search/single_result_document.html:97
+#: templates/hueb20/search/single_result_document.html:161
+#: templates/hueb20/search/single_result_document.html:247
+#: templates/hueb20/search/single_result_document.html:300
 msgid "Ort"
 msgstr "Place"
 
-#: hueb/apps/hueb20/templates/hueb20/search/single_result_document.html:134
+#: templates/hueb20/search/old/single_result_document.html:102
+#: templates/hueb20/search/old/single_result_document.html:185
+#: templates/hueb20/search/single_result_document.html:117
+#: templates/hueb20/search/single_result_document.html:267
+#: templates/hueb20/search/single_result_document.html:308
+msgid "Databank"
+msgstr "Database"
+
+#: templates/hueb20/search/old/single_result_document.html:128
+#: templates/hueb20/search/single_result_document.html:200
+#: templates/hueb20/search/single_result_document.html:288
 msgid "Übersetzer"
 msgstr "Translator"
 
-#: hueb/apps/hueb20/views/search.py:28
+#: templates/hueb20/search/search.html:19
+#, fuzzy
+#| msgid "Ergebnisse"
+msgid "Ergebnis"
+msgstr "Results:"
+
+#: templates/hueb20/search/search.html:44
+msgid "You need to be logged in to access this page."
+msgstr ""
+
+#: templates/hueb20/search/search_formset.html:100
+#: templates/hueb20/search/search_formset.html:106
+#: templates/hueb20/search/search_formset.html:111
+#: templates/hueb20/search/search_formset.html:116
+msgid "How to search? "
+msgstr ""
+
+#: templates/hueb20/search/search_formset.html:101
+#: templates/hueb20/search/search_formset.html:107
+#: templates/hueb20/search/search_formset.html:112
+#: templates/hueb20/search/search_formset.html:117
+msgid "FILTER: You have variery of filters to choose"
+msgstr ""
+
+#: templates/hueb20/search/search_formset.html:102
+#: templates/hueb20/search/search_formset.html:108
+#: templates/hueb20/search/search_formset.html:113
+#: templates/hueb20/search/search_formset.html:118
+msgid "SORT: You have variery of filters to choose"
+msgstr ""
+
+#: templates/hueb20/search/search_formset.html:103
+#: templates/hueb20/search/search_formset.html:109
+#: templates/hueb20/search/search_formset.html:114
+#: templates/hueb20/search/search_formset.html:119
+msgid "RESULTS: You have variery of filters to choose"
+msgstr ""
+
+#: templates/hueb20/search/search_formset.html:104
+#: templates/hueb20/search/search_formset.html:110
+#: templates/hueb20/search/search_formset.html:115
+#: templates/hueb20/search/search_formset.html:120
+msgid "DETAIL VIEW: You have variery of filters to choose"
+msgstr ""
+
+#: templates/hueb20/search/search_formset.html:105
+#: templates/hueb20/search/search_formset.html:111
+#: templates/hueb20/search/search_formset.html:116
+#: templates/hueb20/search/search_formset.html:121
+msgid "DOWNLOAD DATA: You have variery of filters to choose"
+msgstr ""
+
+#: templates/hueb20/search/single_result_document.html:92
+#: templates/hueb20/search/single_result_document.html:156
+#: templates/hueb20/search/single_result_document.html:242
+#: templates/hueb20/search/single_result_document.html:297
+#, fuzzy
+#| msgid "unbekannt"
+msgid "Sprache unbekannt"
+msgstr "unknown"
+
+#: templates/hueb20/search/single_result_document.html:102
+#: templates/hueb20/search/single_result_document.html:163
+#: templates/hueb20/search/single_result_document.html:252
+#: templates/hueb20/search/single_result_document.html:301
+#, fuzzy
+#| msgid "Veröffentlicht"
+msgid "Veröffentlichungsort unbekannt"
+msgstr "Published"
+
+#: templates/hueb20/search/single_result_document.html:112
+#: templates/hueb20/search/single_result_document.html:169
+#: templates/hueb20/search/single_result_document.html:262
+#: templates/hueb20/search/single_result_document.html:305
+#, fuzzy
+#| msgid "unbekannt"
+msgid "DDC unbekannt"
+msgstr "unknown"
+
+#: templates/hueb20/search/single_result_document.html:132
+msgid "Original nicht gefunden"
+msgstr "Original not found"
+
+#: templates/hueb20/search/single_result_document.html:134
+#: templates/hueb20/search/single_result_document.html:283
+#, fuzzy
+#| msgid "unbekannt"
+msgid "Titel unbekannt"
+msgstr "unknown"
+
+#: templates/hueb20/search/single_result_document.html:282
+#, fuzzy
+#| msgid "Übersetzungen"
+msgid "Übersetzung nicht gefunden"
+msgstr "Translations"
+
+#: views/publications.py:27
+#, python-format
+msgid "Empty list and '%(class_name)s.allow_empty' is False."
+msgstr ""
+
+#: views/publications.py:51
+msgid ""
+"Please write your name if form 'Firstname Lastname' or leave empty for "
+"anonymous subscription"
+msgstr ""
+
+#: views/search.py:28
 msgid "Und"
 msgstr "And"
 
-#: hueb/apps/hueb20/views/search.py:28
+#: views/search.py:28
 msgid "Oder"
 msgstr "Or"
 
-#: hueb/apps/hueb20/views/search.py:28
+#: views/search.py:28
 msgid "Nicht"
 msgstr "Not"
 
-#: hueb/apps/hueb20/views/search.py:40
+#: views/search.py:40
 msgid "Suchbegriff"
 msgstr "Search Term"
 
-#: hueb/apps/hueb20/views/search.py:60
+#: views/search.py:60
 msgid "bis"
 msgstr "to"
 
-#: hueb/apps/hueb20/views/search.py:71
+#: views/search.py:71
 msgid "DDC Nummer"
 msgstr "DDC Number"
 
-#: hueb/apps/hueb20/views/search.py:153
+#: views/search.py:92
+msgid "HUEB20"
+msgstr ""
+
+#: views/search.py:93
+msgid "HUEBLATEIN"
+msgstr ""
+
+#: views/search.py:94
+msgid "HUEBLEGACY"
+msgstr ""
+
+#: views/search.py:95
+msgid "HUEBLIDOS"
+msgstr ""
+
+#: views/search.py:166
 msgid "Aufsteigend"
 msgstr "Ascending"
 
-#: hueb/apps/hueb20/views/search.py:153
+#: views/search.py:166
 msgid "Absteigend"
 msgstr "Descending"
 
-#: hueb/apps/hueb20/views/search.py:174
+#: views/search.py:187
 msgid "Originale"
 msgstr "Originals"
 
-#: hueb/apps/hueb20/views/search.py:175
+#: views/search.py:188
 msgid "Übersetzungen"
 msgstr "Translations"
 
-#: hueb/apps/hueb20/views/search.py:176
+#: views/search.py:189
 msgid "Brückenübersetzungen"
 msgstr "Intermediary Translations"
 
-#: hueb/apps/hueb20/widgets/timerange.py:17
+#: widgets/timerange.py:17
 msgid "Exakt"
 msgstr "Exact"
 
-#: hueb/apps/hueb20/widgets/timerange.py:18
+#: widgets/timerange.py:18
 msgid "Bereich"
 msgstr "Range"
 
-#: hueb/settings.py:131
-msgid "German"
-msgstr "German"
+#~ msgid "Katalog"
+#~ msgstr "Catalogues"
 
-#: hueb/settings.py:132
-msgid "English"
-msgstr "English"
+#~ msgid "Details zum Dokument:"
+#~ msgstr "Document Details:"
+
+#~ msgid "German"
+#~ msgstr "German"
+
+#~ msgid "English"
+#~ msgstr "English"
 
 #~ msgid "Übernommen aus "
 #~ msgstr "Taken from"
