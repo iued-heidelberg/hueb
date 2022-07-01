@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-30 14:57+0200\n"
-"PO-Revision-Date: 2022-06-30 12:59+0000\n"
+"POT-Creation-Date: 2022-07-01 12:20+0200\n"
+"PO-Revision-Date: 2022-07-01 10:30+0000\n"
 "Last-Translator:   <aniadymanus@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -195,7 +195,7 @@ msgstr "Hilfe"
 
 #: templates/hueb20/document_details/export_formset.html:98
 msgid "help text"
-msgstr "Text"
+msgstr "Hilfe Text"
 
 #: templates/hueb20/includables/overlay_login.html:22
 msgid "Benutzername:"
@@ -404,7 +404,7 @@ msgstr "DEN NEWSLETTER ABONNIEREN"
 
 #: templates/hueb20/publications/publications.html:179
 msgid "Leave name field empty for anonymous subscription"
-msgstr "Namensfeld bei anonymer Anmeldung leer lassen"
+msgstr "Namensfeld bei anonymer Anmeldung leer lassen."
 
 #: templates/hueb20/publications/publications.html:182
 msgid "First Name and Last Name"
@@ -458,13 +458,13 @@ msgstr ""
 
 #: templates/hueb20/search/old/search_formset.html:100
 msgid "How to search?"
-msgstr "Wie man sucht?"
+msgstr "Wie sucht man?"
 
 #: templates/hueb20/search/old/single_result_document.html:48
 #: templates/hueb20/search/single_result_document.html:51
 #: templates/hueb20/search/single_result_document.html:139
 msgid "Autor"
-msgstr "Author"
+msgstr ""
 
 #: templates/hueb20/search/old/single_result_document.html:60
 #: templates/hueb20/search/old/single_result_document.html:141
@@ -528,7 +528,7 @@ msgstr "Sie müssen eingeloggt sein, um auf diese Seite zugreifen zu können."
 #: templates/hueb20/search/search_formset.html:111
 #: templates/hueb20/search/search_formset.html:116
 msgid "How to search? "
-msgstr "Wie man sucht?"
+msgstr "Wie sucht man?"
 
 #: templates/hueb20/search/search_formset.html:101
 #: templates/hueb20/search/search_formset.html:107
@@ -596,6 +596,7 @@ msgid "Titel unbekannt"
 msgstr ""
 
 #: templates/hueb20/search/single_result_document.html:282
+#| msgid "Übersetzungsprache:"
 msgid "Übersetzung nicht gefunden"
 msgstr ""
 
@@ -609,8 +610,8 @@ msgid ""
 "Please write your name if form 'Firstname Lastname' or leave empty for "
 "anonymous subscription"
 msgstr ""
-"Schreiben Sie Ihre Name in der Form \"Vorname Nachname\" oder lassen Sie es "
-"leer, wenn Sie sich anonym anmelden möchten. "
+"Bitte schreiben Sie Ihren Namen in das Formular 'Vorname Nachname' oder "
+"lassen Sie es leer für anonyme Abonnements."
 
 #: views/search.py:28
 msgid "Und"
