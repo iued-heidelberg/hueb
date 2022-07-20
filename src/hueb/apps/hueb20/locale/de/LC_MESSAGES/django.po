@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-01 13:33+0200\n"
-"PO-Revision-Date: 2022-07-01 11:34+0000\n"
-"Last-Translator:   <aniadymanus@gmail.com>\n"
+"POT-Creation-Date: 2022-07-20 13:08+0200\n"
+"PO-Revision-Date: 2022-07-20 11:11+0000\n"
+"Last-Translator: <aniadymanus@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -33,11 +33,11 @@ msgstr ""
 msgid "Publikationen"
 msgstr ""
 
-#: models/document.py:27 views/search.py:162
+#: models/document.py:27 views/search.py:166
 msgid "Original"
 msgstr ""
 
-#: models/document.py:28 views/search.py:162
+#: models/document.py:28 views/search.py:166
 msgid "Übersetzung"
 msgstr ""
 
@@ -218,7 +218,7 @@ msgid "Seite"
 msgstr ""
 
 #: templates/hueb20/includables/pages.html:21
-#: templates/hueb20/includables/pagination.html:22 views/search.py:50
+#: templates/hueb20/includables/pagination.html:22 views/search.py:49
 msgid "von"
 msgstr ""
 
@@ -442,22 +442,22 @@ msgid "Ergebnisse"
 msgstr ""
 
 #: templates/hueb20/search/old/search_formset.html:57
-#: templates/hueb20/search/search_formset.html:57
+#: templates/hueb20/search/search_formset.html:61
 msgid "Filter hinzufügen"
 msgstr ""
 
 #: templates/hueb20/search/old/search_formset.html:67
-#: templates/hueb20/search/search_formset.html:67
+#: templates/hueb20/search/search_formset.html:71
 msgid "Filter entfernen"
 msgstr ""
 
 #: templates/hueb20/search/old/search_formset.html:85
-#: templates/hueb20/search/search_formset.html:85
+#: templates/hueb20/search/search_formset.html:89
 msgid "Suchen"
 msgstr ""
 
 #: templates/hueb20/search/old/search_formset.html:96
-#: templates/hueb20/search/search_formset.html:96
+#: templates/hueb20/search/search_formset.html:100
 msgid "Suchanleitung"
 msgstr ""
 
@@ -528,47 +528,9 @@ msgstr ""
 msgid "You need to be logged in to access this page."
 msgstr "Sie müssen eingeloggt sein, um auf diese Seite zugreifen zu können."
 
-#: templates/hueb20/search/search_formset.html:100
-#: templates/hueb20/search/search_formset.html:106
-#: templates/hueb20/search/search_formset.html:111
-#: templates/hueb20/search/search_formset.html:116
+#: templates/hueb20/search/search_formset.html:104
 msgid "How to search? "
 msgstr "Wie sucht man?"
-
-#: templates/hueb20/search/search_formset.html:101
-#: templates/hueb20/search/search_formset.html:107
-#: templates/hueb20/search/search_formset.html:112
-#: templates/hueb20/search/search_formset.html:117
-msgid "FILTER: You have variery of filters to choose"
-msgstr ""
-
-#: templates/hueb20/search/search_formset.html:102
-#: templates/hueb20/search/search_formset.html:108
-#: templates/hueb20/search/search_formset.html:113
-#: templates/hueb20/search/search_formset.html:118
-msgid "SORT: You have variery of filters to choose"
-msgstr ""
-
-#: templates/hueb20/search/search_formset.html:103
-#: templates/hueb20/search/search_formset.html:109
-#: templates/hueb20/search/search_formset.html:114
-#: templates/hueb20/search/search_formset.html:119
-msgid "RESULTS: You have variery of filters to choose"
-msgstr ""
-
-#: templates/hueb20/search/search_formset.html:104
-#: templates/hueb20/search/search_formset.html:110
-#: templates/hueb20/search/search_formset.html:115
-#: templates/hueb20/search/search_formset.html:120
-msgid "DETAIL VIEW: You have variery of filters to choose"
-msgstr ""
-
-#: templates/hueb20/search/search_formset.html:105
-#: templates/hueb20/search/search_formset.html:111
-#: templates/hueb20/search/search_formset.html:116
-#: templates/hueb20/search/search_formset.html:121
-msgid "DOWNLOAD DATA: You have variery of filters to choose"
-msgstr ""
 
 #: templates/hueb20/search/single_result_document.html:92
 #: templates/hueb20/search/single_result_document.html:156
@@ -604,12 +566,12 @@ msgstr ""
 msgid "Übersetzung nicht gefunden"
 msgstr ""
 
-#: views/publications.py:27
+#: views/publications.py:29
 #, python-format
 msgid "Empty list and '%(class_name)s.allow_empty' is False."
 msgstr ""
 
-#: views/publications.py:51
+#: views/publications.py:54
 msgid ""
 "Please write your name if form 'Firstname Lastname' or leave empty for "
 "anonymous subscription"
@@ -617,65 +579,69 @@ msgstr ""
 "Bitte schreiben Sie Ihren Namen in das Formular 'Vorname Nachname' oder "
 "lassen Sie es leer für anonyme Abonnements."
 
-#: views/search.py:28
+#: views/search.py:27
 msgid "Und"
 msgstr ""
 
-#: views/search.py:28
+#: views/search.py:27
 msgid "Oder"
 msgstr ""
 
-#: views/search.py:28
+#: views/search.py:27
 msgid "Nicht"
 msgstr ""
 
-#: views/search.py:40
+#: views/search.py:39
 msgid "Suchbegriff"
 msgstr ""
 
-#: views/search.py:60
+#: views/search.py:59
 msgid "bis"
 msgstr ""
 
-#: views/search.py:71
+#: views/search.py:70
 msgid "DDC Nummer"
 msgstr ""
 
-#: views/search.py:92
+#: views/search.py:89
 msgid "HUEB20"
 msgstr ""
 
-#: views/search.py:93
+#: views/search.py:90
 msgid "HUEBLATEIN"
 msgstr ""
 
-#: views/search.py:94
+#: views/search.py:91
 msgid "HUEBLEGACY"
 msgstr ""
 
-#: views/search.py:95
+#: views/search.py:92
 msgid "HUEBLIDOS"
 msgstr ""
 
-#: views/search.py:166
+#: views/search.py:170
 msgid "Aufsteigend"
 msgstr ""
 
-#: views/search.py:166
+#: views/search.py:170
 msgid "Absteigend"
 msgstr ""
 
-#: views/search.py:187
+#: views/search.py:191
 msgid "Originale"
 msgstr ""
 
-#: views/search.py:188
+#: views/search.py:192
 msgid "Übersetzungen"
 msgstr ""
 
-#: views/search.py:189
+#: views/search.py:193
 msgid "Brückenübersetzungen"
 msgstr ""
+
+#: views/search.py:203
+msgid "Online accessible documents only"
+msgstr "Nur online verfügbare Dokumente"
 
 #: widgets/timerange.py:17
 msgid "Exakt"
