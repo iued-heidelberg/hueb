@@ -45,13 +45,17 @@
       {{typeform.type}}
     </div>
 
+     <div class="flex flex-no-wrap justify-center inline-block text-3xl font-bold align-middle lg:text-sm">
+      {{typeform.online_only}}
+    </div>
+
     <div x-ref = "searchFormSet">
       {% for form in formset %}
           {% include "hueb20/search/search_form.html" %}
       {% endfor %}
     </div>
 
-    <div class="flex justify-center shadow-lg hover:shadow-xl" @click="canAddForm(); canRemoveForm();">
+    <div class="flex justify-center hover:shadow-xl" @click="canAddForm(); canRemoveForm();">
       <button type="button" @click="addFormToFormSet()" class="block px-4 py-2 m-4 align-middle border-b-4 border-black lg:border-sand-bg lg:hover:bg-sand-bg lg:hover:text-gray-bg-darker disabled:cursor-not-allowed disabled:opacity-50" x-bind:disabled="!addform">
 
         <p class="inline-block text-3xl font-bold align-middle lg:text-sm">{% translate "Filter hinzufügen" %} </p>
@@ -73,7 +77,7 @@
       </button>
     </div>
 
-    <div class="flex flex-no-wrap justify-center inline-block text-3xl font-bold align-middle lg:text-sm shadow-lg hover:shadow-xl">
+    <div class="flex flex-no-wrap justify-center inline-block text-3xl font-bold align-middle lg:text-sm hover:shadow-xl">
       {{sortform.sort_attribute}}
       {{sortform.sort_type}}
       {{sortform.sort_direction}}
@@ -92,12 +96,14 @@
     </div>
   </form>
 
-  <button type="button" class="collapsible shadow-lg border-b-4 border-black lg:border-sand-bg lg:hover:bg-sand-bg lg:hover:text-gray-bg-darker ">
-    <p class="inline-block text-3xl font-bold align-middle lg:text-sm">{% translate "Suchanleitung" %}</p>
+  <button type="button" class="collapsible border-b-4 border-black lg:border-sand-bg lg:hover:bg-sand-bg lg:hover:text-gray-bg-darker ">
+    <p class="inline-block text-5xl font-bold align-middle md:text-lg">{% translate "Suchanleitung" %}</p>
 
   </button>
   <div class="content" style="color:black">
-    <p>{% translate "How to search?" %}</p>
+    <p>{% translate "How to search? " %}</p>
+
+
   </div>
 
 

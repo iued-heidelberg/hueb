@@ -1,5 +1,4 @@
 import logging
-
 import beeline
 from django import forms
 from django.db.models import Q
@@ -8,9 +7,7 @@ from django.views.generic import ListView
 from hueb.apps.hueb20.models.document import Document, DocumentRelationship
 from hueb.apps.hueb20.models.language import Language
 from django.db.models import F
-from django.utils import translation
-from django.utils.translation import get_language
-from django.db.models import Case, When
+from django.utils.translation import get_language_info
 from django.utils.translation import gettext_lazy as _
 
 
@@ -74,6 +71,7 @@ class SearchForm(forms.Form):
             }
         ),
     )
+
     search_language = forms.ChoiceField(
         choices=tuple(
             (language, language)
@@ -108,7 +106,9 @@ class BaseSearchFormSet(BaseFormSet):
     )
 
     def get_query_object(
-        self, types=[Document.ORIGINAL, Document.TRANSLATION, Document.BRIDGE]
+        self,
+        types=[Document.ORIGINAL, Document.TRANSLATION, Document.BRIDGE],
+        online_only=False,
     ):
         with beeline.tracer(name="building_search_query"):
 
@@ -134,11 +134,16 @@ class BaseSearchFormSet(BaseFormSet):
             logger.debug(exclude_q_objects)
             beeline.add_context_field("include_q_objects", include_q_objects)
             beeline.add_context_field("exclude_q_objects", exclude_q_objects)
-            print("\nINCLUDE: ", include_q_objects)
-            print("\nEXCLUDE: ", exclude_q_objects)
+            # print("\nINCLUDE: ", include_q_objects)
+            # print("\nEXCLUDE: ", exclude_q_objects)
             queryset = self.base_queryset.filter(include_q_objects).exclude(
                 exclude_q_objects
             )
+
+            if online_only:
+                queryset = queryset.filter(
+                    document_to__filing__archive__name="Online-Version"
+                )
 
             logger.debug(queryset.query)
             return queryset
@@ -188,15 +193,21 @@ class TypeForm(forms.Form):
             (Document.BRIDGE, _("Brückenübersetzungen")),
         ),
     )
+    online_only = forms.MultipleChoiceField(  # Easier than making booleanfield and adding custom widget for label
+        required=False,
+        widget=TypeCheckboxWidget(
+            attrs={
+                "style": "width:20px; height:20px;",
+            }
+        ),
+        choices=((True, _("Online accessible documents only")),),
+    )
 
 
 class Search(ListView):
     template_name = "hueb20/search/search.html"
     model = Document
     paginate_by = 20
-
-    sort_form = SortForm
-    type_form = TypeForm
 
     SearchFormset = formset_factory(
         SearchForm,
@@ -210,12 +221,15 @@ class Search(ListView):
 
     def get_queryset(self):
         formset = self.SearchFormset(data=self.request.GET)
-        sortform = self.sort_form(data=self.request.GET)
-        typeform = self.type_form(data=self.request.GET)
+        # sortform = self.sort_form(data=self.request.GET)
+        sortform = SortForm(data=self.request.GET)
+        # typeform = self.type_form(data=self.request.GET)
+        typeform = TypeForm(data=self.request.GET)
 
         if formset.is_valid() and typeform.is_valid():
             types = typeform.cleaned_data["type"]
-            queryset = formset.get_query_object(types)
+            online_only = typeform.cleaned_data["online_only"]
+            queryset = formset.get_query_object(types, online_only)
 
             if sortform.is_valid():
                 orderDir, documentType, orderBy = sortform.get_order_by()
@@ -272,14 +286,14 @@ class Search(ListView):
 
         context["formset"] = formset
 
-        sortform = self.sort_form(data=self.request.GET)
+        sortform = SortForm(data=self.request.GET)
         if not sortform.is_valid():
-            sortform = self.sort_form()
+            sortform = SortForm()
         context["sortform"] = sortform
 
-        typeform = self.type_form(data=self.request.GET)
+        typeform = TypeForm(data=self.request.GET)
         if not typeform.is_valid():
-            typeform = self.type_form(
+            typeform = TypeForm(
                 initial={
                     "type": [Document.ORIGINAL, Document.TRANSLATION, Document.BRIDGE]
                 }

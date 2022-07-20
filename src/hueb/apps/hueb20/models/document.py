@@ -316,6 +316,11 @@ class Document(Reviewable):
     def q_object_by_app(cls, value):
         return Q(app__icontains=value)
 
+    def get_docs_online_only(self, only_online: bool = True):
+        if only_online:
+            if self.filing_set.filter(archive="Online-Version").exists():
+                return self
+
 
 class DocumentRelationship(Reviewable):
     id = models.BigAutoField(primary_key=True)
@@ -405,6 +410,18 @@ class DocumentRelationship(Reviewable):
             else:
                 type_q |= cls.get_type_q(type, False)
         return type_q
+
+    @classmethod
+    def get_online_q(cls):
+        return Q(document_to__filing_set__archive="Online-Version")
+
+    """
+    @classmethod
+    def q_object_by_title(cls, value, types):
+        return Q(document_from__title__icontains=value) & cls.get_types_q(
+            types, True
+        ) & cls.get_online_q(True) | Q(document_to__title__icontains=value) & cls.get_types_q(types, False)
+    """
 
     @classmethod
     def q_object_by_title(cls, value, types):
