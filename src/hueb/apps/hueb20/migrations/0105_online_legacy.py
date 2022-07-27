@@ -10,7 +10,10 @@ import os
 # Look for the entry in legacy with the same title as the title in the row
 # when found->fill the entry online ausgabe to the online filing (?)
 # save the doc updated
+
+
 def complete_legacy_online_filings(apps, schema_editor):
+
     Filing = apps.get_model("hueb20", "Filing")
     Document = apps.get_model("hueb20", "Document")
     Archive = apps.get_model("hueb20", "Archive")
