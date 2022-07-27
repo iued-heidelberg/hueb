@@ -23,36 +23,39 @@ def complete_legacy_online_filings(apps, schema_editor):
         reader = csv.reader(f, delimiter="\t")
         next(reader)
         for row in reader:
-            legacy_id = row[0]
+            legacy_id = int(row[0])
             online_link = row[11]
             if online_link:
-                document = Document.objects.get(translation_ref_legacy=row[0])
-                if row[2] not in document.title:
-                    if document.title not in row[2]:
-                        raise Exception(
-                            f"Documents matched by ID {row[0]} do not have the same Title"
-                        )
-                if (
-                    Archive.objects.get(name="Online-Version")
-                    not in document.located_in.all()
-                ):
-                    new_filing = Filing()
-                    new_filing.app = LEGACY
-                    new_filing.archive = Archive.objects.get(name="Online-Version")
-                    new_filing.document = document
-                    new_filing.link = online_link
-                    try:
-                        new_filing.save()
-                    except Exception:
-                        raise Exception("Link is too long (more than 1023 characters)")
+                if Document.objects.filter(translation_ref_legacy=legacy_id).exists():
+                    document = Document.objects.get(translation_ref_legacy=legacy_id)
+                    if row[2] not in document.title:
+                        if document.title not in row[2]:
+                            raise Exception(
+                                f"Documents matched by ID {row[0]} do not have the same Title"
+                            )
+                    if (
+                        Archive.objects.get(name="Online-Version")
+                        not in document.located_in.all()
+                    ):
+                        new_filing = Filing()
+                        new_filing.app = LEGACY
+                        new_filing.archive = Archive.objects.get(name="Online-Version")
+                        new_filing.document = document
+                        new_filing.link = online_link
+                        try:
+                            new_filing.save()
+                        except Exception:
+                            raise Exception(
+                                "Link is too long (more than 1023 characters)"
+                            )
 
-                if row[12]:
-                    comment = Comment()
-                    comment.text = row[-1]
-                    comment.extern = False
-                    comment.document = document
-                    comment.app = LEGACY
-                    comment.save()
+                    if row[12]:
+                        comment = Comment()
+                        comment.text = row[-1]
+                        comment.extern = False
+                        comment.document = document
+                        comment.app = LEGACY
+                        comment.save()
 
 
 def unload_online_filings(apps, schema_editor):
