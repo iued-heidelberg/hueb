@@ -356,7 +356,7 @@ class DocumentRelationship(Reviewable):
         elif query["attribute"] == "author":
             return DocumentRelationship.q_object_by_author(query["search_text"], types)
         elif query["attribute"] == "ddc":
-            return DocumentRelationship.q_object_by_ddc(query["search_ddc"], types)
+            return DocumentRelationship.q_object_by_ddc(query["search_ddc_new"], types)
         elif query["attribute"] == "year":
             return DocumentRelationship.q_object_by_written_in(
                 query["search_year_from"], query["search_year_to"], types
@@ -446,6 +446,8 @@ class DocumentRelationship(Reviewable):
     @classmethod
     def q_object_by_ddc(cls, value, types):
         value = str(value)
+        value = value[:3]
+        """
         if len(value) == 1:
             value = "00"
             value = value[:-1]
@@ -456,7 +458,8 @@ class DocumentRelationship(Reviewable):
             value = value[:-1]
 
         # value = value + "*"
-
+        """
+        print(value)
         return Q(
             document_from__ddc__ddc_number__iregex=r"(^|\s)%s" % value
         ) & cls.get_types_q(types, True) | Q(

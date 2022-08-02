@@ -6,9 +6,11 @@ from django.forms.formsets import BaseFormSet, formset_factory
 from django.views.generic import ListView
 from hueb.apps.hueb20.models.document import Document, DocumentRelationship
 from hueb.apps.hueb20.models.language import Language
+from hueb.apps.hueb20.models import DdcGerman
 from django.db.models import F
 from django.utils.translation import get_language_info
 from django.utils.translation import gettext_lazy as _
+import textwrap
 
 
 # Get an instance of a logger
@@ -21,6 +23,11 @@ class TypeCheckboxWidget(forms.widgets.CheckboxSelectMultiple):
 
 class SearchSelectWidget(forms.widgets.Select):
     template_name = "hueb20/search/widgets/select.html"
+
+
+class SearchChoiceWidget(forms.widgets.Select):
+    template_name = "hueb20/search/widgets/choice_option.html"
+    # option_template_name = 'hueb20/search/widgets/choice_option.html'
 
 
 class SearchForm(forms.Form):
@@ -40,6 +47,7 @@ class SearchForm(forms.Form):
             }
         ),
     )
+
     search_year_from = forms.IntegerField(
         required=False,
         widget=forms.NumberInput(
@@ -60,23 +68,44 @@ class SearchForm(forms.Form):
             }
         ),
     )
-    search_ddc = forms.IntegerField(
-        required=False,
-        widget=forms.NumberInput(
-            attrs={
-                "min": 00,
-                "step": 10,
-                "class": "flex p-2 mx-2 my-2 font-medium placeholder-black placeholder-opacity-25 bg-transparent border-b-4 border-black rounded-none appearance-none lg:placeholder-opacity-25 lg:border-sand-bg lg:placeholder-sand-bg",
-                "placeholder": _("DDC Nummer"),
-            }
+
+    """
+    search_ddc_new = forms.ChoiceField(
+
+        choices=tuple(
+            (ddc, textwrap.fill(ddc.ddc_number, width=10, initial_indent='', subsequent_indent='',
+                                expand_tabs=True, replace_whitespace=True, fix_sentence_endings=False,
+                                break_long_words=True, drop_whitespace=True, break_on_hyphens=True,
+                                tabsize=4, placeholder=' [...]'))
+            for ddc in DdcGerman.objects.filter()
+            .all()
+            .order_by("ddc_number")
         ),
+        widget=SearchChoiceWidget,
+    )
+    """
+    search_ddc_new = forms.ChoiceField(
+        choices=tuple(
+            (
+                DdcGerman.objects.get(ddc_number=str(i).zfill(3)).ddc_name,
+                tuple(
+                    (
+                        DdcGerman.objects.get(ddc_number=str(number).zfill(3)),
+                        str(number).zfill(3),
+                    )
+                    for number in range(i, i + 10)
+                ),
+            )
+            for i in range(0, len(DdcGerman.objects.all()), 10)
+        ),
+        widget=SearchSelectWidget,
     )
 
     search_language = forms.ChoiceField(
         choices=tuple(
             (language, language)
             for language in Language.objects.filter()
-            .exclude(language_de="")  # manual coding, but couldnt find another way
+            .exclude(language_de="")  # manual coding, but couldn't find another way
             .exclude(language_en="")
             .all()
             .order_by("language_de")

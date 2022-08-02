@@ -23,9 +23,14 @@
         {{ form.search_year_to }}
     </div>
 
-    <div x-ref="search_ddc" x-cloak x-bind:hidden="!showDDC()">
+    <!--div x-ref="search_ddc" x-cloak x-bind:hidden="!showDDC()">
         {{ form.search_ddc.errors }}
         {{ form.search_ddc }}
+    </div-->
+
+    <div x_ref="search_ddc_new" x-cloak x-bind:hidden="!showDDCNew()">
+        {{ form.search_ddc_new.errors }}
+        {{ form.search_ddc_new }}
     </div>
 
     <div x-ref="search_language" x-cloak x-bind:hidden="!showLanguage()">
@@ -48,7 +53,7 @@
                 showYear(){
                     return (this.attribute === "year")
                 },
-                showDDC(){
+                showDDCNew(){
                     return (this.attribute === "ddc")
                 },
                 showLanguage(){
@@ -59,7 +64,7 @@
                 },
                 update(){
                     this.showText();
-                    this.showDDC();
+                    this.showDDCNew();
                     this.showYear();
                     this.showLanguage();
                     this.showDatabase();
