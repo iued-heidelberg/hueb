@@ -2,7 +2,7 @@
 
 from django.db import migrations, models
 
-#Add comment so i can push again and fix buggy tests
+
 class Migration(migrations.Migration):
 
     initial = True
