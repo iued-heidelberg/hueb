@@ -98,34 +98,39 @@ class Publications(FormListView):
         if name == "":
             name = "Anonymous"
         if "sub" in self.request.POST:
-            """
-            r = requests.get("https://listserv.uni-heidelberg.de/cgi-bin/wa",
-                              params={
-                                 "SUBED2": "HUEB-NEWSLETTER-IUED",
-                                 "A": 1,
-                                 "L": "HUEB-NEWSLETTER-IUED",
-                                 "p": name,
-                                 "s": email,
-                                 "b": "Subscribe",
-                                 "_charset_": "UTF-8"}
-                              )
-            """
+
+            r = requests.get(
+                "https://listserv.uni-heidelberg.de/cgi-bin/wa",
+                params={
+                    "SUBED2": "HUEB-NEWSLETTER-IUED",
+                    "A": 1,
+                    "L": "HUEB-NEWSLETTER-IUED",
+                    "p": name,
+                    "s": email,
+                    "b": "Subscribe",
+                    "_charset_": "UTF-8",
+                },
+            )
+
             url = reverse("publicationsSub", kwargs={"sub": "sub"})
             return HttpResponseRedirect(url)
         elif "unsub" in self.request.POST:
-            """
-            r = requests.get("https://listserv.uni-heidelberg.de/cgi-bin/wa",
-                             params={
-                                 "SUBED2": "HUEB-NEWSLETTER-IUED",
-                                 "A": 1,
-                                 "L": "HUEB-NEWSLETTER-IUED",
-                                 "p": name,
-                                 "q": name,
-                                 "s": email,
-                                 "t": email,
-                                 "a": "Unsubscribe",
-                                 "_charset_": "UTF-8"})
-            """
+
+            r = requests.get(
+                "https://listserv.uni-heidelberg.de/cgi-bin/wa",
+                params={
+                    "SUBED2": "HUEB-NEWSLETTER-IUED",
+                    "A": 1,
+                    "L": "HUEB-NEWSLETTER-IUED",
+                    "p": name,
+                    "q": name,
+                    "s": email,
+                    "t": email,
+                    "a": "Unsubscribe",
+                    "_charset_": "UTF-8",
+                },
+            )
+
             url = reverse("publicationsSub", kwargs={"sub": "unsub"})
             return HttpResponseRedirect(url)
         return super().form_valid(form)
@@ -133,4 +138,4 @@ class Publications(FormListView):
         # return HttpResponseRedirect(reverse_lazy("publications"))
 
     def get_queryset(self):
-        return Publication.objects.all().order_by("-publication_date").all()[1:]
+        return Publication.objects.all().order_by("-publication_date").all()

@@ -117,52 +117,37 @@
     <div class="flex flex-auto shadow-lg hover:shadow-xl"  style="margin-bottom: 1rem;">
       <div class="flex flex-col justify-between w-3/5 flex-auto p-6 px-4 bg-sand-300 bg-opacity-25" style="margin-left: 0">
           <div class="tr_right">
-              <table style="width: 100%">
-                <colgroup>
-                   <col span="1" style="width: 60%;">
-                   <col span="1" style="width: 40%;">
-                </colgroup>
-                  <tr>
-                    <td style="width: 60%">
-                      <h3 style="margin-bottom: 0%">{{recent.name}}</h3></br>
-                      <p style="margin-bottom: 0%">{{recent.description }}</p>
-                    </td>
-                    <td style="width: 40%">
-                        <button class="button">
-                            <a href="{% url "pubPdf" recent.id %}">
-                            <!--a href={{recent.file.url}}-->
-                                {% translate "DOWNLOAD" %}
-                            </a>
-                        </button>
-                    </td>
-                  </tr>
-              </table>
+              <h2 style="text-align: center" class="text-2xl lg:text-l">{{recent.name}}</h2></br>
+              <p style="margin-bottom: 2.5%" class="lg:text-l">{{recent.description }}</p>
+              <a href="{% url "pubPdf" recent.id %}">
               <img style="margin-left:1.5%; margin-right:1.5%;" src="{{ recent.preview.url }}">
+              </a>
           </div>
       </div>
       <div class="slideshow-container flex-col justify-between w-2/5 p-6 px-4 bg-sand-300 bg-opacity-25" style="margin-right: 0; margin-left: auto">
           {% for result in object_list %}
             {% if result is not None %}
-                <div class="tr_right" style="height: 30%">
+                <div class="tr_right" style="height: 30%;">
+                    <b><h3 style="text-align: center">{{result.name}}</h3></b>
                     <table style="width: 100%;">
                         <colgroup>
                            <col span="1" style="width: 60%;">
                            <col span="1" style="width: 40%;">
                         </colgroup>
+                        <tbody>
                         <tr>
-                            <td style="width: 60%">
-                              <h3 style="margin-bottom: 5%">{{result.name}}</h3></br>
-                              <p style="margin-bottom: 25%">{{result.description}}</p>
+                            <td>
+                              <div>{{result.description|truncatechars:60}}</div>
                             </td>
-                            <td style="width: 40%">
+                            <td>
                               <button class="button">
                                   <a href="{% url "pubPdf" result.id %}">
-                                  <!--a href={{result.file.url}}-->
                                       {% translate "DOWNLOAD" %}
                                   </a>
                               </button>
                             </td>
                         </tr>
+                        </tbody>
                     </table>
                 </div>
             {% endif %}
