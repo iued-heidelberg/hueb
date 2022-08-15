@@ -356,7 +356,7 @@ class DocumentRelationship(Reviewable):
         elif query["attribute"] == "author":
             return DocumentRelationship.q_object_by_author(query["search_text"], types)
         elif query["attribute"] == "ddc":
-            return DocumentRelationship.q_object_by_ddc(query["search_ddc_new"], types)
+            return DocumentRelationship.q_object_by_ddc(query["search_ddc"], types)
         elif query["attribute"] == "year":
             return DocumentRelationship.q_object_by_written_in(
                 query["search_year_from"], query["search_year_to"], types
@@ -415,19 +415,17 @@ class DocumentRelationship(Reviewable):
     def get_online_q(cls):
         return Q(document_to__filing_set__archive="Online-Version")
 
-    """
     @classmethod
     def q_object_by_title(cls, value, types):
-        return Q(document_from__title__icontains=value) & cls.get_types_q(
-            types, True
-        ) & cls.get_online_q(True) | Q(document_to__title__icontains=value) & cls.get_types_q(types, False)
-    """
-
-    @classmethod
-    def q_object_by_title(cls, value, types):
-        return Q(document_from__title__icontains=value) & cls.get_types_q(
-            types, True
-        ) | Q(document_to__title__icontains=value) & cls.get_types_q(types, False)
+        return (
+            Q(document_from__title__icontains=value)
+            | Q(document_from__subtitle__icontains=value)
+        ) & Q(document_from__title__icontains=value) & cls.get_types_q(types, True) | (
+            Q(document_to__title__icontains=value)
+            | Q(document_to__subtitle__icontains=value)
+        ) & cls.get_types_q(
+            types, False
+        )
 
     @classmethod
     def q_object_by_author(cls, value, types):
@@ -445,25 +443,17 @@ class DocumentRelationship(Reviewable):
 
     @classmethod
     def q_object_by_ddc(cls, value, types):
-        value = str(value)
         value = value[:3]
-        """
-        if len(value) == 1:
-            value = "00"
-            value = value[:-1]
-        elif len(value) == 2:
-            value = "0" + value
-            value = value[:-1]
+        if value.endswith("00"):
+            match_up_to = 1
+        elif value.endswith("0"):
+            match_up_to = 2
         else:
-            value = value[:-1]
-
-        # value = value + "*"
-        """
-        print(value)
+            match_up_to = 3
         return Q(
-            document_from__ddc__ddc_number__iregex=r"(^|\s)%s" % value
+            document_from__ddc__ddc_number__iregex=rf"^{value[:match_up_to]}"
         ) & cls.get_types_q(types, True) | Q(
-            document_to__ddc__ddc_number__iregex=r"(^|\s)%s" % value
+            document_to__ddc__ddc_number__iregex=rf"^{value[:match_up_to]}"
         ) & cls.get_types_q(
             types, False
         )

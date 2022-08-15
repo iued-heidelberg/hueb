@@ -25,9 +25,8 @@ class SearchSelectWidget(forms.widgets.Select):
     template_name = "hueb20/search/widgets/select.html"
 
 
-class SearchChoiceWidget(forms.widgets.Select):
-    template_name = "hueb20/search/widgets/choice_option.html"
-    # option_template_name = 'hueb20/search/widgets/choice_option.html'
+class TruncatingSearchSelectWidget(forms.widgets.Select):
+    template_name = "hueb20/search/widgets/truncatingSelect.html"
 
 
 class SearchForm(forms.Form):
@@ -69,36 +68,21 @@ class SearchForm(forms.Form):
         ),
     )
 
-    """
-    search_ddc_new = forms.ChoiceField(
+    def get_search_ddc_choices():
+        ddcs = DdcGerman.objects.all().order_by("ddc_number")
+        choices = []
+        for i in range(0, len(ddcs), 100):
+            category = []
+            for num in range(i, i + 100, 10):
+                category.append((ddcs[num].ddc_number, ddcs[num]))
+            category = tuple(category)
+            cat_name = ddcs[i]
+            choices.append((cat_name, category))
+        return tuple(choices)
 
-        choices=tuple(
-            (ddc, textwrap.fill(ddc.ddc_number, width=10, initial_indent='', subsequent_indent='',
-                                expand_tabs=True, replace_whitespace=True, fix_sentence_endings=False,
-                                break_long_words=True, drop_whitespace=True, break_on_hyphens=True,
-                                tabsize=4, placeholder=' [...]'))
-            for ddc in DdcGerman.objects.filter()
-            .all()
-            .order_by("ddc_number")
-        ),
-        widget=SearchChoiceWidget,
-    )
-    """
-    search_ddc_new = forms.ChoiceField(
-        choices=tuple(
-            (
-                DdcGerman.objects.get(ddc_number=str(i).zfill(3)).ddc_name,
-                tuple(
-                    (
-                        DdcGerman.objects.get(ddc_number=str(number).zfill(3)),
-                        str(number).zfill(3),
-                    )
-                    for number in range(i, i + 10)
-                ),
-            )
-            for i in range(0, len(DdcGerman.objects.all()), 10)
-        ),
-        widget=SearchSelectWidget,
+    search_ddc = forms.ChoiceField(
+        choices=get_search_ddc_choices(),
+        widget=TruncatingSearchSelectWidget,
     )
 
     search_language = forms.ChoiceField(

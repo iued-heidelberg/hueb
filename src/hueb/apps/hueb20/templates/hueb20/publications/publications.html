@@ -1,7 +1,7 @@
 {% extends 'hueb20/__base.html' %}
 {% load i18n %}
 {% block content %}
-{% if user.is_authenticated %}
+{% if True %}
 <style>
     .alert{margin: auto; width: 90%; align: center; border:1px solid transparent;border-radius:4px; opacity: 1; transition: opacity 0.6s; /* 600ms to fade out */}
     .alert-danger{color:#a94442;background-color:#f2dede;border-color:#ebccd1}
@@ -117,17 +117,19 @@
     <div class="flex flex-auto shadow-lg hover:shadow-xl"  style="margin-bottom: 1rem;">
       <div class="flex flex-col justify-between w-3/5 flex-auto p-6 px-4 bg-sand-300 bg-opacity-25" style="margin-left: 0">
           <div class="tr_right">
+              {% if recent is not None %}
               <h2 style="text-align: center" class="text-2xl lg:text-l">{{recent.name}}</h2></br>
               <p style="margin-bottom: 2.5%" class="lg:text-l">{{recent.description }}</p>
               <a href="{% url "pubPdf" recent.id %}">
               <img style="margin-left:1.5%; margin-right:1.5%;" src="{{ recent.preview.url }}">
+              {% endif %}
               </a>
           </div>
       </div>
       <div class="slideshow-container flex-col justify-between w-2/5 p-6 px-4 bg-sand-300 bg-opacity-25" style="margin-right: 0; margin-left: auto">
           {% for result in object_list %}
             {% if result is not None %}
-                <div class="tr_right" style="height: 30%;">
+                <div class="tr_right" style="height: 30%;"}
                     <b><h3 style="text-align: center">{{result.name}}</h3></b>
                     <table style="width: 100%;">
                         <colgroup>

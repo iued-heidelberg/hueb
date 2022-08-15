@@ -7,27 +7,21 @@ def menu(request):
 
     menu.append({"name": _("Projekt"), "link": "/", "disabled": False})
 
-    if request.user.is_authenticated:
-        menu.append(
-            {
-                "name": _("Suche"),
-                "link": "/" + get_language() + "/search",
-                "disabled": False,
-            }
-        )
+    menu.append(
+        {
+            "name": _("Suche"),
+            "link": "/" + get_language() + "/search",
+            "disabled": False,
+        }
+    )
 
-    else:
-        menu.append({"name": _("Suche"), "link": "#", "disabled": True})
-    if request.user.is_authenticated:
-        menu.append(
-            {
-                "name": _("Publikationen"),
-                "link": "/" + get_language() + "/publications",
-                "disabled": False,
-            }
-        )
-    else:
-        menu.append({"name": _("Publikationen"), "link": "#", "disabled": True})
+    menu.append(
+        {
+            "name": _("Publikationen"),
+            "link": "/" + get_language() + "/publications",
+            "disabled": False,
+        }
+    )
 
     context = {}
     context["menu"] = menu
