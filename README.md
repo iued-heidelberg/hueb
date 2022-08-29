@@ -1,6 +1,6 @@
 # HUEB - Heidelberger Übersetzungs Bibliographie
 
-Official description from the project site: 
+Official description from the project site:
 > Im Rahmen der Digital Humanities wird die DFG-geförderte Heidelberger Übersetzungsbibliographie eine Informationsinfrastruktur bereitstellen, die zwei Zwecken dienen soll:
 >
 > Zunächst geht es um die Zusammenstellung einer Bibliographie von vorwiegend frühneuzeitlichen Übersetzungen aus dem Englischen und Niederländischen ins Deutsche (Erscheinungszeitraum 1450–1850).
