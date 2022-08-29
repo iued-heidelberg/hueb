@@ -9,15 +9,15 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-07-20 13:08+0200\n"
-"PO-Revision-Date: 2022-07-20 11:11+0000\n"
-"Last-Translator: <aniadymanus@gmail.com>\n"
+"PO-Revision-Date: 2022-08-16 13:14+0000\n"
+"Last-Translator: <daniele.moretti@iued.uni-heidelberg.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Translated-Using: django-rosetta 0.9.8\n"
+"X-Translated-Using: django-rosetta 0.9.7\n"
 
 #: context_processors.py:8 tests/test_context_processors.py:38
 msgid "Projekt"
@@ -91,7 +91,7 @@ msgstr ""
 
 #: models/document.py:269
 msgid "Sortiert nach Autor"
-msgstr ""
+msgstr "Sortiert nach Person"
 
 #: models/document.py:270
 msgid "Sortiert nach DDC"
@@ -195,7 +195,7 @@ msgstr "Hilfe"
 
 #: templates/hueb20/document_details/export_formset.html:98
 msgid "help text"
-msgstr "Hilfe Text"
+msgstr "Hilfetext"
 
 #: templates/hueb20/includables/overlay_login.html:22
 msgid "Benutzername:"
@@ -240,12 +240,12 @@ msgstr ""
 #: templates/hueb20/index/old/project_description.html:6
 #: templates/hueb20/index/project_description.html:6
 msgid "Heidelberger"
-msgstr ""
+msgstr "Heidelberger Übersetzungsbibliographie"
 
 #: templates/hueb20/index/old/project_description.html:6
 #: templates/hueb20/index/project_description.html:6
 msgid "Übersetzungsbibliographie"
-msgstr "Übersetzungsbibliographie nichtfiktionaler Texte (HÜB)"
+msgstr "nichtfiktionaler Texte (HÜB)"
 
 #: templates/hueb20/index/old/project_description.html:12
 #: templates/hueb20/index/project_description.html:12
@@ -387,7 +387,7 @@ msgstr ""
 #, fuzzy
 #| msgid "Originalsprache:"
 msgid "Originale:"
-msgstr "Ausgangssprache: "
+msgstr "Originale: "
 
 #: templates/hueb20/publications/publications.html:114
 msgid "PUBLIKATIONEN"
@@ -400,25 +400,25 @@ msgstr ""
 
 #: templates/hueb20/publications/publications.html:178
 msgid "SUBSCRIBE TO THE NEWSLETTER"
-msgstr "DEN NEWSLETTER ABONNIEREN"
+msgstr "NEWSLETTER ABONNIEREN"
 
 #: templates/hueb20/publications/publications.html:179
 msgid "Leave name field empty for anonymous subscription"
-msgstr "Namensfeld bei anonymer Anmeldung leer lassen."
+msgstr "Für anonyme Anmeldung Namensfeld leer lassen."
 
 #: templates/hueb20/publications/publications.html:182
 msgid "First Name and Last Name"
-msgstr "Vorname und Nachname"
+msgstr "Vorname Nachname"
 
 #: templates/hueb20/publications/publications.html:186
 msgid "Warning!"
-msgstr "Warnung!"
+msgstr "Achtung!"
 
 #: templates/hueb20/publications/publications.html:194
 #, fuzzy
 #| msgid "Warning!"
 msgid "Warning! "
-msgstr "Warnung!"
+msgstr "Achtung!"
 
 #: templates/hueb20/publications/publications.html:211
 msgid "Thank you!"
@@ -426,7 +426,9 @@ msgstr "Danke!"
 
 #: templates/hueb20/publications/publications.html:212
 msgid "Please check your E-Mail to confirm your subscription."
-msgstr "Bitte prüfen Sie Ihre E-Mail, um Ihr Abonnement zu bestätigen."
+msgstr ""
+"Sie erhalten in Kürze eine E-Mail mit einem Link, um Ihre Anmeldung zu "
+"bestätigen."
 
 #: templates/hueb20/publications/publications.html:222
 msgid "We will miss you!"
@@ -434,7 +436,9 @@ msgstr "Wir werden Sie vermissen!"
 
 #: templates/hueb20/publications/publications.html:223
 msgid "Please check your E-Mail to confirm your unsubscription."
-msgstr "Bitte prüfen Sie Ihre E-Mail, um Ihre Abmeldung zu bestätigen."
+msgstr ""
+"Sie erhalten in Kürze eine E-Mail mit einem Link, um Ihre Abmeldung zu "
+"bestätigen."
 
 #: templates/hueb20/search/old/search.html:16
 #: templates/hueb20/search/search.html:21
@@ -512,7 +516,7 @@ msgstr ""
 #: templates/hueb20/search/single_result_document.html:267
 #: templates/hueb20/search/single_result_document.html:308
 msgid "Databank"
-msgstr ""
+msgstr "Datenbank"
 
 #: templates/hueb20/search/old/single_result_document.html:128
 #: templates/hueb20/search/single_result_document.html:200
@@ -576,8 +580,8 @@ msgid ""
 "Please write your name if form 'Firstname Lastname' or leave empty for "
 "anonymous subscription"
 msgstr ""
-"Bitte schreiben Sie Ihren Namen in das Formular 'Vorname Nachname' oder "
-"lassen Sie es leer für anonyme Abonnements."
+"Bitte geben Sie im Feld 'Vorname Nachname' Ihren Namen an. Falls Sie eine "
+"anonyme Anmeldung wünschen, lassen Sie das Feld leer."
 
 #: views/search.py:27
 msgid "Und"
@@ -605,19 +609,19 @@ msgstr ""
 
 #: views/search.py:89
 msgid "HUEB20"
-msgstr ""
+msgstr "HÜB-EN-NL"
 
 #: views/search.py:90
 msgid "HUEBLATEIN"
-msgstr ""
+msgstr "SÜB-Lat"
 
 #: views/search.py:91
 msgid "HUEBLEGACY"
-msgstr ""
+msgstr "SÜB-Rom"
 
 #: views/search.py:92
 msgid "HUEBLIDOS"
-msgstr ""
+msgstr "DFÜ-FR"
 
 #: views/search.py:170
 msgid "Aufsteigend"
