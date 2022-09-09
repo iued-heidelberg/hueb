@@ -8,36 +8,34 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-20 13:08+0200\n"
-"PO-Revision-Date: 2022-08-16 13:14+0000\n"
-"Last-Translator: <daniele.moretti@iued.uni-heidelberg.de>\n"
+"POT-Creation-Date: 2022-09-09 17:58+0200\n"
+"PO-Revision-Date: 2022-09-09 15:59+0000\n"
+"Last-Translator:   <aniadymanus@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Translated-Using: django-rosetta 0.9.7\n"
+"X-Translated-Using: django-rosetta 0.9.8\n"
 
 #: context_processors.py:8 tests/test_context_processors.py:38
 msgid "Projekt"
 msgstr ""
 
-#: context_processors.py:13 context_processors.py:20
-#: tests/test_context_processors.py:42
+#: context_processors.py:12 tests/test_context_processors.py:42
 msgid "Suche"
 msgstr ""
 
-#: context_processors.py:24 context_processors.py:28
-#: tests/test_context_processors.py:46
+#: context_processors.py:20 tests/test_context_processors.py:46
 msgid "Publikationen"
 msgstr ""
 
-#: models/document.py:27 views/search.py:166
+#: models/document.py:27 views/search.py:200
 msgid "Original"
 msgstr ""
 
-#: models/document.py:28 views/search.py:166
+#: models/document.py:28 views/search.py:200
 msgid "Übersetzung"
 msgstr ""
 
@@ -102,8 +100,8 @@ msgid "DETAILS ZUM DOKUMENT:"
 msgstr ""
 
 #: templates/hueb20/document_details/detail_view.html:27
-#: templates/hueb20/person_details/person_detail_view.html:23
-#: templates/hueb20/publications/publications.html:258
+#: templates/hueb20/person_details/person_detail_view.html:21
+#: templates/hueb20/publications/publications.html:245
 msgid "You need to be logged in to access this page. "
 msgstr "Sie müssen eingeloggt sein, um auf diese Seite zugreifen zu können. "
 
@@ -218,7 +216,7 @@ msgid "Seite"
 msgstr ""
 
 #: templates/hueb20/includables/pages.html:21
-#: templates/hueb20/includables/pagination.html:22 views/search.py:49
+#: templates/hueb20/includables/pagination.html:22 views/search.py:65
 msgid "von"
 msgstr ""
 
@@ -379,7 +377,7 @@ msgstr ""
 msgid "Übersetzungen:"
 msgstr ""
 
-#: templates/hueb20/person_details/person_detail_view.html:11
+#: templates/hueb20/person_details/person_detail_view.html:10
 msgid "DETAILS ZUR PERSON:"
 msgstr ""
 
@@ -393,48 +391,55 @@ msgstr "Originale: "
 msgid "PUBLIKATIONEN"
 msgstr ""
 
-#: templates/hueb20/publications/publications.html:134
-#: templates/hueb20/publications/publications.html:161
+#: templates/hueb20/publications/publications.html:147
 msgid "DOWNLOAD"
 msgstr ""
 
-#: templates/hueb20/publications/publications.html:178
+#: templates/hueb20/publications/publications.html:165
 msgid "SUBSCRIBE TO THE NEWSLETTER"
 msgstr "NEWSLETTER ABONNIEREN"
 
-#: templates/hueb20/publications/publications.html:179
+#: templates/hueb20/publications/publications.html:166
 msgid "Leave name field empty for anonymous subscription"
 msgstr "Für anonyme Anmeldung Namensfeld leer lassen."
 
-#: templates/hueb20/publications/publications.html:182
+#: templates/hueb20/publications/publications.html:169
 msgid "First Name and Last Name"
 msgstr "Vorname Nachname"
 
-#: templates/hueb20/publications/publications.html:186
+#: templates/hueb20/publications/publications.html:173
 msgid "Warning!"
 msgstr "Achtung!"
 
-#: templates/hueb20/publications/publications.html:194
+#: templates/hueb20/publications/publications.html:181
 #, fuzzy
 #| msgid "Warning!"
 msgid "Warning! "
 msgstr "Achtung!"
 
-#: templates/hueb20/publications/publications.html:211
+#: templates/hueb20/publications/publications.html:186
+msgid "Unsubscribe"
+msgstr "Abmelden"
+
+#: templates/hueb20/publications/publications.html:189
+msgid "Subscribe"
+msgstr "Abonnieren"
+
+#: templates/hueb20/publications/publications.html:198
 msgid "Thank you!"
 msgstr "Danke!"
 
-#: templates/hueb20/publications/publications.html:212
+#: templates/hueb20/publications/publications.html:199
 msgid "Please check your E-Mail to confirm your subscription."
 msgstr ""
 "Sie erhalten in Kürze eine E-Mail mit einem Link, um Ihre Anmeldung zu "
 "bestätigen."
 
-#: templates/hueb20/publications/publications.html:222
+#: templates/hueb20/publications/publications.html:209
 msgid "We will miss you!"
 msgstr "Wir werden Sie vermissen!"
 
-#: templates/hueb20/publications/publications.html:223
+#: templates/hueb20/publications/publications.html:210
 msgid "Please check your E-Mail to confirm your unsubscription."
 msgstr ""
 "Sie erhalten in Kürze eine E-Mail mit einem Link, um Ihre Abmeldung zu "
@@ -583,67 +588,63 @@ msgstr ""
 "Bitte geben Sie im Feld 'Vorname Nachname' Ihren Namen an. Falls Sie eine "
 "anonyme Anmeldung wünschen, lassen Sie das Feld leer."
 
-#: views/search.py:27
+#: views/search.py:32
 msgid "Und"
 msgstr ""
 
-#: views/search.py:27
+#: views/search.py:32
 msgid "Oder"
 msgstr ""
 
-#: views/search.py:27
+#: views/search.py:32
 msgid "Nicht"
 msgstr ""
 
-#: views/search.py:39
+#: views/search.py:44 views/search.py:54
 msgid "Suchbegriff"
 msgstr ""
 
-#: views/search.py:59
+#: views/search.py:75
 msgid "bis"
 msgstr ""
 
-#: views/search.py:70
-msgid "DDC Nummer"
-msgstr ""
-
-#: views/search.py:89
+#: views/search.py:124
 msgid "HUEB20"
 msgstr "HÜB-EN-NL"
 
-#: views/search.py:90
+#: views/search.py:125
 msgid "HUEBLATEIN"
 msgstr "SÜB-Lat"
 
-#: views/search.py:91
+#: views/search.py:126
 msgid "HUEBLEGACY"
 msgstr "SÜB-Rom"
 
-#: views/search.py:92
+#: views/search.py:127
 msgid "HUEBLIDOS"
 msgstr "DFÜ-FR"
 
-#: views/search.py:170
+#: views/search.py:204
 msgid "Aufsteigend"
 msgstr ""
 
-#: views/search.py:170
+#: views/search.py:204
 msgid "Absteigend"
 msgstr ""
 
-#: views/search.py:191
+#: views/search.py:225
 msgid "Originale"
 msgstr ""
 
-#: views/search.py:192
+#: views/search.py:226
 msgid "Übersetzungen"
 msgstr ""
 
-#: views/search.py:193
+#: views/search.py:227
 msgid "Brückenübersetzungen"
 msgstr ""
 
-#: views/search.py:203
+#: views/search.py:238
 msgid "Online accessible documents only"
 msgstr "Nur online verfügbare Dokumente"
 

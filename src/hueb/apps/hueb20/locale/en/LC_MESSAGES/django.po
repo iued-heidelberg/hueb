@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-20 13:08+0200\n"
+"POT-Creation-Date: 2022-09-09 17:58+0200\n"
 "PO-Revision-Date: 2022-08-16 13:12+0000\n"
 "Last-Translator: <daniele.moretti@iued.uni-heidelberg.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,21 +23,19 @@ msgstr ""
 msgid "Projekt"
 msgstr "Project"
 
-#: context_processors.py:13 context_processors.py:20
-#: tests/test_context_processors.py:42
+#: context_processors.py:12 tests/test_context_processors.py:42
 msgid "Suche"
 msgstr "Search"
 
-#: context_processors.py:24 context_processors.py:28
-#: tests/test_context_processors.py:46
+#: context_processors.py:20 tests/test_context_processors.py:46
 msgid "Publikationen"
 msgstr "Publications"
 
-#: models/document.py:27 views/search.py:166
+#: models/document.py:27 views/search.py:200
 msgid "Original"
 msgstr "Original"
 
-#: models/document.py:28 views/search.py:166
+#: models/document.py:28 views/search.py:200
 msgid "Übersetzung"
 msgstr "Translation"
 
@@ -102,8 +100,8 @@ msgid "DETAILS ZUM DOKUMENT:"
 msgstr "DOCUMENT DETAILS:"
 
 #: templates/hueb20/document_details/detail_view.html:27
-#: templates/hueb20/person_details/person_detail_view.html:23
-#: templates/hueb20/publications/publications.html:258
+#: templates/hueb20/person_details/person_detail_view.html:21
+#: templates/hueb20/publications/publications.html:245
 msgid "You need to be logged in to access this page. "
 msgstr ""
 
@@ -218,7 +216,7 @@ msgid "Seite"
 msgstr "page"
 
 #: templates/hueb20/includables/pages.html:21
-#: templates/hueb20/includables/pagination.html:22 views/search.py:49
+#: templates/hueb20/includables/pagination.html:22 views/search.py:65
 msgid "von"
 msgstr "of"
 
@@ -254,9 +252,9 @@ msgid ""
 "Übersetzungsbibliographie eine Informationsinfrastruktur bereitstellen, die "
 "zwei Zwecken dienen soll:"
 msgstr ""
-"This project is funded by the German Research Foundation and aims to provide"
-" an online bibliography of translations of nonfictional texts mainly from "
-"the early modern period, i.e. the collection of German translations of non-"
+"This project is funded by the German Research Foundation and aims to provide "
+"an online bibliography of translations of nonfictional texts mainly from the "
+"early modern period, i.e. the collection of German translations of non-"
 "literary texts published between 1450 and 1850. "
 
 #: templates/hueb20/index/old/project_description.html:16
@@ -269,8 +267,8 @@ msgstr ""
 "Apart from developing a technical infrastructure our main task concerns the "
 "collection of data: we will compile bibliographical information on "
 "translations from English and Dutch into German. Even though belles-lettres "
-"will be excluded, the texts will cover a wide range of subject matters, from"
-" natural sciences, medicine and technology via historical documents and "
+"will be excluded, the texts will cover a wide range of subject matters, from "
+"natural sciences, medicine and technology via historical documents and "
 "travel reports to theological essays. In addition, we will transfer data "
 "from two existing bibliographies of German translations in the early modern "
 "period (Romance-German “Saarbrücker Übersetzungsbibliographie”/“Saarbrücken "
@@ -284,8 +282,8 @@ msgid ""
 "Diese soll dann gemeinsam mit zwei Vorgängerprojekten zur romanisch-"
 "deutschen und lateinisch-deutschen Übersetzung (Saarbrücker "
 "Übersetzungsbibliographie) zu einer Gesamtbibliographie integriert werden, "
-"um anderen Forschenden umfassende bibliographische Daten zur Übersetzung ins"
-" Deutsche in der frühen Neuzeit und darüber hinaus verfügbar zu machen."
+"um anderen Forschenden umfassende bibliographische Daten zur Übersetzung ins "
+"Deutsche in der frühen Neuzeit und darüber hinaus verfügbar zu machen."
 msgstr ""
 "In the end, we will provide a comprehensive bibliography of translations of "
 "nonfictional texts from the early modern period, which will cover Latin, "
@@ -298,16 +296,16 @@ msgstr ""
 #: templates/hueb20/index/old/project_description.html:24
 #: templates/hueb20/index/project_description.html:24
 msgid ""
-"Durch die Zusammenführung der dann insgesamt drei Datenbanken "
-"(englisch/niederländisch-deutsche HÜB, lateinisch-deutsche SÜB-L, romanisch-"
-"deutsche SÜB) wird eine umfassende Übersetzungsbibliographie "
-"frühneuzeitlicher nichtfiktionaler Texte mit Lateinisch, Französisch, "
-"Italienisch, Spanisch, Portugiesisch, Englisch und Niederländisch als "
-"systematisch erfassten Original- und Brückensprachen entstehen, die "
-"Forschenden eine umfassende Datenbasis für Untersuchungen verschiedenster "
-"Ausrichtung liefern kann. Darüber hinaus soll die entwickelte Infrastruktur "
-"zugleich interessierten Kolleginnen und Kollegen für die   Erfassung eigener"
-" bibliographischer Daten zur Verfügung gestellt werden."
+"Durch die Zusammenführung der dann insgesamt drei Datenbanken (englisch/"
+"niederländisch-deutsche HÜB, lateinisch-deutsche SÜB-L, romanisch-deutsche "
+"SÜB) wird eine umfassende Übersetzungsbibliographie frühneuzeitlicher "
+"nichtfiktionaler Texte mit Lateinisch, Französisch, Italienisch, Spanisch, "
+"Portugiesisch, Englisch und Niederländisch als systematisch erfassten "
+"Original- und Brückensprachen entstehen, die Forschenden eine umfassende "
+"Datenbasis für Untersuchungen verschiedenster Ausrichtung liefern kann. "
+"Darüber hinaus soll die entwickelte Infrastruktur zugleich interessierten "
+"Kolleginnen und Kollegen für die   Erfassung eigener bibliographischer Daten "
+"zur Verfügung gestellt werden."
 msgstr ""
 "On the whole, we consider our project to be a contribution to the field of "
 "Digital Humanities: on the one hand, a typical subject matter of the Arts "
@@ -318,9 +316,9 @@ msgstr ""
 #: templates/hueb20/index/old/project_description.html:31
 #: templates/hueb20/index/project_description.html:31
 msgid ""
-"Übernommen aus \"Pluvinel, Antonium: Maneige royal ou l’on peut remarquer la"
-" defaut et la perfection du chevalier\" mit Genehmigung der Universitäts- "
-"und Landesbibliothek Sachsen-Anhalt"
+"Übernommen aus \"Pluvinel, Antonium: Maneige royal ou l’on peut remarquer la "
+"defaut et la perfection du chevalier\" mit Genehmigung der Universitäts- und "
+"Landesbibliothek Sachsen-Anhalt"
 msgstr ""
 "Taken from \"Pluvinel, Antonium: Maneige royal ou l’on peut remarquer la "
 "defaut et la perfection du chevalier\" by courtesy of the University and "
@@ -378,7 +376,7 @@ msgstr "Documents:"
 msgid "Übersetzungen:"
 msgstr "Translations:"
 
-#: templates/hueb20/person_details/person_detail_view.html:11
+#: templates/hueb20/person_details/person_detail_view.html:10
 msgid "DETAILS ZUR PERSON:"
 msgstr "PERSON DETAILS:"
 
@@ -390,44 +388,51 @@ msgstr "Originals:"
 msgid "PUBLIKATIONEN"
 msgstr "PUBLICATIONS"
 
-#: templates/hueb20/publications/publications.html:134
-#: templates/hueb20/publications/publications.html:161
+#: templates/hueb20/publications/publications.html:147
 msgid "DOWNLOAD"
 msgstr ""
 
-#: templates/hueb20/publications/publications.html:178
+#: templates/hueb20/publications/publications.html:165
 msgid "SUBSCRIBE TO THE NEWSLETTER"
 msgstr ""
 
-#: templates/hueb20/publications/publications.html:179
+#: templates/hueb20/publications/publications.html:166
 msgid "Leave name field empty for anonymous subscription"
 msgstr "Leave name field empty for anonymous subscription."
 
-#: templates/hueb20/publications/publications.html:182
+#: templates/hueb20/publications/publications.html:169
 msgid "First Name and Last Name"
 msgstr "First Name Last Name"
 
-#: templates/hueb20/publications/publications.html:186
+#: templates/hueb20/publications/publications.html:173
 msgid "Warning!"
 msgstr ""
 
-#: templates/hueb20/publications/publications.html:194
+#: templates/hueb20/publications/publications.html:181
 msgid "Warning! "
 msgstr ""
 
-#: templates/hueb20/publications/publications.html:211
+#: templates/hueb20/publications/publications.html:186
+msgid "Unsubscribe"
+msgstr ""
+
+#: templates/hueb20/publications/publications.html:189
+msgid "Subscribe"
+msgstr ""
+
+#: templates/hueb20/publications/publications.html:198
 msgid "Thank you!"
 msgstr ""
 
-#: templates/hueb20/publications/publications.html:212
+#: templates/hueb20/publications/publications.html:199
 msgid "Please check your E-Mail to confirm your subscription."
 msgstr ""
 
-#: templates/hueb20/publications/publications.html:222
+#: templates/hueb20/publications/publications.html:209
 msgid "We will miss you!"
 msgstr ""
 
-#: templates/hueb20/publications/publications.html:223
+#: templates/hueb20/publications/publications.html:210
 msgid "Please check your E-Mail to confirm your unsubscription."
 msgstr ""
 
@@ -571,70 +576,66 @@ msgid ""
 "Please write your name if form 'Firstname Lastname' or leave empty for "
 "anonymous subscription"
 msgstr ""
-"Please write your name in text box 'First Name Last Name' or leave empty for"
-" anonymous subscription."
+"Please write your name in text box 'First Name Last Name' or leave empty for "
+"anonymous subscription."
 
-#: views/search.py:27
+#: views/search.py:32
 msgid "Und"
 msgstr "And"
 
-#: views/search.py:27
+#: views/search.py:32
 msgid "Oder"
 msgstr "Or"
 
-#: views/search.py:27
+#: views/search.py:32
 msgid "Nicht"
 msgstr "Not"
 
-#: views/search.py:39
+#: views/search.py:44 views/search.py:54
 msgid "Suchbegriff"
 msgstr "Search Term"
 
-#: views/search.py:59
+#: views/search.py:75
 msgid "bis"
 msgstr "to"
 
-#: views/search.py:70
-msgid "DDC Nummer"
-msgstr "DDC Number"
-
-#: views/search.py:89
+#: views/search.py:124
 msgid "HUEB20"
 msgstr "HÜB-EN-NL"
 
-#: views/search.py:90
+#: views/search.py:125
 msgid "HUEBLATEIN"
 msgstr "SÜB-Lat"
 
-#: views/search.py:91
+#: views/search.py:126
 msgid "HUEBLEGACY"
 msgstr "SÜB-Rom"
 
-#: views/search.py:92
+#: views/search.py:127
 msgid "HUEBLIDOS"
 msgstr "DFÜ-FR"
 
-#: views/search.py:170
+#: views/search.py:204
 msgid "Aufsteigend"
 msgstr "Ascending"
 
-#: views/search.py:170
+#: views/search.py:204
 msgid "Absteigend"
 msgstr "Descending"
 
-#: views/search.py:191
+#: views/search.py:225
 msgid "Originale"
 msgstr "Originals"
 
-#: views/search.py:192
+#: views/search.py:226
 msgid "Übersetzungen"
 msgstr "Translations"
 
-#: views/search.py:193
+#: views/search.py:227
 msgid "Brückenübersetzungen"
 msgstr "Intermediary Translations"
 
-#: views/search.py:203
+#: views/search.py:238
 msgid "Online accessible documents only"
 msgstr ""
 
@@ -645,6 +646,9 @@ msgstr "Exact"
 #: widgets/timerange.py:18
 msgid "Bereich"
 msgstr "Range"
+
+#~ msgid "DDC Nummer"
+#~ msgstr "DDC Number"
 
 #~ msgid "FILTER: You have variery of filters to choose"
 #~ msgstr "FILTER: "
