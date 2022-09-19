@@ -1,12 +1,12 @@
 import logging
 import beeline
 from django import forms
-from django.db.models import Q
+from django.db.models import Q, Subquery
 from django.forms.formsets import BaseFormSet, formset_factory
 from django.views.generic import ListView
 from hueb.apps.hueb20.models.document import Document, DocumentRelationship
 from hueb.apps.hueb20.models.language import Language
-from hueb.apps.hueb20.models import DdcGerman
+from hueb.apps.hueb20.models import DdcGerman, Contribution
 from django.db.models import F
 from django.utils.translation import get_language_info
 from django.utils.translation import gettext_lazy as _
@@ -47,6 +47,16 @@ class SearchForm(forms.Form):
         ),
     )
 
+    search_text = forms.CharField(
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                "class": "flex p-2 mx-2 my-2 font-medium placeholder-black placeholder-opacity-25 bg-transparent border-b-4 border-black rounded-none appearance-none lg:placeholder-opacity-25 lg:border-sand-bg lg:placeholder-sand-bg",
+                "placeholder": _("Suchbegriff"),
+            }
+        ),
+    )
+
     search_year_from = forms.IntegerField(
         required=False,
         widget=forms.NumberInput(
@@ -67,6 +77,19 @@ class SearchForm(forms.Form):
             }
         ),
     )
+    """
+    search_ddc = forms.IntegerField(
+        required=False,
+        widget=forms.NumberInput(
+            attrs={
+                "min": 00,
+                "step": 10,
+                "class": "flex p-2 mx-2 my-2 font-medium placeholder-black placeholder-opacity-25 bg-transparent border-b-4 border-black rounded-none appearance-none lg:placeholder-opacity-25 lg:border-sand-bg lg:placeholder-sand-bg",
+                "placeholder": _("DDC Nummer"),
+            }
+        ),
+    )
+    """
 
     def get_search_ddc_choices():
         ddcs = DdcGerman.objects.all().order_by("ddc_number")
@@ -89,10 +112,12 @@ class SearchForm(forms.Form):
         choices=tuple(
             (language, language)
             for language in Language.objects.filter()
-            .exclude(language_de="")  # manual coding, but couldn't find another way
+            .exclude(language_de="")  # bad manual coding, but couldn't find another way
             .exclude(language_en="")
             .all()
-            .order_by("language_de")
+            .order_by(
+                "language_de"
+            )  # could not find a language dynamic way (check again!)
         ),
         widget=SearchSelectWidget,
     )
@@ -157,7 +182,6 @@ class BaseSearchFormSet(BaseFormSet):
                 queryset = queryset.filter(
                     document_to__filing__archive__name="Online-Version"
                 )
-
             logger.debug(queryset.query)
             return queryset
 
@@ -173,7 +197,8 @@ class BaseSearchFormSet(BaseFormSet):
 
 class SortForm(forms.Form):
     sort_attribute = forms.ChoiceField(
-        choices=Document.sortable_attributes, widget=SearchSelectWidget
+        choices=Document.sortable_attributes,
+        widget=SearchSelectWidget,
     )
     sort_type = forms.ChoiceField(
         choices=(("document_from", _("Original")), ("document_to", _("Übersetzung"))),
@@ -206,6 +231,7 @@ class TypeForm(forms.Form):
             (Document.BRIDGE, _("Brückenübersetzungen")),
         ),
     )
+
     online_only = forms.MultipleChoiceField(  # Easier than making booleanfield and adding custom widget for label
         required=False,
         widget=TypeCheckboxWidget(
@@ -238,7 +264,6 @@ class Search(ListView):
         sortform = SortForm(data=self.request.GET)
         # typeform = self.type_form(data=self.request.GET)
         typeform = TypeForm(data=self.request.GET)
-
         if formset.is_valid() and typeform.is_valid():
             types = typeform.cleaned_data["type"]
             online_only = typeform.cleaned_data["online_only"]
@@ -322,3 +347,25 @@ class Search(ListView):
             context["title_queries"] = ""
 
         return context
+
+
+"""
+search_ddc_new = forms.ChoiceField(
+        choices=tuple(
+            (
+                DdcGerman.objects.get(ddc_number=str(i).zfill(3)),
+                tuple(
+                    (
+                        DdcGerman.objects.get(ddc_number=str(number).zfill(3)),
+                        DdcGerman.objects.get(ddc_number=str(number).zfill(3)),
+                        #DdcGerman.objects.get(ddc_number=str(number).zfill(3)),
+                        #str(number).zfill(3) + " " + textwrap.shorten(DdcGerman.objects.get(ddc_number=str(number).zfill(3)), width=27, placeholder='...'),
+                    )
+                    for number in range(i, i + 100, 10)
+                ),
+            )
+            for i in range(0, len(DdcGerman.objects.all()), 100)
+        ),
+        widget=SearchSelectWidget,
+    )
+"""

@@ -6,7 +6,8 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django import forms
 import re
-from django.db.models import Q
+from django.db.models.signals import post_save, post_init
+from django.db.models import Q, F
 from django.db.models.query import QuerySet
 from django.urls import reverse
 from hueb.apps.hueb20.models.archive import Archive
@@ -24,6 +25,7 @@ from psycopg2.extras import NumericRange
 
 
 class Document(Reviewable):
+
     ORIGINAL = _("Original")
     TRANSLATION = _("Übersetzung")
     BRIDGE = _("Brückenübersetzung")
@@ -67,6 +69,10 @@ class Document(Reviewable):
         Person, through="Contribution", related_name="documents"
     )
 
+    main_author = models.ForeignKey(
+        Person, on_delete=models.DO_NOTHING, blank=True, null=True
+    )
+
     located_in = models.ManyToManyField(
         Archive,
         through="Filing",
@@ -100,6 +106,18 @@ class Document(Reviewable):
     translation_ref_legacy = models.OneToOneField(
         LegacyLegacy.Translation, on_delete=models.DO_NOTHING, null=True, blank=True
     )
+
+    def save(self, *args, **kwargs):
+        if self.contribution_set.filter(contribution_type="WRITER").exists():
+            main_author = (
+                self.get_authors()
+                .order_by(F("person__name").asc(nulls_last=True))
+                .first()
+                .person
+            )
+            if self.main_author != main_author:
+                self.main_author = main_author
+        super(Document, self).save(*args, **kwargs)
 
     def get_document_type(self):
         if self.translations.exists() and not self.originals.exists():
@@ -266,7 +284,7 @@ class Document(Reviewable):
     sortable_attributes = (
         ("written_in", _("Sortiert nach Jahr")),
         ("title", _("Sortiert nach Titel")),
-        ("written_by__name", _("Sortiert nach Autor")),
+        ("main_author__name", _("Sortiert nach Autor")),
         ("ddc", _("Sortiert nach DDC")),
     )
 

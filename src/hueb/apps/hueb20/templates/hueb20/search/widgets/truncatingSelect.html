@@ -4,7 +4,7 @@
   {% for group_name, group_choices, group_index in widget.optgroups %}{% if group_name %}
     <optgroup label="{{ group_name | truncatechars:35 }}">{% endif %}
       {% for option in group_choices %}
-        <option value="{{ option.value|stringformat:'s' }}"{% include "django/forms/widgets/attrs.html" %}>{{ option.label | truncatechars:35 }}</option>
+        <option style="color:black" value="{{ option.value|stringformat:'s' }}"{% include "django/forms/widgets/attrs.html" %}>{{ option.label | truncatechars:35 }}</option>
       {% endfor %}{% if group_name %}
     </optgroup>{% endif %}{% endfor %}
   </select>
