@@ -1,5 +1,5 @@
-import hueb.apps.hueb_legacy_latein.models as Legacy
 import hueb.apps.hueb_legacy.models as LegacyLegacy
+import hueb.apps.hueb_legacy_latein.models as Legacy
 from django.db import models
 from django.urls import reverse
 from hueb.apps.hueb20.models.archive import Archive
@@ -18,6 +18,7 @@ class Filing(Reviewable):
     )
     signatur = models.CharField(max_length=255, null=True, blank=True)
     link = models.CharField(max_length=255, blank=True, null=True)
+    link_status = models.BooleanField(default=None, null=True, blank=True)
     app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
     locAssign_ref = models.ForeignKey(
         Legacy.LocAssign, on_delete=models.DO_NOTHING, null=True, blank=True

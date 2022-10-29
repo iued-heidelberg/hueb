@@ -1,17 +1,17 @@
 from copy import deepcopy
 
-from django.contrib import admin
+import requests
+from django.contrib import admin, messages
 from django.contrib.postgres.fields import IntegerRangeField
 from django.db.models import Count
+from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from hueb.apps.hueb20.admin.contribution import ContributionInline
 from hueb.apps.hueb20.admin.review import ReviewAdmin, TabularInlineReviewAdmin
-from hueb.apps.hueb20.models import Contribution, Document
+from hueb.apps.hueb20.models import Contribution, Document, Filing
 from hueb.apps.hueb20.widgets.timerange import TimeRangeWidget
-from django.contrib import admin, messages
-from django.http import HttpResponseRedirect
-from django.utils.html import format_html
 
 from .comment import CommentInline
 from .filing import FilingInline
@@ -51,7 +51,7 @@ class DocumentAdmin(ReviewAdmin):
 
     change_form_template = "admin/document_change_form.html"
 
-    actions = ["duplicate"]
+    actions = ["duplicate", "validate_links"]
 
     autocomplete_fields = ("ddc", "cultural_circle", "language")
     readonly_fields = (
@@ -79,6 +79,7 @@ class DocumentAdmin(ReviewAdmin):
         "get_archives",
         "get_translations",
         "state",
+        "link_status",
     )
     list_filter = ("state", "app")
     formfield_overrides = {IntegerRangeField: {"widget": TimeRangeWidget}}
@@ -132,7 +133,7 @@ class DocumentAdmin(ReviewAdmin):
     )
 
     def response_add(self, request, obj):
-        if self.is_not_linked(request, obj) and not "_popup" in request.get_full_path():
+        if self.is_not_linked(request, obj) and "_popup" not in request.get_full_path():
             self.message_user(
                 request,
                 format_html("Linked Document Required!"),
@@ -255,6 +256,12 @@ class DocumentAdmin(ReviewAdmin):
 
     translationTranslator_link.short_description = "Translator"
 
+    def link_status(self, obj):
+        try:
+            return obj.filing_set.get(archive__name="Online-Version").link_status
+        except Filing.DoesNotExist:
+            return None
+
     def duplicate(self, request, queryset):
         documents = queryset.all()
         for document in documents:
@@ -281,3 +288,27 @@ class DocumentAdmin(ReviewAdmin):
                 new_filing.archive = filing.archive
                 new_filing.save()
             new_document.save()
+
+    def validate_links(self, request, queryset):
+
+        documents = queryset.all()
+        for document in documents:
+            try:
+                filing = document.filing_set.get(archive__name="Online-Version")
+                if not filing.link:
+                    filing.link_status = False
+                    filing.save()
+                else:
+                    try:
+                        rq = requests.get(filing.link)
+                        if rq.status_code == 200:  # OK success status
+                            filing.link_status = True
+                            filing.save()
+                        else:
+                            filing.link_status = False
+                            filing.save()
+                    except Exception:
+                        filing.link_status = False
+                        filing.save()
+            except Exception:
+                continue
