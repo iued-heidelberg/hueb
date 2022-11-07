@@ -17,7 +17,7 @@
   "license": "ISC",
   "devDependencies": {},
   "dependencies": {
-    "postcss": "^8.2.10",
+    "postcss": "^8.2.13",
     "tailwindcss": "^1.9.3",
     "postcss-cli": "^8.1.0"
   }
