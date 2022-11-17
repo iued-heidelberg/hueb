@@ -51,7 +51,7 @@ class DocumentAdmin(ReviewAdmin):
 
     change_form_template = "admin/document_change_form.html"
 
-    actions = ["duplicate", "validate_links"]
+    actions = ["duplicate"]  # , "validate_links"]
 
     autocomplete_fields = ("ddc", "cultural_circle", "language")
     readonly_fields = (
@@ -79,7 +79,7 @@ class DocumentAdmin(ReviewAdmin):
         "get_archives",
         "get_translations",
         "state",
-        "link_status",
+        # "link_status",
     )
     list_filter = ("state", "app")
     formfield_overrides = {IntegerRangeField: {"widget": TimeRangeWidget}}
