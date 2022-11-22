@@ -1,17 +1,14 @@
 import logging
+
 import beeline
 from django import forms
-from django.db.models import Q, Subquery
+from django.db.models import F, Q
 from django.forms.formsets import BaseFormSet, formset_factory
+from django.utils.translation import gettext_lazy as _
 from django.views.generic import ListView
+from hueb.apps.hueb20.models import DdcGerman
 from hueb.apps.hueb20.models.document import Document, DocumentRelationship
 from hueb.apps.hueb20.models.language import Language
-from hueb.apps.hueb20.models import DdcGerman, Contribution
-from django.db.models import F
-from django.utils.translation import get_language_info
-from django.utils.translation import gettext_lazy as _
-import textwrap
-
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -189,7 +186,7 @@ class BaseSearchFormSet(BaseFormSet):
         search_texts = []
         for form in self:
             data = form.cleaned_data
-            if data["attribute"] == "title":
+            if data["attribute"] == "title" and data["search_text"]:
                 if data["operator"] == "and" or data["operator"] == "or":
                     search_texts.append(data["search_text"])
         return search_texts
@@ -344,8 +341,9 @@ class Search(ListView):
         if formset.is_valid():
             context["title_queries"] = formset.get_title_queries()
         else:
-            context["title_queries"] = ""
+            context["title_queries"] = []
 
+        print(context["title_queries"])
         return context
 
 
