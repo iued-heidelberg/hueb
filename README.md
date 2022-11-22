@@ -32,8 +32,9 @@ The current implementation progress (07.21) is the following:
 > - `backup.sql` this is a backup I've created during the last weeks of my involvement. You can use it to seed your local dev environment or simply download a backup from the servers
 > - I've added a list of possible todos/open topics at the end of this document
 > Have fun,
+
 > Lukas
-> PS: Please apologize for the bodies you may find in this project...
+> PS: Please apologize for the bodies you may find in this project.
 
 
 ### Setting up a development environment 
