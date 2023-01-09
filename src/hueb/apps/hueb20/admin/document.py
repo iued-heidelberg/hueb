@@ -68,7 +68,7 @@ class DocumentAdmin(ReviewAdmin):
         "title",
         "subtitle",
         "get_written_by",
-        "adapt_document_written_in_list_view",
+        "serialize_written_in",
         "get_publishers",
         "published_location",
         "edition",
@@ -132,11 +132,21 @@ class DocumentAdmin(ReviewAdmin):
         ),
     )
 
+    """
+    def is_not_linked(self, request, obj):
+        return (
+            "_save_without_link" not in request.POST
+            and not DocumentRelationship.objects.filter(document_from=obj).exists()
+            and not DocumentRelationship.objects.filter(document_to=obj).exists()
+        )
+
+    """
+
     def response_add(self, request, obj):
         if self.is_not_linked(request, obj) and "_popup" not in request.get_full_path():
             self.message_user(
                 request,
-                format_html("Linked Document Required!"),
+                format_html("Document saved. You forgot to add a linked document!"),
                 level=messages.WARNING,
             )
             return HttpResponseRedirect("../{id}/change/".format(id=obj.id))
@@ -146,7 +156,7 @@ class DocumentAdmin(ReviewAdmin):
         if self.is_not_linked(request, obj) and "_mark_reviewed" not in request.POST:
             self.message_user(
                 request,
-                format_html("Linked Document Required!"),
+                format_html("Document saved. You forgot to add a linked document!"),
                 level=messages.WARNING,
             )
             return HttpResponseRedirect(".")
@@ -262,6 +272,30 @@ class DocumentAdmin(ReviewAdmin):
         except Filing.DoesNotExist:
             return None
 
+    """
+    def save_related(self, request, form, formsets, change):
+        for formset in formsets:
+            if formset.model == Filing:
+                for filing_form in formset:
+                    filing_instance = filing_form.save(commit=False)
+                    if not filing_instance.archive:
+                        continue
+                    if filing_instance.archive.name == "Online-Version":
+                        if not change:
+                            filing_instance.link_status = True
+                        else:
+                            try:
+                                filing = Filing.objects.get(id=filing_instance.id)
+                                if filing.link != filing_instance.link:
+                                    filing_instance.link_status = True
+                            except Filing.DoesNotExist:
+                                filing_instance.link_status = True
+                        print(filing_instance.link_status)
+
+                        filing_instance.save()
+        super().save_related(request, form, formsets, change)
+    """
+
     def duplicate(self, request, queryset):
         documents = queryset.all()
         for document in documents:
@@ -290,25 +324,32 @@ class DocumentAdmin(ReviewAdmin):
             new_document.save()
 
     def validate_links(self, request, queryset):
-
         documents = queryset.all()
+        if len(documents) > 100:
+            messages.error(
+                request, "Please select 100 or less documents to validate links"
+            )
+            return
         for document in documents:
             try:
-                filing = document.filing_set.get(archive__name="Online-Version")
-                if not filing.link:
-                    filing.link_status = False
-                    filing.save()
-                else:
-                    try:
-                        rq = requests.get(filing.link)
-                        if rq.status_code == 200:  # OK success status
-                            filing.link_status = True
-                            filing.save()
-                        else:
-                            filing.link_status = False
-                            filing.save()
-                    except Exception:
+                filings = document.filing_set.filter(
+                    archive__name="Online-Version"
+                ).all()
+                for filing in filings:
+                    if not filing.link:
                         filing.link_status = False
                         filing.save()
+                    else:
+                        try:
+                            rq = requests.get(filing.link)
+                            if rq.status_code == 200:  # OK success status
+                                filing.link_status = True
+                                filing.save()
+                            else:
+                                filing.link_status = False
+                                filing.save()
+                        except Exception:
+                            filing.link_status = False
+                            filing.save()
             except Exception:
                 continue
