@@ -3,7 +3,6 @@ from django.http import HttpResponseRedirect
 from django.utils.html import format_html
 from import_export.admin import ExportMixin
 from simple_history.admin import SimpleHistoryAdmin
-from hueb.apps.hueb20.models.document import DocumentRelationship
 
 
 class ReviewAdmin(ExportMixin, SimpleHistoryAdmin):
@@ -19,13 +18,6 @@ class ReviewAdmin(ExportMixin, SimpleHistoryAdmin):
                     form.base_fields[f].disabled = True
 
         return form
-
-    def is_not_linked(self, request, obj):
-        return (
-            "_save_without_link" not in request.POST
-            and not DocumentRelationship.objects.filter(document_from=obj).exists()
-            and not DocumentRelationship.objects.filter(document_to=obj).exists()
-        )
 
     def response_change(self, request, obj):
         if "_mark_reviewed" in request.POST:

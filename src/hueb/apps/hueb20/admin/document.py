@@ -11,6 +11,7 @@ from django.utils.safestring import mark_safe
 from hueb.apps.hueb20.admin.contribution import ContributionInline
 from hueb.apps.hueb20.admin.review import ReviewAdmin, TabularInlineReviewAdmin
 from hueb.apps.hueb20.models import Contribution, Document, Filing
+from hueb.apps.hueb20.models.document import DocumentRelationship
 from hueb.apps.hueb20.widgets.timerange import TimeRangeWidget
 
 from .comment import CommentInline
@@ -51,7 +52,7 @@ class DocumentAdmin(ReviewAdmin):
 
     change_form_template = "admin/document_change_form.html"
 
-    actions = ["duplicate"]  # , "validate_links"]
+    actions = ["duplicate", "validate_links"]
 
     autocomplete_fields = ("ddc", "cultural_circle", "language")
     readonly_fields = (
@@ -79,7 +80,7 @@ class DocumentAdmin(ReviewAdmin):
         "get_archives",
         "get_translations",
         "state",
-        # "link_status",
+        "link_status",
     )
     list_filter = ("state", "app")
     formfield_overrides = {IntegerRangeField: {"widget": TimeRangeWidget}}
@@ -132,15 +133,12 @@ class DocumentAdmin(ReviewAdmin):
         ),
     )
 
-    """
     def is_not_linked(self, request, obj):
         return (
             "_save_without_link" not in request.POST
             and not DocumentRelationship.objects.filter(document_from=obj).exists()
             and not DocumentRelationship.objects.filter(document_to=obj).exists()
         )
-
-    """
 
     def response_add(self, request, obj):
         if self.is_not_linked(request, obj) and "_popup" not in request.get_full_path():
@@ -268,7 +266,19 @@ class DocumentAdmin(ReviewAdmin):
 
     def link_status(self, obj):
         try:
-            return obj.filing_set.get(archive__name="Online-Version").link_status
+            if (
+                not obj.filing_set.filter(archive__name="Online-Version")
+                .filter(link_status=False)
+                .exists()
+            ):
+                if (
+                    obj.filing_set.filter(archive__name="Online-Version")
+                    .filter(link_status=True)
+                    .exists()
+                ):
+                    return True
+                return None
+            return False
         except Filing.DoesNotExist:
             return None
 
