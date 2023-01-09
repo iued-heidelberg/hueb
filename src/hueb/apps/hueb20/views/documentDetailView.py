@@ -1,8 +1,8 @@
-from django.views.generic.detail import DetailView
-from django import forms
-from hueb.apps.hueb20.models import Document
-from django.http import HttpResponse
 import csv
+
+from django.http import HttpResponse
+from django.views.generic.detail import DetailView
+from hueb.apps.hueb20.models import Document
 
 
 class DocumentDetailView(DetailView):
@@ -12,9 +12,6 @@ class DocumentDetailView(DetailView):
 
     def download_csv(request, pk):
         document = Document.objects.get(id=pk)
-
-        model_fields = document._meta.fields + document._meta.many_to_many
-        field_names = [field.name for field in model_fields]
 
         response = HttpResponse(content_type="text/csv")
         response["Content-Disposition"] = 'attachment; filename="export.csv"'
@@ -47,8 +44,8 @@ class DocumentDetailView(DetailView):
                 document.title if document.title != "" else "-",
                 document.subtitle if document.subtitle != "" else "-",
                 document.edition if document.edition != "" else "-",
-                document.adapt_document_written_in_list_view()
-                if not document.adapt_document_written_in_list_view() is None
+                document.serialize_written_in()
+                if not document.serialize_written_in() is None
                 else "-",
                 document.get_language()
                 if document.get_language() != ""

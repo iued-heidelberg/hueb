@@ -1,15 +1,12 @@
-import hueb.apps.hueb_legacy_latein.models as Legacy
 import hueb.apps.hueb_legacy.models as LegacyLegacy
+import hueb.apps.hueb_legacy_latein.models as Legacy
 import hueb.apps.hueb_legacy_lidos.models as Lidos
 from django.contrib.postgres.fields import IntegerRangeField
 from django.db import models
-from django.utils.translation import gettext_lazy as _
-from django import forms
-import re
-from django.db.models.signals import post_save, post_init
-from django.db.models import Q, F
+from django.db.models import F, Q
 from django.db.models.query import QuerySet
 from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
 from hueb.apps.hueb20.models.archive import Archive
 from hueb.apps.hueb20.models.culturalCircle import CulturalCircle
 from hueb.apps.hueb20.models.ddc import DdcGerman
@@ -142,7 +139,9 @@ class Document(Reviewable):
             return Document.TRANSLATION
 
     def get_authors(self):
-        return self.contribution_set.filter(contribution_type="WRITER")
+        return self.contribution_set.filter(contribution_type="WRITER").filter(
+            person__isnull=False
+        )
 
     """
     def get_original_author(self):
@@ -225,7 +224,9 @@ class Document(Reviewable):
         return contributors
 
     def get_publishers(self):
-        return self.contribution_set.filter(contribution_type="PUBLISHER")
+        return self.contribution_set.filter(contribution_type="PUBLISHER").filter(
+            person__isnull=False
+        )
 
     def get_language(self):
         return self.language
@@ -288,10 +289,10 @@ class Document(Reviewable):
         ("ddc", _("Sortiert nach DDC")),
     )
 
-    def adapt_document_written_in_list_view(self):
+    def serialize_written_in(self):
         return timerange_serialization(self.written_in)
 
-    adapt_document_written_in_list_view.short_description = "Written in"
+    serialize_written_in.short_description = "Written in"
 
     @classmethod
     def get_q_object(cls, query):

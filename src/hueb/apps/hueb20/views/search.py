@@ -1,9 +1,14 @@
+import csv
 import logging
 
 import beeline
 from django import forms
+from django.contrib.auth.models import User
 from django.db.models import F, Q
 from django.forms.formsets import BaseFormSet, formset_factory
+from django.http import StreamingHttpResponse
+from django.shortcuts import redirect
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import ListView
 from hueb.apps.hueb20.models import DdcGerman
@@ -133,9 +138,11 @@ class SearchForm(forms.Form):
 class BaseSearchFormSet(BaseFormSet):
     base_queryset = (
         DocumentRelationship.objects.prefetch_related("document_to__written_by")
+        .prefetch_related("document_to__contribution_set__person")
         .select_related("document_to__ddc")
         .select_related("document_to__language")
         .prefetch_related("document_from__written_by")
+        .prefetch_related("document_from__contribution_set__person")
         .select_related("document_from__ddc")
         .select_related("document_from__language")
     )
@@ -257,9 +264,7 @@ class Search(ListView):
 
     def get_queryset(self):
         formset = self.SearchFormset(data=self.request.GET)
-        # sortform = self.sort_form(data=self.request.GET)
         sortform = SortForm(data=self.request.GET)
-        # typeform = self.type_form(data=self.request.GET)
         typeform = TypeForm(data=self.request.GET)
         if formset.is_valid() and typeform.is_valid():
             types = typeform.cleaned_data["type"]
@@ -343,27 +348,195 @@ class Search(ListView):
         else:
             context["title_queries"] = []
 
-        print(context["title_queries"])
         return context
 
+    def get(self, request, *args, **kwargs):
+        if "download" in request.GET:
+            if not User.is_authenticated:
+                return redirect(reverse("login"))
+            queryset = self.get_queryset()
+            return self.export_to_csv(queryset)
+        else:
+            return super().get(request, *args, **kwargs)
 
-"""
-search_ddc_new = forms.ChoiceField(
-        choices=tuple(
-            (
-                DdcGerman.objects.get(ddc_number=str(i).zfill(3)),
-                tuple(
-                    (
-                        DdcGerman.objects.get(ddc_number=str(number).zfill(3)),
-                        DdcGerman.objects.get(ddc_number=str(number).zfill(3)),
-                        #DdcGerman.objects.get(ddc_number=str(number).zfill(3)),
-                        #str(number).zfill(3) + " " + textwrap.shorten(DdcGerman.objects.get(ddc_number=str(number).zfill(3)), width=27, placeholder='...'),
+    def export_to_csv(self, queryset):
+        queryset.select_related("document_from__cultural_circle").select_related(
+            "document_to__cultural_circle"
+        )
+        queryset.prefetch_related(
+            "document_from__filing_set__archive"
+        ).prefetch_related("document_to__filing_set__archive")
+
+        # Fetch original attributes in case of bridge
+        queryset.prefetch_related(
+            "document_from__document_from__contribution_set__person"
+        )
+        queryset.select_related("document_from__document_from__language")
+
+        def row_generator(queryset):
+            yield [
+                "Titel_DocumentFrom",
+                "Untertitel_DocumentFrom",
+                "Ausgabe_DocumentFrom",
+                "Jahr_DocumentFrom",
+                "Originalsprache_DocumentFrom",
+                "Sprache_DocumentFrom",
+                "Kulturkreis_DocumentFrom",
+                "Autor_DocumentFrom",
+                "Übersetzer_DocumentFrom",
+                "Verlag_DocumentFrom",
+                "Erscheinungsort_DocumentFrom",
+                "DDC_DocumentFrom",
+                "Standorte_DocumentFrom",
+                "Titel_DocumentTo",
+                "Untertitel_DocumentTo",
+                "Ausgabe_DocumentTo",
+                "Jahr_DocumentTo",
+                "Originalsprache_DocumentTo",
+                "Sprache_DocumentTo",
+                "Kulturkreis_DocumentTo",
+                "Autor_DocumentFromTo",
+                "Übersetzer_DocumentTo",
+                "Verlag_DocumentTo",
+                "Erscheinungsort_DocumentTo",
+                "DDC_DocumentTo",
+                "Standorte_DocumentTo",
+                "Orginaltitel_DocumentTo",
+            ]
+
+            for i, docs in enumerate(queryset.all()):
+                if not docs.document_from:
+                    continue
+                if not docs.document_to:
+                    continue
+                original_lang = (
+                    lang
+                    if (lang := docs.document_from.get_original_language()) != ""
+                    else "-"
+                )
+                orig_authors = (
+                    ", ".join([author.person.name for author in authors])
+                    if (authors := docs.document_from.get_original_attr("get_authors"))
+                    else "-"
+                )
+
+                yield [
+                    title
+                    if (title := docs.document_from.title) != ""
+                    else "-",  # title
+                    subtitle
+                    if (subtitle := docs.document_from.subtitle) != ""
+                    else "-",  # subtitle
+                    edition
+                    if (edition := docs.document_from.edition) != ""
+                    else "-",  # edition
+                    # year
+                    year
+                    if not (year := docs.document_to.serialize_written_in()) is None
+                    else "-",
+                    # language of original in case of bridge
+                    original_lang,
+                    # language generally
+                    language
+                    if (language := docs.document_to.get_language()) != ""
+                    else "-",
+                    # location
+                    circle
+                    if (circle := docs.document_to.cultural_circle) != ""
+                    else "-",
+                    # authors
+                    orig_authors,
+                    # translator
+                    ", ".join(authors.values_list("person__name", flat=True))
+                    if (authors := docs.document_from.get_authors()).exists()
+                    and docs.document_from.get_document_type != Document.ORIGINAL
+                    else "-",  # evtl Translators
+                    # publisher
+                    ", ".join(pubs.values_list("person__name", flat=True))
+                    if (pubs := docs.document_from.get_publishers()).exists()
+                    else "-",
+                    # published location
+                    location
+                    if (location := docs.document_from.published_location) != ""
+                    else "-",
+                    # ddc
+                    ddc if (ddc := docs.document_from.ddc) != "" else "-",
+                    # filing
+                    ", ".join(
+                        filings.filter(archive__name__isnull=False).values_list(
+                            "archive__name", flat=True
+                        )
                     )
-                    for number in range(i, i + 100, 10)
-                ),
-            )
-            for i in range(0, len(DdcGerman.objects.all()), 100)
-        ),
-        widget=SearchSelectWidget,
-    )
-"""
+                    if (filings := docs.document_from.get_filings()).exists()
+                    else "-",
+                    title if (title := docs.document_to.title) != "" else "-",  # title
+                    subtitle
+                    if (subtitle := docs.document_to.subtitle) != ""
+                    else "-",  # subtitle
+                    edition
+                    if (edition := docs.document_to.edition) != ""
+                    else "-",  # edition
+                    # year
+                    year
+                    if not (year := docs.document_to.serialize_written_in()) is None
+                    else "-",
+                    # language of original
+                    original_lang,  # ORIGINAL!
+                    # language generally
+                    language
+                    if (language := docs.document_to.get_language()) != ""
+                    else "-",
+                    # location
+                    circle
+                    if (circle := docs.document_to.cultural_circle) != ""
+                    else "-",
+                    # authors
+                    orig_authors,
+                    # translator
+                    ", ".join(authors.values_list("person__name", flat=True))
+                    if (authors := docs.document_to.get_authors()).exists()
+                    and docs.document_to.get_document_type != Document.ORIGINAL
+                    else "-",  # evtl Translators
+                    # publisher
+                    ", ".join(pubs.values_list("person__name", flat=True))
+                    if (pubs := docs.document_to.get_publishers()).exists()
+                    else "-",
+                    # published location
+                    location
+                    if (location := docs.document_to.published_location) != ""
+                    else "-",
+                    # ddc
+                    ddc if (ddc := docs.document_to.ddc) != "" else "-",
+                    # filings
+                    ", ".join(
+                        filings.filter(archive__name__isnull=False).values_list(
+                            "archive__name", flat=True
+                        )
+                    )
+                    if (filings := docs.document_to.get_filings()).exists()
+                    else "-",
+                    # titleorg
+                    title
+                    if (title := docs.document_from.get_original_attr("title"))
+                    else "-",
+                ]
+
+        class Echo:
+            """An object that implements just the write method of the file-like
+            interface.
+            """
+
+            def write(self, value):
+                """Write the value by returning it, instead of storing in a buffer."""
+                return value
+
+        pseudo_buffer = Echo()
+        writer = csv.writer(
+            pseudo_buffer, delimiter=";", dialect="excel", quoting=csv.QUOTE_ALL
+        )
+
+        return StreamingHttpResponse(
+            (writer.writerow(row) for row in row_generator(queryset)),
+            content_type="text/csv",
+            headers={"Content-Disposition": 'attachment; filename="docExport.csv"'},
+        )
