@@ -14,6 +14,7 @@ from django.views.generic import ListView
 from hueb.apps.hueb20.models import DdcGerman
 from hueb.apps.hueb20.models.document import Document, DocumentRelationship
 from hueb.apps.hueb20.models.language import Language
+from hueb.apps.hueb20.models.utils import timerange_serialization
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -375,33 +376,29 @@ class Search(ListView):
 
         def row_generator(queryset):
             yield [
-                "Titel_DocumentFrom",
-                "Untertitel_DocumentFrom",
-                "Ausgabe_DocumentFrom",
-                "Jahr_DocumentFrom",
-                "Originalsprache_DocumentFrom",
-                "Sprache_DocumentFrom",
-                "Kulturkreis_DocumentFrom",
-                "Autor_DocumentFrom",
-                "Übersetzer_DocumentFrom",
-                "Verlag_DocumentFrom",
-                "Erscheinungsort_DocumentFrom",
-                "DDC_DocumentFrom",
-                "Standorte_DocumentFrom",
-                "Titel_DocumentTo",
-                "Untertitel_DocumentTo",
-                "Ausgabe_DocumentTo",
-                "Jahr_DocumentTo",
-                "Originalsprache_DocumentTo",
-                "Sprache_DocumentTo",
-                "Kulturkreis_DocumentTo",
-                "Autor_DocumentFromTo",
-                "Übersetzer_DocumentTo",
-                "Verlag_DocumentTo",
-                "Erscheinungsort_DocumentTo",
-                "DDC_DocumentTo",
-                "Standorte_DocumentTo",
-                "Orginaltitel_DocumentTo",
+                "Title of the translation",
+                "Subtitle",
+                "Intermediary Translation",
+                "Edition",
+                "Translator",
+                "Year",
+                "Publisher",
+                "Place of publication",
+                "Locations",
+                "Link",
+                "Language",
+                "Language of the original",
+                "DDC",
+                "Culture circle",
+                "Title of the original",
+                "Subtitle_org",
+                "Author",
+                "Edition",
+                "Year",
+                "Publisher",
+                "Place of publication",
+                "Locations",
+                "Link",
             ]
 
             for i, docs in enumerate(queryset.all()):
@@ -409,105 +406,37 @@ class Search(ListView):
                     continue
                 if not docs.document_to:
                     continue
-                original_lang = (
-                    lang
-                    if (lang := docs.document_from.get_original_language()) != ""
-                    else "-"
-                )
-                orig_authors = (
-                    ", ".join([author.person.name for author in authors])
-                    if (authors := docs.document_from.get_original_attr("get_authors"))
-                    else "-"
-                )
 
-                yield [
-                    title
-                    if (title := docs.document_from.title) != ""
-                    else "-",  # title
-                    subtitle
-                    if (subtitle := docs.document_from.subtitle) != ""
-                    else "-",  # subtitle
-                    edition
-                    if (edition := docs.document_from.edition) != ""
-                    else "-",  # edition
-                    # year
-                    year
-                    if not (year := docs.document_to.serialize_written_in()) is None
-                    else "-",
-                    # language of original in case of bridge
-                    original_lang,
-                    # language generally
-                    language
-                    if (language := docs.document_to.get_language()) != ""
-                    else "-",
-                    # location
-                    circle
-                    if (circle := docs.document_to.cultural_circle) != ""
-                    else "-",
-                    # authors
-                    orig_authors,
-                    # translator
-                    ", ".join(authors.values_list("person__name", flat=True))
-                    if (authors := docs.document_from.get_authors()).exists()
-                    and docs.document_from.get_document_type != Document.ORIGINAL
-                    else "-",  # evtl Translators
-                    # publisher
-                    ", ".join(pubs.values_list("person__name", flat=True))
-                    if (pubs := docs.document_from.get_publishers()).exists()
-                    else "-",
-                    # published location
-                    location
-                    if (location := docs.document_from.published_location) != ""
-                    else "-",
-                    # ddc
-                    ddc if (ddc := docs.document_from.ddc) != "" else "-",
-                    # filing
-                    ", ".join(
-                        filings.filter(archive__name__isnull=False).values_list(
-                            "archive__name", flat=True
-                        )
-                    )
-                    if (filings := docs.document_from.get_filings()).exists()
-                    else "-",
+                doc_to = [
+                    # title
                     title if (title := docs.document_to.title) != "" else "-",  # title
+                    # subtitle
                     subtitle
                     if (subtitle := docs.document_to.subtitle) != ""
                     else "-",  # subtitle
+                    # Intermediary Translation
+                    str(bool(docs.document_to.translations.exists())),
+                    # Edition
                     edition
                     if (edition := docs.document_to.edition) != ""
                     else "-",  # edition
+                    # translator
+                    ", ".join(authors.values_list("person__name", flat=True))
+                    if (authors := docs.document_to.get_authors()).exists()
+                    else "-",
                     # year
                     year
                     if not (year := docs.document_to.serialize_written_in()) is None
                     else "-",
-                    # language of original
-                    original_lang,  # ORIGINAL!
-                    # language generally
-                    language
-                    if (language := docs.document_to.get_language()) != ""
-                    else "-",
-                    # location
-                    circle
-                    if (circle := docs.document_to.cultural_circle) != ""
-                    else "-",
-                    # authors
-                    orig_authors,
-                    # translator
-                    ", ".join(authors.values_list("person__name", flat=True))
-                    if (authors := docs.document_to.get_authors()).exists()
-                    and docs.document_to.get_document_type != Document.ORIGINAL
-                    else "-",  # evtl Translators
                     # publisher
                     ", ".join(pubs.values_list("person__name", flat=True))
                     if (pubs := docs.document_to.get_publishers()).exists()
                     else "-",
-                    # published location
+                    # place of publication
                     location
                     if (location := docs.document_to.published_location) != ""
                     else "-",
-                    # ddc
-                    ddc if (ddc := docs.document_to.ddc) != "" else "-",
-                    # filings
+                    # Location (ARCHIVES)
                     ", ".join(
                         filings.filter(archive__name__isnull=False).values_list(
                             "archive__name", flat=True
@@ -515,11 +444,148 @@ class Search(ListView):
                     )
                     if (filings := docs.document_to.get_filings()).exists()
                     else "-",
-                    # titleorg
-                    title
-                    if (title := docs.document_from.get_original_attr("title"))
+                    # Link
+                    archives.first().link
+                    if (
+                        archives := docs.document_to.filing_set.filter(
+                            archive__name="Online-Version"
+                        )
+                    ).exists()
+                    else "-",
+                    # language generally
+                    language
+                    if (language := docs.document_to.get_language()) != ""
+                    else "-",
+                    # language of original
+                    lang
+                    if (lang := docs.document_from.get_original_language()) != ""
+                    else "-",  # ORIGINAL!
+                    # ddc
+                    ddc if (ddc := docs.document_to.ddc) != "" else "-",
+                    # cultural circle
+                    circle
+                    if (circle := docs.document_to.cultural_circle) != ""
                     else "-",
                 ]
+
+                if not docs.document_from.originals.exists():
+                    doc_from = [
+                        title
+                        if (title := docs.document_from.title) != ""
+                        else "-",  # title
+                        # Subtitle orig
+                        subtitle
+                        if (subtitle := docs.document_from.subtitle) != ""
+                        else "-",  # subtitle
+                        # authors
+                        ", ".join(authors.values_list("person__name", flat=True))
+                        if (authors := docs.document_from.get_authors()).exists()
+                        else "-",
+                        # edition
+                        edition
+                        if (edition := docs.document_from.edition) != ""
+                        else "-",
+                        # year
+                        year
+                        if not (year := docs.document_from.serialize_written_in())
+                        is None
+                        else "-",
+                        # publisher
+                        ", ".join(pubs.values_list("person__name", flat=True))
+                        if (pubs := docs.document_from.get_publishers()).exists()
+                        else "-",
+                        # published location
+                        location
+                        if (location := docs.document_from.published_location) != ""
+                        else "-",
+                        # Location (ARCHIVES)
+                        ", ".join(
+                            filings.filter(archive__name__isnull=False).values_list(
+                                "archive__name", flat=True
+                            )
+                        )
+                        if (filings := docs.document_from.get_filings()).exists()
+                        else "-",
+                        # Link
+                        archives.first().link
+                        if (
+                            archives := docs.document_from.filing_set.filter(
+                                archive__name="Online-Version"
+                            )
+                        ).exists()
+                        else "-",
+                    ]
+
+                else:
+
+                    doc_from = [
+                        # title orig
+                        ", ".join(titles)
+                        if (
+                            titles := docs.document_from.originals.values_list(
+                                "title", flat=True
+                            )
+                        )
+                        else "-",
+                        # Subtitle orig
+                        ", ".join(subtitles)
+                        if (
+                            subtitles := docs.document_from.originals.values_list(
+                                "subtitle", flat=True
+                            )
+                        )
+                        != ""
+                        else "-",
+                        # authors
+                        ", ".join(authors.values_list("person__name", flat=True))
+                        if (
+                            authors := docs.document_from.originals.first().get_authors()
+                        ).exists()
+                        else "-",
+                        # edition
+                        edition
+                        if (edition := docs.document_from.originals.first().edition)
+                        != ""
+                        else "-",  # edition
+                        # year
+                        timerange_serialization(year)
+                        if not (year := docs.document_from.originals.first().written_in)
+                        is None
+                        else "-",
+                        # publisher
+                        ", ".join(pubs.values_list("person__name", flat=True))
+                        if (
+                            pubs := docs.document_from.originals.first().get_publishers()
+                        ).exists()
+                        else "-",
+                        # published location
+                        location
+                        if (
+                            location := docs.document_from.originals.first().published_location
+                        )
+                        != ""
+                        else "-",
+                        # Location (ARCHIVES)
+                        ", ".join(
+                            filings.filter(archive__name__isnull=False).values_list(
+                                "archive__name", flat=True
+                            )
+                        )
+                        if (
+                            filings := docs.document_from.originals.first().get_filings()
+                        ).exists()
+                        else "-",
+                        # Link
+                        archives.first().link
+                        if (
+                            archives := docs.document_from.originals.first().filing_set.filter(
+                                archive__name="Online-Version"
+                            )
+                        ).exists()
+                        else "-",
+                    ]
+
+                yield doc_to + doc_from
 
         class Echo:
             """An object that implements just the write method of the file-like
