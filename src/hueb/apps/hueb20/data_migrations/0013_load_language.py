@@ -10,7 +10,6 @@ def load_languages(apps, schema_editor):
     Language = apps.get_model("hueb20", "Language")
 
     for legacy_language in Legacy_Language.objects.all():
-
         new_language = Language()
         # Set reference to old entries
         new_language.language_ref = legacy_language
@@ -29,7 +28,6 @@ def unload_languages(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("hueb20", "0012_load_ddc"),
         ("hueb_legacy_latein", "0005_auto_20200709_2025"),

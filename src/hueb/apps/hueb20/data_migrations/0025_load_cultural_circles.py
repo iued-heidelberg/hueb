@@ -10,7 +10,6 @@ def load_cultural_circles(apps, schema_editor):
     CulturalCircle = apps.get_model("hueb20", "CulturalCircle")
 
     for legacy_country in Country_legacy.objects.all():
-
         new_cultural_circle = CulturalCircle()
         # Set reference to old entries
         new_cultural_circle.country_ref = legacy_country
@@ -29,7 +28,6 @@ def unload_cultural_circles(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("hueb20", "0024_auto_20200822_1153"),
         ("hueb_legacy_latein", "0005_auto_20200709_2025"),

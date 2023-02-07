@@ -154,7 +154,6 @@ class BaseSearchFormSet(BaseFormSet):
         online_only=False,
     ):
         with beeline.tracer(name="building_search_query"):
-
             include_q_objects = Q()
             exclude_q_objects = Q()
 
@@ -223,7 +222,6 @@ class SortForm(forms.Form):
 
 
 class TypeForm(forms.Form):
-
     type = forms.MultipleChoiceField(
         widget=TypeCheckboxWidget(
             attrs={
@@ -526,7 +524,6 @@ class Search(ListView):
                     ]
 
                 else:
-
                     doc_from = [
                         # title orig
                         ", ".join(titles)

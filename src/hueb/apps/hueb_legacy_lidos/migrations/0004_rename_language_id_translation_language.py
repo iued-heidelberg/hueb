@@ -4,7 +4,6 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("hueb_legacy_lidos", "0003_auto_20210706_2345"),
     ]

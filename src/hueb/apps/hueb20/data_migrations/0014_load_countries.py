@@ -10,7 +10,6 @@ def load_countries(apps, schema_editor):
     Country = apps.get_model("hueb20", "Country")
 
     for legacy_country in Country_legacy.objects.all():
-
         new_country = Country()
         # Set reference to old entries
         new_country.country_ref = legacy_country
@@ -29,7 +28,6 @@ def unload_countries(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("hueb20", "0013_load_language"),
         ("hueb_legacy_latein", "0005_auto_20200709_2025"),

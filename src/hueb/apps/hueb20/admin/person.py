@@ -11,7 +11,6 @@ from .comment import CommentInline
 
 @admin.register(Person)
 class PersonAdmin(ReviewAdmin):
-
     readonly_fields = ("app", "author_link", "translator_link", "id")
     list_display = (
         "id",

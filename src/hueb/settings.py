@@ -1,3 +1,4 @@
+# flake8: noqa
 """
 Django settings for hueb project.
 
@@ -13,9 +14,9 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 import os
 
 import sentry_sdk
+from django.utils.translation import gettext_lazy as _
 from dotenv import load_dotenv
 from sentry_sdk.integrations.django import DjangoIntegration
-from django.utils.translation import gettext_lazy as _
 
 load_dotenv()
 
@@ -215,7 +216,6 @@ if os.getenv("ENV") == "development":
 
 
 if os.getenv("SENTRY_API_KEY") not in [None, "", " "]:
-
     sentry_sdk.init(
         dsn=os.getenv("SENTRY_API_KEY"),
         integrations=[DjangoIntegration()],

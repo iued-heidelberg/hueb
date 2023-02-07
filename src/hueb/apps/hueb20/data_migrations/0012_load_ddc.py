@@ -26,7 +26,6 @@ def unload_DdcGerman(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("hueb20", "0011_base"),
         ("hueb_legacy_latein", "0005_auto_20200709_2025"),

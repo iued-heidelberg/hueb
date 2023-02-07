@@ -22,7 +22,6 @@ from psycopg2.extras import NumericRange
 
 
 class Document(Reviewable):
-
     ORIGINAL = _("Original")
     TRANSLATION = _("Übersetzung")
     BRIDGE = _("Brückenübersetzung")

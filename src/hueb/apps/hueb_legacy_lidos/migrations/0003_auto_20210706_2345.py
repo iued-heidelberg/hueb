@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("hueb_legacy_lidos", "0002_rename_manual_keys_translation_manual_keys_id"),
     ]

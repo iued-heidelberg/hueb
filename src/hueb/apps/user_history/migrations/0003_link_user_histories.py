@@ -1,4 +1,4 @@
-from django.db import migrations, models
+from django.db import migrations
 
 
 def create_user_histories(apps, schema_editor):
@@ -19,7 +19,6 @@ def uncreate_user_histories(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("user_history", "0002_alter_userhistory_options"),
     ]

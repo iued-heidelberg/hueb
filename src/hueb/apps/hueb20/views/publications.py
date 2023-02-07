@@ -1,18 +1,16 @@
-import re
+# flake8: noqa
 import os
-from hueb import settings
-from django.views.generic import ListView
-from django.views.generic.edit import FormMixin, FormView
-from hueb.apps.publications.models import Publication
-from urllib.parse import urlencode
-from django.http import HttpResponseRedirect, HttpResponse, Http404
-from django import forms
-from django.utils.translation import gettext_lazy as _
+import re
+
 import requests
-from django.shortcuts import redirect
-from django.urls import reverse, reverse_lazy
-from django.core.exceptions import ValidationError
-from django.core.validators import RegexValidator
+from django import forms
+from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
+from django.views.generic import ListView
+from django.views.generic.edit import FormView
+from hueb import settings
+from hueb.apps.publications.models import Publication
 
 
 class FormListView(ListView, FormView):
@@ -98,7 +96,6 @@ class Publications(FormListView):
         if name == "":
             name = "Anonymous"
         if "sub" in self.request.POST:
-
             r = requests.get(
                 "https://listserv.uni-heidelberg.de/cgi-bin/wa",
                 params={
@@ -115,7 +112,6 @@ class Publications(FormListView):
             url = reverse("publicationsSub", kwargs={"sub": "sub"})
             return HttpResponseRedirect(url)
         elif "unsub" in self.request.POST:
-
             r = requests.get(
                 "https://listserv.uni-heidelberg.de/cgi-bin/wa",
                 params={

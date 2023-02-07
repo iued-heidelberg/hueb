@@ -7,7 +7,6 @@ from translated_fields import TranslatedField
 
 
 class DdcGerman(Reviewable):
-
     id = models.BigAutoField(primary_key=True)
     ddc_number = models.CharField(max_length=3)
     ddc_name = TranslatedField(models.CharField(max_length=255, null=True))

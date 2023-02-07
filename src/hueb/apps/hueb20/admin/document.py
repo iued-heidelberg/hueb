@@ -35,7 +35,6 @@ class TranslationRelationshipInline(TabularInlineReviewAdmin):
 
 
 class OriginalRelationshipInline(TabularInlineReviewAdmin):
-
     readonly_fields = ("app", "document_from_id")
     model = Document.translations.through
     fk_name = "document_to"
@@ -49,7 +48,6 @@ class OriginalRelationshipInline(TabularInlineReviewAdmin):
 
 @admin.register(Document)
 class DocumentAdmin(ReviewAdmin):
-
     change_form_template = "admin/document_change_form.html"
 
     actions = ["duplicate", "validate_links"]
