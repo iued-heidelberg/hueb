@@ -24,7 +24,7 @@ The current implementation progress (07.21) is the following:
 
 **For my successors:**
 
-> Hey you 👋
+> Hey you 👋 
 > Thank you for continuing this project. I had a lot of fun working on it and learned a lot.
 > I've handed over a set of files to the team for you to start off:
 > - an ssh key set. This set has access to both servers. Use it to log in, add your own keys (newly created or your regular keys) to both servers, verify! that the new keys work, and then remove my old keys and the keys I've created for you from the server. These are now yours
