@@ -1,4 +1,4 @@
-from django.db import migrations, DataError
+from django.db import migrations
 from hueb.apps.hueb20.models import LEGACY
 
 
@@ -46,7 +46,6 @@ def uncreate_placeholder_relationships(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("hueb20", "0086_latein_with_no pair"),
     ]

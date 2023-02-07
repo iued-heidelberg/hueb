@@ -39,7 +39,6 @@ def uncreate_reviews(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("hueb20", "0035_historicalreview_review"),
     ]

@@ -48,7 +48,6 @@ def unload_online_filings(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("hueb20", "0064_update_no_pairs"),
     ]

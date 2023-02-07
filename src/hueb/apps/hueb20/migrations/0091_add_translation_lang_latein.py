@@ -1,4 +1,4 @@
-from django.db import migrations, DataError
+from django.db import migrations
 from hueb.apps.hueb20.models import LATEIN
 
 
@@ -29,7 +29,6 @@ def remove_translation_language(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("hueb20", "0090_add_translation_lang"),
     ]

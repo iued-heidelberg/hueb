@@ -1,6 +1,5 @@
 from django.db import migrations
 from hueb.apps.hueb20.models import LIDOS
-import re
 
 
 def load_lidos_authors(apps, schema_editor):
@@ -37,7 +36,6 @@ def unload_lidos_authors(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("hueb20", "0066_auto_20220222_1555"),
         ("hueb_legacy_lidos", "0009_alter_original_manual_keys"),

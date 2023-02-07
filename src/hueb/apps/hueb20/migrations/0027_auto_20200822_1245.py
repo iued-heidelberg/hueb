@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("hueb20", "0026_yearrange_culturalcircletimerange"),
     ]

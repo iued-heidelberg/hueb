@@ -1,6 +1,7 @@
+import re
+
 from django.db import migrations
 from hueb.apps.hueb20.models import LATEIN
-import re
 from psycopg2.extras import NumericRange
 
 
@@ -79,7 +80,6 @@ def unload_latein_authors(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("hueb20", "00541_auto_20220214_1127"),
         # ("hueb_legacy_latein", "0005_auto_20200709_2025"),

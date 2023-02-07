@@ -16,6 +16,7 @@ class PersonAdmin(ReviewAdmin):
     list_display = (
         "id",
         "name",
+        "cultural_circle",
         "alias",
         "is_alias",
         "adapt_person_lifetime_start_list_view",
@@ -25,7 +26,10 @@ class PersonAdmin(ReviewAdmin):
     )
     list_filter = ("state", "app")
     search_fields = ("name", "id", "lifetime_start", "lifetime_end")
-    autocomplete_fields = ("alias",)
+    autocomplete_fields = (
+        "alias",
+        "cultural_circle",
+    )
     formfield_overrides = {IntegerRangeField: {"widget": TimeRangeWidget}}
     fieldsets = (
         (
@@ -35,6 +39,7 @@ class PersonAdmin(ReviewAdmin):
                 "fields": (
                     "id",
                     "name",
+                    "cultural_circle",
                     "alias",
                     "organisation",
                     "lifetime_start",
@@ -79,5 +84,10 @@ class PersonAdmin(ReviewAdmin):
     translator_link.short_description = "Translator"
 
     def get_queryset(self, request):
-        qs = super().get_queryset(request).select_related("alias")
+        qs = (
+            super()
+            .get_queryset(request)
+            .select_related("alias")
+            .select_related("cultural_circle")
+        )
         return qs

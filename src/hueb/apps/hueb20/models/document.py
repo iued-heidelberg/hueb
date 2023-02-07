@@ -138,6 +138,15 @@ class Document(Reviewable):
         ):
             return Document.TRANSLATION
 
+    def get_cultural_circle(self):
+        main_author = self.get_authors().first()
+        if main_author:
+            circle = main_author.person.cultural_circle
+            if circle:
+                return circle
+        else:
+            return self.cultural_circle
+
     def get_authors(self):
         return self.contribution_set.filter(contribution_type="WRITER").filter(
             person__isnull=False

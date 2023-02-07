@@ -1,15 +1,16 @@
+import re
+
 from django.db import migrations
 from hueb.apps.hueb20.models import LEGACY
-import re
 
 
 def load_filings(apps, schema_editor):
     Legacy_LocAssign = apps.get_model("hueb_legacy", "LocAssign")
-    Legacy_Location = apps.get_model("hueb_legacy", "Location")
+    apps.get_model("hueb_legacy", "Location")
     Filing = apps.get_model("hueb20", "Filing")
     Document = apps.get_model("hueb20", "Document")
     Archive = apps.get_model("hueb20", "Archive")
-    Country = apps.get_model("hueb20", "Country")
+    apps.get_model("hueb20", "Country")
 
     for legacy_loc_assign in Legacy_LocAssign.objects.all():
         new_filing = Filing()
@@ -61,7 +62,6 @@ def load_filings(apps, schema_editor):
                     adress__iexact=legacy_loc_assign.location.adress
                 )
             except Exception:
-
                 new_filing.archive = Archive.objects.filter(
                     adress__iexact=legacy_loc_assign.location.adress
                 ).first()
@@ -139,7 +139,6 @@ def unload_filings(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("hueb20", "0080_legacy_archive"),
         # ("hueb_legacy_latein", "0005_auto_20200709_2025"),

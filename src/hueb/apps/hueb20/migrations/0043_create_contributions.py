@@ -37,7 +37,6 @@ def uncreate_contributions(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("hueb20", "0042_auto_20210207_1725"),
     ]

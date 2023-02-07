@@ -30,7 +30,6 @@ def process_doc(link_index):
 
 
 def validate_links(apps, schema_editor):
-
     Filing = apps.get_model("hueb20", "Filing")
     filings_no_links = (
         Filing.objects.filter(archive__name="Online-Version")
@@ -59,7 +58,6 @@ def validate_links(apps, schema_editor):
 
 
 def clean_link_status(apps, schema_editor):
-
     Filing = apps.get_model("hueb20", "Filing")
     filings = Filing.objects.filter(archive__name="Online-Version").all()
     for filing in filings:
@@ -68,7 +66,6 @@ def clean_link_status(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("hueb20", "0112_repair_links"),
     ]

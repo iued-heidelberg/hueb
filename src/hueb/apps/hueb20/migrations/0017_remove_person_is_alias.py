@@ -4,7 +4,6 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("hueb20", "0016_auto_20200816_1129"),
     ]

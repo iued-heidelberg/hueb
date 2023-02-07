@@ -1,4 +1,4 @@
-from django.db import migrations, DataError
+from django.db import migrations
 from hueb.apps.hueb20.models import LEGACY
 
 
@@ -32,7 +32,6 @@ def remove_translation_language(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("hueb20", "0089_auto_20220317_0902"),
     ]

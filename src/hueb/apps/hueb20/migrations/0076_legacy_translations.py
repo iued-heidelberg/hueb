@@ -1,10 +1,8 @@
+# flake8: noqa
 from django.db import migrations
 from hueb.apps.hueb20.models import LEGACY
 from hueb.apps.hueb20.models.contribution import Contribution as Contribution_Namespace
 from psycopg2.extras import NumericRange
-
-
-import re
 
 
 def load_legacy_translations(apps, schema_editor):
@@ -146,7 +144,6 @@ def unload_legacy_translations(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("hueb20", "0075_legacy_originals"),
         # ("hueb_legacy_lidos", "0009_alter_original_manual_keys"),

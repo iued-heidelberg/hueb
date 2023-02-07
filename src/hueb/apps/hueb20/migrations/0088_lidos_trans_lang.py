@@ -1,4 +1,4 @@
-from django.db import migrations, DataError
+from django.db import migrations
 from hueb.apps.hueb20.models import LIDOS
 
 
@@ -30,7 +30,6 @@ def remove_translation_language(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("hueb20", "0087_legacy_with_no_pair"),
     ]

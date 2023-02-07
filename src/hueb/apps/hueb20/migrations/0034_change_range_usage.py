@@ -33,7 +33,6 @@ def uncorrect_date_ranges(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("hueb20", "0033_auto_20201019_1145"),
     ]

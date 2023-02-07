@@ -1,10 +1,11 @@
+import hueb.apps.hueb_legacy.models as LegacyLegacy
 import hueb.apps.hueb_legacy_latein.models as Legacy
 import hueb.apps.hueb_legacy_lidos.models as Lidos
-import hueb.apps.hueb_legacy.models as LegacyLegacy
 from django.contrib.postgres.fields import IntegerRangeField
 from django.db import models
 from django.template.defaultfilters import escape
 from django.urls import reverse
+from hueb.apps.hueb20.models.culturalCircle import CulturalCircle
 from hueb.apps.hueb20.models.reviewable import Reviewable
 from hueb.apps.hueb20.models.utils import (
     HUEB20,
@@ -16,6 +17,9 @@ from hueb.apps.hueb20.models.utils import (
 class Person(Reviewable):
     id = models.BigAutoField(primary_key=True)
     name = models.CharField(max_length=255, null=True, blank=True)
+    cultural_circle = models.ForeignKey(
+        CulturalCircle, blank=True, null=True, on_delete=models.DO_NOTHING
+    )
     alias = models.ForeignKey("self", on_delete=models.CASCADE, null=True, blank=True)
     organisation = models.BooleanField(default=False, null=False, blank=None)
     lifetime_start = IntegerRangeField(null=True, blank=True)

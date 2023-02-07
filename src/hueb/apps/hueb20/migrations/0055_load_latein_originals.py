@@ -1,8 +1,8 @@
+# flake8: noqa
 from django.db import migrations
 from hueb.apps.hueb20.models import LATEIN
 from hueb.apps.hueb20.models.contribution import Contribution as Contribution_Namespace
 from psycopg2.extras import NumericRange
-import re
 
 
 def load_latein_originals(apps, schema_editor):
@@ -146,16 +146,15 @@ def load_latein_originals(apps, schema_editor):
 
 
 def unload_latein_originals(apps, schema_editor):
-    LateinOriginal = apps.get_model("hueb20", "Document")
+    apps.get_model("hueb20", "Document")
     # LateinOriginal.objects.filter(app=LATEIN).delete()
-    PublisherPerson = apps.get_model("hueb20", "Person")
+    apps.get_model("hueb20", "Person")
     # PublisherPerson.objects.filter(app=LATEIN).filter(publisherOriginal_ref__isnull=False).delete()
-    ContributionPublisher = apps.get_model("hueb20", "Contribution")
+    apps.get_model("hueb20", "Contribution")
     # ContributionPublisher.objects.filter(app=LATEIN).filter(contribution_type=Contribution_Namespace.PUBLISHER).exclude(document__get_document_type=LateinTranslation.TRANSLATION).delete()
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("hueb20", "0054_load_latein_translators"),
         # ("hueb_legacy_latein", "0005_auto_20200709_2025"),

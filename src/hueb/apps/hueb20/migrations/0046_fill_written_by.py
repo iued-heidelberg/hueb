@@ -23,7 +23,6 @@ def unfill_written_by(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("hueb20", "0045_auto_20210218_1601"),
     ]

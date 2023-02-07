@@ -20,7 +20,6 @@ def unrepair_filings(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("hueb20", "0111_auto_20221031_1058"),
     ]

@@ -112,7 +112,7 @@
         {% endif %}
 
         <dt><h2 class="text-xl font-thin lg:text-l">{% translate "Kulturkreis:" %}</h2></dt>
-        <dd><p class="text-xl lg:text-l">{{object.cultural_circle|default_if_none:" - "}}</p></dd>
+        <dd><p class="text-xl lg:text-l">{{object.get_cultural_circle|default_if_none:" - "}}</p></dd>
 
         <dt><h2 class="text-xl font-thin lg:text-l">{% translate "Author:" %}</h2></dt>
         <dd><p class="text-xl break-words lg:text-l font-bold" style="width: 100%">

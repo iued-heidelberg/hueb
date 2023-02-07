@@ -51,7 +51,9 @@ class DocumentDetailView(DetailView):
                 if document.get_language() != ""
                 else "-",  # ORIGINAL!
                 document.get_language() if document.get_language() != "" else "-",
-                document.cultural_circle if document.cultural_circle != "" else "-",
+                document.get_cultural_circle()
+                if document.get_cultural_circle() != ""
+                else "-",
                 ", ".join(
                     [
                         author.person.name

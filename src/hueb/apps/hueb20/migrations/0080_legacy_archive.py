@@ -1,6 +1,7 @@
+import re
+
 from django.db import migrations
 from hueb.apps.hueb20.models import LEGACY
-import re
 
 
 def load_archives(apps, schema_editor):
@@ -9,7 +10,6 @@ def load_archives(apps, schema_editor):
     Country = apps.get_model("hueb20", "Country")
 
     for legacy_location in Legacy_Location.objects.all():
-
         # transfer information
         if Archive.objects.filter(name__iexact=legacy_location.name.strip()).exists():
             continue
@@ -75,7 +75,6 @@ def unload_archives(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("hueb20", "0079_auto_20220227_1623"),
         # ("hueb_legacy_latein", "0005_auto_20200709_2025"),

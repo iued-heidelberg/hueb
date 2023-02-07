@@ -368,11 +368,17 @@ class Search(ListView):
             "document_from__filing_set__archive"
         ).prefetch_related("document_to__filing_set__archive")
 
-        # Fetch original attributes in case of bridge
+        queryset.prefetch_related("document_to__translations")
+
         queryset.prefetch_related(
-            "document_from__document_from__contribution_set__person"
-        )
-        queryset.select_related("document_from__document_from__language")
+            "document_from__contribution_set__person__cultural_circle"
+        ).prefetch_related("document_to__contribution_set__person__cultural_circle")
+
+        # Fetch originals for bridge check
+        queryset.prefetch_related("document_from__originals")
+        queryset.select_related("document_to__language").select_related(
+            "document_from__language"
+        ).select_related("document_from__originals__language")
 
         def row_generator(queryset):
             yield [
@@ -406,6 +412,13 @@ class Search(ListView):
                     continue
                 if not docs.document_to:
                     continue
+
+                orig_is_bridge = docs.document_from.originals.exists()
+                orig_lang = (
+                    docs.document_from.originals.first().language
+                    if orig_is_bridge
+                    else docs.document_from.language
+                )
 
                 doc_to = [
                     # title
@@ -442,7 +455,7 @@ class Search(ListView):
                             "archive__name", flat=True
                         )
                     )
-                    if (filings := docs.document_to.get_filings()).exists()
+                    if (filings := docs.document_to.filing_set).exists()
                     else "-",
                     # Link
                     archives.first().link
@@ -453,22 +466,18 @@ class Search(ListView):
                     ).exists()
                     else "-",
                     # language generally
-                    language
-                    if (language := docs.document_to.get_language()) != ""
-                    else "-",
+                    language if (language := docs.document_to.language) != "" else "-",
                     # language of original
-                    lang
-                    if (lang := docs.document_from.get_original_language()) != ""
-                    else "-",  # ORIGINAL!
+                    lang if (lang := orig_lang) != "" else "-",
                     # ddc
                     ddc if (ddc := docs.document_to.ddc) != "" else "-",
                     # cultural circle
                     circle
-                    if (circle := docs.document_to.cultural_circle) != ""
+                    if (circle := docs.document_to.get_cultural_circle()) != ""
                     else "-",
                 ]
 
-                if not docs.document_from.originals.exists():
+                if not orig_is_bridge:
                     doc_from = [
                         title
                         if (title := docs.document_from.title) != ""
@@ -504,7 +513,7 @@ class Search(ListView):
                                 "archive__name", flat=True
                             )
                         )
-                        if (filings := docs.document_from.get_filings()).exists()
+                        if (filings := docs.document_from.filing_set).exists()
                         else "-",
                         # Link
                         archives.first().link

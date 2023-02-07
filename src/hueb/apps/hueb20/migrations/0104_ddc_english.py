@@ -26,7 +26,6 @@ def empty_transl_name(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("hueb20", "0103_fill_translated_languages"),
     ]

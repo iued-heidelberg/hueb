@@ -12,7 +12,6 @@ def reverse_func(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("hueb_legacy_latein", "0007_auto_20200822_1500"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),

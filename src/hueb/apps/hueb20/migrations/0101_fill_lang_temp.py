@@ -1,4 +1,4 @@
-from django.db import migrations, DataError
+from django.db import migrations
 
 
 def fill_tempname(apps, schema_editor):
@@ -18,7 +18,6 @@ def empty_tempname(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("hueb20", "0100_create_language_temp"),
     ]

@@ -1,5 +1,4 @@
 from django.db import migrations
-from hueb.apps.hueb20.models import LATEIN
 
 
 def update_cultural_circle_refs(apps, schema_editor):
@@ -23,7 +22,6 @@ def un_update_cultural_circle_refs(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("hueb20", "0063_historicalculturalcircle_country_ref"),
     ]

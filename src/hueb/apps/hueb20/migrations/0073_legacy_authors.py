@@ -1,6 +1,5 @@
 from django.db import migrations
 from hueb.apps.hueb20.models import LEGACY
-import re
 
 
 def load_legacy_authors(apps, schema_editor):
@@ -36,7 +35,6 @@ def unload_legacy_authors(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("hueb20", "0072_auto_20220226_1902"),
         # ("hueb_legacy_lidos", "0009_alter_original_manual_keys"),

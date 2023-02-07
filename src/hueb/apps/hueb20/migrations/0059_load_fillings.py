@@ -66,7 +66,6 @@ def unload_filings(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("hueb20", "0058_load_latein_translations"),
         # ("hueb_legacy_latein", "0005_auto_20200709_2025"),

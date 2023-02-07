@@ -1,6 +1,5 @@
 from django.db import migrations
 from hueb.apps.hueb20.models import LIDOS
-import re
 
 
 def load_lidos_translators(apps, schema_editor):
@@ -9,7 +8,6 @@ def load_lidos_translators(apps, schema_editor):
     Translator = apps.get_model("hueb20", "Person")
 
     for lidos_new_translator in Lidos_translator.objects.all():
-
         names = lidos_new_translator.name
         sep_names = names.split(";")  # returns the list with many names
         if len(sep_names) > 1:
@@ -22,7 +20,6 @@ def load_lidos_translators(apps, schema_editor):
                 # save each new model
                 new_lidos_translator.save()
         elif len(sep_names) == 1:
-
             new_lidos_translator = Translator()
             new_lidos_translator.translator_ref_lidos = lidos_new_translator
             new_lidos_translator.app = LIDOS
@@ -38,7 +35,6 @@ def unload_lidos_translators(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("hueb20", "0067_lidos_authors"),
         # ("hueb_legacy_lidos", "0009_alter_original_manual_keys"),

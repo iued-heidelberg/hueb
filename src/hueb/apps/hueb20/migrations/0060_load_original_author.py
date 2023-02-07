@@ -1,6 +1,5 @@
 from django.db import migrations
 from hueb.apps.hueb20.models import LATEIN
-from hueb.apps.hueb20.models.document import Document as Document_Namespace
 from hueb.apps.hueb20.models.contribution import Contribution as Contribution_Namespace
 
 
@@ -45,13 +44,12 @@ def load_original_author(apps, schema_editor):
 
 
 def unload_original_author(apps, schema_editor):
-    Contribution = apps.get_model("hueb20", "Contribution")
-    Document = apps.get_model("hueb20", "Document")
+    apps.get_model("hueb20", "Contribution")
+    apps.get_model("hueb20", "Document")
     # Contribution.objects.filter(app=LATEIN).filter(document__get_document_type=Document_Namespace.ORIGINAL).filter(contribution_type=Contribution_Namespace.WRITER).delete()
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("hueb20", "0059_load_fillings"),
     ]

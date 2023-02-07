@@ -28,7 +28,6 @@ def remove_main_author(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("hueb20", "0105_online_legacy"),
     ]
