@@ -30,6 +30,6 @@ exec gunicorn hueb.wsgi \
     --max-requests-jitter 50 \
     --log-level=info \
     --bind=0.0.0.0:8000 \
-    --timeout 180
+    --timeout 300
 
 exit 1
