@@ -4,7 +4,6 @@ from hueb.apps.tenants.utils import tenant_from_request, tenantname_from_request
 
 
 class TenantAdmin(admin.ModelAdmin):
-
     change_list_template = "admin/change_list.html"
 
     def __init__(self, model, admin_site):

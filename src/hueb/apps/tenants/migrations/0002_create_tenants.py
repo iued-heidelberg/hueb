@@ -14,7 +14,6 @@ def remove_hueb_and_gueb(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [("tenants", "0001_initial")]

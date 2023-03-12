@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("tenants", "0002_create_tenants"),
         ("hueb20", "0115_move_cultural_circles"),

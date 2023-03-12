@@ -5,7 +5,6 @@ from hueb.apps.tenants.models import TENANT_APPS
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = []
