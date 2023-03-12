@@ -114,10 +114,10 @@
           </p>
         </div>
         <div class="py-2 pr-8">
-          <h2 class="text-xl font-thin lg:text-xs">{% translate "Databank" %}</h2>
+          <h2 class="text-xl font-thin lg:text-xs">{% translate "Datenbank" %}</h2>
           <p class="text-xl break-words lg:text-sm">
-            {% if original.app is not None and original.app != "" %}
-              {{original.app}}
+            {% if original.get_app is not None and original.get_app != "" %}
+              {{original.get_app}}
             {% else %}
               {% translate "unbekannt" %}
             {% endif %}
@@ -266,8 +266,8 @@
         <div class="py-2 pr-8">
           <h2 class="text-xl font-thin lg:text-xs">{% translate "Databank" %}</h2>
           <p class="text-xl break-words lg:text-sm">
-            {% if translation.app is not None and translation.app != "" %}
-              {{translation.app}}
+            {% if translation.get_app is not None and translation.get_app != "" %}
+              {{translation.get_app}}
             {% else %}
               {% translate "unbekannt" %}
             {% endif %}

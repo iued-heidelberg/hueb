@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
     "simple_history",
     "hueb.apps.hueb20",
+    "hueb.apps.tenants",
     "hueb.apps.hueb_legacy_latein",
     "hueb.apps.hueb_legacy_lidos",
     "hueb.apps.hueb_legacy",
@@ -109,6 +110,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",  # add this line
+    #'hueb.apps.tenants.auth_backend.TenantModelBackend'
+]
 
 WSGI_APPLICATION = "hueb.wsgi.application"
 

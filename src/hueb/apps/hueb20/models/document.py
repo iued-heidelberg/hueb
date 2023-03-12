@@ -18,10 +18,11 @@ from hueb.apps.hueb20.models.utils import (
     HUEB_APPLICATIONS,
     timerange_serialization,
 )
+from hueb.apps.tenants.models import TENANT_APPS, TenantAwareModel
 from psycopg2.extras import NumericRange
 
 
-class Document(Reviewable):
+class Document(Reviewable, TenantAwareModel):
     ORIGINAL = _("Original")
     TRANSLATION = _("Übersetzung")
     BRIDGE = _("Brückenübersetzung")
@@ -74,7 +75,9 @@ class Document(Reviewable):
         through="Filing",
         through_fields=("document", "archive"),
     )
-    app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
+    app = models.CharField(
+        max_length=6, choices=HUEB_APPLICATIONS + TENANT_APPS, default=HUEB20
+    )
     original_ref = models.OneToOneField(
         Legacy.OriginalNew, on_delete=models.DO_NOTHING, null=True, blank=True
     )
@@ -114,6 +117,12 @@ class Document(Reviewable):
             if self.main_author != main_author:
                 self.main_author = main_author
         super(Document, self).save(*args, **kwargs)
+
+    def get_app(self):
+        for app in HUEB_APPLICATIONS + TENANT_APPS:
+            if app[0] == self.app:
+                return app[1]
+        return self.app
 
     def get_document_type(self):
         if self.translations.exists() and not self.originals.exists():
@@ -293,7 +302,7 @@ class Document(Reviewable):
     sortable_attributes = (
         ("written_in", _("Sortiert nach Jahr")),
         ("title", _("Sortiert nach Titel")),
-        ("main_author__name", _("Sortiert nach Autor")),
+        ("main_author__name", _("Sortiert nach Autor")),  # ???
         ("ddc", _("Sortiert nach DDC")),
     )
 

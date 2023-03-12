@@ -3,7 +3,7 @@
 
 <div class="m-2 mb-2 text-m lg:text-m">
 
-  <div class="{% if not page_obj.has_previous %} invisible {% endif %}" style="float:left; width:25%">
+  <div class="{% if not page_obj.has_previous %} invisible {% endif %}" style="float:left; width:25%; text-align: center;">
 
     {% if page_obj.has_previous %}
       {% with page_number=page_obj.previous_page_number%}
@@ -17,12 +17,12 @@
 
   </div>
 
-  <div style="float:left; width:50%">
+  <div style="float:left; width:50%; text-align: center;">
     <span class="p-2 m-2 border-b-4 border-transparent"> {% translate "Seite" %} {{ page_obj.number }} {% translate "von" %} {{ page_obj.paginator.num_pages }}
     </span>
   </div>
 
-  <div class="{% if not page_obj.has_next %} invisible {% endif %}" style="float:right; width:25%">
+  <div class="{% if not page_obj.has_next %} invisible {% endif %}" style="float:right; width:25%; text-align: center;">
     {% if page_obj.has_next %}
       {% with page_number=page_obj.next_page_number%}
         <a class="p-2 m-2 border-b-4 border-transparent hover:border-black" href="?{% param_replace page=page_number%}">{% translate "vor" %}</a>

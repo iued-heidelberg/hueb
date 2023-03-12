@@ -10,6 +10,7 @@ from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from hueb.apps.hueb20.admin.contribution import ContributionInline
 from hueb.apps.hueb20.admin.review import ReviewAdmin, TabularInlineReviewAdmin
+from hueb.apps.hueb20.admin.tenant import TenantAdmin
 from hueb.apps.hueb20.models import Contribution, Document, Filing
 from hueb.apps.hueb20.models.document import DocumentRelationship
 from hueb.apps.hueb20.widgets.timerange import TimeRangeWidget
@@ -47,7 +48,7 @@ class OriginalRelationshipInline(TabularInlineReviewAdmin):
 
 
 @admin.register(Document)
-class DocumentAdmin(ReviewAdmin):
+class DocumentAdmin(ReviewAdmin, TenantAdmin):
     change_form_template = "admin/document_change_form.html"
 
     actions = ["duplicate", "validate_links"]
