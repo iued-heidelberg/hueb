@@ -53,7 +53,11 @@ class DocumentAdmin(ReviewAdmin, TenantAdmin):
 
     actions = ["duplicate", "validate_links"]
 
-    autocomplete_fields = ("ddc", "language")
+    autocomplete_fields = (
+        "ddc",
+        "language",
+        "cultural_circle",
+    )
     readonly_fields = (
         "id",
         "app",
@@ -74,6 +78,7 @@ class DocumentAdmin(ReviewAdmin, TenantAdmin):
         "edition",
         "language",
         "ddc",
+        "cultural_circle",
         "get_archives_count",
         "get_archives",
         "get_translations",
@@ -104,6 +109,7 @@ class DocumentAdmin(ReviewAdmin, TenantAdmin):
                     "ddc",
                     "written_in",
                     "published_location",
+                    "cultural_circle",
                 ),
             },
         ),
@@ -167,6 +173,7 @@ class DocumentAdmin(ReviewAdmin, TenantAdmin):
             .prefetch_related("filing_set__archive")
             .select_related("language")
             .select_related("ddc")
+            .select_related("cultural_circle")
         )
         return qs
 
