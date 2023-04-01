@@ -119,7 +119,7 @@ Deployments are fully automated and are executed via Github Actions, Ansible, Do
 
 **Important Note:** This project supports [sentry] and [honeycomb] as monitoring and observability solutions. I have replaced the API credentials with an empty string as the accounts ran under my name. You can add them back by registering accounts for these services and updating the Github Secrets with the tokens.
 
-### Environments
+### Environments 
 Currently we have two different servers hosted in the [heiCLOUD](https://heicloud.uni-heidelberg.de):
 - [hueb-staging.iued.uni-heidelberg.de](hueb-staging.iued.uni-heidelberg.de)
 - [hueb.iued.uni-heidelberg.de](hueb.iued.uni-heidelberg.de)
