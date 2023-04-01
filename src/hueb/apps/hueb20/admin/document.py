@@ -14,6 +14,7 @@ from hueb.apps.hueb20.admin.tenant import TenantAdmin
 from hueb.apps.hueb20.models import Contribution, Document, Filing
 from hueb.apps.hueb20.models.document import DocumentRelationship
 from hueb.apps.hueb20.widgets.timerange import TimeRangeWidget
+from hueb.apps.tenants.utils import tenant_from_request
 
 from .comment import CommentInline
 from .filing import FilingInline
@@ -164,6 +165,8 @@ class DocumentAdmin(ReviewAdmin, TenantAdmin):
         return super().response_change(request, obj)
 
     def get_queryset(self, request):
+        tenant = tenant_from_request(request)
+        print("CURRENT TENANT: ", tenant)
         qs = (
             super(DocumentAdmin, self)
             .get_queryset(request)
