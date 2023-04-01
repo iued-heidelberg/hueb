@@ -12,16 +12,15 @@ class TenantAdmin(admin.ModelAdmin):
     def get_queryset(self, request, *args, **kwargs):
         queryset = super().get_queryset(request, *args, **kwargs)
         tenant = tenant_from_request(request)
+        print("CURRENT TENANT: ", tenant)
         queryset = queryset.filter(tenant=tenant)
         return queryset
 
     def save_model(self, request, obj, form, change):
-        print("GOT HERE")
         tenant = tenant_from_request(request)
         obj.tenant = tenant
         if tenant:
             obj.app = tenant.app
-            print(obj.app)
         super().save_model(request, obj, form, change)
 
     def get_changelist_instance(self, request):
