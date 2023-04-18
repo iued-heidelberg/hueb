@@ -39,19 +39,17 @@ class UserAdmin(BaseUserAdmin):
                 )
         return field
 
-    def change_view(self, request, *args, **kwargs):
+    def get_inlines(self, request, obj):
         if not request.user.is_superuser:
-            try:
-                self.fieldsets = self.staff_fieldsets
-                response = super(BaseUserAdmin, self).change_view(
-                    request, *args, **kwargs
-                )
-            finally:
-                self.fieldsets = UserAdmin.fieldsets
-            return response
+            return []
         else:
-            self.inlines = [TenantUserInline]
-            return super(BaseUserAdmin, self).change_view(request, *args, **kwargs)
+            return [TenantUserInline]
+
+    def get_fieldsets(self, request, obj=None):
+        if obj and not request.user.is_superuser:
+            return self.staff_fieldsets
+        else:
+            return super().get_fieldsets(request, obj)
 
     def has_delete_permission(self, request, obj=None):
         tenant = tenant_from_request(request)
