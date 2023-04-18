@@ -6,9 +6,10 @@ from hueb.apps.hueb20.models.archive import Archive
 from hueb.apps.hueb20.models.document import Document
 from hueb.apps.hueb20.models.reviewable import Reviewable
 from hueb.apps.hueb20.models.utils import HUEB20, HUEB_APPLICATIONS
+from hueb.apps.tenants.models import TENANT_APPS, TenantAwareModel
 
 
-class Filing(Reviewable):
+class Filing(Reviewable, TenantAwareModel):
     id = models.BigAutoField(primary_key=True)
     archive = models.ForeignKey(
         Archive, on_delete=models.CASCADE, null=True, blank=True
@@ -19,7 +20,9 @@ class Filing(Reviewable):
     signatur = models.CharField(max_length=255, null=True, blank=True)
     link = models.CharField(max_length=255, blank=True, null=True)
     link_status = models.BooleanField(default=None, null=True, blank=True)
-    app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
+    app = models.CharField(
+        max_length=6, choices=HUEB_APPLICATIONS + TENANT_APPS, default=HUEB20
+    )
     locAssign_ref = models.ForeignKey(
         Legacy.LocAssign, on_delete=models.DO_NOTHING, null=True, blank=True
     )

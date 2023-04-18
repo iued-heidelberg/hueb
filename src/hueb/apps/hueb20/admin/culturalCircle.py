@@ -2,14 +2,15 @@ from django.contrib import admin
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 from hueb.apps.hueb20.admin.review import ReviewAdmin
+from hueb.apps.hueb20.admin.tenant import TenantAdminReadOnly
 from hueb.apps.hueb20.models import CulturalCircle
-from translated_fields import TranslatedFieldAdmin, to_attribute
+from translated_fields import TranslatedFieldAdmin
 
 from .comment import CommentInline
 
 
 @admin.register(CulturalCircle)
-class CulturalCircleAdmin(TranslatedFieldAdmin, ReviewAdmin):
+class CulturalCircleAdmin(TranslatedFieldAdmin, ReviewAdmin, TenantAdminReadOnly):
     readonly_fields = ("app", "id", "cultural_circle_link")
     list_display = ("id", "name", "description", "start", "end", "state")
     list_filter = ("state", "app")

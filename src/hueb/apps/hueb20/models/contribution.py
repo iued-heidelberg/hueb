@@ -5,11 +5,10 @@ from hueb.apps.hueb20.models.document import Document
 from hueb.apps.hueb20.models.person import Person
 from hueb.apps.hueb20.models.reviewable import Reviewable
 from hueb.apps.hueb20.models.utils import HUEB20, HUEB_APPLICATIONS
-from django.db.models.signals import post_save
-from django.dispatch import receiver
+from hueb.apps.tenants.models import TENANT_APPS, TenantAwareModel
 
 
-class Contribution(Reviewable):
+class Contribution(Reviewable, TenantAwareModel):
     PUBLISHER = "PUBLISHER"
     WRITER = "WRITER"
     OTHER = "OTHER"
@@ -40,7 +39,9 @@ class Contribution(Reviewable):
         blank=True,
     )
 
-    app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
+    app = models.CharField(
+        max_length=6, choices=HUEB_APPLICATIONS + TENANT_APPS, default=HUEB20
+    )
 
     def mark_reviewed(self, updated=[]):
         if self not in updated:

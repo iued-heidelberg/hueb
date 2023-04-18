@@ -25,7 +25,9 @@ class TenantAwareModel(models.Model):
 
 
 class TenantUser(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name="tenantuser"
+    )
     tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE)
 
     def __str__(self):

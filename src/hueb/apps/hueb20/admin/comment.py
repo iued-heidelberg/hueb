@@ -1,4 +1,5 @@
 from django.contrib import admin
+from hueb.apps.hueb20.admin.tenant import TenantAdmin
 from hueb.apps.hueb20.models import Comment
 from import_export.admin import ExportMixin
 from simple_history.admin import SimpleHistoryAdmin
@@ -20,7 +21,7 @@ class CommentInline(admin.TabularInline):
 
 
 @admin.register(Comment)
-class CommentAdmin(ExportMixin, SimpleHistoryAdmin):
+class CommentAdmin(ExportMixin, SimpleHistoryAdmin, TenantAdmin):
     model = Comment
     fields = (
         "id",

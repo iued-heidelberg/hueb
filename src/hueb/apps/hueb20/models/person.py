@@ -12,9 +12,10 @@ from hueb.apps.hueb20.models.utils import (
     HUEB_APPLICATIONS,
     timerange_serialization,
 )
+from hueb.apps.tenants.models import TENANT_APPS, TenantAwareModel
 
 
-class Person(Reviewable):
+class Person(Reviewable, TenantAwareModel):
     id = models.BigAutoField(primary_key=True)
     name = models.CharField(max_length=255, null=True, blank=True)
     cultural_circle = models.ForeignKey(
@@ -24,7 +25,9 @@ class Person(Reviewable):
     organisation = models.BooleanField(default=False, null=False, blank=None)
     lifetime_start = IntegerRangeField(null=True, blank=True)
     lifetime_end = IntegerRangeField(null=True, blank=True)
-    app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
+    app = models.CharField(
+        max_length=6, choices=HUEB_APPLICATIONS + TENANT_APPS, default=HUEB20
+    )
     # references to LATEIN
     author_ref = models.OneToOneField(
         Legacy.AuthorNew, on_delete=models.DO_NOTHING, null=True, blank=True

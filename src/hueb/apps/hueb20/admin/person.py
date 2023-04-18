@@ -3,6 +3,7 @@ from django.contrib.postgres.fields import IntegerRangeField
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 from hueb.apps.hueb20.admin.review import ReviewAdmin
+from hueb.apps.hueb20.admin.tenant import TenantAdminReadOnly
 from hueb.apps.hueb20.models import Person
 from hueb.apps.hueb20.widgets.timerange import TimeRangeWidget
 
@@ -10,7 +11,7 @@ from .comment import CommentInline
 
 
 @admin.register(Person)
-class PersonAdmin(ReviewAdmin):
+class PersonAdmin(ReviewAdmin, TenantAdminReadOnly):
     readonly_fields = ("app", "author_link", "translator_link", "id")
     list_display = (
         "id",

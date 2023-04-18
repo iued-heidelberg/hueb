@@ -2,11 +2,12 @@ from django.contrib import admin
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 from hueb.apps.hueb20.admin.review import ReviewAdmin, TabularInlineReviewAdmin
+from hueb.apps.hueb20.admin.tenant import TenantAdmin
 from hueb.apps.hueb20.models import Contribution, Document
 
 
 @admin.register(Contribution)
-class ContributionAdmin(ReviewAdmin):
+class ContributionAdmin(ReviewAdmin, TenantAdmin):
     readonly_fields = (
         "app",
         "id",

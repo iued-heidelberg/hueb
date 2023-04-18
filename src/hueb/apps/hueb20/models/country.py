@@ -3,12 +3,15 @@ from django.db import models
 from django.urls import reverse
 from hueb.apps.hueb20.models.reviewable import Reviewable
 from hueb.apps.hueb20.models.utils import HUEB20, HUEB_APPLICATIONS
+from hueb.apps.tenants.models import TENANT_APPS, TenantAwareModel
 
 
-class Country(Reviewable):
+class Country(Reviewable, TenantAwareModel):
     id = models.BigAutoField(primary_key=True)
     country = models.CharField(max_length=255, help_text="Name of the country")
-    app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
+    app = models.CharField(
+        max_length=6, choices=HUEB_APPLICATIONS + TENANT_APPS, default=HUEB20
+    )
     country_ref = models.OneToOneField(
         Legacy.Country,
         on_delete=models.DO_NOTHING,

@@ -4,10 +4,11 @@ from hueb.apps.hueb20.models.culturalCircle import CulturalCircle
 from hueb.apps.hueb20.models.document import Document
 from hueb.apps.hueb20.models.person import Person
 from hueb.apps.hueb20.models.utils import HUEB20, HUEB_APPLICATIONS
+from hueb.apps.tenants.models import TENANT_APPS, TenantAwareModel
 from simple_history.models import HistoricalRecords
 
 
-class Comment(models.Model):
+class Comment(TenantAwareModel):
     id = models.BigAutoField(primary_key=True)
     text = models.TextField(blank=True, null=True)
     external = models.BooleanField(
@@ -35,7 +36,9 @@ class Comment(models.Model):
         blank=True,
         related_name="cultural_circle_comment",
     )
-    app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
+    app = models.CharField(
+        max_length=6, choices=HUEB_APPLICATIONS + TENANT_APPS, default=HUEB20
+    )
     history = HistoricalRecords()
 
     def __str__(self):

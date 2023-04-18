@@ -4,9 +4,10 @@ from django.urls import reverse
 from hueb.apps.hueb20.models.country import Country
 from hueb.apps.hueb20.models.reviewable import Reviewable
 from hueb.apps.hueb20.models.utils import HUEB20, HUEB_APPLICATIONS
+from hueb.apps.tenants.models import TENANT_APPS, TenantAwareModel
 
 
-class Archive(Reviewable):
+class Archive(Reviewable, TenantAwareModel):
     id = models.BigAutoField(primary_key=True)
     name = models.CharField(max_length=255, null=True)
     adress = models.TextField(blank=True, null=True)
@@ -14,7 +15,9 @@ class Archive(Reviewable):
     hostname = models.CharField(max_length=255, blank=True, null=True)
     ip = models.CharField(max_length=255, blank=True, null=True)
     z3950_gateway = models.CharField(max_length=255, blank=True, null=True)
-    app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
+    app = models.CharField(
+        max_length=6, choices=HUEB_APPLICATIONS + TENANT_APPS, default=HUEB20
+    )
     location_ref = models.OneToOneField(
         Legacy.LocationNew, on_delete=models.DO_NOTHING, null=True, blank=True
     )

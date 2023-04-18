@@ -3,18 +3,23 @@ from hueb.apps.tenants.admin_site import admin_site as admin_site_override
 from hueb.apps.tenants.utils import tenant_from_request, tenantname_from_request
 
 
-class TenantAdmin(admin.ModelAdmin):
+class TenantAdminReadOnly(admin.ModelAdmin):
     change_list_template = "admin/change_list.html"
 
     def __init__(self, model, admin_site):
         super().__init__(model, admin_site_override)
 
-    def get_queryset(self, request, *args, **kwargs):
-        queryset = super().get_queryset(request, *args, **kwargs)
+    def has_delete_permission(self, request, obj=None):
         tenant = tenant_from_request(request)
-        print("CURRENT TENANT: ", tenant)
-        queryset = queryset.filter(tenant=tenant)
-        return queryset
+        if obj and (tenant != obj.tenant):
+            return False
+        return super().has_delete_permission(request, obj)
+
+    def has_change_permission(self, request, obj=None):
+        tenant = tenant_from_request(request)
+        if obj and (tenant != obj.tenant):
+            return False
+        return super().has_change_permission(request, obj)
 
     def save_model(self, request, obj, form, change):
         tenant = tenant_from_request(request)
@@ -22,6 +27,19 @@ class TenantAdmin(admin.ModelAdmin):
         if tenant:
             obj.app = tenant.app
         super().save_model(request, obj, form, change)
+
+
+class TenantAdmin(TenantAdminReadOnly):
+    # change_list_template = "admin/change_list.html"
+
+    def __init__(self, model, admin_site):
+        super().__init__(model, admin_site_override)
+
+    def get_queryset(self, request, *args, **kwargs):
+        queryset = super().get_queryset(request, *args, **kwargs)
+        tenant = tenant_from_request(request)
+        queryset = queryset.filter(tenant=tenant)
+        return queryset
 
     def get_changelist_instance(self, request):
         """

@@ -4,10 +4,11 @@ from django.db import models
 from django.urls import reverse
 from hueb.apps.hueb20.models.reviewable import Reviewable
 from hueb.apps.hueb20.models.utils import HUEB20, HUEB_APPLICATIONS
+from hueb.apps.tenants.models import TENANT_APPS, TenantAwareModel
 from translated_fields import TranslatedField
 
 
-class CulturalCircle(Reviewable):
+class CulturalCircle(Reviewable, TenantAwareModel):
     id = models.BigAutoField(primary_key=True)
     name = TranslatedField(
         models.CharField(
@@ -20,7 +21,9 @@ class CulturalCircle(Reviewable):
     start = IntegerRangeField(null=True, blank=True)
     end = IntegerRangeField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
-    app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
+    app = models.CharField(
+        max_length=6, choices=HUEB_APPLICATIONS + TENANT_APPS, default=HUEB20
+    )
     country_ref = models.OneToOneField(
         Legacy.Country,
         on_delete=models.DO_NOTHING,

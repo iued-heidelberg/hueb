@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import UserHistory
 from import_export.admin import ExportMixin
-from hueb.apps.hueb20.admin.review import TabularInlineReviewAdmin
+
+from .models import UserHistory
 
 
 class ReadonlyAdmin(ExportMixin, admin.ModelAdmin):
@@ -9,9 +9,6 @@ class ReadonlyAdmin(ExportMixin, admin.ModelAdmin):
         return False
 
     def has_add_permission(self, request, obj=None):
-        return False
-
-    def has_delete_permission(self, request, obj=None):
         return False
 
 

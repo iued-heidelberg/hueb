@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 from hueb.apps.hueb20.admin.review import ReviewAdmin
 from hueb.apps.hueb20.models import Language
-from translated_fields import TranslatedFieldAdmin, to_attribute
+from translated_fields import TranslatedFieldAdmin
 
 
 # @admin.register(Language)
