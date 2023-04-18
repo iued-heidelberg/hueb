@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("tenants", "0003_tenantuser"),
         ("hueb20", "0121_auto_20230417_1833"),
