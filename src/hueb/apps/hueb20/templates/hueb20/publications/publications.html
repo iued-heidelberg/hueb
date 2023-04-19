@@ -3,7 +3,6 @@
 {% block content %}
 {% if True %}
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
     .alert{margin: auto; width: 90%; align: center; border:1px solid transparent;border-radius:4px; opacity: 1; transition: opacity 0.6s; /* 600ms to fade out */}
     .alert-danger{color:#a94442;background-color:#f2dede;border-color:#ebccd1}
@@ -174,10 +173,27 @@
                               <div>{{result.description}}</div>
                             </td>
                             <td style=" text-align: right;">
+                              
                               <button class="button">
                                   <a href="{% url "pubPdf" result.id %}">
-                                      {% translate "DOWNLOAD" %}
-                                  <i style="font-size:24px" class="fa">&#xf019;</i></a>
+                                    <p class="inline-block align-middle md:text-lg"> {% translate "DOWNLOAD" %} </p>
+                                    <div class="items-center inline-block align-middle pointer-events-none">
+                                      <svg fill="#ffffff" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                        viewBox="-149.56 -149.56 781.58 781.58" xml:space="preserve" width="25px" height="25px" 
+                                        stroke="#ffffff" stroke-width="19.780819"><g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" 
+                                        stroke="#CCCCCC" stroke-width="0.9649179999999999"></g>
+                                        <g id="SVGRepo_iconCarrier"> 
+                                          <g> 
+                                          <g> <polygon points="382.645,256.899 251.073,388.467 251.073,0 231.381,0 231.381,388.466 99.814,256.899 85.891,270.822 241.227,426.159 396.569,270.822 "></polygon> 
+                                          </g> 
+                                        </g> 
+                                        <g> <g> 
+                                          <rect x="36.754" y="462.767" width="408.95" height="19.692"></rect>
+                                        </g> </g> </g>
+                                      </svg>
+                                    </div>
+                                  </a>
                               </button>
                             </td>
                         </tr>
