@@ -3,6 +3,8 @@
 <script src="{% url 'javascript-catalog' %}"></script>
 {% block content %}
 {% if True %}
+
+
   <div class="flex flex-col w-full lg:flex-row">
 
     <div class="justify-end pt-8 text-5xl border-black lg:min-h-full lg:text-sand-bg lg:flex-shrink-0 lg:p-8 lg:text-base lg:bg-gray-bg lg:border-sand-bg">
@@ -24,11 +26,31 @@
 
       <div>
         {% for result in object_list%}
+          {% if result.document_from.get_document_type != result.document_from.BRIDGE and result.document_to.get_document_type != result.document_to.BRIDGE %} 
+              <div>
+                {% with original=result.document_from translation=result.document_to %}
+                  {% include "hueb20/search/single_result_document.html" %}
+                {% endwith %}
+              </div>
+
+          {% elif result.document_to.get_document_type == result.document_to.BRIDGE and result.document_from.get_document_type != result.document_from.BRIDGE %}
           <div>
-            {% with original=result.document_from translation=result.document_to %}
-              {% include "hueb20/search/single_result_document.html" %}
-            {% endwith %}
+            {% for trans in result.document_to.get_translation %}
+              {% with original=result.document_from bridge=result.document_to translation=trans %}
+                {% include "hueb20/search/bridge_result_document.html" %}
+              {% endwith %}
+            {% endfor %}
           </div>
+                  
+          {% elif result.document_from.get_document_type == result.document_from.BRIDGE and result.document_to.get_document_type != result.document_to.BRIDGE %}
+              <div>
+                {% for orig in result.document_from.get_originals%}
+                  {% with original=orig bridge=result.document_from translation=result.document_to %}
+                    {% include "hueb20/search/bridge_result_document.html" %}
+                  {% endwith %}
+                {% endfor %}
+              </div>
+          {% endif %}
         {% endfor %}
       </div>
 
@@ -48,5 +70,24 @@
   </a>
 </div>
 {% endif %}
+
+<script defer>
+  var coll = document.getElementsByClassName("collapsible2");
+  var i;
+  
+  for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+      this.classList.toggle("active");
+      var content = this.nextElementSibling;
+      if (content.style.display == "none"){
+        content.style.display = null;
+      } else {
+        content.style.display = "none";
+      } 
+    });
+  }
+  
+</script>
+
 {% endblock %}
 
