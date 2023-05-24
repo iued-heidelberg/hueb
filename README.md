@@ -99,7 +99,7 @@ The usage and function are described further down in this document.
 
 ### Adding new environment variables
 Adding new environment variables for configuration is currently a bit of Rube-Goldberg-Maschine that could use improvement.
-Assuming you want to add a boolean configuration variable, you have to make the following changes.
+Assuming you want to add a boolean configuration variable, you have to make the following changes:
 
 **For development:**
 - add it to `/hueb/src/hueb/.env`. This is your local configuration file, used when you are starting the app on your machine. This file is deliberately added to `.gitignore` to prevent leakage of secrets by committing them to the repository.
