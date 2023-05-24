@@ -14,11 +14,8 @@ from django.views.generic import ListView
 from hueb.apps.hueb20.models import DdcGerman
 from hueb.apps.hueb20.models.document import Document, DocumentRelationship
 from hueb.apps.hueb20.models.language import Language
-from hueb.apps.hueb20.models.utils import timerange_serialization
-
-# from hueb.apps.tenants.utils import tenant_from_request
-# from hueb.apps.hueb20.models.utils import HUEB_APPLICATIONS
-# from hueb.apps.tenants.models import TENANT_APPS
+from hueb.apps.hueb20.models.utils import HUEB_APPLICATIONS, timerange_serialization
+from hueb.apps.tenants.models import TENANT_APPS
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -130,13 +127,13 @@ class SearchForm(forms.Form):
     )
 
     search_database = forms.ChoiceField(
-        # choices=HUEB_APPLICATIONS + TENANT_APPS,
-        choices=(
-            ("HUEB20", _("HUEB20")),
-            ("LATEIN", _("HUEBLATEIN")),
-            ("LEGACY", _("HUEBLEGACY")),
-            ("LIDOS", _("HUEBLIDOS")),
-        ),
+        choices=HUEB_APPLICATIONS + TENANT_APPS,
+        # choices=(
+        #    ("HUEB20", _("HUEB20")),
+        #    ("LATEIN", _("HUEBLATEIN")),
+        #    ("LEGACY", _("HUEBLEGACY")),
+        #    ("LIDOS", _("HUEBLIDOS")),
+        # ),
         widget=SearchSelectWidget,
     )
 
