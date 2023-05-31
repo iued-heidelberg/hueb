@@ -8,7 +8,7 @@
   <div class="flex px-12 lg:hidden">
     <button class="flex p-2 text-black border border-transparent stroke-2 items-centers hover:border-black"
       @click="hamburgerOpen = !hamburgerOpen">
-      <svg id="icon-symbol-hamburger" class="w-24 h-24 fill-current " viewBox="0 0 30 30">
+      <svg id="icon-symbol-hamburger" class="w-12 h-12 fill-current " viewBox="0 0 30 30">
         <path d="M24.61,21.69H5.39a1,1,0,0,0,0,2H24.61a1,1,0,0,0,0-2Z"></path>
         <path d="M5.39,16H19.12a1,1,0,0,0,0-2H5.39a1,1,0,0,0,0,2Z"></path>
         <path d="M5.39,8.31H24.61a1,1,0,0,0,0-2H5.39a1,1,0,0,0,0,2Z"></path>
@@ -18,10 +18,10 @@
 
 
   {% block top_menu %}
-  <div :class="{'hidden': !hamburgerOpen}" class="flex-col order-last w-5/6 lg:flex lg:order-first"
+  <div :class="{'hidden': !hamburgerOpen}" class="flex-col order-last w-5/6 lg:flex lg:order-first" style="white-space: nowrap;"
     @click.away="hamburgerOpen = false">
     {#Left aligned menu items#}
-    <div class="flex flex-col justify-between ml-8 text-4xl lg:flex-row lg:flex-no-wrap lg:text-lg">
+    <div class="flex flex-col justify-between ml-8 text-xl lg:flex-row lg:flex-no-wrap lg:text-lg">
       <div class="flex flex-col lg:flex-row">
         {% for menu_item in menu %}
         <a class="font-bold border-b-4 m-4 p-2 border-transparent
@@ -35,7 +35,7 @@
       </div>
 
       {#Right aligned menu items#}
-      <div class="flex">
+      <div class="flex flex-col lg:flex-row">
         <a class="p-2 m-4 font-bold border-b-4 border-transparent hover:border-black" {% if not user.is_authenticated %}
           @click="overlayOpen = true">
           {% if not user.is_authenticated %}Login{% endif %}
@@ -50,6 +50,7 @@
               {% get_current_language as LANGUAGE_CODE %}
               {% get_available_languages as LANGUAGES %}
               {% get_language_info_list for LANGUAGES as languages %}
+              <div>
               {% for lang in languages %}
                 {% if not forloop.last %}
                   <a href="/{{ lang.code }}/{{request.get_full_path|slice:"4:" }}">
@@ -60,13 +61,14 @@
                   </a>
                 {% endif %}
               {% endfor %}
+              <div>
             </ul>
           </div>
         </div>
       </div>
     </div>
   </div>
-  {% endblock %}
+ 
 
 
   {#Logos#}
@@ -87,3 +89,4 @@
 
   </div>
 </nav>
+ {% endblock %}
