@@ -26,11 +26,11 @@ The current implementation progress (07.21) is the following:
 
 > Hey you 👋 
 > Thank you for continuing this project. I had a lot of fun working on it and learned a lot.
-> I've handed over a set of files to the team for you to start off:
+> I've handed over a set of files to the team for you to start off.
 > - an ssh key set. This set has access to both servers. Use it to log in, add your own keys (newly created or your regular keys) to both servers, verify! that the new keys work, and then remove my old keys and the keys I've created for you from the server. These are now yours
 > - `development_secrets.ini` and `staging_secrets.ini` their usage is described further down
 > - `backup.sql` this is a backup I've created during the last weeks of my involvement. You can use it to seed your local dev environment or simply download a backup from the servers
-> - I've added a list of possible todos/open topics at the end of this document
+> - I've added a list of possible todos/open topics at the end of this document 
 > Have fun,
 
 > Lukas
