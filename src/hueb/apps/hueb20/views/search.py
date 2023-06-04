@@ -191,7 +191,8 @@ class BaseSearchFormSet(BaseFormSet):
             # Throw out duplicate triplets
             if Document.BRIDGE in types:
                 doc_froms = queryset.values_list("document_from", flat=True)
-                queryset = queryset.exclude(document_to__in=doc_froms)
+                if queryset.filter(document_to__in=doc_froms).exists():
+                    queryset = queryset.exclude(document_to__in=doc_froms)
 
             logger.debug(queryset.query)
             return queryset
