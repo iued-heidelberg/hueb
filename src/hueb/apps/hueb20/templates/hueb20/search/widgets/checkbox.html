@@ -24,7 +24,7 @@ input {
 </style-->
 
  {% for group_name, group_choices, group_index in widget.optgroups %}
-       <div class="font-semibold p-2 pr-2 break-words flex-wrap text-center bg-transparent appearance-none hover:shadow-s" style="font-size: 1.05rem;">
+       <div class="font-semibold p-2 pr-2 break-words flex-wrap text-center bg-transparent appearance-none hover:shadow-s" style="font-size: 1.05rem; accent-color: #be2d2d;">
            {% for option in group_choices %}
             {% include option.template_name with widget=option %}
         {% endfor %}
