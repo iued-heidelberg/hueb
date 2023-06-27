@@ -6,6 +6,7 @@ from django.views.i18n import JavaScriptCatalog
 from hueb import settings
 from hueb.apps.hueb20.views.authentication import Login, Logout
 from hueb.apps.hueb20.views.documentDetailView import DocumentDetailView
+from hueb.apps.hueb20.views.help_guide import HelpGuide
 from hueb.apps.hueb20.views.index import IndexView
 from hueb.apps.hueb20.views.personDetailView import PersonDetailView
 from hueb.apps.hueb20.views.publications import Publications
@@ -21,6 +22,7 @@ urlpatterns = [
     path("", IndexView.as_view(), name="Index"),
     path("search", Search.as_view(), name="search"),
     path("publications", Publications.as_view(), name="publications"),
+    path("help_guide", HelpGuide.as_view(), name="help_guide"),
     path("publications<sub>", Publications.as_view(), name="publicationsSub"),
     path("accounts/login", Login.as_view(), name="login"),
     path("accounts/logout", Logout.as_view(), name="logout"),
