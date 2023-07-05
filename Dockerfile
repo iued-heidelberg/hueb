@@ -15,7 +15,7 @@ RUN apt-get update && \
   libxml2-dev \
   libxslt1-dev \
   locales \
-  python2-dev \
+  python-dev-is-python2 \
   python3-virtualenv \
   python3-dev \
   sudo \
