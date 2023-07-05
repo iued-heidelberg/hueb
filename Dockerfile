@@ -11,6 +11,7 @@ RUN apt-get update && \
   gettext \
   git \
   nodejs \
+  npm \
   libpq-dev \
   libxml2-dev \
   libxslt1-dev \
