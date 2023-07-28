@@ -188,11 +188,11 @@ class BaseSearchFormSet(BaseFormSet):
                     document_to__filing__archive__name="Online-Version"
                 )
 
-            # Throw out duplicate triplets
-            # if Document.BRIDGE in types:
-            #    doc_froms = queryset.values_list("document_from", flat=True)
-            #    if queryset.filter(document_to__in=doc_froms).exists():
-            #        queryset = queryset.exclude(document_to__in=doc_froms)
+            doc_froms = queryset.values_list("document_from", flat=True)
+            if queryset.filter(document_to__in=doc_froms).exists():
+                queryset = queryset.exclude(
+                    id__in=queryset.filter(document_to__in=doc_froms).all()
+                )
 
             logger.debug(queryset.query)
             return queryset
