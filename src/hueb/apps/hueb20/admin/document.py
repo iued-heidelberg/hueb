@@ -11,7 +11,7 @@ from django.utils.safestring import mark_safe
 from hueb.apps.hueb20.admin.contribution import ContributionInline
 from hueb.apps.hueb20.admin.review import ReviewAdmin, TabularInlineReviewAdmin
 from hueb.apps.hueb20.admin.tenant import TenantAdmin
-from hueb.apps.hueb20.models import Contribution, Document, Filing
+from hueb.apps.hueb20.models import Contribution, Document, Filing, Person
 from hueb.apps.hueb20.models.document import DocumentRelationship
 from hueb.apps.hueb20.widgets.timerange import TimeRangeWidget
 
@@ -43,7 +43,11 @@ class OriginalRelationshipInline(TabularInlineReviewAdmin):
     verbose_name = "Original"
     verbose_name_plural = verbose_name + "s"
     autocomplete_fields = ("document_from",)
-    fields = ("document_from_id", "document_from", "state")
+    fields = (
+        "document_from_id",
+        "document_from",
+        "state",
+    )
     exclude = ["reviewed", "original_ref", "translation_ref"]
 
 
@@ -57,6 +61,7 @@ class DocumentAdmin(ReviewAdmin, TenantAdmin):
         "ddc",
         "language",
         "cultural_circle",
+        "main_author",
     )
     readonly_fields = (
         "id",
@@ -110,6 +115,7 @@ class DocumentAdmin(ReviewAdmin, TenantAdmin):
                     "written_in",
                     "published_location",
                     "cultural_circle",
+                    "main_author",
                 ),
             },
         ),
@@ -162,6 +168,22 @@ class DocumentAdmin(ReviewAdmin, TenantAdmin):
             )
             return HttpResponseRedirect(".")
         return super().response_change(request, obj)
+
+    def save_model(self, request, obj, form, change):
+        self.overwrite_main_author(request, obj)
+        super().save_model(request, obj, form, change)
+
+    def overwrite_main_author(self, request, obj):
+        authors = []
+        i = 0
+        while f"contribution_set-{i}-person" in request.POST:
+            if request.POST[f"contribution_set-{i}-contribution_type"] == "WRITER":
+                authors.append(request.POST[f"contribution_set-{i}-person"])
+            i += 1
+        if len(authors) > 0:
+            authors = [Person.objects.get(id=x) for x in authors]
+            authors = sorted(authors, key=lambda x: x.name)
+            obj.main_author = authors[0]
 
     def get_queryset(self, request):
         qs = (

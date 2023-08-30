@@ -3,7 +3,7 @@ import hueb.apps.hueb_legacy_latein.models as Legacy
 import hueb.apps.hueb_legacy_lidos.models as Lidos
 from django.contrib.postgres.fields import IntegerRangeField
 from django.db import models
-from django.db.models import F, Q
+from django.db.models import Q
 from django.db.models.query import QuerySet
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
@@ -106,18 +106,6 @@ class Document(Reviewable, TenantAwareModel):
         LegacyLegacy.Translation, on_delete=models.DO_NOTHING, null=True, blank=True
     )
 
-    def save(self, *args, **kwargs):
-        if self.contribution_set.filter(contribution_type="WRITER").exists():
-            main_author = (
-                self.get_authors()
-                .order_by(F("person__name").asc(nulls_last=True))
-                .first()
-                .person
-            )
-            if self.main_author != main_author:
-                self.main_author = main_author
-        super(Document, self).save(*args, **kwargs)
-
     def get_app(self):
         for app in HUEB_APPLICATIONS + TENANT_APPS:
             if app[0] == self.app:
@@ -147,9 +135,9 @@ class Document(Reviewable, TenantAwareModel):
             return Document.TRANSLATION
 
     def get_cultural_circle(self):
-        main_author = self.get_authors().first()
-        if main_author:
-            circle = main_author.person.cultural_circle
+        author = self.get_authors().first()
+        if author:
+            circle = author.person.cultural_circle
             if circle:
                 return circle
         else:
@@ -302,7 +290,11 @@ class Document(Reviewable, TenantAwareModel):
     sortable_attributes = (
         ("written_in", _("Sortiert nach Jahr")),
         ("title", _("Sortiert nach Titel")),
-        ("main_author__name", _("Sortiert nach Autor")),  # ???
+        (
+            "main_author__name",
+            _("Sortiert nach Autor"),
+        ),  # works just sorts by author's id
+        # ("main_author__name", _("Sortiert nach Autor")),  # ???
         ("ddc", _("Sortiert nach DDC")),
     )
 
@@ -313,6 +305,7 @@ class Document(Reviewable, TenantAwareModel):
 
     @classmethod
     def get_q_object(cls, query):
+        """Returns a Q object for the given query."""
         if query["attribute"] == "title":
             return Document.q_object_by_title(query["search_text"])
         elif query["attribute"] == "author":
@@ -383,10 +376,13 @@ class DocumentRelationship(Reviewable):
         Legacy.TranslationNew, on_delete=models.DO_NOTHING, null=True, blank=True
     )
 
-    app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS, default=HUEB20)
+    app = models.CharField(max_length=6, choices=HUEB_APPLICATIONS + TENANT_APPS)
 
     @classmethod
     def get_q_object(cls, query, types):
+        """
+        Returns a Q object for the given query.
+        """
         if query["attribute"] == "title":
             return DocumentRelationship.q_object_by_title(query["search_text"], types)
         elif query["attribute"] == "author":
@@ -408,6 +404,9 @@ class DocumentRelationship(Reviewable):
 
     @classmethod
     def get_type_q(cls, type, document_from):
+        """
+        Returns a Q object for the given type and document_from.
+        """
         if document_from:
             if type == Document.ORIGINAL:
                 return (
@@ -439,6 +438,9 @@ class DocumentRelationship(Reviewable):
 
     @classmethod
     def get_types_q(cls, types, document_from):
+        """
+        Returns a Q object for the given types and document_from.
+        """
         type_q = Q()
         for type in types:
             if document_from:
@@ -449,10 +451,16 @@ class DocumentRelationship(Reviewable):
 
     @classmethod
     def get_online_q(cls):
+        """
+        Returns a Q object that has an online version of the document.
+        """
         return Q(document_to__filing_set__archive="Online-Version")
 
     @classmethod
     def q_object_by_title(cls, value, types):
+        """
+        Returns a Q object for the given title and types.
+        """
         return (
             Q(document_from__title__icontains=value)
             | Q(document_from__subtitle__icontains=value)
@@ -465,6 +473,9 @@ class DocumentRelationship(Reviewable):
 
     @classmethod
     def q_object_by_author(cls, value, types):
+        """
+        Returns a Q object for the given author and types.
+        """
         return Q(
             document_from__contribution__person__name__icontains=value
         ) & cls.get_types_q(types, True) & Q(
@@ -479,6 +490,9 @@ class DocumentRelationship(Reviewable):
 
     @classmethod
     def q_object_by_ddc(cls, value, types):
+        """
+        Returns a Q object for the given ddc and types.
+        """
         value = value[:3]
         if value.endswith("00"):
             match_up_to = 1
@@ -496,6 +510,9 @@ class DocumentRelationship(Reviewable):
 
     @classmethod
     def q_object_by_written_in(cls, lower, upper, types):
+        """
+        Returns a Q object for the given year range and types.
+        """
         return Q(
             document_from__written_in__overlap=NumericRange(lower, upper)
         ) & cls.get_types_q(types, True) | Q(
@@ -506,6 +523,9 @@ class DocumentRelationship(Reviewable):
 
     @classmethod
     def q_object_by_language(cls, value, types):
+        """
+        Returns a Q object for the given language and types.
+        """
         return (
             Q(document_from__language__language_en__icontains=value)
             | Q(document_from__language__language_de__icontains=value)
@@ -518,15 +538,24 @@ class DocumentRelationship(Reviewable):
 
     @classmethod
     def q_object_by_app(cls, value, types):
+        """
+        Returns a Q object for the given app (database) and types.
+        """
         return Q(document_from__app__icontains=value) & cls.get_types_q(
             types, True
         ) | Q(document_to__app__icontains=value) & cls.get_types_q(types, False)
 
     def __init__(self, *args, **kwargs):
+        """
+        Initializes the DocumentRelationship object.
+        """
         super(DocumentRelationship, self).__init__(*args, **kwargs)
         self.__total__ = None
 
     def mark_reviewed(self, updated=[]):
+        """
+        Marks the DocumentRelationship as reviewed.
+        """
         if self not in updated:
             super().mark_reviewed(updated=updated)
             self.document_from.mark_reviewed(updated)
