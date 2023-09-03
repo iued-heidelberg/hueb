@@ -26,7 +26,13 @@
 
       <div>
         {% for result in object_list%}
-          {% if result.document_from.get_document_type != result.document_from.BRIDGE and result.document_to.get_document_type != result.document_to.BRIDGE %} 
+          {% if result.document_from is None or result.document_to is None %}
+            <div>
+              {% with original=result.document_from translation=result.document_to %}
+                {% include "hueb20/search/single_result_document.html" %}
+              {% endwith %}
+            </div>
+          {% elif result.document_from.get_document_type != result.document_from.BRIDGE and result.document_to.get_document_type != result.document_to.BRIDGE %} 
               <div>
                 {% with original=result.document_from translation=result.document_to %}
                   {% include "hueb20/search/single_result_document.html" %}
@@ -51,6 +57,7 @@
                 {% endfor %}
               </div>
           {% endif %}
+
         {% endfor %}
       </div>
 

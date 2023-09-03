@@ -194,8 +194,7 @@ class BaseSearchFormSet(BaseFormSet):
                     id__in=queryset.filter(document_to__in=doc_froms).all()
                 )
 
-            logger.debug(queryset.query)
-            return queryset
+            return queryset.distinct()
 
     def get_title_queries(self):
         search_texts = []
@@ -278,7 +277,8 @@ class Search(ListView):
             types = typeform.cleaned_data["type"]
             online_only = typeform.cleaned_data["online_only"]
             queryset = formset.get_query_object(types, online_only)
-
+            print(len(queryset))
+            print(queryset.count())
             if sortform.is_valid():
                 orderDir, documentType, orderBy = sortform.get_order_by()
                 if orderDir == "asc":
