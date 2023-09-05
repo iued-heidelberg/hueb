@@ -2,17 +2,18 @@
 
 
 Official description from the project site: 
-> Im Rahmen der Digital Humanities wird die DFG-geförderte Heidelberger Übersetzungsbibliographie eine Informationsinfrastruktur bereitstellen, die zwei Zwecken dienen soll:
+> Das DFG-geförderte Projekt hat die Erstellung einer online zugänglichen Übersetzungsbibliographie frühneuzeitlicher nichtfiktionaler Texte zum Ziel, mit anderen Worten die Sammlung von ins Deutsche übersetzten Sachtexten im weitesten Sinne aus dem Zeitraum 1450–1850.
 >
-> Zunächst geht es um die Zusammenstellung einer Bibliographie von vorwiegend frühneuzeitlichen Übersetzungen aus dem Englischen und Niederländischen ins Deutsche (Erscheinungszeitraum 1450–1850).
+> Neben der Entwicklung einer entsprechenden technischen Infrastruktur geht es primär um die Zusammenstellung der Datensätze: Es soll eine Sammlung zu Übersetzungen aus dem Englischen sowie dem Niederländischen ins Deutsche erstellt werden. Die Thematik der zu erfassenden Texte reicht dabei – unter Ausschluss der schönen Literatur – von Naturwissenschaft, Medizin und Technik über historische Schriften und Reiseberichte bis hin zu theologischen Abhandlungen. Darüber hinaus werden die Daten aus zwei ebenfalls DFG-geförderten Vorgängerbibliographien zur romanisch-deutschen sowie zur lateinisch-deutschen Übersetzung in der Frühen Neuzeit übernommen („Saarbrücker Übersetzungsbibliographie“ sowie „Saarbrücker Übersetzungsbibliographie – Latein“).
 >
-> Diese soll dann gemeinsam mit zwei Vorgängerprojekten zur romanisch-deutschen und lateinisch-deutschen Übersetzung (Saarbrücker Übersetzungsbibliographie) zu einer Gesamtbibliographie integriert werden, um anderen Forschenden umfassende bibliographische Daten zur Übersetzung ins Deutsche in der frühen Neuzeit und darüber hinaus verfügbar zu machen.
+> Insgesamt entsteht so eine umfassende Übersetzungsbibliographie frühneuzeitlicher nichtfiktionaler Texte mit Lateinisch, Französisch, Italienisch, Spanisch, Portugiesisch, Englisch und Niederländisch als systematisch erfassten Original- und Brückensprachen, die Forschenden eine umfassende Datenbasis für Untersuchungen verschiedenster Ausrichtung liefern kann. Darüber hinaus soll die entwickelte Infrastruktur zugleich interessierten KollegInnen für das Anlegen eigener bibliographischer Teilprojekte zur Verfügung gestellt werden.
 >
-> Durch die Zusammenführung der dann insgesamt drei Datenbanken (englisch/niederländisch-deutsche HÜB, lateinisch-deutsche SÜB-L, romanisch-deutsche SÜB) wird eine umfassende Übersetzungsbibliographie frühneuzeitlicher nichtfiktionaler Texte mit Lateinisch, Französisch, Italienisch, Spanisch, Portugiesisch, Englisch und Niederländisch als systematisch erfassten Original- und Brückensprachen entstehen, die Forschenden eine umfassende Datenbasis für Untersuchungen verschiedenster Ausrichtung liefern kann. Darüber hinaus soll die entwickelte Infrastruktur zugleich interessierten Kolleginnen und Kollegen für die Erfassung eigener bibliographischer Daten zur Verfügung gestellt werden.
+> In diesem Sinne versteht sich das Projekt als Beitrag zu den Digital Humanities, indem einerseits ein klassisch geisteswissenschaftlicher Gegenstand online allgemein zugänglich und darüber hinaus die IT-Infrastruktur für interessierte ForscherInnen zur kollaborativen Erweiterung nutzbar gemacht wird.
+>
 
 This is the application that should one day achieve these goals. It is built upon [Django](www.djangoproject.com), its administration tooling and [PostgreSQL](postgresql.org). The frontend is build with [TailwindCSS](tailwindcss.com) and [Alpine.js](https://alpinejs.dev/).
 
-The current implementation progress (07.21) is the following:
+The implementation progress from 07.2021 is the following:
 - a new normalized database schema is implemented
 - an administration interface is implemented that is used to add and manage  entries, including a rudimentary review functionality and versioning of all entries
 - all old databases are ported from ancient MySQL dumps to PostgreSQL, cleaned up, and made read-only accessible in the backend. Currently, they are kept in separate tables and not merged into the main data model because they aren't reviewed yet
@@ -165,11 +166,10 @@ The available playbooks are:
 
 
 
-## Todos:
+## Todos (07.21):
 Where could you start? Where is more work to do?
 
 1. Fortify the review system. It is currently implemented without much complexity. Every document starts of as unreviewed, and only persons with the review permissions are allowed to change this. This property is not reset if changes are made to the document manually. This is tolerable because we are currently working in an append-only mode where a group of colleagues is adding documents and others are reviewing them. Later changes are not common. This should be changed. You can search for unreviewed changes by checking if a new document revision has been added to the document by a non-reviewer after it has been originally reviewed.
 2. Migrate the old datasets to the new data model. The data is in Postgres and Django models exist. The migration should be relatively straightforward. You can use `hueb/src/apps/hueb20/data_migrations` as a reference. The bigger challenge is keeping the data sources distinguishable and making sure the data is correct. I suggest continuing marking all data with their source using the `HUEB_APPLICATIONS` enum provided in [utils.py](hueb/src/hueb/apps/hueb20/models/utils.py). Correctness will be especially challenging for the `hueb_legacy_latein` dataset because it contained tables named `*_new`, which added multiple m:m-tables. I suspect that the models with two `New` like `OriginalNewAuthorNew` are the most promising ones, which is the reason why they are displayed in the admin UI. But some kind of review is probably necessary.
 3. Make a better search interface. The current one was created without real feedback or user interaction and more as a proof of concept. The implementation with Q-objects is probably fine for a start.
 4. Make a better backend. The backend is pretty barebones. It uses autocompletion and whatnot but could benefit a lot from some kind of guidance/workflow for our users. For example: add a view to see which documents you've added yourself, what changes have you made last, create a nicer list view which isn't so wide, ...     
-
