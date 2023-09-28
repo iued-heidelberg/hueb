@@ -3,6 +3,7 @@ from django.db import models
 
 TENANT_APPS = [
     ("GUEBFR", "GÜB-FR"),
+    ("HUES", "HUES"),
 ]
 
 
