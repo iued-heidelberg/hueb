@@ -25,7 +25,7 @@ The implementation progress from 07.2021 is the following:
 
 
 **For my successors:**
-
+ 
 > Hey you!!! 👋 
 > Thank you for continuing this project. I had a lot of fun working on it and learned a lot.
 > I've handed over a set of files to the team for you to start off.
