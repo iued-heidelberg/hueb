@@ -44,7 +44,7 @@ def load_hues_docs(apps, schema_editor):
     Filing = apps.get_model("hueb20", "Filing")
     Archive = apps.get_model("hueb20", "Archive")
     Tenant = apps.get_model("tenants", "Tenant")
-    #huestenant = Tenant.objects.get(app="HUES")
+    # huestenant = Tenant.objects.get(app="HUES")
 
     for file in [
         "./hueb/apps/hueb20/migrations/data/hues_import.csv",
@@ -140,5 +140,8 @@ def unload_hues_docs(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-    dependencies = [("hueb20", "0126_trigram_extension"), ("tenants", "0005_alter_tenantuser_user")]
+    dependencies = [
+        ("hueb20", "0126_trigram_extension"),
+        ("tenants", "0005_alter_tenantuser_user"),
+    ]
     operations = [migrations.RunPython(load_hues_docs, unload_hues_docs)]
