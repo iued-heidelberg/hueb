@@ -85,7 +85,7 @@ def load_hues_docs(apps, schema_editor):
                         language_trans = None
                     if language_trans:
                         new_hues_document.language = Language.objects.get(
-                            language_de=language_trans
+                            language=language_trans
                         )
                     location = row[6]
                     if location is None or location == "" or location == "?":
@@ -195,7 +195,7 @@ def load_hues_docs(apps, schema_editor):
 
                     if language_org:
                         new_hues_original.language = Language.objects.get(
-                            language_de=language_org
+                            language=language_org
                         )
                     new_hues_original.translation = Document.objects.get(
                         title=translation
@@ -260,7 +260,7 @@ def load_hues_docs(apps, schema_editor):
                     new_hues_inter.year = parse_year(year_inter)
                     if language_inter:
                         new_hues_inter.language = Language.objects.get(
-                            language_de=language_inter
+                            language=language_inter
                         )
                     new_hues_inter.translation = Document.objects.get(title=translation)
                     new_hues_inter.original = Document.objects.get(title=title_org)
