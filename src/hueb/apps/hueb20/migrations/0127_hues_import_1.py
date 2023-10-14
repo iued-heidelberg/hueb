@@ -44,7 +44,7 @@ def load_hues_docs(apps, schema_editor):
     Filing = apps.get_model("hueb20", "Filing")
     Archive = apps.get_model("hueb20", "Archive")
     Tenant = apps.get_model("tenants", "Tenant")
-    huestenant = Tenant.objects.get(app="HUES")
+    #huestenant = Tenant.objects.get(app="HUES")
 
     for file in [
         "./hueb/apps/hueb20/migrations/data/hues_import.csv",
@@ -73,7 +73,7 @@ def load_hues_docs(apps, schema_editor):
                         elif not Person.objects.filter(name=translator).exists():
                             new_hues_author = Person()
                             new_hues_author.app = "HUES"
-                            new_hues_author.tenant = huestenant
+                            new_hues_author.tenant = Tenant.objects.get(app="HUES")
                             new_hues_author.name = translator
                             new_hues_author.save()
 
@@ -88,7 +88,7 @@ def load_hues_docs(apps, schema_editor):
                     elif p and not Person.objects.filter(name=p).exists():
                         new_contributor = Person()
                         new_contributor.app = "HUES"
-                        new_contributor.tenant = huestenant
+                        new_contributor.tenant = Tenant.objects.get(app="HUES")
                         new_contributor.name = p
                         new_contributor.save()
 
@@ -108,7 +108,7 @@ def load_hues_docs(apps, schema_editor):
                         elif not Person.objects.filter(name=author_org).exists():
                             new_hues_author = Person()
                             new_hues_author.app = "HUES"
-                            new_hues_author.tenant = huestenant
+                            new_hues_author.tenant = Tenant.objects.get(app="HUES")
                             new_hues_author.name = author_org
                             new_hues_author.save()
 
@@ -128,7 +128,7 @@ def load_hues_docs(apps, schema_editor):
                         elif not Person.objects.filter(name=author_inter).exists():
                             new_hues_author = Person()
                             new_hues_author.app = "HUES"
-                            new_hues_author.tenant = huestenant
+                            new_hues_author.tenant = Tenant.objects.get(app="HUES")
                             new_hues_author.name = author_inter
                             new_hues_author.save()
 
