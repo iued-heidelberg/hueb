@@ -140,5 +140,5 @@ def unload_hues_docs(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-    dependencies = [("hueb20", "0126_trigram_extension")]
+    dependencies = [("hueb20", "0126_trigram_extension"), ("tenants", "0005_alter_tenantuser_user")]
     operations = [migrations.RunPython(load_hues_docs, unload_hues_docs)]
