@@ -73,7 +73,7 @@ def load_hues_docs(apps, schema_editor):
                         elif not Person.objects.filter(name=translator).exists():
                             new_hues_author = Person()
                             new_hues_author.app = "HUES"
-                            new_hues_author.tenant = Tenant.objects.get(app="HUES")
+                            new_hues_author.tenant = Tenant.objects.get(name="hues")
                             new_hues_author.name = translator
                             new_hues_author.save()
 
