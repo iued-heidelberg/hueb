@@ -1,14 +1,14 @@
 # HUEB - Heidelberger Übersetzungs Bibliographie.
 
 
-Official description from the project site: 
+Official description from the project site:
 > Das DFG-geförderte Projekt hat die Erstellung einer online zugänglichen Übersetzungsbibliographie frühneuzeitlicher nichtfiktionaler Texte zum Ziel, mit anderen Worten die Sammlung von ins Deutsche übersetzten Sachtexten im weitesten Sinne aus dem Zeitraum 1450–1850.
 >
 > Neben der Entwicklung einer entsprechenden technischen Infrastruktur geht es primär um die Zusammenstellung der Datensätze: Es soll eine Sammlung zu Übersetzungen aus dem Englischen sowie dem Niederländischen ins Deutsche erstellt werden. Die Thematik der zu erfassenden Texte reicht dabei – unter Ausschluss der schönen Literatur – von Naturwissenschaft, Medizin und Technik über historische Schriften und Reiseberichte bis hin zu theologischen Abhandlungen. Darüber hinaus werden die Daten aus zwei ebenfalls DFG-geförderten Vorgängerbibliographien zur romanisch-deutschen sowie zur lateinisch-deutschen Übersetzung in der Frühen Neuzeit übernommen („Saarbrücker Übersetzungsbibliographie“ sowie „Saarbrücker Übersetzungsbibliographie – Latein“).
 >
 > Insgesamt entsteht so eine umfassende Übersetzungsbibliographie frühneuzeitlicher nichtfiktionaler Texte mit Lateinisch, Französisch, Italienisch, Spanisch, Portugiesisch, Englisch und Niederländisch als systematisch erfassten Original- und Brückensprachen, die Forschenden eine umfassende Datenbasis für Untersuchungen verschiedenster Ausrichtung liefern kann. Darüber hinaus soll die entwickelte Infrastruktur zugleich interessierten KollegInnen für das Anlegen eigener bibliographischer Teilprojekte zur Verfügung gestellt werden.
 >
-> In diesem Sinne versteht sich das Projekt als Beitrag zu den Digital Humanities, indem einerseits ein klassisch geisteswissenschaftlicher Gegenstand online allgemein zugänglich und darüber hinaus die IT-Infrastruktur für interessierte ForscherInnen zur kollaborativen Erweiterung nutzbar gemacht wird.
+> In diesem Sinne versteht sich das Projekt als Beitrag zu den Digital Humanities, indem einerseits ein klassisch geisteswissenschaftlicher Gegenstand online allgemein zugänglich und darüber hinaus die IT-Infrastruktur für interessierte ForscherInnen zur kollaborativen Erweiterung nutzbar gemacht wird. 
 >
 
 This is the application that should one day achieve these goals. It is built upon [Django](www.djangoproject.com), its administration tooling and [PostgreSQL](postgresql.org). The frontend is build with [TailwindCSS](tailwindcss.com) and [Alpine.js](https://alpinejs.dev/).
@@ -26,7 +26,7 @@ The implementation progress from 07.2021 is the following:
 
 **For my successors:**
  
-> Hey you!!! 👋 
+> Hey you!!!  👋 
 > Thank you for continuing this project. I had a lot of fun working on it and learned a lot.
 > I've handed over a set of files to the team for you to start off.
 > - an ssh key set. This set has access to both servers. Use it to log in, add your own keys (newly created or your regular keys) to both servers, verify! that the new keys work, and then remove my old keys and the keys I've created for you from the server. These are now yours
