@@ -73,7 +73,13 @@ def load_hues_docs(apps, schema_editor):
                 # language_trans = row[5].strip()
                 # if language_trans == "?":
                 #    language_trans = None
-                language_trans_obj = Language.objects.get(language_de="Deutsch")
+                if Language.objects.filter(language_de="Deutsch").exists():
+                    language_trans_obj = Language.objects.get(language_de="Deutsch")
+                else:
+                    # Create Deutsch for migration dryrun
+                    new_language = Language()
+                    new_language.language_de = "Deutsch"
+                    new_language.save()
 
                 if (
                     not Document.objects.filter(app="HUES")
