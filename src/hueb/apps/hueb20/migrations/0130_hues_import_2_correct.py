@@ -80,6 +80,8 @@ def load_hues_docs(apps, schema_editor):
                     new_language = Language()
                     new_language.language_de = "Deutsch"
                     new_language.save()
+                    language_trans_obj = Language.objects.get(language_de="Deutsch")
+
 
                 if (
                     not Document.objects.filter(app="HUES")
