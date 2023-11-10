@@ -2,7 +2,7 @@
 
 
 Official description from the project site:
-> Das DFG-geförderte Projekt hat die Erstellung einer online zugänglichen Übersetzungsbibliographie frühneuzeitlicher nichtfiktionaler Texte zum Ziel, mit anderen Worten die Sammlung von ins Deutsche übersetzten Sachtexten im weitesten Sinne aus dem Zeitraum 1450–1850.
+> Das DFG-geförderte Projekt hat die Erstellung einer online zugänglichen Übersetzungsbibliographie frühneuzeitlicher nichtfiktionaler Texte zum Ziel, mit anderen Worten die Sammlung von ins Deutsche übersetzten Sachtexten im weitesten Sinne aus dem Zeitraum 1450–1850. 
 >
 > Neben der Entwicklung einer entsprechenden technischen Infrastruktur geht es primär um die Zusammenstellung der Datensätze: Es soll eine Sammlung zu Übersetzungen aus dem Englischen sowie dem Niederländischen ins Deutsche erstellt werden. Die Thematik der zu erfassenden Texte reicht dabei – unter Ausschluss der schönen Literatur – von Naturwissenschaft, Medizin und Technik über historische Schriften und Reiseberichte bis hin zu theologischen Abhandlungen. Darüber hinaus werden die Daten aus zwei ebenfalls DFG-geförderten Vorgängerbibliographien zur romanisch-deutschen sowie zur lateinisch-deutschen Übersetzung in der Frühen Neuzeit übernommen („Saarbrücker Übersetzungsbibliographie“ sowie „Saarbrücker Übersetzungsbibliographie – Latein“).
 >
