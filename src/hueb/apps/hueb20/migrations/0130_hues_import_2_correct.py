@@ -144,7 +144,7 @@ def load_hues_docs(apps, schema_editor):
                 if (
                     len(translators) > 0
                     and translators[0]
-                    and translators[0] is not "?"
+                    and translators[0] != "?"
                 ):
                     doc = (
                         Document.objects.filter(app="HUES")
@@ -153,7 +153,7 @@ def load_hues_docs(apps, schema_editor):
                     )
                     doc.main_author = (
                         Person.objects.filter(
-                            name=sorted([t for t in translators if t and t is not "?"])[
+                            name=sorted([t for t in translators if t and t != "?"])[
                                 0
                             ]
                         )
@@ -294,7 +294,7 @@ def load_hues_docs(apps, schema_editor):
                 if (
                     len(authors_org) > 0
                     and authors_org[0]
-                    and authors_org[0] is not "?"
+                    and authors_org[0] != "?"
                 ):
                     doc = (
                         Document.objects.filter(language=language_org_obj)
@@ -303,7 +303,7 @@ def load_hues_docs(apps, schema_editor):
                     )
                     doc.main_author = (
                         Person.objects.filter(
-                            name=sorted([t for t in authors_org if t and t is not "?"])[
+                            name=sorted([t for t in authors_org if t and t != "?"])[
                                 0
                             ]
                         )
@@ -388,13 +388,13 @@ def load_hues_docs(apps, schema_editor):
                     if (
                         len(authors_inter) > 0
                         and authors_inter[0]
-                        and authors_inter[0] is not "?"
+                        and authors_inter[0] != "?"
                     ):
                         doc = Document.objects.filter(app="HUES").get(title=title_inter)
                         doc.main_author = (
                             Person.objects.filter(
                                 name=sorted(
-                                    [t for t in authors_inter if t and t is not "?"]
+                                    [t for t in authors_inter if t and t != "?"]
                                 )[0]
                             )
                             .all()
@@ -407,7 +407,6 @@ def load_hues_docs(apps, schema_editor):
                         .filter(app="HUES")
                         .get(title=title_org)
                     )
-                    print(translation)
                     hues_translation = (
                         Document.objects.filter(language=language_trans_obj)
                         .filter(app="HUES")
