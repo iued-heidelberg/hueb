@@ -141,11 +141,7 @@ def load_hues_docs(apps, schema_editor):
                                     .get(title=translation)
                                 )
                                 new_contribution.save()
-                if (
-                    len(translators) > 0
-                    and translators[0]
-                    and translators[0] != "?"
-                ):
+                if len(translators) > 0 and translators[0] and translators[0] != "?":
                     doc = (
                         Document.objects.filter(app="HUES")
                         .filter(language=language_trans_obj)
@@ -153,9 +149,7 @@ def load_hues_docs(apps, schema_editor):
                     )
                     doc.main_author = (
                         Person.objects.filter(
-                            name=sorted([t for t in translators if t and t != "?"])[
-                                0
-                            ]
+                            name=sorted([t for t in translators if t and t != "?"])[0]
                         )
                         .all()
                         .first()
@@ -291,11 +285,7 @@ def load_hues_docs(apps, schema_editor):
                                     .get(title=title_org)
                                 )
                                 new_contribution.save()
-                if (
-                    len(authors_org) > 0
-                    and authors_org[0]
-                    and authors_org[0] != "?"
-                ):
+                if len(authors_org) > 0 and authors_org[0] and authors_org[0] != "?":
                     doc = (
                         Document.objects.filter(language=language_org_obj)
                         .filter(app="HUES")
@@ -303,9 +293,7 @@ def load_hues_docs(apps, schema_editor):
                     )
                     doc.main_author = (
                         Person.objects.filter(
-                            name=sorted([t for t in authors_org if t and t != "?"])[
-                                0
-                            ]
+                            name=sorted([t for t in authors_org if t and t != "?"])[0]
                         )
                         .all()
                         .first()
