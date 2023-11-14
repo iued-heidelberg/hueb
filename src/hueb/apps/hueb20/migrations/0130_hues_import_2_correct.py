@@ -151,9 +151,15 @@ def load_hues_docs(apps, schema_editor):
                         .filter(language=language_trans_obj)
                         .get(title=translation)
                     )
-                    doc.main_author = Person.objects.filter(
-                        name=sorted([t for t in translators if t and t is not "?"])[0]
-                    ).all().first()
+                    doc.main_author = (
+                        Person.objects.filter(
+                            name=sorted([t for t in translators if t and t is not "?"])[
+                                0
+                            ]
+                        )
+                        .all()
+                        .first()
+                    )
                     doc.save()
 
                 for index in [1, 8, 9, 19, 20]:
@@ -295,9 +301,15 @@ def load_hues_docs(apps, schema_editor):
                         .filter(app="HUES")
                         .get(title=title_org)
                     )
-                    doc.main_author = Person.objects.filter(
-                        name=sorted([t for t in authors_org if t and t is not "?"])[0]
-                    ).all().first()
+                    doc.main_author = (
+                        Person.objects.filter(
+                            name=sorted([t for t in authors_org if t and t is not "?"])[
+                                0
+                            ]
+                        )
+                        .all()
+                        .first()
+                    )
                     doc.save()
 
                 # INTERMEDIARY
@@ -379,11 +391,15 @@ def load_hues_docs(apps, schema_editor):
                         and authors_inter[0] is not "?"
                     ):
                         doc = Document.objects.filter(app="HUES").get(title=title_inter)
-                        doc.main_author = Person.objects.filter(
-                            name=sorted(
-                                [t for t in authors_inter if t and t is not "?"]
-                            )[0]
-                        ).all().first()
+                        doc.main_author = (
+                            Person.objects.filter(
+                                name=sorted(
+                                    [t for t in authors_inter if t and t is not "?"]
+                                )[0]
+                            )
+                            .all()
+                            .first()
+                        )
                         doc.save()
                 else:
                     hues_original = (
