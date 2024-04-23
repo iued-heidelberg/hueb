@@ -14,8 +14,11 @@ from django.views.generic import ListView
 from hueb.apps.hueb20.models import DdcGerman
 from hueb.apps.hueb20.models.document import Document, DocumentRelationship
 from hueb.apps.hueb20.models.language import Language
+from hueb.apps.hueb20.models.comment import Comment
 from hueb.apps.hueb20.models.utils import HUEB_APPLICATIONS, timerange_serialization
 from hueb.apps.tenants.models import TENANT_APPS
+from django.contrib.postgres.search import TrigramSimilarity
+
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -52,6 +55,16 @@ class SearchForm(forms.Form):
     )
 
     search_text = forms.CharField(
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                "class": "flex p-2 mx-2 my-2 font-medium placeholder-black placeholder-opacity-25 bg-transparent border-b-4 border-black rounded-none appearance-none lg:placeholder-opacity-25 lg:border-sand-bg lg:placeholder-sand-bg",
+                "placeholder": _("Suchbegriff"),
+            }
+        ),
+    )
+
+    search_comment = forms.CharField(
         required=False,
         widget=forms.TextInput(
             attrs={
@@ -144,10 +157,12 @@ class BaseSearchFormSet(BaseFormSet):
         .prefetch_related("document_to__contribution_set__person")
         .select_related("document_to__ddc")
         .select_related("document_to__language")
+        .prefetch_related("document_to__document_comment")
         .prefetch_related("document_from__written_by")
         .prefetch_related("document_from__contribution_set__person")
         .select_related("document_from__ddc")
         .select_related("document_from__language")
+        .prefetch_related("document_from__document_comment")
     )
 
     def get_query_object(
@@ -155,15 +170,32 @@ class BaseSearchFormSet(BaseFormSet):
         types=[Document.ORIGINAL, Document.TRANSLATION, Document.BRIDGE],
         online_only=False,
     ):
+        base_queryset = self.base_queryset
+
         with beeline.tracer(name="building_search_query"):
             include_q_objects = Q()
             exclude_q_objects = Q()
 
-            logger.debug(self.cleaned_data)
-            logger.debug(self.cleaned_data)
             beeline.add_context_field("form_data", self.cleaned_data)
 
             for form in self:
+                if form.cleaned_data["attribute"] == "title":
+                    form.cleaned_data["fuzzy"] = False
+                    base_queryset = base_queryset.annotate(
+                        document_from_title_similarity=TrigramSimilarity(
+                            "document_from__title", form.cleaned_data["search_text"]
+                        ),
+                        document_to_title_similarity=TrigramSimilarity(
+                            "document_to__title", form.cleaned_data["search_text"]
+                        ),
+                        document_from_subtitle_similarity=TrigramSimilarity(
+                            "document_from__subtitle", form.cleaned_data["search_text"]
+                        ),
+                        document_to_subtitle_similarity=TrigramSimilarity(
+                            "document_to__subtitle", form.cleaned_data["search_text"]
+                        ),
+                    )
+
                 q = DocumentRelationship.get_q_object(form.cleaned_data, types)
                 operator = form.cleaned_data["operator"]
 
@@ -174,12 +206,10 @@ class BaseSearchFormSet(BaseFormSet):
                 elif operator == "not":
                     exclude_q_objects |= q
 
-            logger.debug(include_q_objects)
-            logger.debug(exclude_q_objects)
             beeline.add_context_field("include_q_objects", include_q_objects)
             beeline.add_context_field("exclude_q_objects", exclude_q_objects)
 
-            queryset = self.base_queryset.filter(include_q_objects).exclude(
+            queryset = base_queryset.filter(include_q_objects).exclude(
                 exclude_q_objects
             )
 
@@ -201,6 +231,15 @@ class BaseSearchFormSet(BaseFormSet):
         for form in self:
             data = form.cleaned_data
             if data["attribute"] == "title" and data["search_text"]:
+                if data["operator"] == "and" or data["operator"] == "or":
+                    search_texts.append(data["search_text"])
+        return search_texts
+
+    def get_comment_queries(self):
+        search_texts = []
+        for form in self:
+            data = form.cleaned_data
+            if data["attribute"] == "comment" and data["search_text"]:
                 if data["operator"] == "and" or data["operator"] == "or":
                     search_texts.append(data["search_text"])
         return search_texts
@@ -368,6 +407,7 @@ class Search(ListView):
             return super().get(request, *args, **kwargs)
 
     def export_to_csv(self, queryset):
+        # ADD COMMENT!
         queryset.select_related("document_from__cultural_circle").select_related(
             "document_to__cultural_circle"
         )

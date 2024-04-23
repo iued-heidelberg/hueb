@@ -243,6 +243,9 @@ class Document(Reviewable, TenantAwareModel):
     def get_filings(self):
         return self.filing_set.all().order_by("archive__name")
 
+    def get_comments(self):
+        return self.document_comment.all().order_by("created_at")
+
     def __init__(self, *args, **kwargs):
         super(Document, self).__init__(*args, **kwargs)
         self.__total__ = None
@@ -285,6 +288,7 @@ class Document(Reviewable, TenantAwareModel):
         ("year", _("Jahr")),
         ("language", _("Sprache")),
         ("app", _("Datenbank")),
+        ("comment", _("Kommentar")),
     )
 
     sortable_attributes = (
@@ -320,6 +324,8 @@ class Document(Reviewable, TenantAwareModel):
             return Document.q_object_by_type(query["search_language"])
         elif query["attribute"] == "app":
             return Document.q_object_by_app(query["search_database"])
+        elif query["attribute"] == "comment":
+            return Document.q_object_by_comment(query["search_text"])
         else:
             return Q()
 
@@ -344,6 +350,12 @@ class Document(Reviewable, TenantAwareModel):
     @classmethod
     def q_object_by_app(cls, value):
         return Q(app__icontains=value)
+
+    @classmethod
+    def q_object_by_comment(cls, value):
+        return Q(document_comment__text__icontains=value) & Q(
+            document_comment__external=True
+        )
 
     def get_docs_online_only(self, only_online: bool = True):
         if only_online:
@@ -384,7 +396,9 @@ class DocumentRelationship(Reviewable):
         Returns a Q object for the given query.
         """
         if query["attribute"] == "title":
-            return DocumentRelationship.q_object_by_title(query["search_text"], types)
+            return DocumentRelationship.q_object_by_title(
+                query["search_text"], types, fuzzy=query["fuzzy"]
+            )
         elif query["attribute"] == "author":
             return DocumentRelationship.q_object_by_author(query["search_text"], types)
         elif query["attribute"] == "ddc":
@@ -399,6 +413,8 @@ class DocumentRelationship(Reviewable):
             )
         elif query["attribute"] == "app":
             return DocumentRelationship.q_object_by_app(query["search_database"], types)
+        elif query["attribute"] == "comment":
+            return DocumentRelationship.q_object_by_comment(query["search_text"], types)
         else:
             return Q()
 
@@ -457,19 +473,30 @@ class DocumentRelationship(Reviewable):
         return Q(document_to__filing_set__archive="Online-Version")
 
     @classmethod
-    def q_object_by_title(cls, value, types):
+    def q_object_by_title(cls, value, types, fuzzy=False):
         """
         Returns a Q object for the given title and types.
         """
-        return (
-            Q(document_from__title__icontains=value)
-            | Q(document_from__subtitle__icontains=value)
-        ) & Q(document_from__title__icontains=value) & cls.get_types_q(types, True) | (
-            Q(document_to__title__icontains=value)
-            | Q(document_to__subtitle__icontains=value)
-        ) & cls.get_types_q(
-            types, False
-        )
+        if fuzzy:
+            return (
+                Q(document_from_title_similarity__gt=0.5)
+                | Q(document_from_subtitle_similarity__gt=0.5)
+            ) & cls.get_types_q(types, True) | (
+                Q(document_to_title_similarity__gt=0.5)
+                | Q(document_to_subtitle_similarity__gt=0.5)
+            ) & cls.get_types_q(
+                types, False
+            )
+        else:
+            return (
+                Q(document_from__title__icontains=value)
+                | Q(document_from__subtitle__icontains=value)
+            ) & cls.get_types_q(types, True) | (
+                Q(document_to__title__icontains=value)
+                | Q(document_to__subtitle__icontains=value)
+            ) & cls.get_types_q(
+                types, False
+            )
 
     @classmethod
     def q_object_by_author(cls, value, types):
@@ -544,6 +571,22 @@ class DocumentRelationship(Reviewable):
         return Q(document_from__app__icontains=value) & cls.get_types_q(
             types, True
         ) | Q(document_to__app__icontains=value) & cls.get_types_q(types, False)
+
+    @classmethod
+    def q_object_by_comment(cls, value, types):
+        """
+        Returns a Q object for the given comment and types.
+        """
+        print("value: ", value)
+        return Q(document_from__document_comment__text__icontains=value) & Q(
+            document_from__document_comment__external=True
+        ) & cls.get_types_q(types, True) | Q(
+            document_to__document_comment__text__icontains=value
+        ) & cls.get_types_q(
+            types, False
+        ) & Q(
+            document_to__document_comment__external=True
+        )
 
     def __init__(self, *args, **kwargs):
         """
