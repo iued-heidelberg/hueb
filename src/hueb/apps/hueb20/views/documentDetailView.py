@@ -44,42 +44,65 @@ class DocumentDetailView(DetailView):
                 document.title if document.title != "" else "-",
                 document.subtitle if document.subtitle != "" else "-",
                 document.edition if document.edition != "" else "-",
-                document.serialize_written_in()
-                if not document.serialize_written_in() is None
-                else "-",
-                document.get_language()
-                if document.get_language() != ""
-                else "-",  # ORIGINAL!
+                (
+                    document.serialize_written_in()
+                    if not document.serialize_written_in() is None
+                    else "-"
+                ),
+                (
+                    document.get_language() if document.get_language() != "" else "-"
+                ),  # ORIGINAL!
                 document.get_language() if document.get_language() != "" else "-",
-                document.get_cultural_circle()
-                if document.get_cultural_circle() != ""
-                else "-",
-                ", ".join(
-                    [
-                        author.person.name
-                        for author in document.get_original_attr("get_authors")
-                    ]
-                )
-                if document.get_original_attr("get_authors")
-                else "-",  # original authors repair!
-                ", ".join([authors.person.name for authors in document.get_authors()])
-                if document.get_authors().exists()
-                else "-",  # evtl Translators
-                ", ".join(
-                    [publishers.person.name for publishers in document.get_publishers()]
-                )
-                if document.get_publishers().exists()
-                else "-",
-                document.published_location
-                if document.published_location != ""
-                else "-",
+                (
+                    document.get_cultural_circle()
+                    if document.get_cultural_circle() != ""
+                    else "-"
+                ),
+                (
+                    ", ".join(
+                        [
+                            author.person.name
+                            for author in document.get_original_attr("get_authors")
+                        ]
+                    )
+                    if document.get_original_attr("get_authors")
+                    else "-"
+                ),  # original authors repair!
+                (
+                    ", ".join(
+                        [authors.person.name for authors in document.get_authors()]
+                    )
+                    if document.get_authors().exists()
+                    else "-"
+                ),  # evtl Translators
+                (
+                    ", ".join(
+                        [
+                            publishers.person.name
+                            for publishers in document.get_publishers()
+                        ]
+                    )
+                    if document.get_publishers().exists()
+                    else "-"
+                ),
+                (
+                    document.published_location
+                    if document.published_location != ""
+                    else "-"
+                ),
                 document.ddc if document.ddc != "" else "-",
-                ", ".join([filing.archive.name for filing in document.get_filings()])
-                if document.get_filings().exists()
-                else "-",
-                ", ".join([title for title in document.get_original_attr("title")])
-                if document.get_original_attr("title")
-                else "-",
+                (
+                    ", ".join(
+                        [filing.archive.name for filing in document.get_filings()]
+                    )
+                    if document.get_filings().exists()
+                    else "-"
+                ),
+                (
+                    ", ".join([title for title in document.get_original_attr("title")])
+                    if document.get_original_attr("title")
+                    else "-"
+                ),
             ]
         )
 

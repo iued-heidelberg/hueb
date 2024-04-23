@@ -213,9 +213,11 @@ class DocumentAdmin(ReviewAdmin, TenantAdmin):
     def get_publishers(self, obj):
         return "\n".join(
             [
-                str(contribution.person)
-                if contribution.contribution_type == Contribution.PUBLISHER
-                else ""
+                (
+                    str(contribution.person)
+                    if contribution.contribution_type == Contribution.PUBLISHER
+                    else ""
+                )
                 for contribution in obj.contribution_set.all()
             ]
         )
@@ -225,9 +227,11 @@ class DocumentAdmin(ReviewAdmin, TenantAdmin):
     def get_written_by(self, obj):
         return "\n".join(
             [
-                str(contribution.person)
-                if contribution.contribution_type == Contribution.WRITER
-                else ""
+                (
+                    str(contribution.person)
+                    if contribution.contribution_type == Contribution.WRITER
+                    else ""
+                )
                 for contribution in obj.contribution_set.all()
             ]
         )

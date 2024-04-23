@@ -76,12 +76,14 @@ class TenantAdminSite(AdminSite):
                 app_dict[app_label]["models"].append(model_dict)
             else:
                 app_dict[app_label] = {
-                    "name": apps.get_app_config(app_label).verbose_name
-                    if not (
-                        app_label == Hueb20Config.name.split(".")[-1]
-                        and tenantname_from_request(request)
-                    )
-                    else tenantname_from_request(request),
+                    "name": (
+                        apps.get_app_config(app_label).verbose_name
+                        if not (
+                            app_label == Hueb20Config.name.split(".")[-1]
+                            and tenantname_from_request(request)
+                        )
+                        else tenantname_from_request(request)
+                    ),
                     "app_label": app_label,
                     "app_url": reverse(
                         "admin:app_list",

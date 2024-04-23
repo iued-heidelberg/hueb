@@ -484,63 +484,84 @@ class Search(ListView):
                 else:
                     doc_to = [
                         # title
-                        title
-                        if (title := docs.document_to.title) != ""
-                        else "-",  # title
+                        (
+                            title if (title := docs.document_to.title) != "" else "-"
+                        ),  # title
                         # subtitle
-                        subtitle
-                        if (subtitle := docs.document_to.subtitle) != ""
-                        else "-",  # subtitle
+                        (
+                            subtitle
+                            if (subtitle := docs.document_to.subtitle) != ""
+                            else "-"
+                        ),  # subtitle
                         # Intermediary Translation
                         str(bool(docs.document_to.translations.exists())),
                         # Edition
-                        edition
-                        if (edition := docs.document_to.edition) != ""
-                        else "-",  # edition
+                        (
+                            edition
+                            if (edition := docs.document_to.edition) != ""
+                            else "-"
+                        ),  # edition
                         # translator
-                        ", ".join(authors.values_list("person__name", flat=True))
-                        if (authors := docs.document_to.get_authors()).exists()
-                        else "-",
+                        (
+                            ", ".join(authors.values_list("person__name", flat=True))
+                            if (authors := docs.document_to.get_authors()).exists()
+                            else "-"
+                        ),
                         # year
-                        year
-                        if not (year := docs.document_to.serialize_written_in()) is None
-                        else "-",
+                        (
+                            year
+                            if not (year := docs.document_to.serialize_written_in())
+                            is None
+                            else "-"
+                        ),
                         # publisher
-                        ", ".join(pubs.values_list("person__name", flat=True))
-                        if (pubs := docs.document_to.get_publishers()).exists()
-                        else "-",
+                        (
+                            ", ".join(pubs.values_list("person__name", flat=True))
+                            if (pubs := docs.document_to.get_publishers()).exists()
+                            else "-"
+                        ),
                         # place of publication
-                        location
-                        if (location := docs.document_to.published_location) != ""
-                        else "-",
+                        (
+                            location
+                            if (location := docs.document_to.published_location) != ""
+                            else "-"
+                        ),
                         # Location (ARCHIVES)
-                        ", ".join(
-                            filings.filter(archive__name__isnull=False).values_list(
-                                "archive__name", flat=True
+                        (
+                            ", ".join(
+                                filings.filter(archive__name__isnull=False).values_list(
+                                    "archive__name", flat=True
+                                )
                             )
-                        )
-                        if (filings := docs.document_to.filing_set).exists()
-                        else "-",
+                            if (filings := docs.document_to.filing_set).exists()
+                            else "-"
+                        ),
                         # Link
-                        archives.first().link
-                        if (
-                            archives := docs.document_to.filing_set.filter(
-                                archive__name="Online-Version"
-                            )
-                        ).exists()
-                        else "-",
+                        (
+                            archives.first().link
+                            if (
+                                archives := docs.document_to.filing_set.filter(
+                                    archive__name="Online-Version"
+                                )
+                            ).exists()
+                            else "-"
+                        ),
                         # language generally
-                        language
-                        if (language := docs.document_to.language) != ""
-                        else "-",
+                        (
+                            language
+                            if (language := docs.document_to.language) != ""
+                            else "-"
+                        ),
                         # language of original
                         lang if (lang := orig_lang) != "" else "-",
                         # ddc
                         ddc if (ddc := docs.document_to.ddc) != "" else "-",
                         # cultural circle
-                        circle
-                        if (circle := docs.document_to.get_cultural_circle()) != ""
-                        else "-",
+                        (
+                            circle
+                            if (circle := docs.document_to.get_cultural_circle()) != ""
+                            else "-"
+                        ),
                     ]
 
                 if not docs.document_from:
@@ -548,120 +569,169 @@ class Search(ListView):
                 else:
                     if not orig_is_bridge:
                         doc_from = [
-                            title
-                            if (title := docs.document_from.title) != ""
-                            else "-",  # title
+                            (
+                                title
+                                if (title := docs.document_from.title) != ""
+                                else "-"
+                            ),  # title
                             # Subtitle orig
-                            subtitle
-                            if (subtitle := docs.document_from.subtitle) != ""
-                            else "-",  # subtitle
+                            (
+                                subtitle
+                                if (subtitle := docs.document_from.subtitle) != ""
+                                else "-"
+                            ),  # subtitle
                             # authors
-                            ", ".join(authors.values_list("person__name", flat=True))
-                            if (authors := docs.document_from.get_authors()).exists()
-                            else "-",
+                            (
+                                ", ".join(
+                                    authors.values_list("person__name", flat=True)
+                                )
+                                if (
+                                    authors := docs.document_from.get_authors()
+                                ).exists()
+                                else "-"
+                            ),
                             # edition
-                            edition
-                            if (edition := docs.document_from.edition) != ""
-                            else "-",
+                            (
+                                edition
+                                if (edition := docs.document_from.edition) != ""
+                                else "-"
+                            ),
                             # year
-                            year
-                            if not (year := docs.document_from.serialize_written_in())
-                            is None
-                            else "-",
+                            (
+                                year
+                                if not (
+                                    year := docs.document_from.serialize_written_in()
+                                )
+                                is None
+                                else "-"
+                            ),
                             # publisher
-                            ", ".join(pubs.values_list("person__name", flat=True))
-                            if (pubs := docs.document_from.get_publishers()).exists()
-                            else "-",
+                            (
+                                ", ".join(pubs.values_list("person__name", flat=True))
+                                if (
+                                    pubs := docs.document_from.get_publishers()
+                                ).exists()
+                                else "-"
+                            ),
                             # published location
-                            location
-                            if (location := docs.document_from.published_location) != ""
-                            else "-",
+                            (
+                                location
+                                if (location := docs.document_from.published_location)
+                                != ""
+                                else "-"
+                            ),
                             # Location (ARCHIVES)
-                            ", ".join(
-                                filings.filter(archive__name__isnull=False).values_list(
-                                    "archive__name", flat=True
+                            (
+                                ", ".join(
+                                    filings.filter(
+                                        archive__name__isnull=False
+                                    ).values_list("archive__name", flat=True)
                                 )
-                            )
-                            if (filings := docs.document_from.filing_set).exists()
-                            else "-",
+                                if (filings := docs.document_from.filing_set).exists()
+                                else "-"
+                            ),
                             # Link
-                            archives.first().link
-                            if (
-                                archives := docs.document_from.filing_set.filter(
-                                    archive__name="Online-Version"
-                                )
-                            ).exists()
-                            else "-",
+                            (
+                                archives.first().link
+                                if (
+                                    archives := docs.document_from.filing_set.filter(
+                                        archive__name="Online-Version"
+                                    )
+                                ).exists()
+                                else "-"
+                            ),
                         ]
 
                     else:
                         doc_from = [
                             # title orig
-                            ", ".join(titles)
-                            if (
-                                titles := docs.document_from.originals.values_list(
-                                    "title", flat=True
+                            (
+                                ", ".join(titles)
+                                if (
+                                    titles := docs.document_from.originals.values_list(
+                                        "title", flat=True
+                                    )
                                 )
-                            )
-                            else "-",
+                                else "-"
+                            ),
                             # Subtitle orig
-                            ", ".join(subtitles)
-                            if (
-                                subtitles := docs.document_from.originals.values_list(
-                                    "subtitle", flat=True
+                            (
+                                ", ".join(subtitles)
+                                if (
+                                    subtitles := docs.document_from.originals.values_list(
+                                        "subtitle", flat=True
+                                    )
                                 )
-                            )
-                            != ""
-                            else "-",
+                                != ""
+                                else "-"
+                            ),
                             # authors
-                            ", ".join(authors.values_list("person__name", flat=True))
-                            if (
-                                authors := docs.document_from.originals.first().get_authors()
-                            ).exists()
-                            else "-",
+                            (
+                                ", ".join(
+                                    authors.values_list("person__name", flat=True)
+                                )
+                                if (
+                                    authors := docs.document_from.originals.first().get_authors()
+                                ).exists()
+                                else "-"
+                            ),
                             # edition
-                            edition
-                            if (edition := docs.document_from.originals.first().edition)
-                            != ""
-                            else "-",  # edition
+                            (
+                                edition
+                                if (
+                                    edition := docs.document_from.originals.first().edition
+                                )
+                                != ""
+                                else "-"
+                            ),  # edition
                             # year
-                            timerange_serialization(year)
-                            if not (
-                                year := docs.document_from.originals.first().written_in
-                            )
-                            is None
-                            else "-",
+                            (
+                                timerange_serialization(year)
+                                if not (
+                                    year := docs.document_from.originals.first().written_in
+                                )
+                                is None
+                                else "-"
+                            ),
                             # publisher
-                            ", ".join(pubs.values_list("person__name", flat=True))
-                            if (
-                                pubs := docs.document_from.originals.first().get_publishers()
-                            ).exists()
-                            else "-",
+                            (
+                                ", ".join(pubs.values_list("person__name", flat=True))
+                                if (
+                                    pubs := docs.document_from.originals.first().get_publishers()
+                                ).exists()
+                                else "-"
+                            ),
                             # published location
-                            location
-                            if (
-                                location := docs.document_from.originals.first().published_location
-                            )
-                            != ""
-                            else "-",
+                            (
+                                location
+                                if (
+                                    location := docs.document_from.originals.first().published_location
+                                )
+                                != ""
+                                else "-"
+                            ),
                             # Location (ARCHIVES)
-                            ", ".join(
-                                filings.filter(archive__name__isnull=False).values_list(
-                                    "archive__name", flat=True
+                            (
+                                ", ".join(
+                                    filings.filter(
+                                        archive__name__isnull=False
+                                    ).values_list("archive__name", flat=True)
                                 )
-                            )
-                            if (
-                                filings := docs.document_from.originals.first().get_filings()
-                            ).exists()
-                            else "-",
+                                if (
+                                    filings := docs.document_from.originals.first().get_filings()
+                                ).exists()
+                                else "-"
+                            ),
                             # Link
-                            archives.first().link
-                            if (
-                                archives := docs.document_from.originals.first().filing_set.filter(
-                                    archive__name="Online-Version"
-                                )
-                            ).exists()
-                            else "-",
+                            (
+                                archives.first().link
+                                if (
+                                    archives := docs.document_from.originals.first().filing_set.filter(
+                                        archive__name="Online-Version"
+                                    )
+                                ).exists()
+                                else "-"
+                            ),
                         ]
 
                 yield doc_to + doc_from
