@@ -62,7 +62,7 @@
 
 - name: stop application
   become: yes
-  command: docker-compose stop hueb
+  command: docker compose stop hueb
   args:
     chdir: "{{ docker_directory }}"
 
@@ -79,6 +79,6 @@
 
 - name: restart application
   become: yes
-  command: docker-compose start hueb
+  command: docker compose start hueb
   args:
     chdir: "{{ docker_directory }}"

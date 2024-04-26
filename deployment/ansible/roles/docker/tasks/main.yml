@@ -68,7 +68,7 @@
 - name: Install docker-compose
   remote_user: ubuntu
   get_url:
-    url: https://github.com/docker/compose/releases/download/1.27.4/docker-compose-Linux-x86_64
+    url: https://github.com/docker/compose/releases/download/v2.26.1/docker-compose-linux-x86_64
     dest: /usr/local/bin/docker-compose
     mode: "770"
     group: docker
@@ -109,13 +109,13 @@
 
 - name: Pull containers
   become: yes
-  command: docker-compose pull
+  command: docker compose pull
   args:
     chdir: "{{ docker_directory }}"
 
-- name: Bring docker-compose up
+- name: Bring docker compose up
   become: yes
-  command: docker-compose up -d --force-recreate
+  command: docker compose up -d --force-recreate
   args:
     chdir: "{{ docker_directory }}"
 
