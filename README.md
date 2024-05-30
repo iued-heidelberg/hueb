@@ -128,7 +128,7 @@ Currently we have two different servers hosted in the [heiCLOUD](https://heiclou
 
 On both servers, the backups are located on `/db_dump/backup/*` and the repository in `/hueb`. Later one is only used to have all deployment scripts and configuration file (`/hueb/deployment/docker.env`) locally.
 
-### Components 
+### Components
 The applications consist out of three services, listed in the [docker_compose.yml](deployment/docker/docker-compose.yml):
 - `hueb` - the Django application running everything
 - `proxy` - the Nginx proxy handling SSL and proxying to `hueb`
