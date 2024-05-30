@@ -7,20 +7,21 @@ from psycopg2.extras import NumericRange
 
 
 def remove_old_translations(apps, schema_editor):
-    #remove translation-documents from HUES that are older than 1500
+    # remove translation-documents from HUES that are older than 1500
     HUES = "HUES"
     Document = apps.get_model("hueb20", "Document")
     DocumentRelationship = apps.get_model("hueb20", "DocumentRelationship")
     document_relationships = DocumentRelationship.objects.all()
     documents = Document.objects.filter(tenant__app=HUES).all()
-    #get only those that are in german
+    # get only those that are in german
     for document in documents:
         if document.originals.exists() and not document.translations.exists():
-            if document.written_in is not None and document.written_in.lower < 1500:                                
+            if document.written_in is not None and document.written_in.lower < 1500:
                 pairs = document_relationships.filter(document_to=document)
                 for pair in pairs:
                     pair.delete()
                 document.delete()
+
 
 def reverse(apps, schema_editor):
     pass
