@@ -19,7 +19,8 @@ def remove_old_translations(apps, schema_editor):
             if document.written_in is not None and document.written_in.lower < 1500:
                 pairs = document_relationships.filter(document_to=document)
                 for pair in pairs:
-                    pair.delete()
+                    pair.document_to = None
+                    pair.save()
                 document.delete()
 
 
