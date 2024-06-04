@@ -48,7 +48,7 @@
 }
 </style>
 
-<div class="flex flex-auto min-w-full m-10" xmlns:max-width="http://www.w3.org/1999/xhtml">
+<div class="flex flex-auto min-w-full" xmlns:max-width="http://www.w3.org/1999/xhtml">
 
   <div class="min-w-full justify-between flex-auto w-2/5 p-6 bg-opacity-25 bg-sand-300 ">
     <dl>
@@ -352,7 +352,7 @@
         <dt><h2 class="text-xl font-thin lg:text-l">{% translate "Datenbank:" %}</h2></dt>
           <dd><p class="text-xl break-words lg:text-l">
             {% if object.get_app is not None and object.get_app != "" %}
-              {{ object.app }}
+              {{ object.get_app }}
             {% else %}
               -
             {% endif %}
