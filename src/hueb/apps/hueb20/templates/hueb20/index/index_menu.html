@@ -2,6 +2,31 @@
 {% load i18n %}
 {% load tags %}
 
+<style>
+
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+  .dropdown-content a:hover {background-color: #ddd;}
+  .dropdown:hover .dropdown-content {display: block;}
+  .dropdown:hover .dropbtn {background-color: #3e8e41;}
+</style>
+
 <nav
   class="absolute flex flex-row flex-wrap items-center justify-between flex-none w-full shadow-lg lg:flex-no-wrap lg:flex-none bg-sand-bg">
 
@@ -24,13 +49,28 @@
     <div class="flex flex-col justify-between ml-8 text-xl lg:flex-row lg:flex-no-wrap lg:text-lg">
       <div class="flex flex-col lg:flex-row">
         {% for menu_item in menu %}
-        <a class="font-bold border-b-4 m-4 p-2 border-transparent
-                    {% if menu_item.disabled %} opacity-50 cursor-default {% endif %}
-                    {% if not menu_item.disabled %} hover:border-black {% endif %}
-                    " href="{{menu_item.link}}" @click="hamburgerOpen = false">
-
-          {{menu_item.name}}
-        </a>
+          {% if menu_item.sub %}
+          <!-- Create dropdown on hover -->
+          <div class="dropdown">
+            <a class="font-bold border-b-4 m-4 p-2 border-transparent
+              {% if menu_item.disabled %} opacity-50 cursor-default {% endif %}
+              " href="{{menu_item.link}}" @click="hamburgerOpen = false" style="display: inline-block">
+              {{menu_item.name}}
+            </a>            
+            <div class="dropdown-content">
+              {% for sub_item in menu_item.sub %}
+              <a href="{{sub_item.link}}">{{sub_item.name}}</a>
+              {% endfor %}
+            </div>
+          </div>
+          {% else %}
+          <a class="font-bold border-b-4 m-4 p-2 border-transparent
+                      {% if menu_item.disabled %} opacity-50 cursor-default {% endif %}
+                      {% if not menu_item.disabled %} hover:border-black {% endif %}
+                      " href="{{menu_item.link}}" @click="hamburgerOpen = false">
+            {{menu_item.name}}
+          </a>
+          {% endif %}
         {% endfor %}
       </div>
 
@@ -52,13 +92,15 @@
               {% get_language_info_list for LANGUAGES as languages %}
               <div>
               {% for lang in languages %}
-                {% if not forloop.last %}
-                  <a href="/{{ lang.code }}/{{request.get_full_path|slice:"4:" }}">
-                    {{ lang.code }} |
+                {% if lang.code == LANGUAGE_CODE %}
+                  <a style="color: grey;">{{ lang.code }}</a>
                 {% else %}
                   <a href="/{{ lang.code }}/{{request.get_full_path|slice:"4:" }}">
                     {{ lang.code }}
                   </a>
+                {% endif %}                
+                {% if not forloop.last %}
+                  |   
                 {% endif %}
               {% endfor %}
               <div>

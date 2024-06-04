@@ -63,10 +63,11 @@
         <h3 class="lg:text-s font-thin">{{original.get_document_type}}</h3>
         {% if original.get_document_type in types %}
           <h1 class="text-2xl font-semibold lg:text-lg">{{original.title|default_if_none:"Titel unbekannt"|highlight_search:title_queries}}</h1>
+          <h2 class="font-normal text-1xl lg:text-base">{{original.subtitle|default_if_none:""|highlight_search:title_queries}}</h2>
         {% else %}
           <h1 class="text-2xl font-semibold lg:text-lg">{{original.title|default_if_none:"Titel unbekannt"}}</h1>
+          <h2 class="font-normal text-1xl lg:text-base">{{original.subtitle|default_if_none:""}}</h2>
         {% endif %}
-        <h2 class="font-normal text-1xl lg:text-base">{{original.subtitle|default_if_none:""}}</h2>
       </div>
 
       <div class="flex flex-col flex-wrap lg:flex-row">
@@ -211,10 +212,11 @@
         <h3 class="lg:text-s font-thin">{{bridge.get_document_type}}</h3>
         {% if bridge.get_document_type in types %}
           <h1 class="text-2xl font-semibold lg:text-lg">{{bridge.title|default_if_none:"Titel unbekannt"|highlight_search:title_queries}}</h1>
+          <h2 class="font-normal text-1xl lg:text-base">{{bridge.subtitle|default_if_none:""|highlight_search:title_queries}}</h2>
         {% else %}
           <h1 class="text-2xl font-semibold lg:text-lg">{{bridge.title|default_if_none:"Titel unbekannt"}}</h1>
+          <h2 class="font-normal text-1xl lg:text-base">{{bridge.subtitle|default_if_none:""}}</h2>
         {% endif %}
-        <h2 class="font-normal text-1xl lg:text-base">{{bridge.subtitle|default_if_none:""}}</h2>
       </div>
 
       <div class="flex flex-col flex-wrap lg:flex-row">
@@ -316,10 +318,11 @@
         <h3 class="lg:text-s font-thin">{{translation.get_document_type}}</h3>
         {% if translation.get_document_type in types %}
          <h1 class="text-2xl font-semibold lg:text-lg">{{translation.title|default_if_none:"Titel unbekannt"|highlight_search:title_queries}}</h1>
-        {% else %}
+         <h2 class="font-normal text-1xl lg:text-base">{{translation.subtitle|default_if_none:""|highlight_search:title_queries}}</h2>
+         {% else %}
          <h1 class="text-2xl font-semibold lg:text-lg">{{translation.title|default_if_none:"Titel unbekannt"}}</h1>
+         <h2 class="font-normal text-1xl lg:text-base">{{translation.subtitle|default_if_none:""}}</h2>
         {% endif %}
-        <h2 class="font-normal text-1xl lg:text-base">{{translation.subtitle|default_if_none:""}}</h2>
       </div>
 
       <div class="flex flex-col flex-wrap lg:flex-row">

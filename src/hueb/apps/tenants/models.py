@@ -6,6 +6,11 @@ TENANT_APPS = [
     ("HUES", "HUES"),
 ]
 
+TENANT_PREFIX_TO_COLOR = {
+    "gueb": "rgb(35 55 60 / 10%)",
+    "hues": "rgb(181 21 43 / 10%)",
+}
+
 
 class Tenant(models.Model):
     name = models.CharField(max_length=100)
@@ -16,6 +21,11 @@ class Tenant(models.Model):
         if self.name is None:
             return " "
         return self.name
+    
+    def get_verbose_name(self):
+        for app in TENANT_APPS:
+            if app[0] == self.app:
+                return app[1]
 
 
 class TenantAwareModel(models.Model):

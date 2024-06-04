@@ -3,6 +3,12 @@
 {% load i18n %}
 
 {% block content %}
-  {% include "hueb20/index/project_description.html"%}
+  {% if tenant == "gueb" %}
+    {% include "hueb20/index/project_description_gueb.html"%}
+  {% elif tenant == "hues" %}
+    {% include "hueb20/index/project_description_hues.html"%}
+  {% else%}
+    {% include "hueb20/index/project_description.html"%}
+  {% endif %}
 {% endblock %}
 

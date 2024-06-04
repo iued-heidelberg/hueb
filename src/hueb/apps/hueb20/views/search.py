@@ -16,7 +16,7 @@ from hueb.apps.hueb20.models.document import Document, DocumentRelationship
 from hueb.apps.hueb20.models.language import Language
 from hueb.apps.hueb20.models.comment import Comment
 from hueb.apps.hueb20.models.utils import HUEB_APPLICATIONS, timerange_serialization
-from hueb.apps.tenants.models import TENANT_APPS
+from hueb.apps.tenants.models import TENANT_APPS  # , TENANT_PREFIX_TO_COLOR
 from django.contrib.postgres.search import TrigramSimilarity
 
 
@@ -165,10 +165,31 @@ class BaseSearchFormSet(BaseFormSet):
         .prefetch_related("document_from__document_comment")
     )
 
+    def create_fuzzy_annotations(self, queryset):
+        for form in self:
+            if form.cleaned_data["attribute"] == "title":
+                queryset = queryset.annotate(
+                    document_from_title_similarity=TrigramSimilarity(
+                        "document_from__title", form.cleaned_data["search_text"]
+                    ),
+                    document_to_title_similarity=TrigramSimilarity(
+                        "document_to__title", form.cleaned_data["search_text"]
+                    ),
+                    document_from_subtitle_similarity=TrigramSimilarity(
+                        "document_from__subtitle", form.cleaned_data["search_text"]
+                    ),
+                    document_to_subtitle_similarity=TrigramSimilarity(
+                        "document_to__subtitle", form.cleaned_data["search_text"]
+                    ),
+                )
+
+        return queryset
+
     def get_query_object(
         self,
         types=[Document.ORIGINAL, Document.TRANSLATION, Document.BRIDGE],
         online_only=False,
+        fuzzy=False,
     ):
         base_queryset = self.base_queryset
 
@@ -178,24 +199,11 @@ class BaseSearchFormSet(BaseFormSet):
 
             beeline.add_context_field("form_data", self.cleaned_data)
 
-            for form in self:
-                if form.cleaned_data["attribute"] == "title":
-                    form.cleaned_data["fuzzy"] = False
-                    base_queryset = base_queryset.annotate(
-                        document_from_title_similarity=TrigramSimilarity(
-                            "document_from__title", form.cleaned_data["search_text"]
-                        ),
-                        document_to_title_similarity=TrigramSimilarity(
-                            "document_to__title", form.cleaned_data["search_text"]
-                        ),
-                        document_from_subtitle_similarity=TrigramSimilarity(
-                            "document_from__subtitle", form.cleaned_data["search_text"]
-                        ),
-                        document_to_subtitle_similarity=TrigramSimilarity(
-                            "document_to__subtitle", form.cleaned_data["search_text"]
-                        ),
-                    )
+            if fuzzy:
+                base_queryset = self.create_fuzzy_annotations(base_queryset)
 
+            for form in self:
+                form.cleaned_data["fuzzy"] = fuzzy
                 q = DocumentRelationship.get_q_object(form.cleaned_data, types)
                 operator = form.cleaned_data["operator"]
 
@@ -311,13 +319,12 @@ class Search(ListView):
         formset = self.SearchFormset(data=self.request.GET)
         sortform = SortForm(data=self.request.GET)
         typeform = TypeForm(data=self.request.GET)
+        fuzzy = "fuzzy" in self.request.GET
 
         if formset.is_valid() and typeform.is_valid():
             types = typeform.cleaned_data["type"]
             online_only = typeform.cleaned_data["online_only"]
-            queryset = formset.get_query_object(types, online_only)
-            print(len(queryset))
-            print(queryset.count())
+            queryset = formset.get_query_object(types, online_only, fuzzy)
             if sortform.is_valid():
                 orderDir, documentType, orderBy = sortform.get_order_by()
                 if orderDir == "asc":
@@ -394,6 +401,8 @@ class Search(ListView):
             context["title_queries"] = formset.get_title_queries()
         else:
             context["title_queries"] = []
+
+        # context["tenant_colors"] = TENANT_PREFIX_TO_COLOR
 
         return context
 

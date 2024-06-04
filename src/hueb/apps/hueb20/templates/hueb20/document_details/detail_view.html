@@ -1,20 +1,28 @@
 {% extends 'hueb20/__base.html' %}
 {% load i18n %}
+{% load static %}
 
 {% block content %}
 {% if True %}
   <div class="flex-col w-full lg:flex-row" style="width: 100%">
     <div class="flex-col w-full lg:flex-row">
-
-      <div class="flex-col pt-8">
-        <h1 class="mx-8 mt-32 text-4xl font-thin lg:text-xl md:mt-0" style="margin-left:5%;">
-          {% translate "DETAILS ZUM DOKUMENT:" %}
-        </h1>
-
-      <div class="min-w-full">
-        {% include "hueb20/document_details/document_details.html" %}
+      <div>
+        <div class="flex flex-row flex-no-wrap items-center mx-8 lg:mx-12" style="margin-left: 5rem; margin-top: 3rem">
+          {% if object.app == "HUEB20" %}
+          <img class="object-contain" style="height: 4rem" src="{% static 'hueb20/img/logo.png' %}" alt="Logo">
+          <div class="pr-4 lg:py-2 lg:pr-6" style="margin-left: 2rem; ">
+            <h1 class="text-xl font-light leading-snug lg:text-2xl">
+              <span class="font-bold">H</span>eidelberger
+              <span class="font-bold">Ü</span>bersetzungs
+              <span class="font-bold">B</span>ibliographie
+            </h1>
+          </div>
+          {% endif %}
+        </div>
+        <div class="min-w-full">
+          {% include "hueb20/document_details/document_details.html" %}
+        </div>
       </div>
-    </div>
     </div>
 
     <div class="justify-end pt-8 text-5xl border-black lg:min-h-full lg:text-sand-bg lg:flex-shrink-0 lg:p-8 lg:text-base lg:bg-gray-bg lg:border-sand-bg">

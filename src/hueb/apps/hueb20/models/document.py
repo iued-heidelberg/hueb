@@ -479,11 +479,11 @@ class DocumentRelationship(Reviewable):
         """
         if fuzzy:
             return (
-                Q(document_from_title_similarity__gt=0.5)
-                | Q(document_from_subtitle_similarity__gt=0.5)
+                Q(document_from_title_similarity__gt=0.4)
+                | Q(document_from_subtitle_similarity__gt=0.4)
             ) & cls.get_types_q(types, True) | (
-                Q(document_to_title_similarity__gt=0.5)
-                | Q(document_to_subtitle_similarity__gt=0.5)
+                Q(document_to_title_similarity__gt=0.4)
+                | Q(document_to_subtitle_similarity__gt=0.4)
             ) & cls.get_types_q(
                 types, False
             )
@@ -577,7 +577,6 @@ class DocumentRelationship(Reviewable):
         """
         Returns a Q object for the given comment and types.
         """
-        print("value: ", value)
         return Q(document_from__document_comment__text__icontains=value) & Q(
             document_from__document_comment__external=True
         ) & cls.get_types_q(types, True) | Q(

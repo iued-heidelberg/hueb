@@ -348,7 +348,16 @@
               {% endfor %}
             </p></dd>
         {% endif %}
-
+        
+        <dt><h2 class="text-xl font-thin lg:text-l">{% translate "Datenbank:" %}</h2></dt>
+          <dd><p class="text-xl break-words lg:text-l">
+            {% if object.get_app is not None and object.get_app != "" %}
+              {{ object.app }}
+            {% else %}
+              -
+            {% endif %}
+          </p></dd>
+        
         <dt><h2 class="text-xl font-thin lg:text-l">{% translate "Kommentare:" %}</h2></dt>
         {% if object.document_comment.exists %}
           <dd><p class="text-xl break-words lg:text-l">
