@@ -21,7 +21,7 @@ class Tenant(models.Model):
         if self.name is None:
             return " "
         return self.name
-    
+
     def get_verbose_name(self):
         for app in TENANT_APPS:
             if app[0] == self.app:

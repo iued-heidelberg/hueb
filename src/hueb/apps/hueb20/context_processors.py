@@ -2,6 +2,7 @@ from django.utils.translation import gettext_lazy as _
 from django.utils.translation import get_language
 from hueb.apps.tenants.models import Tenant, TENANT_APPS
 
+
 def menu(request):
     menu = []
 
@@ -10,12 +11,17 @@ def menu(request):
     tenants = Tenant.objects.all()
     absolute_uri = request.build_absolute_uri()
     name_and_link = [
-                        {
-                            "name": tenant.get_verbose_name(), 
-                            "link": absolute_uri.replace(host, tenant.subdomain_prefix + "." + default_host)
-                        } for tenant in tenants
-                    ] + [{"name":"HÜB", "link": absolute_uri.replace(host, default_host)}]
-    menu.append({"name": _("Projekt"), "link": "/", "disabled": False, "sub": name_and_link})
+        {
+            "name": tenant.get_verbose_name(),
+            "link": absolute_uri.replace(
+                host, tenant.subdomain_prefix + "." + default_host
+            ),
+        }
+        for tenant in tenants
+    ] + [{"name": "HÜB", "link": absolute_uri.replace(host, default_host)}]
+    menu.append(
+        {"name": _("Projekt"), "link": "/", "disabled": False, "sub": name_and_link}
+    )
 
     menu.append(
         {

@@ -31,6 +31,7 @@ def param_replace(context, **kwargs):
         del d[k]
     return d.urlencode()
 
+
 @register.filter
-def keyvalue(dict, key):    
+def keyvalue(dict, key):
     return dict[key]
