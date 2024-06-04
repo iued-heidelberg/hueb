@@ -6,6 +6,8 @@ TENANT_APPS = [
     ("HUES", "HUES"),
 ]
 
+TENANT_APPS_TO_PREFIX = {"GÜB-FR": "gueb", "HUES": "hues"}
+
 TENANT_PREFIX_TO_COLOR = {
     "gueb": "rgb(35 55 60 / 10%)",
     "hues": "rgb(181 21 43 / 10%)",
