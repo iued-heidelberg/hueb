@@ -4,7 +4,7 @@ import logging
 import beeline
 from django import forms
 from django.contrib.auth.models import User
-from django.db.models import F, Q
+from django.db.models import F, Q, BooleanField
 from django.forms.formsets import BaseFormSet, formset_factory
 from django.http import StreamingHttpResponse
 from django.shortcuts import redirect
@@ -17,15 +17,26 @@ from hueb.apps.hueb20.models.language import Language
 from hueb.apps.hueb20.models.comment import Comment
 from hueb.apps.hueb20.models.utils import HUEB_APPLICATIONS, timerange_serialization
 from hueb.apps.tenants.models import TENANT_APPS  # , TENANT_PREFIX_TO_COLOR
-from django.contrib.postgres.search import TrigramSimilarity
+from django.contrib.postgres.search import (
+    TrigramBase,
+    TrigramSimilarity,
+    TrigramDistance,
+)
 
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 
 
+class TrigramWordSimilarity(TrigramBase):
+    output_field = BooleanField()
+    function = ""
+    arg_joiner = " %%> "
+
+
 class TypeCheckboxWidget(forms.widgets.CheckboxSelectMultiple):
     template_name = "hueb20/search/widgets/checkbox.html"
+    option_template_name = "hueb20/search/widgets/checkbox_centered_option.html"
 
 
 class SearchSelectWidget(forms.widgets.Select):
@@ -169,16 +180,16 @@ class BaseSearchFormSet(BaseFormSet):
         for form in self:
             if form.cleaned_data["attribute"] == "title":
                 queryset = queryset.annotate(
-                    document_from_title_similarity=TrigramSimilarity(
+                    document_from_title_similarity=TrigramWordSimilarity(
                         "document_from__title", form.cleaned_data["search_text"]
                     ),
-                    document_to_title_similarity=TrigramSimilarity(
+                    document_to_title_similarity=TrigramWordSimilarity(
                         "document_to__title", form.cleaned_data["search_text"]
                     ),
-                    document_from_subtitle_similarity=TrigramSimilarity(
+                    document_from_subtitle_similarity=TrigramWordSimilarity(
                         "document_from__subtitle", form.cleaned_data["search_text"]
                     ),
-                    document_to_subtitle_similarity=TrigramSimilarity(
+                    document_to_subtitle_similarity=TrigramWordSimilarity(
                         "document_to__subtitle", form.cleaned_data["search_text"]
                     ),
                 )
@@ -299,6 +310,11 @@ class TypeForm(forms.Form):
         choices=((True, _("Online accessible documents only")),),
     )
 
+    fuzzy = forms.BooleanField(
+        required=False,
+        label=_("Fuzzy search"),
+    )
+
 
 class Search(ListView):
     template_name = "hueb20/search/search.html"
@@ -319,11 +335,11 @@ class Search(ListView):
         formset = self.SearchFormset(data=self.request.GET)
         sortform = SortForm(data=self.request.GET)
         typeform = TypeForm(data=self.request.GET)
-        fuzzy = "fuzzy" in self.request.GET
 
         if formset.is_valid() and typeform.is_valid():
             types = typeform.cleaned_data["type"]
             online_only = typeform.cleaned_data["online_only"]
+            fuzzy = typeform.cleaned_data["fuzzy"]
             queryset = formset.get_query_object(types, online_only, fuzzy)
             if sortform.is_valid():
                 orderDir, documentType, orderBy = sortform.get_order_by()

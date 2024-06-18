@@ -479,11 +479,11 @@ class DocumentRelationship(Reviewable):
         """
         if fuzzy:
             return (
-                Q(document_from_title_similarity__gt=0.4)
-                | Q(document_from_subtitle_similarity__gt=0.4)
+                Q(document_from_title_similarity=True)
+                | Q(document_from_subtitle_similarity=True)
             ) & cls.get_types_q(types, True) | (
-                Q(document_to_title_similarity__gt=0.4)
-                | Q(document_to_subtitle_similarity__gt=0.4)
+                Q(document_to_title_similarity=True)
+                | Q(document_to_subtitle_similarity=True)
             ) & cls.get_types_q(
                 types, False
             )
