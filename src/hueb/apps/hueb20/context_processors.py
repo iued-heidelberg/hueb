@@ -8,7 +8,7 @@ def menu(request):
 
     host = request.get_host()
 
-    has_subdomain = host.split(".")[0] in TENANT_APPS_TO_PREFIX.keys()
+    has_subdomain = host.split(".")[0] in TENANT_APPS_TO_PREFIX.values()
     if not has_subdomain:
         default_host = host
     else:
