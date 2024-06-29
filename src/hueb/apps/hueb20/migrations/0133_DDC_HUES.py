@@ -12,13 +12,14 @@ def add_DDC(apps, schema_editor):
     Document = apps.get_model("hueb20", "Document")
     DDC_Object = apps.get_model("hueb20", "DdcGerman")
     # get DDC 800
-    DDC_800 = DDC_Object.objects.get(ddc_number="800")
+    if DDC_Object.objects.filter(ddc_number="800").exists():
+        DDC_800 = DDC_Object.objects.get(ddc_number="800")
 
-    documents = Document.objects.filter(tenant__app=HUES).all()
-    for document in documents:
-        document.ddc = DDC_800
-        document.save()
-        print(f"DDC added to {document.title}")
+        documents = Document.objects.filter(tenant__app=HUES).all()
+        for document in documents:
+            document.ddc = DDC_800
+            document.save()
+            print(f"DDC added to {document.title}")
 
 
 def remove_DDC(apps, schema_editor):
