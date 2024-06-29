@@ -7,7 +7,13 @@ def menu(request):
     menu = []
 
     host = request.get_host()
-    default_host = ("." + host).split(".")[-1]
+
+    has_subdomain = host.split(".")[0] in TENANT_APPS_TO_PREFIX.keys()
+    if not has_subdomain:
+        default_host = host
+    else:
+        default_host = host.split(".", 1)[1]
+
     absolute_uri = request.build_absolute_uri()
     name_and_link = [
         {
