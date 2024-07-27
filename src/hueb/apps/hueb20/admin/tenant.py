@@ -1,6 +1,7 @@
 from django.contrib import admin
 from hueb.apps.tenants.admin_site import admin_site as admin_site_override
 from hueb.apps.tenants.utils import tenant_from_request, tenantname_from_request
+from hueb.apps.tenants.models import Tenant
 
 
 class TenantAdminReadOnly(admin.ModelAdmin):
@@ -29,6 +30,7 @@ class TenantAdminReadOnly(admin.ModelAdmin):
         super().save_model(request, obj, form, change)
 
 
+@admin.register(Tenant)
 class TenantAdmin(TenantAdminReadOnly):
     # change_list_template = "admin/change_list.html"
 
