@@ -20,7 +20,7 @@ class ArchiveAdmin(ReviewAdmin, TenantAdminReadOnly):
         "state",
     )
     list_filter = ("state", "app")
-    autocomplete_fields = ("country",)
+    # autocomplete_fields = ("country",)
     search_fields = ("name", "adress", "country__country")
 
     fieldsets = (

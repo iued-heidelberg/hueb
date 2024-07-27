@@ -26,10 +26,10 @@ class PersonAdmin(ReviewAdmin, TenantAdminReadOnly):
     )
     list_filter = ("state", "app")
     search_fields = ("name", "id", "lifetime_start", "lifetime_end")
-    autocomplete_fields = (
-        "alias",
-        "cultural_circle",
-    )
+    # autocomplete_fields = (
+    #    "alias",
+    #    "cultural_circle",
+    # )
     formfield_overrides = {IntegerRangeField: {"widget": TimeRangeWidget}}
     fieldsets = (
         (

@@ -17,7 +17,7 @@ class ContributionAdmin(ReviewAdmin, TenantAdmin):
     list_display = ("id", "person", "contribution_type", "document")
     list_filter = ("state", "app")
     search_fields = ("person__name", "contribution_type", "document__title")
-    autocomplete_fields = ("person", "document")
+    # autocomplete_fields = ("person", "document")
 
     fieldsets = (
         (
@@ -79,6 +79,6 @@ class ContributionInline(TabularInlineReviewAdmin):
     extra = 0
     verbose_name = "Contributions"
     verbose_name_plural = verbose_name
-    autocomplete_fields = ("person",)
+    # autocomplete_fields = ("person",)
     fields = ("person_id", "person", "contribution_type", "state")
     exclude = ("originalAuthor_ref", "translationTranslator_ref", "reviewed")

@@ -26,7 +26,7 @@ class TranslationRelationshipInline(TabularInlineReviewAdmin):
     extra = 0
     verbose_name = "Translation"
     verbose_name_plural = verbose_name + "s"
-    autocomplete_fields = ("document_to",)
+    # autocomplete_fields = ("document_to",)
     fields = (
         "document_to_id",
         "document_to",
@@ -42,7 +42,7 @@ class OriginalRelationshipInline(TabularInlineReviewAdmin):
     extra = 0
     verbose_name = "Original"
     verbose_name_plural = verbose_name + "s"
-    autocomplete_fields = ("document_from",)
+    # autocomplete_fields = ("document_from",)
     fields = (
         "document_from_id",
         "document_from",
@@ -57,12 +57,12 @@ class DocumentAdmin(ReviewAdmin, TenantAdmin):
 
     actions = ["duplicate", "validate_links"]
 
-    autocomplete_fields = (
-        "ddc",
-        "language",
-        "cultural_circle",
-        "main_author",
-    )
+    # autocomplete_fields = (
+    #    "ddc",
+    #    "language",
+    #    "cultural_circle",
+    #    "main_author",
+    # )
     readonly_fields = (
         "id",
         "app",

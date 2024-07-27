@@ -20,7 +20,7 @@ class FilingAdmin(ReviewAdmin, TenantAdmin):
     )
     list_filter = ("state", "app", "link_status")
     search_fields = ("signatur", "id")
-    autocomplete_fields = ("archive",)
+    # autocomplete_fields = ("archive",)
 
     fieldsets = (
         (
