@@ -79,7 +79,7 @@ class FilingInline(TabularInlineReviewAdmin):
     extra = 0
     verbose_name = "Filing Location"
     verbose_name_plural = verbose_name + "s"
-    autocomplete_fields = ("archive",)
+    # autocomplete_fields = ("archive",)
     fields = (
         "id",
         "archive",
