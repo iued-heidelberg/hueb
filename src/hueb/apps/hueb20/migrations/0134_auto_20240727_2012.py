@@ -6,18 +6,38 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('hueb20', '0133_DDC_HUES'),
+        ("hueb20", "0133_DDC_HUES"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='documentrelationship',
-            name='app',
-            field=models.CharField(choices=[('LATEIN', 'SÜB-Lat'), ('LIDOS', 'DFÜ-FR'), ('LEGACY', 'SÜB-Rom'), ('HUEB20', 'HÜB-EN-NL'), ('GUEBFR', 'GÜB-FR'), ('HUES', 'HUES')], max_length=6),
+            model_name="documentrelationship",
+            name="app",
+            field=models.CharField(
+                choices=[
+                    ("LATEIN", "SÜB-Lat"),
+                    ("LIDOS", "DFÜ-FR"),
+                    ("LEGACY", "SÜB-Rom"),
+                    ("HUEB20", "HÜB-EN-NL"),
+                    ("GUEBFR", "GÜB-FR"),
+                    ("HUES", "HUES"),
+                ],
+                max_length=6,
+            ),
         ),
         migrations.AlterField(
-            model_name='historicaldocumentrelationship',
-            name='app',
-            field=models.CharField(choices=[('LATEIN', 'SÜB-Lat'), ('LIDOS', 'DFÜ-FR'), ('LEGACY', 'SÜB-Rom'), ('HUEB20', 'HÜB-EN-NL'), ('GUEBFR', 'GÜB-FR'), ('HUES', 'HUES')], max_length=6),
+            model_name="historicaldocumentrelationship",
+            name="app",
+            field=models.CharField(
+                choices=[
+                    ("LATEIN", "SÜB-Lat"),
+                    ("LIDOS", "DFÜ-FR"),
+                    ("LEGACY", "SÜB-Rom"),
+                    ("HUEB20", "HÜB-EN-NL"),
+                    ("GUEBFR", "GÜB-FR"),
+                    ("HUES", "HUES"),
+                ],
+                max_length=6,
+            ),
         ),
     ]
