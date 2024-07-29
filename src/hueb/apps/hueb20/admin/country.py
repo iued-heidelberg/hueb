@@ -3,10 +3,11 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 from hueb.apps.hueb20.admin.review import ReviewAdmin
 from hueb.apps.hueb20.admin.tenant import TenantAdminReadOnly
+from hueb.apps.tenants.admin_site import admin_site
 from hueb.apps.hueb20.models import Country
 
 
-@admin.register(Country)
+@admin.register(Country, site=admin_site)
 class CountryAdmin(ReviewAdmin, TenantAdminReadOnly):
     readonly_fields = (
         "app",
