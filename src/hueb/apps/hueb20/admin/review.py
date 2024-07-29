@@ -3,8 +3,10 @@ from django.http import HttpResponseRedirect
 from django.utils.html import format_html
 from import_export.admin import ExportMixin
 from simple_history.admin import SimpleHistoryAdmin
+from hueb.apps.hueb20.models import Reviewable
 
 
+@admin.register(Reviewable)
 class ReviewAdmin(ExportMixin, SimpleHistoryAdmin):
     change_form_template = "admin/review_change_form.html"
 
