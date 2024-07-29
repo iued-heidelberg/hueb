@@ -6,11 +6,12 @@ from hueb.apps.hueb20.admin.review import ReviewAdmin
 from hueb.apps.hueb20.admin.tenant import TenantAdminReadOnly
 from hueb.apps.hueb20.models import Person
 from hueb.apps.hueb20.widgets.timerange import TimeRangeWidget
+from hueb.apps.tenants.admin_site import admin_site
 
 from .comment import CommentInline
 
 
-@admin.register(Person)
+@admin.register(Person, site=admin_site)
 class PersonAdmin(ReviewAdmin, TenantAdminReadOnly):
     readonly_fields = ("app", "author_link", "translator_link", "id")
     list_display = (
@@ -26,10 +27,10 @@ class PersonAdmin(ReviewAdmin, TenantAdminReadOnly):
     )
     list_filter = ("state", "app")
     search_fields = ("name", "id", "lifetime_start", "lifetime_end")
-    # autocomplete_fields = (
-    #    "alias",
-    #    "cultural_circle",
-    # )
+    autocomplete_fields = (
+        "alias",
+        "cultural_circle",
+    )
     formfield_overrides = {IntegerRangeField: {"widget": TimeRangeWidget}}
     fieldsets = (
         (

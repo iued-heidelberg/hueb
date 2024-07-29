@@ -4,9 +4,10 @@ from django.utils.safestring import mark_safe
 from hueb.apps.hueb20.admin.review import ReviewAdmin
 from hueb.apps.hueb20.admin.tenant import TenantAdminReadOnly
 from hueb.apps.hueb20.models import Archive
+from hueb.apps.tenants.admin_site import admin_site
 
 
-@admin.register(Archive)
+@admin.register(Archive, site=admin_site)
 class ArchiveAdmin(ReviewAdmin, TenantAdminReadOnly):
     readonly_fields = ("id", "app", "archive_link")
     list_display = (

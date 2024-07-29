@@ -4,9 +4,10 @@ from django.utils.safestring import mark_safe
 from hueb.apps.hueb20.admin.review import ReviewAdmin
 from hueb.apps.hueb20.models import DdcGerman
 from translated_fields import TranslatedFieldAdmin
+from hueb.apps.tenants.admin_site import admin_site
 
 
-@admin.register(DdcGerman)
+@admin.register(DdcGerman, site=admin_site)
 class DdcGermanAdmin(TranslatedFieldAdmin, ReviewAdmin):
     readonly_fields = ("app", "ddc_link", "id")
     list_display = ("id", "ddc_number", "ddc_name", "state")

@@ -3,6 +3,7 @@ from hueb.apps.hueb20.admin.tenant import TenantAdmin
 from hueb.apps.hueb20.models import Comment
 from import_export.admin import ExportMixin
 from simple_history.admin import SimpleHistoryAdmin
+from hueb.apps.tenants.admin_site import admin_site
 
 
 class CommentInline(admin.TabularInline):
@@ -20,7 +21,7 @@ class CommentInline(admin.TabularInline):
     verbose_name_plural = verbose_name + "s"
 
 
-@admin.register(Comment)
+@admin.register(Comment, site=admin_site)
 class CommentAdmin(ExportMixin, SimpleHistoryAdmin, TenantAdmin):
     model = Comment
     fields = (

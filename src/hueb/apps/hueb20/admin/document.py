@@ -14,6 +14,7 @@ from hueb.apps.hueb20.admin.tenant import TenantAdmin
 from hueb.apps.hueb20.models import Contribution, Document, Filing, Person
 from hueb.apps.hueb20.models.document import DocumentRelationship
 from hueb.apps.hueb20.widgets.timerange import TimeRangeWidget
+from hueb.apps.tenants.admin_site import admin_site
 
 from .comment import CommentInline
 from .filing import FilingInline
@@ -26,7 +27,7 @@ class TranslationRelationshipInline(TabularInlineReviewAdmin):
     extra = 0
     verbose_name = "Translation"
     verbose_name_plural = verbose_name + "s"
-    # autocomplete_fields = ("document_to",)
+    autocomplete_fields = ("document_to",)
     fields = (
         "document_to_id",
         "document_to",
@@ -42,7 +43,7 @@ class OriginalRelationshipInline(TabularInlineReviewAdmin):
     extra = 0
     verbose_name = "Original"
     verbose_name_plural = verbose_name + "s"
-    # autocomplete_fields = ("document_from",)
+    autocomplete_fields = ("document_from",)
     fields = (
         "document_from_id",
         "document_from",
@@ -51,18 +52,18 @@ class OriginalRelationshipInline(TabularInlineReviewAdmin):
     exclude = ["reviewed", "original_ref", "translation_ref"]
 
 
-@admin.register(Document)
+@admin.register(Document, site=admin_site)
 class DocumentAdmin(ReviewAdmin, TenantAdmin):
     change_form_template = "admin/document_change_form.html"
 
     actions = ["duplicate", "validate_links"]
 
-    # autocomplete_fields = (
-    #    "ddc",
-    #    "language",
-    #    "cultural_circle",
-    #    "main_author",
-    # )
+    autocomplete_fields = (
+        "ddc",
+        "language",
+        "cultural_circle",
+        "main_author",
+    )
     readonly_fields = (
         "id",
         "app",

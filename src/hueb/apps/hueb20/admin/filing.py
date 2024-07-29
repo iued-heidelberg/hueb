@@ -4,9 +4,10 @@ from django.utils.safestring import mark_safe
 from hueb.apps.hueb20.admin.review import ReviewAdmin, TabularInlineReviewAdmin
 from hueb.apps.hueb20.admin.tenant import TenantAdmin
 from hueb.apps.hueb20.models import Document, Filing
+from hueb.apps.tenants.admin_site import admin_site
 
 
-@admin.register(Filing)
+@admin.register(Filing, site=admin_site)
 class FilingAdmin(ReviewAdmin, TenantAdmin):
     readonly_fields = ("app", "locAssign_link", "id")
     list_display = (
@@ -20,7 +21,7 @@ class FilingAdmin(ReviewAdmin, TenantAdmin):
     )
     list_filter = ("state", "app", "link_status")
     search_fields = ("signatur", "id")
-    # autocomplete_fields = ("archive",)
+    autocomplete_fields = ("archive",)
 
     fieldsets = (
         (
@@ -79,7 +80,7 @@ class FilingInline(TabularInlineReviewAdmin):
     extra = 0
     verbose_name = "Filing Location"
     verbose_name_plural = verbose_name + "s"
-    # autocomplete_fields = ("archive",)
+    autocomplete_fields = ("archive",)
     fields = (
         "id",
         "archive",

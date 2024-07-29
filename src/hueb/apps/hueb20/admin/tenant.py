@@ -30,7 +30,6 @@ class TenantAdminReadOnly(admin.ModelAdmin):
         super().save_model(request, obj, form, change)
 
 
-@admin.register(Tenant)
 class TenantAdmin(TenantAdminReadOnly):
     # change_list_template = "admin/change_list.html"
 

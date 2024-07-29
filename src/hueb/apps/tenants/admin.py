@@ -4,6 +4,7 @@ from django.contrib.auth.models import Group, User
 from django.utils.translation import gettext_lazy as _
 from hueb.apps.tenants.models import TenantUser
 from hueb.apps.tenants.utils import tenant_from_request
+from hueb.apps.tenants.admin_site import admin_site
 
 
 class TenantUserInline(admin.StackedInline):
@@ -80,4 +81,4 @@ class UserAdmin(BaseUserAdmin):
 
 # Re-register UserAdmin
 admin.site.unregister(User)
-admin.site.register(User, UserAdmin)
+admin_site.register(User, UserAdmin)

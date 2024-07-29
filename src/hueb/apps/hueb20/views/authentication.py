@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView, LogoutView
 
-# from django.shortcuts import resolve_url
+from django.shortcuts import resolve_url
 
 
 class Login(LoginView):
@@ -14,8 +14,6 @@ class Login(LoginView):
         context["overlayOpen"] = True
         return context
 
-
-"""
     def get_success_url(self):
         # check if user has staff status
         if self.request.user.is_staff:
@@ -23,7 +21,6 @@ class Login(LoginView):
         else:
             # redirect to index page
             return resolve_url("Index")
-"""
 
 
 class Logout(LogoutView):

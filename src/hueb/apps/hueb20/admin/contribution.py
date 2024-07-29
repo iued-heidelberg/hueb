@@ -4,9 +4,10 @@ from django.utils.safestring import mark_safe
 from hueb.apps.hueb20.admin.review import ReviewAdmin, TabularInlineReviewAdmin
 from hueb.apps.hueb20.admin.tenant import TenantAdmin
 from hueb.apps.hueb20.models import Contribution, Document
+from hueb.apps.tenants.admin_site import admin_site
 
 
-@admin.register(Contribution)
+@admin.register(Contribution, site=admin_site)
 class ContributionAdmin(ReviewAdmin, TenantAdmin):
     readonly_fields = (
         "app",
@@ -17,7 +18,7 @@ class ContributionAdmin(ReviewAdmin, TenantAdmin):
     list_display = ("id", "person", "contribution_type", "document")
     list_filter = ("state", "app")
     search_fields = ("person__name", "contribution_type", "document__title")
-    # autocomplete_fields = ("person", "document")
+    autocomplete_fields = ("person", "document")
 
     fieldsets = (
         (
@@ -79,6 +80,6 @@ class ContributionInline(TabularInlineReviewAdmin):
     extra = 0
     verbose_name = "Contributions"
     verbose_name_plural = verbose_name
-    # autocomplete_fields = ("person",)
+    autocomplete_fields = ("person",)
     fields = ("person_id", "person", "contribution_type", "state")
     exclude = ("originalAuthor_ref", "translationTranslator_ref", "reviewed")

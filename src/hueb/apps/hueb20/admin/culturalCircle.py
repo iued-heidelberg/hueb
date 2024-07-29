@@ -5,11 +5,12 @@ from hueb.apps.hueb20.admin.review import ReviewAdmin
 from hueb.apps.hueb20.admin.tenant import TenantAdminReadOnly
 from hueb.apps.hueb20.models import CulturalCircle
 from translated_fields import TranslatedFieldAdmin
+from hueb.apps.tenants.admin_site import admin_site
 
 from .comment import CommentInline
 
 
-@admin.register(CulturalCircle)
+@admin.register(CulturalCircle, site=admin_site)
 class CulturalCircleAdmin(TranslatedFieldAdmin, ReviewAdmin, TenantAdminReadOnly):
     readonly_fields = ("app", "id", "cultural_circle_link")
     list_display = ("id", "name", "description", "start", "end", "state")
