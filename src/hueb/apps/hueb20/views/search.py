@@ -16,7 +16,11 @@ from hueb.apps.hueb20.models.document import Document, DocumentRelationship
 from hueb.apps.hueb20.models.language import Language
 from hueb.apps.hueb20.models.comment import Comment
 from hueb.apps.hueb20.models.utils import HUEB_APPLICATIONS, timerange_serialization
-from hueb.apps.tenants.models import TENANT_APPS  # , TENANT_PREFIX_TO_COLOR
+from hueb.apps.tenants.models import (
+    TENANT_APPS,
+    TENANT_PREFIX_TO_COLOR,
+    TENANT_PREFIX_TO_TITLE,
+)
 from django.contrib.postgres.search import (
     TrigramBase,
     TrigramSimilarity,
@@ -418,7 +422,8 @@ class Search(ListView):
         else:
             context["title_queries"] = []
 
-        # context["tenant_colors"] = TENANT_PREFIX_TO_COLOR
+        context["tenant_colors"] = TENANT_PREFIX_TO_COLOR
+        context["tenant_titles"] = TENANT_PREFIX_TO_TITLE
 
         return context
 

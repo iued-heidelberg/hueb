@@ -34,4 +34,4 @@ def param_replace(context, **kwargs):
 
 @register.filter
 def keyvalue(dict, key):
-    return dict[key]
+    return dict[key] if key in dict else ""

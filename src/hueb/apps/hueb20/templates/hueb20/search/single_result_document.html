@@ -30,12 +30,26 @@
   top: -5px;
   right: 105%;
 }
+.vertical{
+  transform: rotate(180deg);
+  writing-mode: vertical-lr;
+  text-align: center;
+  justify-content:center;
+  padding:5px 0px 5px 0px;
+}
 </style>
 
 <div class="flex flex-auto m-4 shadow-lg hover:shadow-xl">
+  <!--COLOR CODE-->
+  {% if original.tenant is not None %}
+  <div class="flex items-center vertical" style="background-color: {{ tenant_colors|keyvalue:original.tenant.subdomain_prefix }} ">
+    {{ tenant_titles|keyvalue:original.tenant.subdomain_prefix }}
+  </div>
+  {% endif %}
+
   <!--ORIGINAL LEFT SIDE-->
   {% if original is not None %}
-  <div class="flex flex-col justify-between flex-auto w-2/5 p-6 px-4 bg-opacity-25 bg-sand-300 "><!-- style="background-color: tenant_colors|keyvalue:original.tenant.subdomain_prefix "-->
+  <div class="flex flex-col justify-between flex-auto w-2/5 p-6 px-4 bg-opacity-25 bg-sand-300 ">
     <a href="{% url "documentDetailView" original.id %}">
       <div class="pb-2 ">
         <h3 class="lg:text-s font-thin">{{original.get_document_type}}</h3>

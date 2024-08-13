@@ -13,6 +13,11 @@ TENANT_PREFIX_TO_COLOR = {
     "hues": "rgb(181 21 43 / 10%)",
 }
 
+TENANT_PREFIX_TO_TITLE = {
+    "gueb": "Germersheimer Übersetzungsbiographie",
+    "hues": "HÜS - Übersetzungssemantiken",
+}
+
 
 class Tenant(models.Model):
     name = models.CharField(max_length=100)
