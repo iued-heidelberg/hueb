@@ -1,1 +1,1 @@
-find /backup* -mtime +90 -type f -delete
+find /db_dump/backup* -mtime +90 -type f -delete
