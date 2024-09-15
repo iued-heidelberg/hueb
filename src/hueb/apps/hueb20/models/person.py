@@ -28,7 +28,9 @@ class Person(Reviewable, TenantAwareModel):
     app = models.CharField(
         max_length=6, choices=HUEB_APPLICATIONS + TENANT_APPS, default=HUEB20
     )
-    # references to LATEIN
+    duplicates = models.ManyToManyField(
+        "self", symmetrical=True, related_name="duplicate_of", blank=True
+    )
     author_ref = models.OneToOneField(
         Legacy.AuthorNew, on_delete=models.DO_NOTHING, null=True, blank=True
     )
