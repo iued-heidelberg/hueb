@@ -16,11 +16,20 @@
         {{ form.search_text }}
     </div>
 
-    <div x-ref="search_year" x-cloak x-bind:hidden="!showYear()">
-        {{ form.search_year_from.errors }}
-        {{ form.search_year_from }}
-        {{ form.search_year_to.errors }}
-        {{ form.search_year_to }}
+    <div x-ref="search_year_mode" x-cloak x-bind:hidden="!showYear()">
+        {{ form.search_year_mode.errors }}
+        {{ form.search_year_mode }}
+    </div> 
+
+    <div x-ref="search_year" x-cloak x-bind:hidden="!showYear()">        
+        <div x-cloak x-bind:hidden="!showYear()">            
+            {{ form.search_year_from.errors }}
+            {{ form.search_year_from }}
+        </div>
+        <div x-cloak x-bind:hidden="!showYearRange()">            
+            {{ form.search_year_to.errors }}
+            {{ form.search_year_to }}
+        </div>
     </div>
 
     <div x-ref="search_ddc" x-cloak x-bind:hidden="!showDDC()">
@@ -48,6 +57,22 @@
                 showYear(){
                     return (this.attribute === "year")
                 },
+                showYearApprox(){
+                    return (this.attribute === "year")&&(this.search_year_mode === "approx")
+                },
+                showYearRange(){
+                    return (this.attribute === "year")&&(this.search_year_mode === "range")
+                },
+                editSearchYearPlaceHolders(){
+                    if (this.search_year_mode === "approx"){
+                        this.$refs.search_year.children[0].children[0].setAttribute("placeholder", "");
+                        this.$refs.search_year.children[1].children[0].setAttribute("placeholder", "");
+                    }
+                    if (this.search_year_mode === "range"){
+                        this.$refs.search_year.children[0].children[0].setAttribute("placeholder", this.search_year_placeholder[0]);
+                        this.$refs.search_year.children[1].children[0].setAttribute("placeholder", this.search_year_placeholder[1]);
+                    }
+                },
                 showDDC(){
                     return (this.attribute === "ddc")
                 },
@@ -58,14 +83,21 @@
                     return (this.attribute === "app")
                 },
                 update(){
+                    this.getYearSearchMode();
+                    this.editSearchYearPlaceHolders();
                     this.showText();
                     this.showDDC();
                     this.showYear();
+                    this.showYearApprox();
+                    this.showYearRange();
                     this.showLanguage();
                     this.showDatabase();
                 },
                 operator: null,
                 attribute: null,
+                search_year_mode: null,
+                search_year_placeholder: null,
+                
                 setSearchYear(search_year){
                     this.$refs.search_year.lastElementChild.value = search_year;
                 },
@@ -78,9 +110,22 @@
                 getAttribute(){
                     this.attribute = this.$refs.attribute.lastElementChild.children[0].value;
                 },
+                setYearSearchMode(search_mode){
+                   this.$refs.search_year_mode.lastElementChild.value = search_mode;                   
+                },
+                getYearSearchMode(){
+                    this.search_year_mode = this.$refs.search_year_mode.lastElementChild.children[0].value;
+                },
+                getInitialSearchYearPlaceholders(){
+                    from = this.$refs.search_year.children[0].children[0].getAttribute("placeholder");
+                    to = this.$refs.search_year.children[1].children[0].getAttribute("placeholder");
+                    this.search_year_placeholder = [from, to];
+                },
                 init(){
                     this.getOperator();
                     this.getAttribute();
+                    this.getYearSearchMode();
+                    this.getInitialSearchYearPlaceholders();
                 },
             }
         }

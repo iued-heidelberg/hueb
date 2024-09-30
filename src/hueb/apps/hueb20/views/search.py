@@ -89,6 +89,11 @@ class SearchForm(forms.Form):
         ),
     )
 
+    search_year_mode = forms.ChoiceField(
+        choices=(("range", _("Range")), ("approx", _("± 10 years"))),
+        widget=SearchSelectWidget,
+    )
+
     search_year_from = forms.IntegerField(
         required=False,
         widget=forms.NumberInput(
@@ -218,6 +223,14 @@ class BaseSearchFormSet(BaseFormSet):
                 base_queryset = self.create_fuzzy_annotations(base_queryset)
 
             for form in self:
+                if form.cleaned_data["search_year_mode"] == "approx":
+                    form.cleaned_data["search_year_to"] = (
+                        form.cleaned_data["search_year_from"] + 10
+                    )
+                    form.cleaned_data["search_year_from"] = (
+                        form.cleaned_data["search_year_from"] - 10
+                    )
+
                 form.cleaned_data["fuzzy"] = fuzzy
                 q = DocumentRelationship.get_q_object(form.cleaned_data, types)
                 operator = form.cleaned_data["operator"]
@@ -438,24 +451,26 @@ class Search(ListView):
 
     def export_to_csv(self, queryset):
         # ADD COMMENT!
-        queryset.select_related("document_from__cultural_circle").select_related(
-            "document_to__cultural_circle"
-        )
-        queryset.prefetch_related(
+        queryset = queryset.select_related(
+            "document_from__cultural_circle"
+        ).select_related("document_to__cultural_circle")
+        queryset = queryset.prefetch_related(
             "document_from__filing_set__archive"
         ).prefetch_related("document_to__filing_set__archive")
 
-        queryset.prefetch_related("document_to__translations")
+        queryset = queryset.prefetch_related("document_to__translations")
 
-        queryset.prefetch_related(
+        queryset = queryset.prefetch_related(
             "document_from__contribution_set__person__cultural_circle"
         ).prefetch_related("document_to__contribution_set__person__cultural_circle")
 
         # Fetch originals for bridge check
-        queryset.prefetch_related("document_from__originals")
-        queryset.select_related("document_to__language").select_related(
-            "document_from__language"
-        ).select_related("document_from__originals__language")
+        queryset = queryset.prefetch_related("document_from__originals")
+        queryset = (
+            queryset.select_related("document_to__language")
+            .select_related("document_from__language")
+            .prefetch_related("document_from__originals__language")
+        )
 
         def row_generator(queryset):
             yield [
