@@ -319,7 +319,7 @@ class TypeForm(forms.Form):
         ),
     )
 
-    online_only = forms.MultipleChoiceField(  # Easier than making booleanfield and adding custom widget for label
+    online_only = forms.MultipleChoiceField(  # Easier than making boolean field and adding custom widget for label
         required=False,
         widget=TypeCheckboxWidget(
             attrs={
