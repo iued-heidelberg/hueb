@@ -21,6 +21,7 @@ from hueb.apps.tenants.models import (
     TENANT_PREFIX_TO_COLOR,
     TENANT_PREFIX_TO_TITLE,
 )
+from hueb.apps.tenants.utils import tenant_from_request
 from django.contrib.postgres.search import (
     TrigramBase,
     TrigramSimilarity,
@@ -161,12 +162,6 @@ class SearchForm(forms.Form):
 
     search_database = forms.ChoiceField(
         choices=HUEB_APPLICATIONS + TENANT_APPS,
-        # choices=(
-        #    ("HUEB20", _("HUEB20")),
-        #    ("LATEIN", _("HUEBLATEIN")),
-        #    ("LEGACY", _("HUEBLEGACY")),
-        #    ("LIDOS", _("HUEBLIDOS")),
-        # ),
         widget=SearchSelectWidget,
     )
 
@@ -242,12 +237,19 @@ class BaseSearchFormSet(BaseFormSet):
                 elif operator == "not":
                     exclude_q_objects |= q
 
+            # This is necessary or the query breaks if only not operators are used. It's a bit of a hack, but it works.
+            include_q_objects &= DocumentRelationship.get_q_object(
+                {"attribute": "title", "search_text": "", "fuzzy": False}, types
+            )
+
             beeline.add_context_field("include_q_objects", include_q_objects)
             beeline.add_context_field("exclude_q_objects", exclude_q_objects)
 
-            queryset = base_queryset.filter(include_q_objects).exclude(
-                exclude_q_objects
-            )
+            queryset = base_queryset
+            if include_q_objects != Q():
+                queryset = queryset.filter(include_q_objects)
+            if exclude_q_objects != Q():
+                queryset = queryset.exclude(exclude_q_objects)
 
             if online_only:
                 queryset = queryset.filter(
@@ -406,10 +408,21 @@ class Search(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(Search, self).get_context_data(**kwargs)
+        # check if self.request.GET is empty
+        if not self.request.GET:
+            tenant = tenant_from_request(self.request)
+            app = tenant.app if tenant else "HUEB20"
+            formset = self.SearchFormset(
+                initial=[
+                    {"search_text": "", "attribute": "title"},
+                    {"search_database": app, "attribute": "app"},
+                ]
+            )
 
-        formset = self.SearchFormset(data=self.request.GET)
-        if not formset.is_valid():
-            formset = self.SearchFormset()
+        else:
+            formset = self.SearchFormset(data=self.request.GET)
+            if not formset.is_valid():
+                formset = self.SearchFormset()
 
         context["formset"] = formset
 
