@@ -240,7 +240,12 @@ class DocumentAdmin(ReviewAdmin, TenantAdmin):
     get_written_by.short_description = "Written by"
 
     def get_translations(self, obj):
-        return "\n".join([translation.title for translation in obj.translations.all()])
+        return "\n".join(
+            [
+                translation.title if translation.title else ""
+                for translation in obj.translations.all()
+            ]
+        )
 
     get_translations.short_description = "Translation"
 

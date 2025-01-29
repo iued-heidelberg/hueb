@@ -4,18 +4,21 @@ from django.db import models
 TENANT_APPS = [
     ("GUEBFR", "GÜB-FR"),
     ("HUES", "HUES"),
+    ("DUIES", "DUIES"),
 ]
 
-TENANT_APPS_TO_PREFIX = {"GÜB-FR": "gueb", "HUES": "hues"}
+TENANT_APPS_TO_PREFIX = {"GÜB-FR": "gueb", "HUES": "hues", "DUIES": "duies"}
 
 TENANT_PREFIX_TO_COLOR = {
     "gueb": "rgb(35 55 60 / 10%)",
     "hues": "rgb(181 21 43 / 10%)",
+    "duies": "rgb(0 0 0 / 10%)",
 }
 
 TENANT_PREFIX_TO_TITLE = {
     "gueb": "Germersheimer Übersetzungsbiographie",
     "hues": "HÜS - Übersetzungssemantiken",
+    "duies": "DUIES - Duisburg-Essen",
 }
 
 

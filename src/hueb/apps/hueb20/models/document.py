@@ -244,7 +244,7 @@ class Document(Reviewable, TenantAwareModel):
         return self.filing_set.all().order_by("archive__name")
 
     def get_comments(self):
-        return self.document_comment.all().order_by("created_at")
+        return self.document_comment.all()
 
     def __init__(self, *args, **kwargs):
         super(Document, self).__init__(*args, **kwargs)
@@ -488,15 +488,30 @@ class DocumentRelationship(Reviewable):
                 types, False
             )
         else:
-            return (
-                Q(document_from__title__icontains=value)
-                | Q(document_from__subtitle__icontains=value)
-            ) & cls.get_types_q(types, True) | (
-                Q(document_to__title__icontains=value)
-                | Q(document_to__subtitle__icontains=value)
-            ) & cls.get_types_q(
-                types, False
-            )
+            if value is None or value == "":
+                return (
+                    Q(document_from__title__isnull=True)
+                    | Q(document_from__subtitle__isnull=True)
+                    | Q(document_from__title__icontains="")
+                    | Q(document_from__subtitle__icontains="")
+                ) & cls.get_types_q(types, True) | (
+                    Q(document_to__title__isnull=True)
+                    | Q(document_to__subtitle__isnull=True)
+                    | Q(document_to__title__icontains="")
+                    | Q(document_to__subtitle__icontains="")
+                ) & cls.get_types_q(
+                    types, False
+                )
+            else:
+                return (
+                    Q(document_from__title__icontains=value)
+                    | Q(document_from__subtitle__icontains=value)
+                ) & cls.get_types_q(types, True) | (
+                    Q(document_to__title__icontains=value)
+                    | Q(document_to__subtitle__icontains=value)
+                ) & cls.get_types_q(
+                    types, False
+                )
 
     @classmethod
     def q_object_by_author(cls, value, types):
