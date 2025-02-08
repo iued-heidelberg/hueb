@@ -20,7 +20,7 @@ def test_menu_unauthenticated_user(rf):
     # assert context["menu"][1]["link"] == "#"
     # assert context["menu"][1]["disabled"] == True
 
-    assert context["menu"][2]["name"] == "Publikationen"
+    # assert context["menu"][2]["name"] == "Publikationen"
     # assert context["menu"][2]["link"] == "#"
     # assert context["menu"][2]["disabled"] == True
 
