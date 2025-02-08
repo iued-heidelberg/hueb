@@ -34,13 +34,13 @@ def menu(request):
         }
     )
 
-    menu.append(
-        {
-            "name": _("Publikationen"),
-            "link": "/" + get_language() + "/publications",
-            "disabled": False,
-        }
-    )
+    # menu.append(
+    #    {
+    #        "name": _("Publikationen"),
+    #        "link": "/" + get_language() + "/publications",
+    #        "disabled": False,
+    #    }
+    # )
 
     context = {}
     context["menu"] = menu
