@@ -78,6 +78,7 @@ class Document(Reviewable, TenantAwareModel):
     app = models.CharField(
         max_length=6, choices=HUEB_APPLICATIONS + TENANT_APPS, default=HUEB20
     )
+    hidden = models.BooleanField(default=False)
     original_ref = models.OneToOneField(
         Legacy.OriginalNew, on_delete=models.DO_NOTHING, null=True, blank=True
     )

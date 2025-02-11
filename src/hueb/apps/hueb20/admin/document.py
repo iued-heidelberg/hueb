@@ -117,6 +117,7 @@ class DocumentAdmin(ReviewAdmin, TenantAdmin):
                     "published_location",
                     "cultural_circle",
                     "main_author",
+                    "hidden",
                 ),
             },
         ),

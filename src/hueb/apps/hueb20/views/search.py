@@ -262,6 +262,9 @@ class BaseSearchFormSet(BaseFormSet):
                     id__in=queryset.filter(document_to__in=doc_froms).all()
                 )
 
+            queryset = queryset.exclude(document_to__hidden=True)
+            queryset = queryset.exclude(document_from__hidden=True)
+
             return queryset.distinct()
 
     def get_title_queries(self):
