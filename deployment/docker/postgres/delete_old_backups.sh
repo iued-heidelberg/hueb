@@ -1,1 +1,1 @@
-find /backup* -mtime +90 -type f -delete
+find /backup* -mtime +60 -type f -delete
