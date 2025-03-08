@@ -466,386 +466,189 @@ class Search(ListView):
             return super().get(request, *args, **kwargs)
 
     def export_to_csv(self, queryset):
-        # ADD COMMENT!
+        # Optimize queryset prefetching to minimize redundant queries
         queryset = queryset.select_related(
-            "document_from__cultural_circle"
-        ).select_related("document_to__cultural_circle")
-        queryset = queryset.prefetch_related(
-            "document_from__filing_set__archive"
-        ).prefetch_related("document_to__filing_set__archive")
-
-        queryset = queryset.prefetch_related("document_to__translations")
-
-        queryset = queryset.prefetch_related(
-            "document_from__contribution_set__person__cultural_circle"
-        ).prefetch_related("document_to__contribution_set__person__cultural_circle")
-
-        # Fetch originals for bridge check
-        queryset = queryset.prefetch_related("document_from__originals")
-        queryset = (
-            queryset.select_related("document_to__language")
-            .select_related("document_from__language")
-            .prefetch_related("document_from__originals__language")
+            "document_from__cultural_circle",
+            "document_to__cultural_circle",
+            "document_to__language",
+            "document_from__language",
+        ).prefetch_related(
+            "document_from__filing_set__archive",
+            "document_to__filing_set__archive",
+            "document_to__translations",
+            "document_from__contribution_set__person__cultural_circle",
+            "document_to__contribution_set__person__cultural_circle",
+            "document_from__originals__language",
+            "document_from__document_comment",
+            "document_to__document_comment",
+            "document_from__originals__document_comment",
         )
-        queryset = queryset.prefetch_related("document_from__document_comment")
-        queryset = queryset.prefetch_related("document_to__document_comment")
-        queryset = queryset.prefetch_related(
-            "document_from__originals__document_comment"
-        )
+
+        def get_value(obj, attr, default="-"):
+            if attr is None:
+                return default
+            return getattr(obj, attr, default) if obj else default
+
+        def get_queryset_values(queryset, field, separator=", "):
+            return (
+                separator.join(
+                    [
+                        value if value else "-"
+                        for value in queryset.values_list(field, flat=True)
+                    ]
+                )
+                if queryset.exists()
+                else "-"
+            )
 
         def construct_row(docs):
-            if not docs.document_from:
-                orig_lang = "-"
-                orig_is_bridge = False
-            else:
-                orig_is_bridge = docs.document_from.originals.exists()
-                orig_lang = (
-                    docs.document_from.originals.first().language
-                    if orig_is_bridge
-                    else docs.document_from.language
-                )
-            if not docs.document_to:
-                doc_to = [
-                    "-",
-                    "-",
-                    "-",
-                    "-",
-                    "-",
-                    "-",
-                    "-",
-                    "-",
-                    "-",
-                    "-",
-                    "-",
-                    "-",
-                    "-",
-                    "-",
-                    "-",
-                    "-",
-                    "-",
-                ]
-            else:
-                doc_to = [
-                    # title
-                    (
-                        title if (title := docs.document_to.title) != "" else "-"
-                    ),  # title
-                    # subtitle
-                    (
-                        subtitle
-                        if (subtitle := docs.document_to.subtitle) != ""
-                        else "-"
-                    ),  # subtitle
-                    # Is Intermediary Translation
-                    str(bool(docs.document_to.translations.exists())),
-                    # Intermediary
-                    (docs.document_from.title if orig_is_bridge else "-"),
-                    # Edition
-                    (
-                        edition if (edition := docs.document_to.edition) != "" else "-"
-                    ),  # edition
-                    # translator
-                    (
-                        ", ".join(authors.values_list("person__name", flat=True))
-                        if (authors := docs.document_to.get_authors()).exists()
-                        else "-"
-                    ),
-                    # year
-                    (
-                        year
-                        if not (year := docs.document_to.serialize_written_in()) is None
-                        else "-"
-                    ),
-                    # publisher
-                    (
-                        ", ".join(pubs.values_list("person__name", flat=True))
-                        if (pubs := docs.document_to.get_publishers()).exists()
-                        else "-"
-                    ),
-                    # place of publication
-                    (
-                        location
-                        if (location := docs.document_to.published_location) != ""
-                        else "-"
-                    ),
-                    # Location (ARCHIVES)
-                    (
-                        ", ".join(
-                            filings.filter(archive__name__isnull=False).values_list(
-                                "archive__name", flat=True
-                            )
-                        )
-                        if (filings := docs.document_to.filing_set).exists()
-                        else "-"
-                    ),
-                    # Link
-                    (
-                        archives.first().link
-                        if (
-                            archives := docs.document_to.filing_set.filter(
+            doc_from, doc_to = docs.document_from, docs.document_to
+            orig_is_bridge = doc_from.originals.exists() if doc_from else False
+            orig_lang = (
+                get_value(doc_from.originals.first(), "language")
+                if orig_is_bridge
+                else get_value(doc_from, "language")
+            )
+
+            doc_to_data = [
+                get_value(doc_to, "title"),
+                get_value(doc_to, "subtitle"),
+                str(bool(doc_to.translations.exists() if doc_to else False)),
+                get_value(doc_from, "title" if orig_is_bridge else None),
+                get_value(doc_to, "edition"),
+                (
+                    get_queryset_values(doc_to.get_authors(), "person__name")
+                    if doc_to
+                    else "-"
+                ),
+                doc_to.serialize_written_in() if doc_to else "-",
+                (
+                    get_queryset_values(doc_to.get_publishers(), "person__name")
+                    if doc_to
+                    else "-"
+                ),
+                get_value(doc_to, "published_location"),
+                (
+                    get_queryset_values(doc_to.filing_set, "archive__name")
+                    if doc_to
+                    else "-"
+                ),
+                (
+                    get_value(
+                        doc_to.filing_set.filter(
+                            archive__name="Online-Version"
+                        ).first(),
+                        "link",
+                    )
+                    if doc_to
+                    else "-"
+                ),
+                get_value(doc_to, "language"),
+                orig_lang,
+                get_value(doc_from, "language" if orig_is_bridge else None),
+                get_value(doc_to, "ddc"),
+                doc_to.get_cultural_circle() if doc_to else "-",
+                list(doc_to.get_comments() if doc_to else []),
+            ]
+
+            doc_from_data = []
+            if doc_from:
+                if orig_is_bridge:
+                    orig = doc_from.originals.first()
+                    doc_from_data = [
+                        get_queryset_values(doc_from.originals, "title"),
+                        get_queryset_values(doc_from.originals, "subtitle"),
+                        get_queryset_values(orig.get_authors(), "person__name"),
+                        get_value(orig, "edition"),
+                        get_value(orig, "written_in"),
+                        get_queryset_values(orig.get_publishers(), "person__name"),
+                        get_value(orig, "published_location"),
+                        get_queryset_values(orig.get_filings(), "archive__name"),
+                        get_value(
+                            orig.filing_set.filter(
                                 archive__name="Online-Version"
-                            )
-                        ).exists()
-                        else "-"
-                    ),
-                    # language generally
-                    (
-                        language
-                        if (language := docs.document_to.language) != ""
-                        else "-"
-                    ),
-                    # language of original
-                    lang if (lang := orig_lang) != "" else "-",
-                    # language of intermediary
-                    (docs.document_from.language if orig_is_bridge else "-"),
-                    # ddc
-                    ddc if (ddc := docs.document_to.ddc) != "" else "-",
-                    # cultural circle
-                    (
-                        circle
-                        if (circle := docs.document_to.get_cultural_circle()) != ""
-                        else "-"
-                    ),
-                    # comment
-                    (
-                        comment
-                        if (comment := docs.document_to.get_comments()).exists()
-                        else "-"
-                    ),
-                ]
-
-            if not docs.document_from:
-                doc_from = ["-", "-", "-", "-", "-", "-", "-", "-", "-", "-"]
-            else:
-                if not orig_is_bridge:
-                    doc_from = [
-                        (
-                            title if (title := docs.document_from.title) != "" else "-"
-                        ),  # title
-                        # Subtitle orig
-                        (
-                            subtitle
-                            if (subtitle := docs.document_from.subtitle) != ""
-                            else "-"
-                        ),  # subtitle
-                        # authors
-                        (
-                            ", ".join(authors.values_list("person__name", flat=True))
-                            if (authors := docs.document_from.get_authors()).exists()
-                            else "-"
+                            ).first(),
+                            "link",
                         ),
-                        # edition
-                        (
-                            edition
-                            if (edition := docs.document_from.edition) != ""
-                            else "-"
-                        ),
-                        # year
-                        (
-                            year
-                            if not (year := docs.document_from.serialize_written_in())
-                            is None
-                            else "-"
-                        ),
-                        # publisher
-                        (
-                            ", ".join(pubs.values_list("person__name", flat=True))
-                            if (pubs := docs.document_from.get_publishers()).exists()
-                            else "-"
-                        ),
-                        # published location
-                        (
-                            location
-                            if (location := docs.document_from.published_location) != ""
-                            else "-"
-                        ),
-                        # Location (ARCHIVES)
-                        (
-                            ", ".join(
-                                filings.filter(archive__name__isnull=False).values_list(
-                                    "archive__name", flat=True
-                                )
-                            )
-                            if (filings := docs.document_from.filing_set).exists()
-                            else "-"
-                        ),
-                        # Link
-                        (
-                            archives.first().link
-                            if (
-                                archives := docs.document_from.filing_set.filter(
-                                    archive__name="Online-Version"
-                                )
-                            ).exists()
-                            else "-"
-                        ),
-                        # comment
-                        (
-                            comment
-                            if (comment := docs.document_from.get_comments()).exists()
-                            else "-"
-                        ),
+                        list(orig.get_comments()),
                     ]
-
                 else:
-                    doc_from = [
-                        # title orig
-                        (
-                            ", ".join([t if t else "" for t in titles])
-                            if (
-                                titles := docs.document_from.originals.values_list(
-                                    "title", flat=True
-                                )
-                            )
-                            else "-"
+                    doc_from_data = [
+                        get_value(doc_from, "title"),
+                        get_value(doc_from, "subtitle"),
+                        get_queryset_values(doc_from.get_authors(), "person__name"),
+                        get_value(doc_from, "edition"),
+                        doc_from.serialize_written_in(),
+                        get_queryset_values(doc_from.get_publishers(), "person__name"),
+                        get_value(doc_from, "published_location"),
+                        get_queryset_values(doc_from.filing_set, "archive__name"),
+                        get_value(
+                            doc_from.filing_set.filter(
+                                archive__name="Online-Version"
+                            ).first(),
+                            "link",
                         ),
-                        # Subtitle orig
-                        (
-                            ", ".join([t if t else "" for t in subtitles])
-                            if (
-                                subtitles := docs.document_from.originals.values_list(
-                                    "subtitle", flat=True
-                                )
-                            )
-                            != ""
-                            else "-"
-                        ),
-                        # authors
-                        (
-                            ", ".join(authors.values_list("person__name", flat=True))
-                            if (
-                                authors := docs.document_from.originals.first().get_authors()
-                            ).exists()
-                            else "-"
-                        ),
-                        # edition
-                        (
-                            edition
-                            if (edition := docs.document_from.originals.first().edition)
-                            != ""
-                            else "-"
-                        ),  # edition
-                        # year
-                        (
-                            timerange_serialization(year)
-                            if not (
-                                year := docs.document_from.originals.first().written_in
-                            )
-                            is None
-                            else "-"
-                        ),
-                        # publisher
-                        (
-                            ", ".join(pubs.values_list("person__name", flat=True))
-                            if (
-                                pubs := docs.document_from.originals.first().get_publishers()
-                            ).exists()
-                            else "-"
-                        ),
-                        # published location
-                        (
-                            location
-                            if (
-                                location := docs.document_from.originals.first().published_location
-                            )
-                            != ""
-                            else "-"
-                        ),
-                        # Location (ARCHIVES)
-                        (
-                            ", ".join(
-                                filings.filter(archive__name__isnull=False).values_list(
-                                    "archive__name", flat=True
-                                )
-                            )
-                            if (
-                                filings := docs.document_from.originals.first().get_filings()
-                            ).exists()
-                            else "-"
-                        ),
-                        # Link
-                        (
-                            archives.first().link
-                            if (
-                                archives := docs.document_from.originals.first().filing_set.filter(
-                                    archive__name="Online-Version"
-                                )
-                            ).exists()
-                            else "-"
-                        ),
-                        # comment
-                        (
-                            comment
-                            if (
-                                comment := docs.document_from.originals.first().get_comments()
-                            ).exists()
-                            else "-"
-                        ),
+                        list(doc_from.get_comments()),
                     ]
-            if docs.document_from:
-                app = docs.document_from.app
             else:
-                app = docs.document_to.app
-            return doc_to + doc_from + [app]
+                doc_from_data = ["-" for _ in range(10)]
+
+            return doc_to_data + doc_from_data + [get_value(doc_from or doc_to, "app")]
 
         def row_generator(queryset):
-            class DummyRelationship:
-                pass
-
             yield [
-                "Title of the translation",
+                "Translation Title",
                 "Subtitle",
-                "Is intermediary",
+                "Is Intermediary",
                 "Intermediary",
                 "Edition",
                 "Translator",
                 "Year",
                 "Publisher",
-                "Place of publication",
+                "Publication Place",
                 "Locations",
                 "Link",
                 "Language",
-                "Language of the original",
-                "Language of the intermediary",
+                "Original Language",
+                "Intermediary Language",
                 "DDC",
-                "Culture circle",
+                "Cultural Circle",
                 "Comment",
-                "Title of the original",
-                "Subtitle_org",
+                "Original Title",
+                "Original Subtitle",
                 "Author",
-                "Edition",
-                "Year",
-                "Publisher",
-                "Place of publication",
-                "Locations",
-                "Link",
+                "Original Edition",
+                "Original Year",
+                "Original Publisher",
+                "Original Publication Place",
+                "Original Locations",
+                "Original Link",
                 "App",
-                "Comment",
             ]
 
-            for i, docs in enumerate(queryset.all()):
+            for docs in queryset:
                 yield construct_row(docs)
                 if docs.document_from and docs.document_from.originals.exists():
-                    dummy = DummyRelationship()
                     for orig in docs.document_from.originals.all():
-                        dummy.document_from = orig
-                        dummy.document_to = docs.document_from
-                        yield construct_row(dummy)
+                        yield construct_row(
+                            type(
+                                "Dummy",
+                                (),
+                                {
+                                    "document_from": orig,
+                                    "document_to": docs.document_from,
+                                },
+                            )
+                        )
 
         class Echo:
-            """An object that implements just the write method of the file-like
-            interface.
-            """
-
             def write(self, value):
-                """Write the value by returning it, instead of storing in a buffer."""
                 return value
 
         pseudo_buffer = Echo()
         writer = csv.writer(
             pseudo_buffer, delimiter=";", dialect="excel", quoting=csv.QUOTE_ALL
         )
-
         return StreamingHttpResponse(
             (writer.writerow(row) for row in row_generator(queryset)),
             content_type="text/csv",
