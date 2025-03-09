@@ -134,7 +134,7 @@ The applications consist out of three services, listed in the [docker_compose.ym
 - `proxy` - the Nginx proxy handling SSL and proxying to `hueb`
 - `database` - a Postgres database supporting everything with the cronjobs responsible for backing up the data
 
-### Continuous Integration & Deployment
+### Continuous Integration & Deployment 
 Commits pushed to Github will cause the `.github/workflows/development_workflows.yml` to run. This workflow runs [black](black.readthedocs.io), [flake8](flake8.pycqa.org), tests, the application- and database container build in parallel. The container images are pushed to [Githubs container registry](ghcr.io) under the tags TODO
 
 The staging CI Process is normally aborted at this point. The exception is a commit published on the `development` branch. It is deployed via Ansible directly to [hueb-staging.iued.uni-heidelberg.de](hueb-staging.iued.uni-heidelberg.de).
