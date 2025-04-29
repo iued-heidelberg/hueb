@@ -1,0 +1,73 @@
+{% load i18n %}
+{% load static %}
+<script src="{% url 'javascript-catalog' %}"></script>
+<script>
+  content = document.getElementById("content");
+  content.classList.remove("bg-sand-bg");
+  content.style.backgroundColor = "{{ tenant_color }}";
+</script>
+<div class="px-16 py-8">
+  <div class="pt-2 pb-10">
+    <h1 class="text-4xl font-bold uppercase">{% translate "Essener " %} <br> Intermediärsprachen Projekt</h1>
+  </div>
+
+  <div class="flex flex-row">
+    <div class="flex-auto w-3/5 pr-8 text-lg leading-relaxed text-gray-900 lg:w-1/2">
+        <p class="pb-1">
+          {% translate "Das DFG-Projekt „Das Niederländische als Mittlersprache für Übersetzungen ins Deutsche im 17. und 18. Jahrhundert“ wird in der Abteilung Niederlandistik an der Universität Duisburg-Essen gefördert. " %}
+        </p>
+
+        <p class="py-1">
+          {% translate "Innerhalb des Projektes werden intermediäre Übersetzungen der Frühen Neuzeit untersucht. Das Hauptaugenmerk liegt auf Übersetzungen des 17. und 18. Jahrhunderts, in denen das Niederländische als Mittlersprache für Übersetzungen aus dem Englischen ins Deutsche fungiert. Darüber hinaus werden auch andere Ausgangssprachen und weitere europäische Intermediärsprachen ermittelt, um die Bedeutung intermediärer Übersetzungen im frühneuzeitlichen Europa näher zu beleuchten." %}
+        </p>
+
+        <p class="py-1">
+          {% translate "Im Mittelpunkt des Forschungsprojektes steht die Frage nach den Besonderheiten indirekter
+Übersetzungen über die Mittlersprache Niederländisch im 17. und frühen 18. Jahrhundert, um die
+Bedeutung der Intermediärübersetzungen zu untersuchen sowie die Rolle, die Akteure und Räume in
+den Prozessen der Weiterübersetzung spielen. Durch detaillierte Analysen können bislang
+unentdeckte indirekte Übersetzungen identifiziert und in die Sammlung bereits ermittelter
+Übersetzungen aufgenommen werden. Über die quantitative Darstellung wird die Bedeutung des
+intermediären Übersetzens als Vermittlungsstrategie in der Frühen Neuzeit deutlich. " %}
+        </p>
+
+        <p class="py-1">
+          {% translate "Die Aufnahme der ermittelten Ergebnisse in die Heidelberger Übersetzungsbibliographie (neu
+identifizierte Intermediärübersetzungen sowie anfüllende Metadaten zu schon aufgeführten
+indirekten Übersetzungen) hat zum Ziel, die Daten einem breiteren Publikum zugänglich zu machen
+und dadurch weitere Forschungsimpulse zu Intermediärübersetzungen in der Frühen Neuzeit zu
+geben. " %}
+        </p>
+
+    </div>
+
+    <div class="flex-auto w-2/5 pl-8 lg:w-2/5">
+      
+
+      <div class="pt-8 ">
+
+        <h2 class="pb-3 text-lg font-extrabold text-gray-900 uppercase">
+          {% translate "Kontakt" %}
+        </h2>
+
+        <p class="text-sm font-normal text-gray-700">
+          <span class="font-bold text-gray-900">{% translate "Projektleitung:" %}</span>
+          Prof. Dr. Ute K. Boonen <br>
+          E-Mail:
+            <a class="underline hover:text-red-900" href="mailto:ute.boonen@uni-due.de">
+              ute.boonen@uni-due.de
+            </a>
+          <br>
+           <span class="font-bold text-gray-900">{% translate "Projektmitarbeiterin:" %}</span><br>
+           Pia Awater MA <br>
+          E-Mail:
+           <a class="underline hover:text-red-900" href="mailto:pia.awater@uni-due.de">
+            pia.awater@uni-due.de
+           </a>
+          
+      </p>
+
+      </div>
+    </div>
+  </div>
+</div>
