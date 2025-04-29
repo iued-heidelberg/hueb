@@ -403,8 +403,13 @@ class Search(ListView):
                         .distinct()
                     )
             else:
+                # Filter by tenant app if no search is performed
+                tenant = tenant_from_request(self.request)
+                app = tenant.app if tenant else "HUEB20"
+                q_object = Q(document_from__app=app) | Q(document_to__app=app)
+
                 return (
-                    BaseSearchFormSet.base_queryset.all()
+                    BaseSearchFormSet.base_queryset.filter(q_object)
                     .order_by(F("document_from__id").asc(nulls_last=True))
                     .distinct()
                 )
