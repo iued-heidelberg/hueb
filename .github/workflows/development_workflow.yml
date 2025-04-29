@@ -6,7 +6,7 @@ on:
 
 jobs:
   black:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
@@ -15,7 +15,7 @@ jobs:
       - uses: psf/black@24.4.0
 
   flake8:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python 3.8
@@ -38,7 +38,7 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
   Tests:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     services:
       db:
         image: postgres:13
@@ -77,7 +77,7 @@ jobs:
           ENV: GITHUB_WORKFLOW
 
   Application_Container_build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -124,7 +124,7 @@ jobs:
           cache-to: type=local,dest=/tmp/.buildx-cache
 
   Postgres_Container_build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -182,7 +182,7 @@ jobs:
         flake8,
         black,
       ]
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v2
       - name: Get short SHA for tag
